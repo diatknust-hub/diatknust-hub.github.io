@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Artwork Gallery — DIAT | KNUST Ghana</title>
+  <meta name="description" content="Browse the full collection of artworks from the Department of Indigenous Art and Technology (DIAT) at KNUST — filter by discipline, AR status, or search by title and artist."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    /* ═══════════════════════════════════════════════════════════
+       DESIGN SYSTEM — shared with homepage
+    ═══════════════════════════════════════════════════════════ */
+    :root{
+      --white:#FFFFFF; --surface:#FAFAF8; --border:#E8E4DC;
+      --t1:#111111; --t2:#555555; --t3:#999999;
+      --gold:#C9952A; --gold-light:#FBF4E6; --gold-dark:#9A6F10;
+      --terra:#C1440E; --terra-light:#FDF0E7;
+      --green:#2D6A2D; --green-light:#EBF5EB;
+      --indigo:#1A1A4E;
+      --serif:"Cormorant Garamond",Georgia,serif;
+      --sans:"Inter",system-ui,-apple-system,sans-serif;
+      --r:10px; --t:0.25s ease;
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{font-size:16px;scroll-behavior:smooth}
+    body{font-family:var(--sans);color:var(--t1);background:var(--white);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+    a{text-decoration:none;color:inherit}
+    img{display:block;max-width:100%}
+    button{font-family:var(--sans);cursor:pointer;border:none}
+
+    /* ANNOUNCE BAR */
+    .abar{background:var(--indigo);color:rgba(255,255,255,.85);text-align:center;padding:10px 24px;font-size:.78rem;font-weight:500;letter-spacing:.04em}
+    .abar a{color:var(--gold);font-weight:600;margin-left:10px;transition:opacity .25s ease}
+    .abar a:hover{opacity:.75}
+
+    /* NAVBAR */
+    .nav{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.96);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--border);height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 40px;transition:box-shadow .25s ease}
+    .nav.shadow{box-shadow:0 2px 20px rgba(0,0,0,.08)}
+    .nbrand{display:flex;align-items:center;gap:10px;flex-shrink:0}
+    .nbrand-svg{width:34px;height:34px;animation:float 5s ease-in-out infinite}
+    @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+    .nbrand-txt{display:flex;flex-direction:column;line-height:1.15}
+    .nbrand-txt .nd{font-family:var(--serif);font-size:.95rem;font-weight:600;color:var(--indigo)}
+    .nbrand-txt .nu{font-size:.58rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--t3)}
+    .nlinks{display:flex;align-items:center;gap:2px;list-style:none}
+    .nlinks a{font-size:.78rem;font-weight:500;color:var(--t2);padding:6px 11px;border-radius:6px;transition:background .25s ease,color .25s ease;white-space:nowrap}
+    .nlinks a:hover,.nlinks a.active{background:var(--gold-light);color:var(--gold-dark)}
+    .ncta{background:var(--gold);color:#fff;font-size:.78rem;font-weight:600;padding:9px 20px;border-radius:50px;transition:background .25s ease,transform .25s ease;white-space:nowrap;flex-shrink:0}
+    .ncta:hover{background:var(--gold-dark);transform:translateY(-1px)}
+    .ham{display:none;background:none;border:none;padding:8px;flex-direction:column;gap:5px}
+    .ham span{display:block;width:22px;height:2px;background:var(--t1);border-radius:2px;transition:transform .25s ease,opacity .25s ease}
+    .ham.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+    .ham.open span:nth-child(2){opacity:0}
+    .ham.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+    .mob-drawer{display:none;position:fixed;inset:0;background:var(--white);z-index:99;padding:90px 32px 32px;flex-direction:column;gap:8px;overflow-y:auto}
+    .mob-drawer.open{display:flex}
+    .mob-drawer a{font-size:1.1rem;font-weight:500;color:var(--t1);padding:14px 0;border-bottom:1px solid var(--border);transition:color .25s ease}
+    .mob-drawer a:hover{color:var(--gold)}
+    .mob-cta-link{margin-top:16px;background:var(--gold);color:#fff;text-align:center;padding:16px;border-radius:10px;font-weight:600;font-size:.95rem}
+
+    /* ═══════════════════════════════════════════════════════════
+       GALLERY PAGE HERO
+    ═══════════════════════════════════════════════════════════ */
+    .gallery-hero{
+      background:var(--surface);
+      border-bottom:1px solid var(--border);
+      padding:56px 40px 40px;
+    }
+    .gallery-hero-in{max-width:1280px;margin:0 auto}
+    .gh-breadcrumb{
+      display:flex;align-items:center;gap:8px;
+      font-size:.72rem;font-weight:500;color:var(--t3);
+      margin-bottom:20px;letter-spacing:.04em;
+    }
+    .gh-breadcrumb a{color:var(--t3);transition:color .25s ease}
+    .gh-breadcrumb a:hover{color:var(--gold)}
+    .gh-breadcrumb span{color:var(--border)}
+    .gh-top{display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:16px}
+    .gh-eyebrow{font-size:.68rem;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:10px}
+    .gh-title{font-family:var(--serif);font-size:clamp(2rem,4vw,3.2rem);font-weight:600;color:var(--t1);line-height:1.1;letter-spacing:-.02em}
+    .gh-sub{font-size:.95rem;color:var(--t2);line-height:1.7;max-width:520px;margin-top:12px}
+    .gh-count{font-size:.82rem;color:var(--t3);font-weight:500;white-space:nowrap;align-self:flex-end}
+    .gh-count span{color:var(--gold);font-weight:600}
+
+    /* ═══════════════════════════════════════════════════════════
+       FILTER BAR — sticky below navbar
+    ═══════════════════════════════════════════════════════════ */
+    .filter-bar{
+      position:sticky;
+      top:64px;
+      z-index:90;
+      background:rgba(255,255,255,.97);
+      backdrop-filter:blur(10px);
+      border-bottom:1px solid var(--border);
+      padding:14px 40px;
+    }
+    .filter-bar-in{
+      max-width:1280px;margin:0 auto;
+      display:flex;align-items:center;
+      gap:16px;flex-wrap:wrap;
+    }
+
+    /* Search */
+    .search-wrap{
+      position:relative;flex-shrink:0;
+    }
+    .search-wrap svg{
+      position:absolute;left:12px;top:50%;transform:translateY(-50%);
+      width:16px;height:16px;opacity:.35;pointer-events:none;
+    }
+    .search-input{
+      font-family:var(--sans);font-size:.82rem;
+      color:var(--t1);background:var(--surface);
+      border:1.5px solid var(--border);border-radius:50px;
+      padding:9px 16px 9px 36px;width:220px;
+      outline:none;transition:border-color .25s ease,box-shadow .25s ease;
+    }
+    .search-input:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(201,149,42,.1)}
+
+    /* Filter label */
+    .filter-lbl{font-size:.68rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--t3);white-space:nowrap}
+
+    /* Filter chips */
+    .filter-chips{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+    .chip{
+      font-size:.75rem;font-weight:500;
+      padding:7px 14px;border-radius:50px;
+      border:1.5px solid var(--border);
+      background:var(--white);color:var(--t2);
+      cursor:pointer;transition:all .2s ease;
+      white-space:nowrap;
+    }
+    .chip:hover{border-color:var(--gold);color:var(--gold-dark)}
+    .chip.active{background:var(--gold);border-color:var(--gold);color:#fff;font-weight:600}
+
+    /* AR filter chips */
+    .chip.ar-on{background:var(--gold-light);border-color:var(--gold);color:var(--gold-dark)}
+    .chip.ar-on.active{background:var(--gold);color:#fff}
+    .chip.no-ar{background:var(--surface);border-color:var(--border);color:var(--t2)}
+    .chip.no-ar.active{background:var(--t1);border-color:var(--t1);color:#fff}
+
+    /* Filter divider */
+    .filter-div{width:1px;height:28px;background:var(--border);flex-shrink:0}
+
+    /* Clear filters */
+    .clear-btn{
+      font-size:.72rem;font-weight:600;color:var(--terra);
+      background:none;border:none;cursor:pointer;
+      padding:4px 8px;border-radius:4px;
+      transition:background .2s ease;
+      display:none;white-space:nowrap;
+    }
+    .clear-btn:hover{background:var(--terra-light)}
+    .clear-btn.visible{display:block}
+
+    /* ═══════════════════════════════════════════════════════════
+       GALLERY GRID
+    ═══════════════════════════════════════════════════════════ */
+    .gallery-main{padding:40px 40px 80px;max-width:1280px;margin:0 auto}
+
+    /* No results */
+    .no-results{
+      display:none;text-align:center;
+      padding:80px 20px;
+    }
+    .no-results.show{display:block}
+    .no-results svg{margin:0 auto 20px;opacity:.2}
+    .no-results h3{font-family:var(--serif);font-size:1.6rem;font-weight:600;color:var(--t1);margin-bottom:10px}
+    .no-results p{font-size:.9rem;color:var(--t2)}
+
+    /* Masonry grid */
+    .gal-grid{columns:4;column-gap:16px}
+    .gc{
+      break-inside:avoid;margin-bottom:16px;
+      background:var(--white);border:1px solid var(--border);
+      border-radius:var(--r);overflow:hidden;cursor:pointer;
+      transition:box-shadow .25s ease,transform .25s ease;
+    }
+    .gc:hover{box-shadow:0 16px 48px rgba(0,0,0,.1);transform:translateY(-4px)}
+    .gc.hidden{display:none}
+
+    /* Card image area */
+    .gi{width:100%;background:#EEE9E0;display:flex;align-items:center;justify-content:center;position:relative}
+    .gi.tall{height:280px}.gi.med{height:210px}.gi.sht{height:155px}
+    .gi-in{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;width:100%;height:100%}
+    .gi-in svg{opacity:.2}
+    .gi-ph{font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--t3);text-align:center;padding:0 12px;line-height:1.5}
+
+    /* Badges */
+    .ar-pill{position:absolute;top:10px;right:10px;background:var(--gold);color:#fff;font-size:.58rem;font-weight:700;padding:3px 8px;border-radius:50px;letter-spacing:.08em}
+    .disc-pill{position:absolute;top:10px;left:10px;background:rgba(255,255,255,.92);color:var(--terra);font-size:.58rem;font-weight:700;padding:3px 8px;border-radius:50px;letter-spacing:.06em;text-transform:uppercase}
+
+    /* Card info */
+    .gi-info{padding:14px 16px 16px}
+    .gi-disc{font-size:.62rem;font-weight:600;text-transform:uppercase;letter-spacing:.12em;color:var(--terra);margin-bottom:6px}
+    .gi-title{font-family:var(--serif);font-size:1.05rem;font-weight:600;color:var(--t1);line-height:1.25;margin-bottom:4px}
+    .gi-artist{font-size:.78rem;color:var(--t3);margin-bottom:12px}
+    .gi-bot{display:flex;align-items:center;justify-content:space-between}
+    .gi-ar{font-size:.72rem;font-weight:600;color:var(--gold);display:flex;align-items:center;gap:4px;transition:gap .2s ease}
+    .gi-ar:hover{gap:8px}
+    .gi-ar::after{content:"→"}
+    .gi-no-ar{font-size:.68rem;font-weight:500;color:var(--t3);letter-spacing:.04em;font-style:italic}
+    .gi-yr{font-size:.68rem;color:var(--t3)}
+
+    /* Result count bar */
+    .result-bar{
+      display:flex;align-items:center;justify-content:space-between;
+      flex-wrap:wrap;gap:12px;
+      margin-bottom:24px;padding-bottom:16px;
+      border-bottom:1px solid var(--border);
+    }
+    .result-count{font-size:.82rem;color:var(--t2)}
+    .result-count strong{color:var(--t1)}
+    .sort-wrap{display:flex;align-items:center;gap:8px}
+    .sort-lbl{font-size:.72rem;color:var(--t3)}
+    .sort-sel{
+      font-family:var(--sans);font-size:.78rem;color:var(--t1);
+      background:var(--white);border:1.5px solid var(--border);
+      border-radius:6px;padding:6px 10px;outline:none;
+      -webkit-appearance:none;appearance:none;cursor:pointer;
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       FOOTER
+    ═══════════════════════════════════════════════════════════ */
+    footer{background:var(--indigo);color:rgba(255,255,255,.75);padding:72px 40px 32px}
+    .fg{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:60px;margin-bottom:60px}
+    .fbn{font-family:var(--serif);font-size:1.1rem;font-weight:600;color:#fff;margin-bottom:4px}
+    .fbu{font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:16px}
+    .fbd{font-size:.82rem;line-height:1.7;color:rgba(255,255,255,.5);margin-bottom:20px}
+    .fsc{display:flex;gap:8px;flex-wrap:wrap}
+    .fs{width:34px;height:34px;border-radius:8px;border:1px solid rgba(255,255,255,.12);display:flex;align-items:center;justify-content:center;font-size:.9rem;color:rgba(255,255,255,.5);cursor:pointer;transition:border-color .25s,color .25s,background .25s}
+    .fs:hover{border-color:var(--gold);color:var(--gold);background:rgba(201,149,42,.08)}
+    .fc h5{font-size:.72rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:18px;padding-bottom:10px;border-bottom:1px solid rgba(255,255,255,.08)}
+    .fc ul{list-style:none}
+    .fc ul li{margin-bottom:10px}
+    .fc ul li a{font-size:.82rem;color:rgba(255,255,255,.5);transition:color .25s}
+    .fc ul li a:hover{color:var(--gold)}
+    .fb{max-width:1280px;margin:0 auto;padding-top:24px;border-top:1px solid rgba(255,255,255,.08);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+    .fb p{font-size:.72rem;color:rgba(255,255,255,.28)}
+    .fb p span{color:rgba(201,149,42,.6)}
+
+    /* RESPONSIVE */
+    @media(max-width:1024px){
+      .gal-grid{columns:3}
+      .nav{padding:0 24px}
+      .filter-bar{padding:14px 24px}
+      .gallery-hero{padding:48px 24px 32px}
+      .gallery-main{padding:32px 24px 60px}
+      .fg{grid-template-columns:1fr 1fr;gap:40px}
+    }
+    @media(max-width:768px){
+      .nlinks,.ncta{display:none}
+      .ham{display:flex}
+      .gal-grid{columns:2}
+      .filter-bar-in{gap:10px}
+      .search-input{width:160px}
+      .fg{grid-template-columns:1fr;gap:32px}
+      .fb{flex-direction:column;text-align:center}
+      .gh-top{flex-direction:column;align-items:flex-start}
+    }
+    @media(max-width:480px){
+      .gal-grid{columns:1}
+      .filter-chips{gap:4px}
+      .chip{font-size:.7rem;padding:6px 10px}
+    }
+  </style>
+</head>
+<body>
+
+<!-- ANNOUNCEMENT BAR -->
+<div class="abar">
+  &#127881; DIAT@50 &mdash; Est. 1976 &nbsp;&middot;&nbsp; Ghana's premier indigenous art department
+  <a href="index.html#signup">Register for Updates &rarr;</a>
+</div>
+
+<!-- NAVBAR -->
+<nav class="nav" id="nav">
+  <a href="index.html" class="nbrand">
+    <svg class="nbrand-svg" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <ellipse cx="28" cy="38" rx="14" ry="9" stroke="#C9952A" stroke-width="2"/>
+      <path d="M28 29 C28 20 40 16 43 22 C46 28 40 33 35 31" stroke="#C9952A" stroke-width="2" stroke-linecap="round" fill="none"/>
+      <circle cx="37" cy="28" r="7" stroke="#C9952A" stroke-width="2" fill="none"/>
+      <circle cx="39" cy="26" r="1.5" fill="#C9952A"/>
+      <path d="M43 30 L49 28 L43 34" stroke="#C9952A" stroke-width="1.8" stroke-linejoin="round" fill="none"/>
+      <ellipse cx="20" cy="32" rx="4.5" ry="5.5" stroke="#C9952A" stroke-width="1.6" fill="none"/>
+      <path d="M14 38 C9 43 7 50 11 54" stroke="#C9952A" stroke-width="2" stroke-linecap="round" fill="none"/>
+    </svg>
+    <div class="nbrand-txt">
+      <span class="nd">DIAT &middot; KNUST</span>
+      <span class="nu">Dept. of Indigenous Art &amp; Technology</span>
+    </div>
+  </a>
+  <ul class="nlinks">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="gallery.html" class="active">Gallery</a></li>
+    <li><a href="webar.html">WebAR</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="programmes.html">Programmes</a></li>
+    <li><a href="community.html">Community</a></li>
+    <li><a href="staff.html">Staff</a></li>
+    <li><a href="archive.html">Archive</a></li>
+  </ul>
+  <a href="#" class="ncta" onclick="document.getElementById('search').focus();return false;">Search Artworks</a>
+  <button class="ham" id="ham" aria-label="Open menu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- MOBILE DRAWER -->
+<div class="mob-drawer" id="md">
+  <a href="index.html"      onclick="cd()">Home</a>
+  <a href="gallery.html"    onclick="cd()">Artwork Gallery</a>
+  <a href="webar.html"      onclick="cd()">WebAR Viewer</a>
+  <a href="about.html"      onclick="cd()">About DIAT</a>
+  <a href="programmes.html" onclick="cd()">Academic Programmes</a>
+  <a href="community.html"  onclick="cd()">Community &amp; Internship</a>
+  <a href="staff.html"      onclick="cd()">Staff Profiles</a>
+  <a href="contact.html"    onclick="cd()">Contact &amp; Social Media</a>
+  <a href="archive.html"    onclick="cd()">Digital Archive</a>
+  <a href="index.html#signup" class="mob-cta-link" onclick="cd()">Register for Updates &rarr;</a>
+</div>
+
+<!-- GALLERY HERO HEADER -->
+<div class="gallery-hero">
+  <div class="gallery-hero-in">
+    <div class="gh-breadcrumb">
+      <a href="index.html">Home</a>
+      <span>&#8250;</span>
+      <span style="color:var(--t1);font-weight:500">Artwork Gallery</span>
+    </div>
+    <div class="gh-top">
+      <div>
+        <p class="gh-eyebrow" data-cms-key="gallery-eyebrow" data-cms-label="Gallery Eyebrow Label" data-cms-type="text">DIAT Collection</p>
+        <h1 class="gh-title" data-cms-key="gallery-h1" data-cms-label="Gallery Page Title" data-cms-type="text">Artwork Gallery</h1>
+        <p class="gh-sub" data-cms-key="gallery-hero-sub" data-cms-label="Gallery Introduction">
+          Browse the full collection of artworks produced by DIAT students and staff
+          across six indigenous craft disciplines. Filter by discipline, AR status,
+          or search by title or artist name.
+        </p>
+      </div>
+      <div class="gh-count">
+        Showing <span id="visible-count">12</span> of <span id="total-count">12</span> artworks
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FILTER BAR (sticky) -->
+<div class="filter-bar" id="filterBar">
+  <div class="filter-bar-in">
+
+    <!-- Search -->
+    <div class="search-wrap">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+      </svg>
+      <input type="text" class="search-input" id="search"
+             placeholder="Search title or artist&#8230;" autocomplete="off"/>
+    </div>
+
+    <div class="filter-div"></div>
+
+    <!-- Discipline filter -->
+    <span class="filter-lbl">Discipline</span>
+    <div class="filter-chips" id="disc-filters">
+      <button class="chip active" data-disc="all">All</button>
+      <button class="chip" data-disc="clay">Clay &amp; Earthenware</button>
+      <button class="chip" data-disc="fibres">Fibres &amp; Fabrics</button>
+      <button class="chip" data-disc="leather">Leather Technology</button>
+      <button class="chip" data-disc="metal">Metal Production</button>
+      <button class="chip" data-disc="rattan">Rattan &amp; Bamboo</button>
+      <button class="chip" data-disc="wood">Wood &amp; Furniture</button>
+    </div>
+
+    <div class="filter-div"></div>
+
+    <!-- AR Status filter -->
+    <span class="filter-lbl">AR</span>
+    <div class="filter-chips" id="ar-filters">
+      <button class="chip active" data-ar="all">All</button>
+      <button class="chip ar-on" data-ar="true">AR Ready</button>
+      <button class="chip no-ar" data-ar="false">Gallery Only</button>
+    </div>
+
+    <!-- Clear button -->
+    <button class="clear-btn" id="clear-btn" onclick="clearFilters()">Clear filters &#10005;</button>
+
+  </div>
+</div>
+
+<!-- GALLERY MAIN -->
+<div class="gallery-main">
+
+  <!-- Result count + sort -->
+  <div class="result-bar">
+    <p class="result-count">
+      Showing <strong id="rc-vis">12</strong> artwork<span id="rc-s">s</span>
+      <span id="rc-filter"></span>
+    </p>
+    <div class="sort-wrap">
+      <span class="sort-lbl">Sort by</span>
+      <select class="sort-sel" id="sort-sel" onchange="sortCards()">
+        <option value="default">Default</option>
+        <option value="disc-az">Discipline A–Z</option>
+        <option value="disc-za">Discipline Z–A</option>
+        <option value="ar-first">AR Ready first</option>
+        <option value="no-ar-first">Gallery Only first</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- No results message -->
+  <div class="no-results" id="no-results">
+    <svg width="64" height="64" viewBox="0 0 64 64" fill="none">
+      <circle cx="30" cy="30" r="20" stroke="#C9952A" stroke-width="2"/>
+      <path d="M46 46 L56 56" stroke="#C9952A" stroke-width="2" stroke-linecap="round"/>
+      <path d="M22 30 h16 M30 22 v16" stroke="#C9952A" stroke-width="2" stroke-linecap="round"/>
+    </svg>
+    <h3>No artworks found</h3>
+    <p>Try adjusting your filters or search term.</p>
+    <button onclick="clearFilters()" style="margin-top:16px;background:var(--gold);color:#fff;border:none;padding:10px 24px;border-radius:50px;font-size:.82rem;font-weight:600;cursor:pointer;">Clear all filters</button>
+  </div>
+
+  <!-- THE GALLERY GRID — rendered by JS -->
+  <div class="gal-grid" id="gallery-grid"></div>
+
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="fg">
+    <div>
+      <div class="fbn">Dept. of Indigenous Art &amp; Technology</div>
+      <div class="fbu">KNUST &middot; College of Art and Built Environment &middot; Kumasi, Ghana</div>
+      <p class="fbd">DIAT is dedicated to the preservation, teaching, and global promotion of Ghana's indigenous art and craft heritage &mdash; Est. 1976. Fifty years of indigenous innovation and counting.</p>
+      <div class="fsc">
+        <a class="fs" href="#" aria-label="Instagram">&#128247;</a>
+        <a class="fs" href="#" aria-label="Facebook">&#127760;</a>
+        <a class="fs" href="#" aria-label="TikTok">&#127925;</a>
+        <a class="fs" href="#" aria-label="WhatsApp">&#128172;</a>
+        <a class="fs" href="#" aria-label="YouTube">&#9654;</a>
+        <a class="fs" href="#" aria-label="LinkedIn">&#128188;</a>
+      </div>
+    </div>
+    <div class="fc"><h5>Explore</h5><ul>
+      <li><a href="gallery.html">Artwork Gallery</a></li>
+      <li><a href="webar.html">WebAR Viewer</a></li>
+      <li><a href="archive.html">Digital Archive</a></li>
+      <li><a href="about.html">About DIAT</a></li>
+      <li><a href="about.html#anniversary">DIAT@50</a></li>
+    </ul></div>
+    <div class="fc"><h5>Academic</h5><ul>
+      <li><a href="programmes.html">All Programmes</a></li>
+      <li><a href="programmes.html#product-design">Product Design</a></li>
+      <li><a href="programmes.html#clay">Clay &amp; Earthenware</a></li>
+      <li><a href="programmes.html#fibres">Fibres &amp; Fabrics</a></li>
+      <li><a href="staff.html">Staff Directory</a></li>
+      <li><a href="community.html">Internship Programme</a></li>
+    </ul></div>
+    <div class="fc"><h5>Connect</h5><ul>
+      <li><a href="contact.html">Contact Us</a></li>
+      <li><a href="index.html#signup">Newsletter Signup</a></li>
+      <li><a href="community.html">Partnerships</a></li>
+      <li><a href="contact.html">Commission Artwork</a></li>
+      <li><a href="contact.html">Visit DIAT at KNUST</a></li>
+    </ul></div>
+  </div>
+  <div class="fb">
+    <p>&copy; 2026 Department of Indigenous Art and Technology (DIAT), <span>KNUST</span>. All rights reserved.</p>
+    <p>Developed as part of an MPhil research project &mdash; <span>College of Art and Built Environment, KNUST.</span></p>
+  </div>
+</footer>
+
+<script>
+  // ── ARTWORK DATA — 12 cards (2 per discipline: AR + No Badge) ────
+  // ── DIAT ARTWORKS ────────────────────────────────────────────────
+  // Fill in real artwork data here once WebAR is fully set up.
+  // For AR-ready artworks: add glb URL from jsDelivr CDN.
+  // For Gallery-only artworks: leave glb as empty string "".
+  const ARTWORKS = [
+    {id:1,  disc:"Clay & Earthenware",  discKey:"clay",    ar:false, title:"[Artwork Title — replace]", artist:"[Artist Name]", year:"[Year]", materials:"", dimensions:"", classification:"Student Work", glb:"", usdz:""},
+    {id:2,  disc:"Clay & Earthenware",  discKey:"clay",    ar:false, title:"[Artwork Title — replace]", artist:"[Artist Name]", year:"[Year]", materials:"", dimensions:"", classification:"Student Work", glb:"", usdz:""},
+    {id:3,  disc:"Fibres & Fabrics",    discKey:"fibres",  ar:false, title:"[Artwork Title — replace]", artist:"[Artist Name]", year:"[Year]", materials:"", dimensions:"", classification:"Student Work", glb:"", usdz:""},
+    {id:4,  disc:"Fibres & Fabrics",    discKey:"fibres",  ar:false, title:"[Artwork Title — replace]", artist:"[Artist Name]", year:"[Year]", materials:"", dimensions:"", classification:"Student Work", glb:"", usdz:""},
+    {id:5,  disc:"Leather Technology",  discKey:"leather", ar:false, title:"[Artwork Title — replace]", artist:"[Artist Name]", year:"[Year]", materials:"", dimensions:"", classification:"Student Work", glb:"", usdz:""},
+    {id:6,  disc:"Leather Technology",  discKey:"leather", ar:false, title:"[Artwork Title — replace]", artist:"[Artist Name]", year:"[Year]", materials:"", dimensions:"", classification:"Student Work", glb:"", usdz:""},
+    {id:7,  disc:"Metal Production",    discKey:"metal",   ar:false, title:"[Artwork Title — replace]", artist:"[Artist Name]", year:"[Year]", materials:"", dimensions:"", classification:"Student Work", glb:"", usdz:""},
+    {id:8,  disc:"Metal Production",    discKey:"metal",   ar:false, title:"[Artwork Title — replace]", artist:"[Artist Name]", year:"[Year]", materials:"", dimensions:"", classification:"Student Work", glb:"", usdz:""},
+    {id:9,  disc:"Rattan & Bamboo",     discKey:"rattan",  ar:false, title:"[Artwork Title — replace]", artist:"[Artist Name]", year:"[Year]", materials:"", dimensions:"", classification:"Student Work", glb:"", usdz:""},
+    {id:10, disc:"Rattan & Bamboo",     discKey:"rattan",  ar:false, title:"[Artwork Title — replace]", artist:"[Artist Name]", year:"[Year]", materials:"", dimensions:"", classification:"Student Work", glb:"", usdz:""},
+    {id:11, disc:"Wood & Furniture",    discKey:"wood",    ar:false, title:"[Artwork Title — replace]", artist:"[Artist Name]", year:"[Year]", materials:"", dimensions:"", classification:"Student Work", glb:"", usdz:""},
+    {id:12, disc:"Wood & Furniture",    discKey:"wood",    ar:false, title:"[Artwork Title — replace]", artist:"[Artist Name]", year:"[Year]", materials:"", dimensions:"", classification:"Student Work", glb:"", usdz:""},
+  ];
+
+  const HEIGHTS = ["tall","sht","med","tall","med","sht","sht","tall","med","sht","tall","med"];
+  const SVG = `<svg width="40" height="40" viewBox="0 0 40 40" fill="none"><rect x="2" y="2" width="36" height="36" rx="3" stroke="#C9952A" stroke-width="1.2"/><circle cx="13" cy="14" r="4" stroke="#C9952A" stroke-width="1.2"/><path d="M2 27 L11 18 L20 25 L28 16 L38 25" stroke="#C9952A" stroke-width="1.2" stroke-linecap="round"/></svg>`;
+
+  let activeDisc = "all";
+  let activeAR   = "all";
+  let searchTerm = "";
+  let sortMode   = "default";
+  let shuffledOrder = [...ARTWORKS];
+
+  // Fisher-Yates — initial shuffle on load
+  function shuffle(arr) {
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+  }
+  shuffle(shuffledOrder);
+
+  // Build one card HTML
+  function buildCard(aw, idx) {
+    const h      = HEIGHTS[idx % HEIGHTS.length];
+    const badge  = aw.ar ? `<span class="ar-pill">AR Ready</span>` : "";
+    // Build webar.html URL with artwork metadata as params
+    const arUrl = aw.ar ? `webar.html?title=${encodeURIComponent(aw.title)}`
+      + `&artist=${encodeURIComponent(aw.artist)}`
+      + `&year=${encodeURIComponent(aw.year)}`
+      + `&disc=${encodeURIComponent(aw.disc)}`
+      + `&materials=${encodeURIComponent(aw.materials||'[Materials — replace]')}`
+      + `&dims=${encodeURIComponent(aw.dimensions||'[Dimensions — replace]')}`
+      + `&class=${encodeURIComponent(aw.classification||'Student Work')}`
+      + (aw.glb  ? `&src=${encodeURIComponent(aw.glb)}`   : '')
+      + (aw.usdz ? `&usdz=${encodeURIComponent(aw.usdz)}` : '')
+      : '#';
+
+    const action = aw.ar
+      ? `<a class="gi-ar" href="${arUrl}">View in AR</a>`
+      : `<span class="gi-no-ar">Gallery View Only</span>`;
+    return `
+    <div class="gc"
+         data-disc="${aw.discKey}"
+         data-ar="${aw.ar}"
+         data-title="${aw.title.toLowerCase()}"
+         data-artist="${aw.artist.toLowerCase()}"
+         data-id="${aw.id}">
+      <div class="gi ${h}">
+        <div class="gi-in">
+          ${SVG}
+          <p class="gi-ph">[${aw.img}]</p>
+        </div>
+        ${badge}
+        <span class="disc-pill">${aw.disc}</span>
+      </div>
+      <div class="gi-info">
+        <p class="gi-disc">${aw.disc}</p>
+        <h3 class="gi-title">${aw.title}</h3>
+        <p class="gi-artist">${aw.artist} &middot; DIAT, KNUST</p>
+        <div class="gi-bot">
+          ${action}
+          <span class="gi-yr">${aw.year}</span>
+        </div>
+      </div>
+    </div>`;
+  }
+
+  // Render grid
+  function renderGrid(order) {
+    const grid = document.getElementById("gallery-grid");
+    grid.innerHTML = order.map((aw, i) => buildCard(aw, i)).join("");
+  }
+
+  // Apply all active filters + search
+  function applyFilters() {
+    const cards = document.querySelectorAll(".gc");
+    let vis = 0;
+
+    cards.forEach(card => {
+      const disc    = card.dataset.disc;
+      const ar      = card.dataset.ar === "true";
+      const title   = card.dataset.title  || "";
+      const artist  = card.dataset.artist || "";
+      const matchD  = activeDisc === "all" || disc === activeDisc;
+      const matchAR = activeAR   === "all" || (activeAR === "true" ? ar : !ar);
+      const matchS  = !searchTerm || title.includes(searchTerm) || artist.includes(searchTerm);
+
+      if (matchD && matchAR && matchS) {
+        card.classList.remove("hidden");
+        vis++;
+      } else {
+        card.classList.add("hidden");
+      }
+    });
+
+    // Update counts
+    const total = ARTWORKS.length;
+    document.getElementById("visible-count").textContent = vis;
+    document.getElementById("total-count").textContent   = total;
+    document.getElementById("rc-vis").textContent        = vis;
+    document.getElementById("rc-s").textContent          = vis === 1 ? "" : "s";
+
+    // Filter label in result bar
+    const parts = [];
+    if (activeDisc !== "all") parts.push(`in ${activeDisc}`);
+    if (activeAR   === "true")  parts.push("AR Ready only");
+    if (activeAR   === "false") parts.push("Gallery Only");
+    if (searchTerm) parts.push(`matching "${searchTerm}"`);
+    document.getElementById("rc-filter").textContent = parts.length ? " — " + parts.join(", ") : "";
+
+    // No results
+    document.getElementById("no-results").classList.toggle("show", vis === 0);
+
+    // Clear button visibility
+    const dirty = activeDisc !== "all" || activeAR !== "all" || searchTerm;
+    document.getElementById("clear-btn").classList.toggle("visible", dirty);
+  }
+
+  // Sort
+  function sortCards() {
+    sortMode = document.getElementById("sort-sel").value;
+    let order = [...shuffledOrder];
+    if      (sortMode === "disc-az")      order.sort((a,b) => a.disc.localeCompare(b.disc));
+    else if (sortMode === "disc-za")      order.sort((a,b) => b.disc.localeCompare(a.disc));
+    else if (sortMode === "ar-first")     order.sort((a,b) => b.ar - a.ar);
+    else if (sortMode === "no-ar-first")  order.sort((a,b) => a.ar - b.ar);
+    renderGrid(order);
+    applyFilters();
+  }
+
+  // Discipline filter chips
+  document.getElementById("disc-filters").addEventListener("click", e => {
+    if (!e.target.classList.contains("chip")) return;
+    document.querySelectorAll("#disc-filters .chip").forEach(c => c.classList.remove("active"));
+    e.target.classList.add("active");
+    activeDisc = e.target.dataset.disc;
+    applyFilters();
+  });
+
+  // AR filter chips
+  document.getElementById("ar-filters").addEventListener("click", e => {
+    if (!e.target.classList.contains("chip")) return;
+    document.querySelectorAll("#ar-filters .chip").forEach(c => c.classList.remove("active"));
+    e.target.classList.add("active");
+    activeAR = e.target.dataset.ar;
+    applyFilters();
+  });
+
+  // Search
+  document.getElementById("search").addEventListener("input", e => {
+    searchTerm = e.target.value.trim().toLowerCase();
+    applyFilters();
+  });
+
+  // Clear all filters
+  function clearFilters() {
+    activeDisc = "all"; activeAR = "all"; searchTerm = "";
+    document.getElementById("search").value = "";
+    document.getElementById("sort-sel").value = "default";
+    document.querySelectorAll("#disc-filters .chip").forEach((c,i) => c.classList.toggle("active", i===0));
+    document.querySelectorAll("#ar-filters .chip").forEach((c,i) => c.classList.toggle("active", i===0));
+    renderGrid(shuffledOrder);
+    applyFilters();
+  }
+
+  // Navbar shadow
+  const nav = document.getElementById("nav");
+  window.addEventListener("scroll", () => nav.classList.toggle("shadow", scrollY > 10));
+
+  // Hamburger
+  const ham = document.getElementById("ham"), md = document.getElementById("md");
+  ham.addEventListener("click", () => {
+    const o = md.classList.toggle("open");
+    ham.classList.toggle("open", o);
+    ham.setAttribute("aria-expanded", o);
+    document.body.style.overflow = o ? "hidden" : "";
+  });
+  function cd() {
+    md.classList.remove("open");
+    ham.classList.remove("open");
+    ham.setAttribute("aria-expanded","false");
+    document.body.style.overflow = "";
+  }
+
+  // INIT — render grid on page load
+  renderGrid(shuffledOrder);
+  applyFilters();
+</script>
+  <script src="cms.js"></script>
+</body>
+</html>

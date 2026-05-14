@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>CMS Diagnostic — DIAT</title>
+  <style>
+    body{font-family:"Inter",system-ui,sans-serif;max-width:680px;margin:40px auto;padding:20px;background:#f8f8f8;color:#111}
+    h1{font-size:1.4rem;margin-bottom:8px}
+    .card{background:#fff;border:1px solid #e0e0e0;border-radius:10px;padding:20px;margin-bottom:16px}
+    .card h2{font-size:.85rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:#666;margin-bottom:12px}
+    .row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid #f0f0f0;font-size:.9rem}
+    .row:last-child{border-bottom:none}
+    .ok{color:#198754;font-weight:700}
+    .fail{color:#dc3545;font-weight:700}
+    .warn{color:#f0a500;font-weight:700}
+    button{background:#C9952A;color:#fff;border:none;padding:10px 20px;border-radius:50px;cursor:pointer;font-size:.85rem;font-weight:600;margin:4px}
+    button.sec{background:#1A1A4E}
+    button.danger{background:#dc3545}
+    .code{font-family:monospace;font-size:.78rem;background:#f0f0f0;padding:3px 8px;border-radius:4px}
+    .editable-test{padding:16px;border:1px dashed #ccc;border-radius:8px;margin-top:8px;font-size:.9rem;color:#555}
+    #log{font-family:monospace;font-size:.75rem;background:#1A1A4E;color:#7fff7f;padding:16px;border-radius:8px;min-height:80px;white-space:pre-wrap;margin-top:8px}
+  </style>
+</head>
+<body>
+
+<h1>🔧 DIAT CMS Diagnostic</h1>
+<p style="font-size:.85rem;color:#666;margin-bottom:24px">Run this page to find exactly what is failing. Open this at your live Netlify URL.</p>
+
+<!-- STATUS CARD -->
+<div class="card">
+  <h2>Current Status</h2>
+  <div class="row">
+    <span>Admin session in localStorage</span>
+    <span id="s-session">checking…</span>
+  </div>
+  <div class="row">
+    <span>cms.js loaded on this page</span>
+    <span id="s-cmsjs">checking…</span>
+  </div>
+  <div class="row">
+    <span>isAdmin() returns true</span>
+    <span id="s-admin">checking…</span>
+  </div>
+  <div class="row">
+    <span>Admin bar injected into DOM</span>
+    <span id="s-bar">checking…</span>
+  </div>
+  <div class="row">
+    <span>Admin CSS class on body</span>
+    <span id="s-bodyclass">checking…</span>
+  </div>
+  <div class="row">
+    <span>data-cms-key elements found</span>
+    <span id="s-els">checking…</span>
+  </div>
+  <div class="row">
+    <span>Saved content entries</span>
+    <span id="s-content">checking…</span>
+  </div>
+</div>
+
+<!-- ACTIONS -->
+<div class="card">
+  <h2>Fix Actions</h2>
+  <button onclick="setSession()">✅ Manually Set Admin Session</button>
+  <button class="danger" onclick="clearSession()">🗑 Clear Admin Session</button>
+  <button class="sec" onclick="clearContent()">🗑 Clear All Saved Content</button>
+  <button class="sec" onclick="location.reload()">🔄 Reload Page</button>
+</div>
+
+<!-- EDITABLE TEST ELEMENT -->
+<div class="card">
+  <h2>Editable Element Test</h2>
+  <p style="font-size:.82rem;color:#666;margin-bottom:8px">
+    In admin mode, hover over this and click it — the edit modal should appear.
+  </p>
+  <div class="editable-test"
+       data-cms-key="test-element"
+       data-cms-label="Test Paragraph"
+       data-cms-type="text">
+    This is a test editable element. If cms.js is working, hovering this should show a gold outline and clicking it should open the edit modal.
+  </div>
+</div>
+
+<!-- LOG -->
+<div class="card">
+  <h2>Diagnostic Log</h2>
+  <div id="log">Starting checks…
+</div>
+</div>
+
+<script>
+var log = document.getElementById('log');
+function L(msg, type) {
+  var prefix = type === 'ok' ? '✅ ' : type === 'fail' ? '❌ ' : type === 'warn' ? '⚠️  ' : '   ';
+  log.textContent += prefix + msg + '\n';
+}
+
+function status(id, ok, text) {
+  var el = document.getElementById(id);
+  el.textContent = text;
+  el.className = ok === true ? 'ok' : ok === false ? 'fail' : 'warn';
+}
+
+function runChecks() {
+  log.textContent = 'Starting checks…\n\n';
+
+  // 1. localStorage admin session
+  var session = localStorage.getItem('diat_admin_session');
+  var hasSession = session === 'true';
+  status('s-session', hasSession, hasSession ? '✅ YES — "' + session + '"' : '❌ NOT SET (value: ' + JSON.stringify(session) + ')');
+  L('Admin session: ' + JSON.stringify(session), hasSession ? 'ok' : 'fail');
+
+  // 2. cms.js loaded
+  var cmsLoaded = typeof window.diatCMSSave === 'function';
+  status('s-cmsjs', cmsLoaded, cmsLoaded ? '✅ YES (diatCMSSave found)' : '❌ NO — cms.js not loaded or has error');
+  L('cms.js loaded: ' + cmsLoaded, cmsLoaded ? 'ok' : 'fail');
+
+  // 3. isAdmin
+  var adminMode = document.body.classList.contains('diat-admin-mode');
+  status('s-admin', adminMode, adminMode ? '✅ YES' : '❌ NO');
+  L('diat-admin-mode class on body: ' + adminMode, adminMode ? 'ok' : 'fail');
+
+  // 4. Admin bar
+  var bar = document.getElementById('diat-cms-bar');
+  status('s-bar', !!bar, bar ? '✅ YES — bar found' : '❌ NO — bar missing from DOM');
+  L('Admin bar in DOM: ' + !!bar, bar ? 'ok' : 'fail');
+
+  // 5. Body class
+  var bodyClass = document.body.className;
+  status('s-bodyclass', bodyClass.includes('diat-admin-mode'), bodyClass || '(none)');
+  L('body className: "' + bodyClass + '"', bodyClass.includes('diat-admin-mode') ? 'ok' : 'fail');
+
+  // 6. data-cms-key elements
+  var els = document.querySelectorAll('[data-cms-key]');
+  status('s-els', els.length > 0, els.length + ' found');
+  L('Editable elements found: ' + els.length, els.length > 0 ? 'ok' : 'warn');
+
+  // 7. Saved content
+  try {
+    var content = JSON.parse(localStorage.getItem('diat_content') || '{}');
+    var keys = Object.keys(content);
+    status('s-content', null, keys.length + ' saved entries');
+    L('Saved content keys: ' + (keys.length ? keys.join(', ') : 'none'), 'ok');
+  } catch(e) {
+    status('s-content', false, 'Parse error');
+    L('Content parse error: ' + e.message, 'fail');
+  }
+
+  // 8. Diagnose likely root cause
+  log.textContent += '\n— DIAGNOSIS —\n';
+  if (!cmsLoaded) {
+    L('cms.js is NOT loading. Check: is cms.js in your DIAT-Website folder? Is it deployed on Netlify?', 'fail');
+    L('Try opening: ' + location.origin + '/cms.js in a new tab. You should see JavaScript code.', 'warn');
+  } else if (!hasSession) {
+    L('cms.js loads but admin session is missing. Log into admin.html FIRST then come back here.', 'warn');
+  } else if (!adminMode) {
+    L('Session is set and cms.js loads but admin mode did not activate. Possible JS error in cms.js init.', 'fail');
+  } else {
+    L('Everything looks good! Try hovering and clicking the test element above.', 'ok');
+  }
+}
+
+function setSession() {
+  localStorage.setItem('diat_admin_session', 'true');
+  L('\n→ Admin session manually set. Reloading…', 'ok');
+  setTimeout(function() { location.reload(); }, 800);
+}
+function clearSession() {
+  localStorage.removeItem('diat_admin_session');
+  L('\n→ Session cleared. Reloading…', 'warn');
+  setTimeout(function() { location.reload(); }, 800);
+}
+function clearContent() {
+  localStorage.removeItem('diat_content');
+  L('\n→ Saved content cleared.', 'warn');
+  runChecks();
+}
+
+// Run checks after cms.js has had time to initialise
+setTimeout(runChecks, 500);
+</script>
+
+<!-- cms.js must be last -->
+<script src="cms.js"></script>
+</body>
+</html>

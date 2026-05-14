@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>About DIAT — Department of Indigenous Art & Technology | KNUST Ghana</title>
+  <meta name="description" content="The story of DIAT — from its founding as IRAI in 1976 to Ghana's premier indigenous art institution. Celebrating 50 years of preserving and innovating Ghana's craft heritage."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    :root{
+      --white:#FFFFFF; --surface:#FAFAF8; --border:#E8E4DC;
+      --t1:#111111; --t2:#555555; --t3:#999999;
+      --gold:#C9952A; --gold-light:#FBF4E6; --gold-dark:#9A6F10;
+      --terra:#C1440E; --terra-light:#FDF0E7;
+      --green:#2D6A2D; --green-light:#EBF5EB;
+      --indigo:#1A1A4E;
+      --serif:"Cormorant Garamond",Georgia,serif;
+      --sans:"Inter",system-ui,-apple-system,sans-serif;
+      --r:10px; --t:0.25s ease;
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{font-size:16px;scroll-behavior:smooth}
+    body{font-family:var(--sans);color:var(--t1);background:var(--white);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+    a{text-decoration:none;color:inherit}
+    img{display:block;max-width:100%}
+    button{font-family:var(--sans);cursor:pointer;border:none}
+
+    /* PROSE — justified text for long-form content */
+    .prose p{text-align:justify;hyphens:auto;-webkit-hyphens:auto;-ms-hyphens:auto;line-height:1.85;font-size:.97rem;color:var(--t2);margin-bottom:18px}
+    .prose p:last-child{margin-bottom:0}
+
+    /* ANNOUNCE BAR */
+    .abar{background:var(--indigo);color:rgba(255,255,255,.85);text-align:center;padding:10px 24px;font-size:.78rem;font-weight:500;letter-spacing:.04em}
+    .abar a{color:var(--gold);font-weight:600;margin-left:10px;transition:opacity .25s}
+    .abar a:hover{opacity:.75}
+
+    /* NAVBAR */
+    .nav{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 40px;transition:box-shadow var(--t)}
+    .nav.shadow{box-shadow:0 2px 20px rgba(0,0,0,.08)}
+    .nbrand{display:flex;align-items:center;gap:10px;flex-shrink:0}
+    .nbrand-svg{width:34px;height:34px;animation:float 5s ease-in-out infinite}
+    @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+    .nbrand-txt{display:flex;flex-direction:column;line-height:1.15}
+    .nbrand-txt .nd{font-family:var(--serif);font-size:.95rem;font-weight:600;color:var(--indigo)}
+    .nbrand-txt .nu{font-size:.58rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--t3)}
+    .nlinks{display:flex;align-items:center;gap:2px;list-style:none}
+    .nlinks a{font-size:.78rem;font-weight:500;color:var(--t2);padding:6px 11px;border-radius:6px;transition:background var(--t),color var(--t);white-space:nowrap}
+    .nlinks a:hover,.nlinks a.active{background:var(--gold-light);color:var(--gold-dark)}
+    .ncta{background:var(--gold);color:#fff;font-size:.78rem;font-weight:600;padding:9px 20px;border-radius:50px;transition:background var(--t),transform var(--t);white-space:nowrap;flex-shrink:0}
+    .ncta:hover{background:var(--gold-dark);transform:translateY(-1px)}
+    .ham{display:none;background:none;border:none;padding:8px;flex-direction:column;gap:5px}
+    .ham span{display:block;width:22px;height:2px;background:var(--t1);border-radius:2px;transition:transform var(--t),opacity var(--t)}
+    .ham.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+    .ham.open span:nth-child(2){opacity:0}
+    .ham.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+    .mob-drawer{display:none;position:fixed;inset:0;background:var(--white);z-index:99;padding:90px 32px 32px;flex-direction:column;gap:8px;overflow-y:auto}
+    .mob-drawer.open{display:flex}
+    .mob-drawer a{font-size:1.1rem;font-weight:500;color:var(--t1);padding:14px 0;border-bottom:1px solid var(--border);transition:color var(--t)}
+    .mob-drawer a:hover{color:var(--gold)}
+    .mob-cta-link{margin-top:16px;background:var(--gold);color:#fff;text-align:center;padding:16px;border-radius:10px;font-weight:600;font-size:.95rem}
+
+    /* PAGE HERO */
+    .page-hero{background:var(--surface);border-bottom:1px solid var(--border);padding:56px 40px 48px}
+    .page-hero-in{max-width:1200px;margin:0 auto}
+    .breadcrumb{display:flex;align-items:center;gap:8px;font-size:.72rem;font-weight:500;color:var(--t3);margin-bottom:20px;letter-spacing:.04em}
+    .breadcrumb a{color:var(--t3);transition:color var(--t)}
+    .breadcrumb a:hover{color:var(--gold)}
+    .breadcrumb span{color:var(--border)}
+    .eyebrow{font-size:.68rem;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:12px}
+    .page-title{font-family:var(--serif);font-size:clamp(2.4rem,5vw,4rem);font-weight:600;color:var(--t1);line-height:1.05;letter-spacing:-.02em;margin-bottom:16px}
+    .page-sub{font-size:1.05rem;color:var(--t2);line-height:1.7;max-width:600px;text-align:justify;hyphens:auto}
+
+    /* SECTIONS */
+    .sec{padding:88px 40px}
+    .sec-w{background:var(--white)}
+    .sec-s{background:var(--surface)}
+    .sec-in{max-width:1200px;margin:0 auto}
+    .sec-eyebrow{font-size:.68rem;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:12px}
+    .sec-h2{font-family:var(--serif);font-size:clamp(1.8rem,3.5vw,3rem);font-weight:600;color:var(--t1);line-height:1.1;letter-spacing:-.02em;margin-bottom:16px}
+    .sec-h2-light{color:#fff}
+    .rule{width:48px;height:3px;background:var(--gold);border-radius:2px;margin-bottom:24px}
+    .rule-white{background:rgba(255,255,255,.5)}
+
+    /* TWO COLUMN */
+    .two-col{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start}
+    .two-col-wide{display:grid;grid-template-columns:3fr 2fr;gap:80px;align-items:start}
+
+    /* INLINE LINK */
+    .text-link{color:var(--gold);font-weight:600;text-decoration:underline;text-underline-offset:3px}
+    .text-link:hover{color:var(--gold-dark)}
+
+    /* CTA BUTTON */
+    .btn-outline{display:inline-flex;align-items:center;gap:8px;padding:13px 28px;border:1.5px solid var(--t1);border-radius:50px;font-size:.82rem;font-weight:600;color:var(--t1);transition:background var(--t),color var(--t);margin-top:24px}
+    .btn-outline:hover{background:var(--t1);color:var(--white)}
+    .btn-outline::after{content:"→"}
+    .btn-gold{display:inline-flex;align-items:center;gap:8px;padding:13px 28px;background:var(--gold);border-radius:50px;font-size:.82rem;font-weight:600;color:#fff;transition:background var(--t),transform var(--t);margin-top:24px}
+    .btn-gold:hover{background:var(--gold-dark);transform:translateY(-2px)}
+    .btn-gold::after{content:"→"}
+
+    /* ═══ TIMELINE ═══════════════════════════════════════════════ */
+    .timeline{position:relative;padding-left:0}
+    .timeline::before{
+      content:"";position:absolute;
+      left:120px;top:0;bottom:0;
+      width:2px;background:var(--border);
+    }
+    .tl-item{
+      display:grid;
+      grid-template-columns:120px 1fr;
+      gap:32px;
+      margin-bottom:48px;
+      position:relative;
+    }
+    .tl-item:last-child{margin-bottom:0}
+    .tl-year{
+      font-family:var(--serif);
+      font-size:1.1rem;font-weight:700;
+      color:var(--gold);
+      text-align:right;
+      padding-top:2px;
+      padding-right:24px;
+    }
+    .tl-year.placeholder{color:var(--t3);font-style:italic;font-size:.88rem}
+    .tl-dot{
+      position:absolute;
+      left:112px;top:6px;
+      width:18px;height:18px;
+      border-radius:50%;
+      background:var(--white);
+      border:3px solid var(--gold);
+      z-index:2;
+    }
+    .tl-dot.big{
+      width:22px;height:22px;
+      left:110px;top:4px;
+      background:var(--gold);
+      border-color:var(--gold);
+      box-shadow:0 0 0 4px var(--gold-light);
+    }
+    .tl-dot.grey{border-color:var(--border);background:var(--surface)}
+    .tl-content{}
+    .tl-tag{
+      display:inline-block;font-size:.62rem;font-weight:700;
+      letter-spacing:.1em;text-transform:uppercase;
+      padding:3px 10px;border-radius:50px;margin-bottom:8px;
+    }
+    .tag-gold{background:var(--gold-light);color:var(--gold-dark)}
+    .tag-indigo{background:#EEF;color:var(--indigo)}
+    .tag-terra{background:var(--terra-light);color:var(--terra)}
+    .tag-green{background:var(--green-light);color:var(--green)}
+    .tl-title{font-family:var(--serif);font-size:1.2rem;font-weight:600;color:var(--t1);margin-bottom:8px}
+    .tl-text{font-size:.88rem;color:var(--t2);line-height:1.75;text-align:justify;hyphens:auto}
+    .tl-placeholder{font-size:.82rem;color:var(--t3);font-style:italic;margin-top:4px}
+
+    /* ═══ TRIPARTITE MODEL ═══════════════════════════════════════ */
+    .tripartite{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+    .tri-card{
+      background:var(--white);
+      border:1px solid var(--border);
+      border-radius:var(--r);
+      padding:32px 24px 28px;
+      text-align:center;
+      transition:border-color var(--t),box-shadow var(--t),transform var(--t);
+    }
+    .tri-card:hover{border-color:var(--gold);box-shadow:0 8px 32px rgba(0,0,0,.07);transform:translateY(-4px)}
+    .tri-icon{
+      width:64px;height:64px;border-radius:50%;
+      display:flex;align-items:center;justify-content:center;
+      font-size:1.6rem;margin:0 auto 20px;
+    }
+    .ti-gold{background:var(--gold-light)}
+    .ti-terra{background:var(--terra-light)}
+    .ti-green{background:var(--green-light)}
+    .tri-card h3{font-family:var(--serif);font-size:1.35rem;font-weight:600;color:var(--t1);margin-bottom:12px}
+    .tri-card p{font-size:.88rem;color:var(--t2);line-height:1.75;text-align:justify;hyphens:auto}
+    .tri-tag{display:inline-block;font-size:.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:3px 10px;border-radius:50px;margin-bottom:14px}
+
+    /* ═══ STATS STRIP ══════════════════════════════════════════════ */
+    .stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(255,255,255,.08)}
+    .stat-cell{background:var(--indigo);padding:44px 32px;text-align:center}
+    .stat-big{font-family:var(--serif);font-size:clamp(2.8rem,5vw,4.5rem);font-weight:700;color:var(--gold);line-height:1;margin-bottom:10px}
+    .stat-big sup{font-size:.45em;vertical-align:super}
+    .stat-lbl{font-size:.72rem;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.45)}
+
+    /* ═══ ANNIVERSARY BANNER ═══════════════════════════════════════ */
+    .ann{background:var(--gold);padding:80px 40px;text-align:center;position:relative;overflow:hidden}
+    .ann::before{content:"50";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:var(--serif);font-size:28vw;font-weight:700;color:rgba(255,255,255,.07);pointer-events:none;line-height:1}
+    .ann-in{position:relative;z-index:2;max-width:680px;margin:0 auto}
+    .ann-ey{font-size:.68rem;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.7);margin-bottom:16px}
+    .ann-h2{font-family:var(--serif);font-size:clamp(2.5rem,5vw,4.2rem);font-weight:700;color:#fff;line-height:1.05;margin-bottom:20px}
+    .ann-p{font-size:1rem;color:rgba(255,255,255,.82);line-height:1.75;margin-bottom:32px;text-align:justify;hyphens:auto}
+    .btn-white{display:inline-flex;align-items:center;gap:8px;background:#fff;color:var(--gold-dark);font-size:.82rem;font-weight:700;padding:14px 32px;border-radius:50px;transition:transform var(--t),box-shadow var(--t)}
+    .btn-white:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.15)}
+    .btn-white::after{content:"→"}
+
+    /* ═══ ACCREDITATION ════════════════════════════════════════════ */
+    .accred-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
+    .accred-card{background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:22px 20px;transition:border-color var(--t)}
+    .accred-card:hover{border-color:var(--gold)}
+    .accred-card h4{font-family:var(--serif);font-size:1rem;font-weight:600;color:var(--t1);margin-bottom:6px}
+    .accred-card p{font-size:.8rem;color:var(--t2);line-height:1.6}
+    .accred-icon{font-size:1.5rem;margin-bottom:12px}
+
+    /* ═══ REVEAL ANIMATION ═════════════════════════════════════════ */
+    .rv{opacity:0;transform:translateY(24px);transition:opacity .65s ease,transform .65s ease}
+    .rv.vis{opacity:1;transform:none}
+    .d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}
+
+    /* ═══ FOOTER ═══════════════════════════════════════════════════ */
+    footer{background:var(--indigo);color:rgba(255,255,255,.75);padding:72px 40px 32px}
+    .fg{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:60px;margin-bottom:60px}
+    .fbn{font-family:var(--serif);font-size:1.1rem;font-weight:600;color:#fff;margin-bottom:4px}
+    .fbu{font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:16px}
+    .fbd{font-size:.82rem;line-height:1.7;color:rgba(255,255,255,.5);margin-bottom:20px}
+    .fsc{display:flex;gap:8px;flex-wrap:wrap}
+    .fs{width:34px;height:34px;border-radius:8px;border:1px solid rgba(255,255,255,.12);display:flex;align-items:center;justify-content:center;font-size:.9rem;color:rgba(255,255,255,.5);cursor:pointer;transition:border-color var(--t),color var(--t),background var(--t)}
+    .fs:hover{border-color:var(--gold);color:var(--gold);background:rgba(201,149,42,.08)}
+    .fc h5{font-size:.72rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:18px;padding-bottom:10px;border-bottom:1px solid rgba(255,255,255,.08)}
+    .fc ul{list-style:none}
+    .fc ul li{margin-bottom:10px}
+    .fc ul li a{font-size:.82rem;color:rgba(255,255,255,.5);transition:color var(--t)}
+    .fc ul li a:hover{color:var(--gold)}
+    .fb{max-width:1200px;margin:0 auto;padding-top:24px;border-top:1px solid rgba(255,255,255,.08);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+    .fb p{font-size:.72rem;color:rgba(255,255,255,.28)}
+    .fb p span{color:rgba(201,149,42,.6)}
+
+    /* RESPONSIVE */
+    @media(max-width:1024px){
+      .two-col,.two-col-wide{grid-template-columns:1fr;gap:40px}
+      .tripartite{grid-template-columns:1fr 1fr}
+      .stats-row{grid-template-columns:1fr 1fr}
+      .timeline::before{left:80px}
+      .tl-item{grid-template-columns:80px 1fr;gap:20px}
+      .tl-dot{left:72px}
+      .tl-dot.big{left:70px}
+      .tl-year{font-size:.95rem;padding-right:16px}
+      .nav{padding:0 24px}
+      .sec{padding:64px 24px}
+      .page-hero{padding:48px 24px 36px}
+      .ann{padding:64px 24px}
+      .fg{grid-template-columns:1fr 1fr;gap:40px}
+    }
+    @media(max-width:768px){
+      .nlinks,.ncta{display:none}
+      .ham{display:flex}
+      .tripartite{grid-template-columns:1fr}
+      .accred-grid{grid-template-columns:1fr 1fr}
+      .stats-row{grid-template-columns:1fr 1fr}
+      .fg{grid-template-columns:1fr;gap:32px}
+      .fb{flex-direction:column;text-align:center}
+      .timeline::before{left:60px}
+      .tl-item{grid-template-columns:60px 1fr;gap:16px}
+      .tl-dot{left:52px;width:14px;height:14px;top:5px}
+      .tl-dot.big{left:50px;width:18px;height:18px}
+      .tl-year{font-size:.82rem}
+    }
+  </style>
+</head>
+<body>
+
+<!-- ANNOUNCEMENT BAR -->
+<div class="abar">
+  &#127881; DIAT@50 &mdash; Est. 1976 &nbsp;&middot;&nbsp; Ghana's premier indigenous art department
+  <a href="index.html#signup">Register for Updates &rarr;</a>
+</div>
+
+<!-- NAVBAR -->
+<nav class="nav" id="nav">
+  <a href="index.html" class="nbrand">
+    <svg class="nbrand-svg" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <ellipse cx="28" cy="38" rx="14" ry="9" stroke="#C9952A" stroke-width="2"/>
+      <path d="M28 29 C28 20 40 16 43 22 C46 28 40 33 35 31" stroke="#C9952A" stroke-width="2" stroke-linecap="round" fill="none"/>
+      <circle cx="37" cy="28" r="7" stroke="#C9952A" stroke-width="2" fill="none"/>
+      <circle cx="39" cy="26" r="1.5" fill="#C9952A"/>
+      <path d="M43 30 L49 28 L43 34" stroke="#C9952A" stroke-width="1.8" stroke-linejoin="round" fill="none"/>
+      <ellipse cx="20" cy="32" rx="4.5" ry="5.5" stroke="#C9952A" stroke-width="1.6" fill="none"/>
+      <path d="M14 38 C9 43 7 50 11 54" stroke="#C9952A" stroke-width="2" stroke-linecap="round" fill="none"/>
+    </svg>
+    <div class="nbrand-txt">
+      <span class="nd">DIAT &middot; KNUST</span>
+      <span class="nu">Dept. of Indigenous Art &amp; Technology</span>
+    </div>
+  </a>
+  <ul class="nlinks">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="gallery.html">Gallery</a></li>
+    <li><a href="webar.html">WebAR</a></li>
+    <li><a href="about.html" class="active">About</a></li>
+    <li><a href="programmes.html">Programmes</a></li>
+    <li><a href="community.html">Community</a></li>
+    <li><a href="staff.html">Staff</a></li>
+    <li><a href="archive.html">Archive</a></li>
+  </ul>
+  <a href="gallery.html" class="ncta">View Gallery</a>
+  <button class="ham" id="ham" aria-label="Open menu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- MOBILE DRAWER -->
+<div class="mob-drawer" id="md">
+  <a href="index.html"      onclick="cd()">Home</a>
+  <a href="gallery.html"    onclick="cd()">Artwork Gallery</a>
+  <a href="webar.html"      onclick="cd()">WebAR Viewer</a>
+  <a href="about.html"      onclick="cd()">About DIAT</a>
+  <a href="programmes.html" onclick="cd()">Academic Programmes</a>
+  <a href="community.html"  onclick="cd()">Community &amp; Internship</a>
+  <a href="staff.html"      onclick="cd()">Staff Profiles</a>
+  <a href="contact.html"    onclick="cd()">Contact &amp; Social Media</a>
+  <a href="archive.html"    onclick="cd()">Digital Archive</a>
+  <a href="gallery.html"    class="mob-cta-link" onclick="cd()">View Gallery &rarr;</a>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     PAGE HERO
+═══════════════════════════════════════════════════════════ -->
+<div class="page-hero">
+  <div class="page-hero-in">
+    <div class="breadcrumb">
+      <a href="index.html">Home</a>
+      <span>&#8250;</span>
+      <span style="color:var(--t1);font-weight:500">About DIAT</span>
+    </div>
+    <p class="eyebrow">Our Story</p>
+    <h1 class="page-title" data-cms-key="about-page-h1" data-cms-label="Page Title" data-cms-type="text">About the Department of<br/>Indigenous Art &amp; Technology</h1>
+    <p class="page-sub" data-cms-key="about-hero-sub" data-cms-label="Page Introduction" data-cms-type="html">
+      From a Diploma programme founded in 1976 to Ghana's premier academic institution
+      for indigenous art and craft education &mdash; the story of DIAT is the story of
+      a nation's heritage reclaimed, formalised, and carried forward.
+    </p>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     WHO WE ARE — Two column intro
+═══════════════════════════════════════════════════════════ -->
+<section class="sec sec-w" id="who-we-are">
+  <div class="sec-in">
+    <div class="two-col-wide">
+
+      <div class="prose rv">
+        <p class="sec-eyebrow">Who We Are</p>
+        <h2 class="sec-h2">A Department Unlike data-cms-key="about-who-h2" data-cms-label="Who We Are Heading" data-cms-type="text"> Any Other in Ghana</h2>
+        <div class="rule"></div>
+        <p data-cms-key="about-para-1" data-cms-label="Who We Are — Paragraph 1">
+          Founded in 1976 as a Diploma programme, the then Department of Integrated Rural Art and
+          Industry (IRAI) &mdash; now the Department of Indigenous Art and Technology (DIAT) at the
+          Kwame Nkrumah University of Science and Technology (KNUST) &mdash; is Ghana's pioneering
+          institution for indigenous art education, uniquely combining Academia, commercial craft
+          production, and active Community engagement under one roof.
+        </p>
+        <p data-cms-key="about-para-2" data-cms-label="Who We Are — Paragraph 2">
+          Operating within the College of Art and Built Environment (CABE) at KNUST, DIAT has for
+          five decades served as the foremost academic custodian of Ghana's indigenous craft
+          traditions &mdash; from clay and earthenware to leather, metal, rattan, bamboo, fibres,
+          fabrics, and wood. The department's mandate is not merely to preserve these traditions
+          but to innovate within them, equipping each generation of practitioners with both the
+          cultural knowledge and the contemporary design tools needed to carry indigenous craft
+          into the global marketplace.
+        </p>
+        <p data-cms-key="about-para-3" data-cms-label="Who We Are — Paragraph 3">
+          Our seven programmes ground every student in Product Design thinking from Year 1,
+          equipping them with Computer-Aided Design (CAD) tools and design methodology before
+          guiding them into mastery of two of six indigenous craft disciplines. This CAD-to-craft
+          approach &mdash; designing digitally before making by hand &mdash; is what makes DIAT
+          graduates uniquely competitive: they are simultaneously cultural custodians and
+          contemporary design professionals.
+        </p>
+        <a href="programmes.html" class="btn-outline">Explore Our Programmes</a>
+      </div>
+
+      <!-- Key Facts card -->
+      <div class="rv d2">
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:32px;margin-bottom:20px">
+          <p style="font-size:.68rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);margin-bottom:20px">Key Facts</p>
+          <div style="display:flex;flex-direction:column;gap:16px">
+            <div style="display:flex;gap:14px;align-items:flex-start">
+              <span style="font-size:1.2rem;flex-shrink:0">&#127891;</span>
+              <div><div style="font-size:.72rem;font-weight:600;color:var(--t3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:2px">Institution</div>
+              <div style="font-size:.88rem;color:var(--t1);font-weight:500">Kwame Nkrumah University of Science and Technology (KNUST), Kumasi, Ghana</div></div>
+            </div>
+            <div style="display:flex;gap:14px;align-items:flex-start">
+              <span style="font-size:1.2rem;flex-shrink:0">&#127963;</span>
+              <div><div style="font-size:.72rem;font-weight:600;color:var(--t3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:2px">College</div>
+              <div style="font-size:.88rem;color:var(--t1);font-weight:500">College of Art and Built Environment (CABE)</div></div>
+            </div>
+            <div style="display:flex;gap:14px;align-items:flex-start">
+              <span style="font-size:1.2rem;flex-shrink:0">&#128197;</span>
+              <div><div style="font-size:.72rem;font-weight:600;color:var(--t3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:2px">Established</div>
+              <div style="font-size:.88rem;color:var(--t1);font-weight:500">1976 — as the Dept. of Integrated Rural Art and Industry (IRAI)</div></div>
+            </div>
+            <div style="display:flex;gap:14px;align-items:flex-start">
+              <span style="font-size:1.2rem;flex-shrink:0">&#128208;</span>
+              <div><div style="font-size:.72rem;font-weight:600;color:var(--t3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:2px">Programmes</div>
+              <div style="font-size:.88rem;color:var(--t1);font-weight:500">7 programmes — Product Design (foundational) + 6 craft disciplines</div></div>
+            </div>
+            <div style="display:flex;gap:14px;align-items:flex-start">
+              <span style="font-size:1.2rem;flex-shrink:0">&#127759;</span>
+              <div><div style="font-size:.72rem;font-weight:600;color:var(--t3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:2px">Model</div>
+              <div style="font-size:.88rem;color:var(--t1);font-weight:500">Tripartite — Academic · Commercial · Community</div></div>
+            </div>
+            <div style="display:flex;gap:14px;align-items:flex-start">
+              <span style="font-size:1.2rem;flex-shrink:0">&#127881;</span>
+              <div><div style="font-size:.72rem;font-weight:600;color:var(--t3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:2px">2026 Milestone</div>
+              <div style="font-size:.88rem;color:var(--gold-dark);font-weight:600">DIAT@50 — Celebrating 50 Years</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     STATS STRIP
+═══════════════════════════════════════════════════════════ -->
+<div style="background:var(--indigo)">
+  <div class="stats-row rv">
+    <div class="stat-cell"><div class="stat-big">50</div><div class="stat-lbl">Years of Innovation</div></div>
+    <div class="stat-cell"><div class="stat-big">7</div><div class="stat-lbl">Academic Programmes</div></div>
+    <div class="stat-cell"><div class="stat-big">6</div><div class="stat-lbl">Craft Disciplines</div></div>
+    <div class="stat-cell"><div class="stat-big">3</div><div class="stat-lbl">Institutional Arms</div></div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     TIMELINE — History 1976 → 2026
+═══════════════════════════════════════════════════════════ -->
+<section class="sec sec-s" id="history">
+  <div class="sec-in">
+    <div class="rv" style="max-width:680px;margin-bottom:56px">
+      <p class="sec-eyebrow">Our History</p>
+      <h2 class="sec-h2">Fifty Years data-cms-key="about-timeline-h2" data-cms-label="Timeline Heading" data-cms-type="text"> of Indigenous Art Education</h2>
+      <div class="rule"></div>
+      <p data-cms-key="about-timeline-intro" data-cms-label="Timeline Introduction" style="font-size:.97rem;color:var(--t2);line-height:1.8;text-align:justify;hyphens:auto">
+        From a practical Diploma programme serving rural communities to a fully accredited
+        university department celebrating its 50th anniversary in 2026 &mdash; the journey
+        of DIAT is one of transformation, resilience, and unwavering commitment to Ghana's
+        indigenous craft heritage.
+      </p>
+    </div>
+
+    <div class="timeline rv">
+
+      <!-- 1976 -->
+      <div class="tl-item">
+        <div class="tl-year">1976</div>
+        <div class="tl-dot big"></div>
+        <div class="tl-content">
+          <span class="tl-tag tag-gold">Founding Year</span>
+          <h3 class="tl-title">Department Founded data-cms-key="about-tl1-title" data-cms-label="Timeline 1976 Title" data-cms-type="text"> &mdash; IRAI Established</h3>
+          <p class="tl-text" data-cms-key="about-tl-1976" data-cms-label="Timeline — 1976 Founding">
+            The Department of Integrated Rural Art and Industry (IRAI) is established at KNUST
+            as a Diploma programme. Its founding mandate is to formalise the teaching and
+            preservation of Ghana's indigenous craft traditions within a university setting,
+            providing structured academic pathways for practitioners of clay, leather, metal,
+            fibre, rattan, bamboo, and wood craft.
+          </p>
+        </div>
+      </div>
+
+      <!-- Placeholder — fill with real date -->
+      <div class="tl-item">
+        <div class="tl-year placeholder">[Year — replace]</div>
+        <div class="tl-dot grey"></div>
+        <div class="tl-content">
+          <span class="tl-tag tag-indigo">Programme Development</span>
+          <h3 class="tl-title">[Milestone Title data-cms-key="about-tl2-title" data-cms-label="Timeline Milestone Title" data-cms-type="text"> — replace]</h3>
+          <p class="tl-text tl-placeholder">[Describe this milestone — e.g. upgrade from Diploma to Degree, introduction of Product Design curriculum, key partnership or recognition. Replace with actual date and details from departmental records.]</p>
+        </div>
+      </div>
+
+      <!-- Placeholder — fill with real date -->
+      <div class="tl-item">
+        <div class="tl-year placeholder">[Year — replace]</div>
+        <div class="tl-dot grey"></div>
+        <div class="tl-content">
+          <span class="tl-tag tag-terra">Rebranding</span>
+          <h3 class="tl-title">IRAI Rebrands data-cms-key="about-tl3-title" data-cms-label="Timeline IRAI→DIAT Title" data-cms-type="text"> to DIAT</h3>
+          <p class="tl-text tl-placeholder">[Insert year and context of the official rebranding from the Department of Integrated Rural Art and Industry (IRAI) to the Department of Indigenous Art and Technology (DIAT). Describe what drove the rebranding and what it signalled about the department's evolving identity and ambitions.]</p>
+        </div>
+      </div>
+
+      <!-- Placeholder — Mastercard Foundation -->
+      <div class="tl-item">
+        <div class="tl-year placeholder">[Year — replace]</div>
+        <div class="tl-dot grey"></div>
+        <div class="tl-content">
+          <span class="tl-tag tag-green">Partnership</span>
+          <h3 class="tl-title">Mastercard Foundation data-cms-key="about-tl4-title" data-cms-label="Timeline MCF Title" data-cms-type="text"> Partnership</h3>
+          <p class="tl-text tl-placeholder">[Insert year and details of the Mastercard Foundation partnership — the nature of the collaboration, what it funds, and how it connects DIAT students with Artisan communities across Ghana through the internship programme.]</p>
+        </div>
+      </div>
+
+      <!-- Placeholder — KNUST re-accreditation -->
+      <div class="tl-item">
+        <div class="tl-year placeholder">[Year — replace]</div>
+        <div class="tl-dot grey"></div>
+        <div class="tl-content">
+          <span class="tl-tag tag-indigo">Accreditation</span>
+          <h3 class="tl-title">Programme Re-accreditation data-cms-key="about-tl5-title" data-cms-label="Timeline Accreditation Title" data-cms-type="text"> &mdash; KNUST 2024</h3>
+          <p class="tl-text">
+            DIAT's academic programmes receive formal re-accreditation from KNUST, affirming
+            their alignment with national and international standards for creative arts
+            education. The re-accreditation validates the department's unique CAD-to-craft
+            pedagogical model and its tripartite institutional structure.
+          </p>
+        </div>
+      </div>
+
+      <!-- 2026 -->
+      <div class="tl-item">
+        <div class="tl-year">2026</div>
+        <div class="tl-dot big"></div>
+        <div class="tl-content">
+          <span class="tl-tag tag-gold">DIAT@50</span>
+          <h3 class="tl-title">50th Anniversary data-cms-key="about-tl6-title" data-cms-label="Timeline 2026 Title" data-cms-type="text"> &mdash; Ghana's Indigenous Art Shown to the World</h3>
+          <p class="tl-text" data-cms-key="about-tl-2026" data-cms-label="Timeline — 2026 Anniversary">
+            DIAT celebrates its 50th anniversary with the launch of this integrated online
+            marketing platform &mdash; the first time the department's artworks, programmes,
+            and institutional identity have been fully visible to a global digital audience.
+            The platform marks a new chapter: DIAT's indigenous art, shown to the world.
+          </p>
+        </div>
+      </div>
+
+    </div>
+
+    <p style="font-size:.78rem;color:var(--t3);font-style:italic;margin-top:32px;text-align:center">
+      &#9432; Timeline milestones marked [Year &mdash; replace] are placeholders awaiting confirmation from departmental records. Contact the DIAT office to verify exact dates.
+    </p>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     TRIPARTITE MODEL — Three Arms
+═══════════════════════════════════════════════════════════ -->
+<section class="sec sec-w" id="model">
+  <div class="sec-in">
+    <div class="rv" style="text-align:center;max-width:640px;margin:0 auto 56px">
+      <p class="sec-eyebrow">How We Work</p>
+      <h2 class="sec-h2">The DIAT Tripartite data-cms-key="about-tri-h2" data-cms-label="Tripartite Heading" data-cms-type="text"> Model</h2>
+      <div class="rule" style="margin:16px auto"></div>
+      <p style="font-size:.97rem;color:var(--t2);line-height:1.75">
+        DIAT operates across three interconnected arms &mdash; not as separate functions but
+        as a unified, mutually reinforcing model that distinguishes the department from
+        every other arts institution in Ghana.
+      </p>
+    </div>
+
+    <div class="tripartite rv d1">
+
+      <div class="tri-card">
+        <div class="tri-icon ti-gold">&#127891;</div>
+        <span class="tri-tag tag-gold">First Arm</span>
+        <h3>Academic Faculty</h3>
+        <p data-cms-key="about-tri-academic" data-cms-label="Tripartite — Academic Faculty">
+          Seven accredited programmes grounding students in Product Design and CAD methodology
+          from Year 1, before guiding them into mastery of two of six indigenous craft
+          disciplines. Graduates emerge as both cultural custodians and competitive design
+          professionals equipped for the global creative economy.
+        </p>
+      </div>
+
+      <div class="tri-card">
+        <div class="tri-icon ti-terra">&#127994;</div>
+        <span class="tri-tag tag-terra">Second Arm</span>
+        <h3>Commercial Art Services</h3>
+        <p data-cms-key="about-tri-commercial" data-cms-label="Tripartite — Commercial Services">
+          DIAT operates an active art consultancy and commissioned works service, producing
+          bespoke installations, furniture, textiles, and craft pieces for clients across
+          Ghana and beyond. This commercial arm generates Internally Generated Funds (IGF)
+          for KNUST while providing students with real-world professional practice and
+          creating sustainable livelihoods for indigenous craft practitioners.
+        </p>
+      </div>
+
+      <div class="tri-card">
+        <div class="tri-icon ti-green">&#127807;</div>
+        <span class="tri-tag tag-green">Third Arm</span>
+        <h3>Community Engagement</h3>
+        <p data-cms-key="about-tri-community" data-cms-label="Tripartite — Community Engagement">
+          Through a structured three-month internship programme supported by the Mastercard
+          Foundation, DIAT students are embedded with artisan communities across Ghana
+          Region. This arm ensures that the department's academic work remains rooted in
+          living indigenous practice &mdash; and that community craft knowledge is formally
+          acknowledged, documented, and attributed.
+        </p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     DIAT@50 ANNIVERSARY BANNER
+═══════════════════════════════════════════════════════════ -->
+<div class="ann" id="anniversary">
+  <div class="ann-in rv">
+    <p class="ann-ey" data-cms-key="about-ann-ey" data-cms-label="Anniversary Eyebrow" data-cms-type="text">Celebrating a Half-Century of Indigenous Art</p>
+    <h2 class="ann-h2" data-cms-key="about-ann-h2" data-cms-label="Anniversary Heading">DIAT@50<br/>Est. 1976</h2>
+    <p class="ann-p" data-cms-key="about-ann-text" data-cms-label="Anniversary Banner Text">
+      Fifty years ago, a small Diploma programme in Kumasi set out to do something
+      radical for its time: to treat Ghana's indigenous craft traditions not as relics
+      of the past but as living disciplines worthy of the highest academic investment.
+      Today, as we mark half a century of that commitment, DIAT's artworks are visible
+      to the world for the first time &mdash; and the next fifty years begin.
+    </p>
+    <a href="gallery.html" class="btn-white">Explore the Anniversary Collection</a>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     ACCREDITATION & PARTNERSHIPS
+═══════════════════════════════════════════════════════════ -->
+<section class="sec sec-s" id="accreditation">
+  <div class="sec-in">
+    <div class="rv" style="margin-bottom:40px">
+      <p class="sec-eyebrow">Recognition &amp; Partners</p>
+      <h2 class="sec-h2">Accreditation data-cms-key="about-accred-h2" data-cms-label="Accreditation Heading" data-cms-type="text"> &amp; Affiliations</h2>
+      <div class="rule"></div>
+    </div>
+    <div class="accred-grid rv d1">
+      <div class="accred-card">
+        <div class="accred-icon">&#127979;</div>
+        <h4>KNUST Accreditation</h4 data-cms-key="about-accred-knust-h" data-cms-label="KNUST Accreditation Heading" data-cms-type="text">
+        <p>All DIAT programmes are formally accredited by the Kwame Nkrumah University of Science and Technology. Most recently re-accredited in 2024.</p>
+      </div>
+      <div class="accred-card">
+        <div class="accred-icon">&#127963;</div>
+        <h4>College of Art data-cms-key="about-accred-cabe-h" data-cms-label="CABE Accreditation Heading" data-cms-type="text"> &amp; Built Environment</h4>
+        <p>DIAT operates within CABE &mdash; KNUST's specialist college for art, architecture, and built environment programmes.</p>
+      </div>
+      <div class="accred-card">
+        <div class="accred-icon">&#127775;</div>
+        <h4>Mastercard Foundation</h4 data-cms-key="about-accred-mcf-h" data-cms-label="MCF Accreditation Heading" data-cms-type="text">
+        <p>Strategic partnership supporting DIAT's community internship programme, connecting students with artisan communities across Ghana.</p>
+      </div>
+      <div class="accred-card">
+        <div class="accred-icon">&#127758;</div>
+        <h4>Ghana Tourism data-cms-key="about-accred-gta-h" data-cms-label="GTA Accreditation Heading" data-cms-type="text"> Authority</h4>
+        <p>Recognised partner supporting the promotion of Ghanaian indigenous craft traditions to domestic and international audiences.</p>
+      </div>
+      <div class="accred-card">
+        <div class="accred-icon">&#127775;</div>
+        <h4>Creative Arts data-cms-key="about-accred-cac-h" data-cms-label="Creative Arts Council Heading" data-cms-type="text"> Council</h4>
+        <p>Affiliated with Ghana's Creative Arts Council, situating DIAT's work within the national framework for creative industry development.</p>
+      </div>
+      <div class="accred-card" style="border-style:dashed">
+        <div class="accred-icon">&#43;</div>
+        <h4 style="color:var(--t3)">[Partnership — replace]</h4>
+        <p style="color:var(--t3);font-style:italic">Add additional accreditations, recognitions, or partnerships here. Replace this placeholder with actual details.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     FOOTER
+═══════════════════════════════════════════════════════════ -->
+<footer>
+  <div class="fg">
+    <div>
+      <div class="fbn">Dept. of Indigenous Art &amp; Technology</div>
+      <div class="fbu">KNUST &middot; College of Art and Built Environment &middot; Kumasi, Ghana</div>
+      <p class="fbd">DIAT is dedicated to the preservation, teaching, and global promotion of Ghana's indigenous art and craft heritage &mdash; Est. 1976. Fifty years of indigenous innovation and counting.</p>
+      <div class="fsc">
+        <a class="fs" href="#" aria-label="Instagram">&#128247;</a>
+        <a class="fs" href="#" aria-label="Facebook">&#127760;</a>
+        <a class="fs" href="#" aria-label="TikTok">&#127925;</a>
+        <a class="fs" href="#" aria-label="WhatsApp">&#128172;</a>
+        <a class="fs" href="#" aria-label="YouTube">&#9654;</a>
+        <a class="fs" href="#" aria-label="LinkedIn">&#128188;</a>
+      </div>
+    </div>
+    <div class="fc"><h5>Explore</h5><ul>
+      <li><a href="gallery.html">Artwork Gallery</a></li>
+      <li><a href="webar.html">WebAR Viewer</a></li>
+      <li><a href="archive.html">Digital Archive</a></li>
+      <li><a href="about.html">About DIAT</a></li>
+      <li><a href="#anniversary">DIAT@50</a></li>
+    </ul></div>
+    <div class="fc"><h5>Academic</h5><ul>
+      <li><a href="programmes.html">All Programmes</a></li>
+      <li><a href="programmes.html#product-design">Product Design</a></li>
+      <li><a href="programmes.html#clay">Clay &amp; Earthenware</a></li>
+      <li><a href="programmes.html#fibres">Fibres &amp; Fabrics</a></li>
+      <li><a href="staff.html">Staff Directory</a></li>
+      <li><a href="community.html">Internship Programme</a></li>
+    </ul></div>
+    <div class="fc"><h5>Connect</h5><ul>
+      <li><a href="contact.html">Contact Us</a></li>
+      <li><a href="index.html#signup">Newsletter Signup</a></li>
+      <li><a href="community.html">Partnerships</a></li>
+      <li><a href="contact.html">Commission Artwork</a></li>
+      <li><a href="contact.html">Visit DIAT at KNUST</a></li>
+    </ul></div>
+  </div>
+  <div class="fb">
+    <p>&copy; 2026 Department of Indigenous Art and Technology (DIAT), <span>KNUST</span>. All rights reserved.</p>
+    <p>Developed as part of an MPhil research project &mdash; <span>College of Art and Built Environment, KNUST.</span></p>
+  </div>
+</footer>
+
+<script>
+  // Navbar shadow
+  const nav = document.getElementById("nav");
+  window.addEventListener("scroll", () => nav.classList.toggle("shadow", scrollY > 10));
+
+  // Hamburger
+  const ham = document.getElementById("ham"), md = document.getElementById("md");
+  ham.addEventListener("click", () => {
+    const o = md.classList.toggle("open");
+    ham.classList.toggle("open", o);
+    ham.setAttribute("aria-expanded", o);
+    document.body.style.overflow = o ? "hidden" : "";
+  });
+  function cd() {
+    md.classList.remove("open");
+    ham.classList.remove("open");
+    ham.setAttribute("aria-expanded","false");
+    document.body.style.overflow = "";
+  }
+
+  // Scroll reveal
+  const rvs = document.querySelectorAll(".rv");
+  rvs.forEach(el => new IntersectionObserver(([e]) => {
+    if (e.isIntersecting) { el.classList.add("vis"); }
+  }, { threshold: 0.08 }).observe(el));
+</script>
+  <script src="cms.js"></script>
+</body>
+</html>

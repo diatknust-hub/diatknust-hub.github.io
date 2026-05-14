@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Community & Internship — DIAT | KNUST Ghana</title>
+  <meta name="description" content="DIAT's Community & Internship programme — connecting students with artisan communities across Ghana through a three-month Mastercard Foundation-supported internship."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    :root{
+      --white:#FFFFFF;--surface:#FAFAF8;--border:#E8E4DC;
+      --t1:#111111;--t2:#555555;--t3:#999999;
+      --gold:#C9952A;--gold-light:#FBF4E6;--gold-dark:#9A6F10;
+      --terra:#C1440E;--terra-light:#FDF0E7;
+      --green:#2D6A2D;--green-light:#EBF5EB;
+      --indigo:#1A1A4E;
+      --serif:"Cormorant Garamond",Georgia,serif;
+      --sans:"Inter",system-ui,-apple-system,sans-serif;
+      --r:10px;--t:0.25s ease;
+    }
+
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{font-size:16px;scroll-behavior:smooth}
+    body{font-family:var(--sans);color:var(--t1);background:var(--white);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+    a{text-decoration:none;color:inherit}
+    img{display:block;max-width:100%}
+    button{font-family:var(--sans);cursor:pointer;border:none}
+    .prose p{text-align:justify;hyphens:auto;-webkit-hyphens:auto;line-height:1.85;font-size:.97rem;color:var(--t2);margin-bottom:18px}
+    .prose p:last-child{margin-bottom:0}
+    .abar{background:var(--indigo);color:rgba(255,255,255,.85);text-align:center;padding:10px 24px;font-size:.78rem;font-weight:500;letter-spacing:.04em}
+    .abar a{color:var(--gold);font-weight:600;margin-left:10px;transition:opacity .25s}
+    .abar a:hover{opacity:.75}
+    .nav{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 40px;transition:box-shadow var(--t)}
+    .nav.shadow{box-shadow:0 2px 20px rgba(0,0,0,.08)}
+    .nbrand{display:flex;align-items:center;gap:10px;flex-shrink:0}
+    .nbrand-svg{width:34px;height:34px;animation:float 5s ease-in-out infinite}
+    @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+    .nbrand-txt{display:flex;flex-direction:column;line-height:1.15}
+    .nbrand-txt .nd{font-family:var(--serif);font-size:.95rem;font-weight:600;color:var(--indigo)}
+    .nbrand-txt .nu{font-size:.58rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--t3)}
+    .nlinks{display:flex;align-items:center;gap:2px;list-style:none}
+    .nlinks a{font-size:.78rem;font-weight:500;color:var(--t2);padding:6px 11px;border-radius:6px;transition:background var(--t),color var(--t);white-space:nowrap}
+    .nlinks a:hover,.nlinks a.active{background:var(--gold-light);color:var(--gold-dark)}
+    .ncta{background:var(--gold);color:#fff;font-size:.78rem;font-weight:600;padding:9px 20px;border-radius:50px;transition:background var(--t),transform var(--t);white-space:nowrap;flex-shrink:0}
+    .ncta:hover{background:var(--gold-dark);transform:translateY(-1px)}
+    .ham{display:none;background:none;border:none;padding:8px;flex-direction:column;gap:5px}
+    .ham span{display:block;width:22px;height:2px;background:var(--t1);border-radius:2px;transition:transform var(--t),opacity var(--t)}
+    .ham.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+    .ham.open span:nth-child(2){opacity:0}
+    .ham.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+    .mob-drawer{display:none;position:fixed;inset:0;background:var(--white);z-index:99;padding:90px 32px 32px;flex-direction:column;gap:8px;overflow-y:auto}
+    .mob-drawer.open{display:flex}
+    .mob-drawer a{font-size:1.1rem;font-weight:500;color:var(--t1);padding:14px 0;border-bottom:1px solid var(--border);transition:color var(--t)}
+    .mob-drawer a:hover{color:var(--gold)}
+    .mob-cta-link{margin-top:16px;background:var(--gold);color:#fff;text-align:center;padding:16px;border-radius:10px;font-weight:600;font-size:.95rem}
+    .page-hero{background:var(--surface);border-bottom:1px solid var(--border);padding:56px 40px 48px}
+    .page-hero-in{max-width:1200px;margin:0 auto}
+    .breadcrumb{display:flex;align-items:center;gap:8px;font-size:.72rem;font-weight:500;color:var(--t3);margin-bottom:20px;letter-spacing:.04em}
+    .breadcrumb a{color:var(--t3);transition:color var(--t)}.breadcrumb a:hover{color:var(--gold)}
+    .breadcrumb span{color:var(--border)}
+    .eyebrow{font-size:.68rem;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:12px}
+    .page-title{font-family:var(--serif);font-size:clamp(2.4rem,5vw,4rem);font-weight:600;color:var(--t1);line-height:1.05;letter-spacing:-.02em;margin-bottom:16px}
+    .page-sub{font-size:1.05rem;color:var(--t2);line-height:1.7;max-width:600px;text-align:justify;hyphens:auto}
+    .sec{padding:88px 40px}
+    .sec-w{background:var(--white)}
+    .sec-s{background:var(--surface)}
+    .sec-ind{background:var(--indigo)}
+    .sec-gold{background:var(--gold)}
+    .sec-in{max-width:1200px;margin:0 auto}
+    .sec-eyebrow{font-size:.68rem;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:12px}
+    .sec-h2{font-family:var(--serif);font-size:clamp(1.8rem,3.5vw,3rem);font-weight:600;color:var(--t1);line-height:1.1;letter-spacing:-.02em;margin-bottom:16px}
+    .sec-h2-w{color:#fff}
+    .rule{width:48px;height:3px;background:var(--gold);border-radius:2px;margin-bottom:24px}
+    .rule-w{background:rgba(255,255,255,.4)}
+    .two-col{display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:start}
+    .btn-gold{display:inline-flex;align-items:center;gap:8px;padding:13px 28px;background:var(--gold);border-radius:50px;font-size:.82rem;font-weight:600;color:#fff;transition:background var(--t),transform var(--t);margin-top:20px}
+    .btn-gold:hover{background:var(--gold-dark);transform:translateY(-2px)}
+    .btn-gold::after{content:"→"}
+    .btn-outline{display:inline-flex;align-items:center;gap:8px;padding:12px 28px;border:1.5px solid var(--t1);border-radius:50px;font-size:.82rem;font-weight:600;color:var(--t1);transition:background var(--t),color var(--t)}
+    .btn-outline:hover{background:var(--t1);color:var(--white)}
+    .btn-outline::after{content:"→"}
+    .btn-white{display:inline-flex;align-items:center;gap:8px;background:#fff;color:var(--gold-dark);font-size:.82rem;font-weight:700;padding:13px 28px;border-radius:50px;transition:transform var(--t),box-shadow var(--t)}
+    .btn-white:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.15)}
+    .btn-white::after{content:"→"}
+    .rv{opacity:0;transform:translateY(24px);transition:opacity .65s ease,transform .65s ease}
+    .rv.vis{opacity:1;transform:none}
+    .d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}
+    footer{background:var(--indigo);color:rgba(255,255,255,.75);padding:72px 40px 32px}
+    .fg{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:60px;margin-bottom:60px}
+    .fbn{font-family:var(--serif);font-size:1.1rem;font-weight:600;color:#fff;margin-bottom:4px}
+    .fbu{font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:16px}
+    .fbd{font-size:.82rem;line-height:1.7;color:rgba(255,255,255,.5);margin-bottom:20px}
+    .fsc{display:flex;gap:8px;flex-wrap:wrap}
+    .fs{width:34px;height:34px;border-radius:8px;border:1px solid rgba(255,255,255,.12);display:flex;align-items:center;justify-content:center;font-size:.9rem;color:rgba(255,255,255,.5);cursor:pointer;transition:border-color var(--t),color var(--t),background var(--t)}
+    .fs:hover{border-color:var(--gold);color:var(--gold);background:rgba(201,149,42,.08)}
+    .fc h5{font-size:.72rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:18px;padding-bottom:10px;border-bottom:1px solid rgba(255,255,255,.08)}
+    .fc ul{list-style:none}.fc ul li{margin-bottom:10px}
+    .fc ul li a{font-size:.82rem;color:rgba(255,255,255,.5);transition:color var(--t)}
+    .fc ul li a:hover{color:var(--gold)}
+    .fb{max-width:1200px;margin:0 auto;padding-top:24px;border-top:1px solid rgba(255,255,255,.08);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+    .fb p{font-size:.72rem;color:rgba(255,255,255,.28)}
+    .fb p span{color:rgba(201,149,42,.6)}
+
+    /* Partner card */
+    .partner-banner{background:var(--gold-light);border:2px solid var(--gold);border-radius:var(--r);padding:36px 32px;display:grid;grid-template-columns:auto 1fr;gap:28px;align-items:start;margin-bottom:28px}
+    .partner-logo-wrap{width:80px;height:80px;background:var(--white);border-radius:14px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:2rem;flex-shrink:0;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+    .partner-tag{display:inline-block;font-size:.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;background:var(--gold);color:#fff;padding:3px 10px;border-radius:50px;margin-bottom:10px}
+    .partner-banner h3{font-family:var(--serif);font-size:1.6rem;font-weight:600;color:var(--t1);margin-bottom:10px}
+    .partner-banner p{font-size:.93rem;color:var(--t2);line-height:1.8;text-align:justify;hyphens:auto}
+    /* Steps */
+    .steps{display:flex;flex-direction:column;gap:0}
+    .step-item{display:grid;grid-template-columns:56px 1fr;gap:20px;padding-bottom:36px;position:relative}
+    .step-item:not(:last-child)::before{content:"";position:absolute;left:27px;top:56px;bottom:0;width:2px;background:var(--border)}
+    .step-num{width:56px;height:56px;border-radius:50%;background:var(--gold);color:#fff;font-family:var(--serif);font-size:1.4rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 4px 12px rgba(201,149,42,.3)}
+    .step-body h4{font-family:var(--serif);font-size:1.15rem;font-weight:600;color:var(--t1);margin-bottom:8px;margin-top:10px}
+    .step-body p{font-size:.88rem;color:var(--t2);line-height:1.75;text-align:justify;hyphens:auto}
+    /* Discipline map */
+    .disc-map{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+    .disc-map-card{background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:18px;transition:border-color var(--t),transform var(--t)}
+    .disc-map-card:hover{border-color:var(--gold);transform:translateY(-2px)}
+    .disc-map-card .dm-icon{font-size:1.4rem;margin-bottom:8px}
+    .disc-map-card h4{font-family:var(--serif);font-size:.95rem;font-weight:600;color:var(--t1);margin-bottom:6px}
+    .disc-map-card p{font-size:.78rem;color:var(--t2);line-height:1.6}
+    /* Story card */
+    .story-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+    .story-card{background:var(--white);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;transition:box-shadow var(--t),transform var(--t)}
+    .story-card:hover{box-shadow:0 8px 28px rgba(0,0,0,.07);transform:translateY(-3px)}
+    .story-img{height:180px;background:#EEE9E0;display:flex;align-items:center;justify-content:center;font-size:2.5rem;color:rgba(0,0,0,.15)}
+    .story-body{padding:20px}
+    .story-body .stag{font-size:.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--green);background:var(--green-light);padding:3px 8px;border-radius:50px;display:inline-block;margin-bottom:8px}
+    .story-body h4{font-family:var(--serif);font-size:1rem;font-weight:600;color:var(--t1);margin-bottom:6px}
+    .story-body p{font-size:.8rem;color:var(--t2);line-height:1.6}
+    .ph-label{font-size:.7rem;color:var(--t3);font-style:italic;text-align:center;margin-top:6px}
+    /* CTA band reuse */
+    .cta-band{background:var(--indigo);padding:72px 40px;text-align:center}
+    .cta-band-in{max-width:640px;margin:0 auto}
+    .cta-band h2{font-family:var(--serif);font-size:clamp(1.8rem,4vw,3rem);font-weight:600;color:#fff;margin-bottom:16px}
+    .cta-band p{font-size:1rem;color:rgba(255,255,255,.7);line-height:1.7;margin-bottom:32px;text-align:justify;hyphens:auto}
+    .cta-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+    @media(max-width:1024px){.nav{padding:0 24px}.sec{padding:64px 24px}.page-hero{padding:48px 24px 36px}.two-col{grid-template-columns:1fr;gap:40px}.fg{grid-template-columns:1fr 1fr;gap:40px}}
+    @media(max-width:768px){.nlinks,.ncta{display:none}.ham{display:flex}.fg{grid-template-columns:1fr;gap:32px}.fb{flex-direction:column;text-align:center}}
+    @media(max-width:1024px){.disc-map{grid-template-columns:1fr 1fr}.story-grid{grid-template-columns:1fr}}
+    @media(max-width:600px){.disc-map{grid-template-columns:1fr}.partner-banner{grid-template-columns:1fr}.cta-btns{flex-direction:column;align-items:center}}
+  </style>
+</head>
+<body>
+<div class="abar">
+  &#127881; DIAT@50 &mdash; Est. 1976 &nbsp;&middot;&nbsp; Ghana's premier indigenous art department
+  <a href="index.html#signup">Register for Updates &rarr;</a>
+</div>
+<nav class="nav" id="nav">
+  <a href="index.html" class="nbrand">
+    <svg class="nbrand-svg" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <ellipse cx="28" cy="38" rx="14" ry="9" stroke="#C9952A" stroke-width="2"/>
+      <path d="M28 29 C28 20 40 16 43 22 C46 28 40 33 35 31" stroke="#C9952A" stroke-width="2" stroke-linecap="round" fill="none"/>
+      <circle cx="37" cy="28" r="7" stroke="#C9952A" stroke-width="2" fill="none"/>
+      <circle cx="39" cy="26" r="1.5" fill="#C9952A"/>
+      <path d="M43 30 L49 28 L43 34" stroke="#C9952A" stroke-width="1.8" stroke-linejoin="round" fill="none"/>
+      <ellipse cx="20" cy="32" rx="4.5" ry="5.5" stroke="#C9952A" stroke-width="1.6" fill="none"/>
+      <path d="M14 38 C9 43 7 50 11 54" stroke="#C9952A" stroke-width="2" stroke-linecap="round" fill="none"/>
+    </svg>
+    <div class="nbrand-txt">
+      <span class="nd">DIAT &middot; KNUST</span>
+      <span class="nu">Dept. of Indigenous Art &amp; Technology</span>
+    </div>
+  </a>
+  <ul class="nlinks"><li><a href="index.html">Home</a></li><li><a href="gallery.html">Gallery</a></li><li><a href="webar.html">WebAR</a></li><li><a href="about.html">About</a></li><li><a href="programmes.html">Programmes</a></li><li><a href="community.html"class="active">Community</a></li><li><a href="staff.html">Staff</a></li><li><a href="archive.html">Archive</a></li></ul>
+  <a href="gallery.html" class="ncta">View Gallery</a>
+  <button class="ham" id="ham" aria-label="Open menu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+<div class="mob-drawer" id="md">
+  <a href="index.html" onclick="cd()">Home</a>
+  <a href="gallery.html" onclick="cd()">Artwork Gallery</a>
+  <a href="webar.html" onclick="cd()">WebAR Viewer</a>
+  <a href="about.html" onclick="cd()">About DIAT</a>
+  <a href="programmes.html" onclick="cd()">Academic Programmes</a>
+  <a href="community.html" onclick="cd()">Community &amp; Internship</a>
+  <a href="staff.html" onclick="cd()">Staff Profiles</a>
+  <a href="contact.html" onclick="cd()">Contact &amp; Social Media</a>
+  <a href="archive.html" onclick="cd()">Digital Archive</a>
+  <a href="gallery.html" class="mob-cta-link" onclick="cd()">View Gallery &rarr;</a>
+</div>
+
+<!-- PAGE HERO -->
+<div class="page-hero">
+  <div class="page-hero-in">
+    <div class="breadcrumb">
+      <a href="index.html">Home</a><span>&#8250;</span>
+      <span style="color:var(--t1);font-weight:500">Community &amp; Internship</span>
+    </div>
+    <p class="eyebrow">Third Arm of DIAT</p>
+    <h1 class="page-title" data-cms-key="comm-page-h1" data-cms-label="Community Page Title" data-cms-type="text">Community &amp; Internship Programme</h1>
+    <p class="page-sub" data-cms-key="comm-hero-sub" data-cms-label="Page Introduction">
+      DIAT&#39;s academic work does not end in the studio. Through a structured three-month
+      internship programme supported by the Mastercard Foundation, students are embedded
+      with artisan communities across Ghana &mdash; learning, documenting,
+      and formally attributing the indigenous craft knowledge that sustains the department.
+    </p>
+  </div>
+</div>
+
+
+<!-- MASTERCARD FOUNDATION PARTNERSHIP -->
+<section class="sec sec-s" id="partnerships">
+  <div class="sec-in">
+    <div class="rv" style="max-width:680px;margin-bottom:40px">
+      <p class="sec-eyebrow">Strategic Partner</p>
+      <h2 class="sec-h2">The Mastercard data-cms-key="comm-mcf-h2" data-cms-label="MCF Partnership Heading" data-cms-type="text"> Foundation Partnership</h2>
+      <div class="rule"></div>
+    </div>
+
+    <div class="partner-banner rv">
+      <div class="partner-logo-wrap">&#127775;</div>
+      <div>
+        <span class="partner-tag">Founding Partner</span>
+        <h3>Mastercard Foundation</h3 data-cms-key="comm-mcf-h3" data-cms-label="MCF Card Heading" data-cms-type="text">
+        <p data-cms-key="comm-mcf-desc" data-cms-label="Mastercard Foundation Description">
+          The Mastercard Foundation&#39;s partnership with DIAT supports the department&#39;s
+          community engagement arm &mdash; funding the structured three-month internship
+          programme that connects Year 3 students with indigenous craft practitioners across
+          communities across Ghana. The partnership reflects the Foundation&#39;s commitment to
+          creating pathways from traditional knowledge systems to contemporary economic
+          opportunities for young Africans.
+        </p>
+        <p style="font-size:.85rem;color:var(--t3);font-style:italic;margin-top:10px">
+          [Partnership details — replace with confirmed information from the Mastercard Foundation liaison. Include year of establishment, scope, and outcomes.]
+        </p>
+      </div>
+    </div>
+
+    <!-- Additional partners placeholder -->
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px" class="rv d1">
+      <div style="background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:20px">
+        <div style="font-size:1.3rem;margin-bottom:10px">&#127963;</div>
+        <h4 style="font-family:var(--serif);font-size:.95rem;font-weight:600;color:var(--t1);margin-bottom:6px">KNUST</h4>
+        <p style="font-size:.8rem;color:var(--t2);line-height:1.6">Provides institutional infrastructure and academic oversight for all community programme activities.</p>
+      </div>
+      <div style="background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:20px">
+        <div style="font-size:1.3rem;margin-bottom:10px">&#127807;</div>
+        <h4 style="font-family:var(--serif);font-size:.95rem;font-weight:600;color:var(--t1);margin-bottom:6px">Artisan Communities</h4>
+        <p style="font-size:.8rem;color:var(--t2);line-height:1.6">Indigenous craft practitioners across Ghana serve as co-supervisors, sharing indigenous knowledge and receiving formal academic attribution.</p>
+      </div>
+      <div style="background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:20px;border-style:dashed">
+        <div style="font-size:1.3rem;margin-bottom:10px">&#43;</div>
+        <h4 style="font-family:var(--serif);font-size:.95rem;font-weight:600;color:var(--t3);margin-bottom:6px">[Partner — replace]</h4>
+        <p style="font-size:.8rem;color:var(--t3);line-height:1.6;font-style:italic">Add additional community or industry partners here.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- HOW THE INTERNSHIP WORKS -->
+<section class="sec sec-w" id="internship">
+  <div class="sec-in">
+    <div class="two-col">
+      <div class="rv">
+        <p class="sec-eyebrow">The Internship Programme</p>
+        <h2 class="sec-h2">How It Works data-cms-key="comm-how-h2" data-cms-label="How It Works Heading" data-cms-type="text"></h2>
+        <div class="rule"></div>
+        <p style="font-size:.97rem;color:var(--t2);line-height:1.8;margin-bottom:32px;text-align:justify;hyphens:auto" data-cms-key="comm-internship-intro" data-cms-label="Internship Introduction">
+          The three-month community internship is a compulsory component of the DIAT
+          academic programme, undertaken by Year 3 students. It is designed to ground
+          theoretical and studio-based learning in living indigenous practice &mdash;
+          ensuring that DIAT graduates understand their disciplines not only as academic
+          subjects but as active, community-embedded cultural traditions.
+        </p>
+
+        <div class="steps">
+          <div class="step-item">
+            <div class="step-num">1</div>
+            <div class="step-body">
+              <h4>Placement Matching</h4>
+              <p data-cms-key="comm-step-1" data-cms-label="Internship Step 1">Students are matched with artisan communities across Ghana based on their chosen craft disciplines. The DIAT Community Liaison coordinates placements in consultation with community elders and craft leaders.</p>
+            </div>
+          </div>
+          <div class="step-item">
+            <div class="step-num">2</div>
+            <div class="step-body">
+              <h4>Embedded Practice</h4>
+              <p data-cms-key="comm-step-2" data-cms-label="Internship Step 2">For three months, students work alongside community artisans, learning traditional techniques that are not formally documented anywhere else. They observe, participate in, and document production processes from raw material to finished piece.</p>
+            </div>
+          </div>
+          <div class="step-item">
+            <div class="step-num">3</div>
+            <div class="step-body">
+              <h4>Documentation &amp; Attribution</h4>
+              <p data-cms-key="comm-step-3" data-cms-label="Internship Step 3">Students formally document the techniques, knowledge, and innovations they encounter. All documentation is reviewed by the department and credited to the artisan community &mdash; creating a growing record of indigenous craft knowledge with verified attribution.</p>
+            </div>
+          </div>
+          <div class="step-item">
+            <div class="step-num">4</div>
+            <div class="step-body">
+              <h4>Reflection &amp; Exhibition</h4>
+              <p data-cms-key="comm-step-4" data-cms-label="Internship Step 4">Students return to KNUST with field documentation, materials, and a community-inspired project. These projects are presented at the annual DIAT Community Exhibition, giving artisan communities visibility within the university and public contexts.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sidebar info -->
+      <div class="rv d2">
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:28px;margin-bottom:20px">
+          <p style="font-size:.68rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);margin-bottom:20px">Programme at a Glance</p>
+          <div style="display:flex;flex-direction:column;gap:16px">
+            <div style="display:flex;gap:12px"><span style="font-size:1.1rem">&#128197;</span><div><div style="font-size:.7rem;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:2px">Duration</div><div style="font-size:.88rem;color:var(--t1);font-weight:500">Three months (one academic term)</div></div></div>
+            <div style="display:flex;gap:12px"><span style="font-size:1.1rem">&#127891;</span><div><div style="font-size:.7rem;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:2px">Year Group</div><div style="font-size:.88rem;color:var(--t1);font-weight:500">Year 3 students (compulsory)</div></div></div>
+            <div style="display:flex;gap:12px"><span style="font-size:1.1rem">&#127759;</span><div><div style="font-size:.7rem;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:2px">Location</div><div style="font-size:.88rem;color:var(--t1);font-weight:500">Artisan communities across Ghana</div></div></div>
+            <div style="display:flex;gap:12px"><span style="font-size:1.1rem">&#127775;</span><div><div style="font-size:.7rem;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:2px">Supported By</div><div style="font-size:.88rem;color:var(--t1);font-weight:500">Mastercard Foundation</div></div></div>
+            <div style="display:flex;gap:12px"><span style="font-size:1.1rem">&#128196;</span><div><div style="font-size:.7rem;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:2px">Output</div><div style="font-size:.88rem;color:var(--t1);font-weight:500">Field documentation + community-inspired project + annual exhibition</div></div></div>
+          </div>
+        </div>
+
+        <!-- Quote placeholder -->
+        <div style="background:var(--indigo);border-radius:var(--r);padding:24px">
+          <div style="font-size:2rem;color:var(--gold);line-height:1;margin-bottom:10px">&#10077;</div>
+          <p style="font-size:.92rem;color:rgba(255,255,255,.82);line-height:1.7;font-style:italic;margin-bottom:14px" data-cms-key="comm-quote" data-cms-label="Community Quote / Testimonial">
+            [Add a quote here from a student, community artisan, or staff member about the impact of the internship programme. Replace this placeholder with a real testimonial.]
+          </p>
+          <p style="font-size:.75rem;color:rgba(255,255,255,.4);font-weight:600" data-cms-key="comm-quote-attr" data-cms-label="Quote Attribution">[Name, Role — replace]</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- CRAFT COMMUNITIES -->
+<section class="sec sec-s" id="communities">
+  <div class="sec-in">
+    <div class="rv" style="text-align:center;max-width:640px;margin:0 auto 48px">
+      <p class="sec-eyebrow">Where Students Go</p>
+      <h2 class="sec-h2">Craft Communities data-cms-key="comm-disc-h2" data-cms-label="Communities Heading" data-cms-type="text"> Across Ghana</h2>
+      <div class="rule" style="margin:16px auto"></div>
+      <p style="font-size:.97rem;color:var(--t2);line-height:1.75" data-cms-key="comm-communities-intro" data-cms-label="Communities Introduction">
+        Each DIAT discipline connects to specific artisan communities across Ghana
+        where the corresponding craft tradition is still actively practised and passed down
+        through generations. Students are placed in communities that match their chosen
+        specialisation disciplines.
+      </p>
+    </div>
+
+    <div class="disc-map rv d1">
+      <div class="disc-map-card">
+        <div class="dm-icon">&#127994;</div>
+        <h4>Clay &amp; Earthenware</h4>
+        <p data-cms-key="comm-loc-clay" data-cms-label="Clay Community Location">[Community name and location — replace with actual placement community details from departmental records]</p>
+      </div>
+      <div class="disc-map-card">
+        <div class="dm-icon">&#129525;</div>
+        <h4>Fibres &amp; Fabrics</h4>
+        <p data-cms-key="comm-loc-fibres" data-cms-label="Fibres Community Location">[Community name and location — replace with actual placement community details]</p>
+      </div>
+      <div class="disc-map-card">
+        <div class="dm-icon">&#128092;</div>
+        <h4>Leather Technology</h4>
+        <p data-cms-key="comm-loc-leather" data-cms-label="Leather Community Location">[Community name and location — replace with actual placement community details]</p>
+      </div>
+      <div class="disc-map-card">
+        <div class="dm-icon">&#9881;</div>
+        <h4>Metal Production</h4>
+        <p data-cms-key="comm-loc-metal" data-cms-label="Metal Community Location">[Community name and location — replace with actual placement community details]</p>
+      </div>
+      <div class="disc-map-card">
+        <div class="dm-icon">&#127819;</div>
+        <h4>Rattan &amp; Bamboo</h4>
+        <p data-cms-key="comm-loc-rattan" data-cms-label="Rattan Community Location">[Community name and location — replace with actual placement community details]</p>
+      </div>
+      <div class="disc-map-card">
+        <div class="dm-icon">&#129683;</div>
+        <h4>Wood &amp; Furniture</h4>
+        <p data-cms-key="comm-loc-wood" data-cms-label="Wood Community Location">[Community name and location — replace with actual placement community details]</p>
+      </div>
+    </div>
+
+    <p style="font-size:.78rem;color:var(--t3);font-style:italic;margin-top:24px;text-align:center">
+      &#9432; Community names marked [replace] are placeholders. Contact the DIAT office or community liaison to confirm exact placement locations.
+    </p>
+  </div>
+</section>
+
+
+<!-- FIELD VISIT GALLERY -->
+<section class="sec sec-w" id="field-visits">
+  <div class="sec-in">
+    <div class="rv" style="margin-bottom:40px">
+      <p class="sec-eyebrow">From the Field</p>
+      <h2 class="sec-h2">Student Field data-cms-key="comm-stories-h2" data-cms-label="Field Stories Heading" data-cms-type="text"> Visit Stories</h2>
+      <div class="rule"></div>
+      <p style="font-size:.97rem;color:var(--t2);line-height:1.75;max-width:580px" data-cms-key="comm-stories-intro" data-cms-label="Field Stories Introduction">
+        Every internship cohort returns with stories, photographs, and projects that
+        document indigenous craft knowledge from across Ghana.
+        These are some of those stories.
+      </p>
+    </div>
+
+    <div class="story-grid rv d1">
+      <div class="story-card">
+        <div class="story-img">&#127807;</div>
+        <p class="ph-label">[Field visit photo — replace]</p>
+        <div class="story-body">
+          <span class="stag">Clay &amp; Earthenware</span>
+          <h4 data-cms-key="comm-story-1-title" data-cms-label="Field Story 1 Title">[Story Title — replace]</h4>
+          <p data-cms-key="comm-story-1-text" data-cms-label="Field Story 1 Text">[Describe a student&#39;s experience during their internship placement in the clay/earthenware community. What did they learn? Who did they work with? What did they produce? Replace with a real account.]</p>
+        </div>
+      </div>
+      <div class="story-card">
+        <div class="story-img">&#9881;</div>
+        <p class="ph-label">[Field visit photo — replace]</p>
+        <div class="story-body">
+          <span class="stag">Metal Production</span>
+          <h4 data-cms-key="comm-story-2-title" data-cms-label="Field Story 2 Title">[Story Title — replace]</h4>
+          <p data-cms-key="comm-story-2-text" data-cms-label="Field Story 2 Text">[Describe a student&#39;s experience during their internship placement in the metal production community. Replace with a real account from departmental records or student interviews.]</p>
+        </div>
+      </div>
+    </div>
+
+    <div style="text-align:center;margin-top:32px" class="rv">
+      <a href="gallery.html" class="btn-outline">View Student Artworks in Gallery</a>
+    </div>
+  </div>
+</section>
+
+
+<!-- CTA BAND -->
+<div class="cta-band">
+  <div class="cta-band-in rv">
+    <h2>Get Involved with DIAT&#39;s Community Work</h2>
+    <p data-cms-key="comm-cta-text" data-cms-label="Community CTA Text">
+      Whether you are a prospective student interested in the internship programme,
+      an artisan community wishing to partner with DIAT, or an organisation seeking
+      to support indigenous craft education in Ghana &mdash; we would love to hear from you.
+    </p>
+    <div class="cta-btns">
+      <a href="contact.html" class="btn-white">Get in Touch</a>
+      <a href="programmes.html" class="btn-outline" style="border-color:rgba(255,255,255,.4);color:rgba(255,255,255,.85)">View Programmes</a>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="fg">
+    <div>
+      <div class="fbn">Dept. of Indigenous Art &amp; Technology</div>
+      <div class="fbu">KNUST &middot; College of Art and Built Environment &middot; Kumasi, Ghana</div>
+      <p class="fbd">DIAT is dedicated to the preservation, teaching, and global promotion of Ghana's indigenous art and craft heritage &mdash; Est. 1976.</p>
+      <div class="fsc">
+        <a class="fs" href="#" aria-label="Instagram">&#128247;</a>
+        <a class="fs" href="#" aria-label="Facebook">&#127760;</a>
+        <a class="fs" href="#" aria-label="TikTok">&#127925;</a>
+        <a class="fs" href="#" aria-label="WhatsApp">&#128172;</a>
+        <a class="fs" href="#" aria-label="YouTube">&#9654;</a>
+      </div>
+    </div>
+    <div class="fc"><h5>Explore</h5><ul>
+      <li><a href="gallery.html">Artwork Gallery</a></li>
+      <li><a href="webar.html">WebAR Viewer</a></li>
+      <li><a href="about.html">About DIAT</a></li>
+      <li><a href="archive.html">Digital Archive</a></li>
+    </ul></div>
+    <div class="fc"><h5>Academic</h5><ul>
+      <li><a href="programmes.html">All Programmes</a></li>
+      <li><a href="staff.html">Staff Directory</a></li>
+      <li><a href="community.html">Internship Programme</a></li>
+    </ul></div>
+    <div class="fc"><h5>Connect</h5><ul>
+      <li><a href="contact.html">Contact Us</a></li>
+      <li><a href="index.html#signup">Newsletter Signup</a></li>
+      <li><a href="contact.html">Commission Artwork</a></li>
+    </ul></div>
+  </div>
+  <div class="fb">
+    <p>&copy; 2026 DIAT, <span>KNUST</span>. All rights reserved.</p>
+    <p>Developed as MPhil research &mdash; <span>CABE, KNUST.</span></p>
+  </div>
+</footer>
+<script>
+  const nav=document.getElementById("nav");
+  window.addEventListener("scroll",()=>nav.classList.toggle("shadow",scrollY>10));
+  const ham=document.getElementById("ham"),md=document.getElementById("md");
+  ham.addEventListener("click",()=>{const o=md.classList.toggle("open");ham.classList.toggle("open",o);ham.setAttribute("aria-expanded",o);document.body.style.overflow=o?"hidden":""});
+  function cd(){md.classList.remove("open");ham.classList.remove("open");ham.setAttribute("aria-expanded","false");document.body.style.overflow=""}
+  document.querySelectorAll(".rv").forEach(el=>new IntersectionObserver(([e])=>{if(e.isIntersecting)el.classList.add("vis")},{threshold:.08}).observe(el));
+</script>
+<script src="cms.js"></script>
+</body>
+</html>
