@@ -1309,6 +1309,13 @@
     toast(`"${pg?.title}" removed`);
   }
 
+  // ── OPEN SITE IN ADMIN MODE ─────────────────────────────────────
+  function openSite(page) {
+    localStorage.setItem("diat_admin_session", "true");
+    var url = page + (page.indexOf("?") === -1 ? "?cms=on" : "&cms=on");
+    window.open(url, "_blank");
+  }
+
   // ── SESSION TIMEOUT (TTL) — 1 minute inactivity ─────────────────
   const IDLE_LIMIT    = 1800; // seconds before showing warning (30 minutes)
   const WARNING_SECS  = 10;   // countdown seconds shown in warning
@@ -1381,20 +1388,10 @@
     }, { passive: true })
   );
 
-  // ── OPEN SITE WITH GUARANTEED SESSION ───────────────────────────
-  function openSite(page) {
-    var url = page + (page.indexOf('?') === -1 ? '?cms=on' : '&cms=on');
-    localStorage.setItem("diat_admin_session", "true");
-    window.open(url, "_blank");
-  }, 80);
+  // ── OPEN SITE WITH GUARANTEED SESSION ───────────────────────────, 80);
   }
 
   // ── OPEN SITE WITH GUARANTEED ADMIN SESSION ────────────────────
-  function openSite(page) {
-    var url = page + (page.indexOf('?') === -1 ? '?cms=on' : '&cms=on');
-    localStorage.setItem("diat_admin_session", "true");
-    window.open(url, "_blank");
-  }
 
   // ── INIT ────────────────────────────────────────────────────────
   refreshDashboard();
