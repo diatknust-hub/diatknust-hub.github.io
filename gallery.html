@@ -519,12 +519,12 @@
     const h      = HEIGHTS[idx % HEIGHTS.length];
     const badge  = aw.ar ? `<span class="ar-pill">AR Ready</span>` : "";
     // Build webar.html URL with artwork metadata as params
-    const arUrl = aw.ar ? `webar.html?title=${encodeURIComponent(aw.title)}`
-      + `&artist=${encodeURIComponent(aw.artist)}`
-      + `&year=${encodeURIComponent(aw.year)}`
-      + `&disc=${encodeURIComponent(aw.disc)}`
-      + `&materials=${encodeURIComponent(aw.materials||'[Materials — replace]')}`
-      + `&dims=${encodeURIComponent(aw.dimensions||'[Dimensions — replace]')}`
+    const arUrl = aw.ar ? `webar.html?title=${encodeURIComponent(aw.title||'')}`
+      + `&artist=${encodeURIComponent(aw.artist||'')}`
+      + `&year=${encodeURIComponent(aw.year||'')}`
+      + `&disc=${encodeURIComponent(aw.disc||'')}`
+      + `&materials=${encodeURIComponent(aw.materials||'')}`
+      + `&dims=${encodeURIComponent(aw.dimensions||'')}`
       + `&class=${encodeURIComponent(aw.classification||'Student Work')}`
       + (aw.glb  ? `&src=${encodeURIComponent(aw.glb)}`   : '')
       + (aw.usdz ? `&usdz=${encodeURIComponent(aw.usdz)}` : '')
@@ -554,7 +554,7 @@
         <p class="gi-artist">${aw.artist} &middot; DIAT, KNUST</p>
         <div class="gi-bot">
           ${action}
-          <span class="gi-yr">${aw.year}</span>
+          <span class="gi-yr">${aw.year||""}</span>
         </div>
       </div>
     </div>`;
