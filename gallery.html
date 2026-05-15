@@ -419,7 +419,7 @@
       <path d="M46 46 L56 56" stroke="#C9952A" stroke-width="2" stroke-linecap="round"/>
       <path d="M22 30 h16 M30 22 v16" stroke="#C9952A" stroke-width="2" stroke-linecap="round"/>
     </svg>
-    <h3>No artworks found</h3>
+    <h3 data-cms-key="gallery-h-no-artworks-found" data-cms-label="No artworks found" data-cms-type="text">No artworks found</h3>
     <p>Try adjusting your filters or search term.</p>
     <button onclick="clearFilters()" style="margin-top:16px;background:var(--gold);color:#fff;border:none;padding:10px 24px;border-radius:50px;font-size:.82rem;font-weight:600;cursor:pointer;">Clear all filters</button>
   </div>
@@ -550,7 +550,7 @@
       </div>
       <div class="gi-info">
         <p class="gi-disc">${aw.disc}</p>
-        <h3 class="gi-title">${aw.title}</h3>
+        <h3 class="gi-title" data-cms-key="gallery-h-aw-title" data-cms-label="${aw.title}" data-cms-type="text">${aw.title}</h3>
         <p class="gi-artist">${aw.artist} &middot; DIAT, KNUST</p>
         <div class="gi-bot">
           ${action}
