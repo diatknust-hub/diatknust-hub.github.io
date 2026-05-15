@@ -29,8 +29,13 @@
     });
   }
 
-  /* ── 3. Check if admin ──────────────────────────────────── */
+  /* ── 3. Check if admin — URL param OR localStorage ─────── */
   function isAdmin() {
+    try {
+      if (new URLSearchParams(window.location.search).get('cms') === 'on') {
+        return true;
+      }
+    } catch(e) {}
     return localStorage.getItem(KEY) === 'true';
   }
 
