@@ -372,6 +372,14 @@
 
   /* ─── INIT ─────────────────────────────────────────────────── */
   function init() {
+    /* ── URL parameter activation: opening page with ?cms=on sets admin mode ── */
+    try {
+      var p = new URLSearchParams(window.location.search);
+      if (p.get('cms') === 'on') {
+        localStorage.setItem(ADMIN_KEY, 'true');
+      }
+    } catch(e) {}
+
     /* Always restore saved content */
     loadSavedContent();
 

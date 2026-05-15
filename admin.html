@@ -481,10 +481,10 @@
                 <button class="qa-btn" onclick="window.open('https://docs.google.com/forms/d/e/1FAIpQLSfGMkMiAumlmEwiKKcpBr1rBbKmeGCbzt5N2hdsWTjM35PH6A/viewform','_blank')">
                   <span class="qa-icon">&#128140;</span> View Subscribers
                 </button>
-                <button class="qa-btn" onclick="window.open('index.html','_blank')">
-                  <span class="qa-icon">&#127760;</span> View Homepage
+                <button class="qa-btn" onclick="openSite('index.html')" style="border-color:var(--gold);background:var(--gold-l)">
+                  <span class="qa-icon">&#9998;</span> Edit Homepage
                 </button>
-                <button class="qa-btn" onclick="window.open('gallery.html','_blank')">
+                <button class="qa-btn" onclick="openSite('gallery.html')">
                   <span class="qa-icon">&#128444;</span> View Gallery
                 </button>
                 <button class="qa-btn" onclick="showPanel('pages',document.querySelectorAll('.sb-item')[2]);showAddPageForm()">
@@ -1383,18 +1383,17 @@
 
   // ── OPEN SITE WITH GUARANTEED SESSION ───────────────────────────
   function openSite(page) {
-    // Re-set session immediately before opening to ensure it is fresh
+    var url = page + (page.indexOf('?') === -1 ? '?cms=on' : '&cms=on');
     localStorage.setItem("diat_admin_session", "true");
-    // Small delay to guarantee localStorage write completes
-    setTimeout(function() {
-      window.open(page, "_blank");
-    }, 80);
+    window.open(url, "_blank");
+  }, 80);
   }
 
   // ── OPEN SITE WITH GUARANTEED ADMIN SESSION ────────────────────
   function openSite(page) {
+    var url = page + (page.indexOf('?') === -1 ? '?cms=on' : '&cms=on');
     localStorage.setItem("diat_admin_session", "true");
-    setTimeout(function() { window.open(page, "_blank"); }, 100);
+    window.open(url, "_blank");
   }
 
   // ── INIT ────────────────────────────────────────────────────────
