@@ -424,7 +424,7 @@
         <div class="sb-item" onclick="showPanel('settings',this)">
           <span class="icon">&#9881;</span> Settings
         </div>
-        <div class="sb-item" onclick="window.open('index.html','_blank')">
+        <div class="sb-item" onclick="openSite('index.html')">
           <span class="icon">&#127760;</span> View Website
         </div>
       </nav>
@@ -440,9 +440,7 @@
       <div class="admin-topbar">
         <span class="topbar-title" id="topbar-title">Dashboard</span>
         <div class="topbar-right">
-          <a href="index.html" target="_blank" class="topbar-site-btn">
-            &#127760; View Site
-          </a>
+          <button onclick="openSite('index.html')" class="topbar-site-btn">&#127760; View Site</button>
         </div>
       </div>
 
@@ -1382,6 +1380,22 @@
       }
     }, { passive: true })
   );
+
+  // ── OPEN SITE WITH GUARANTEED SESSION ───────────────────────────
+  function openSite(page) {
+    // Re-set session immediately before opening to ensure it is fresh
+    localStorage.setItem("diat_admin_session", "true");
+    // Small delay to guarantee localStorage write completes
+    setTimeout(function() {
+      window.open(page, "_blank");
+    }, 80);
+  }
+
+  // ── OPEN SITE WITH GUARANTEED ADMIN SESSION ────────────────────
+  function openSite(page) {
+    localStorage.setItem("diat_admin_session", "true");
+    setTimeout(function() { window.open(page, "_blank"); }, 100);
+  }
 
   // ── INIT ────────────────────────────────────────────────────────
   refreshDashboard();

@@ -31,7 +31,16 @@
     localStorage.setItem(CONTENT_KEY, JSON.stringify(c));
   }
   function isAdmin() {
-    return localStorage.getItem(ADMIN_KEY) === 'true';
+    var stored = localStorage.getItem(ADMIN_KEY) === 'true';
+    // Also activate if page was opened from admin.html (same origin)
+    var fromAdmin = document.referrer &&
+                    document.referrer.indexOf('admin.html') !== -1;
+    if (fromAdmin && !stored) {
+      // Re-set session if navigated from admin
+      localStorage.setItem(ADMIN_KEY, 'true');
+      return true;
+    }
+    return stored;
   }
 
   /* ─── 1. RESTORE saved content on every page load ─────────── */
