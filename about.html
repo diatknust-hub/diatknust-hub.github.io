@@ -343,7 +343,7 @@
 <div style="width:100%;height:480px;overflow:hidden;position:relative;border-bottom:3px solid var(--gold)">
   <!-- TO REPLACE PHOTO: in admin mode, click the image area and paste:
        <img src="your-new-photo.jpg" alt="Description" style="width:100%;height:100%;object-fit:cover;object-position:center 40%"> -->
-  <div data-cms-key="about-hero-banner-img" data-cms-label="Hero Banner Photo (img tag)"
+  <div data-cms-key="about-hero-banner-img" data-cms-label="Hero Banner Photo" data-cms-type="image"
        style="width:100%;height:100%">
     <img src="diat-entrance.jpg" alt="DIAT Department entrance — KNUST, Kumasi, Ghana"
          style="width:100%;height:100%;object-fit:cover;object-position:center 40%"
@@ -748,7 +748,7 @@ function buildGrid() {
           /* Editable image wrapper — admin pastes new <img> tag here */
           '<div data-cms-key="about-photo-'+slug+'-src"',
                ' data-cms-label="Photo — '+p.title+' (replace src)"',
-               ' data-cms-type="html"',
+               ' data-cms-type="image"',
                ' style="width:100%;height:100%;position:relative">',
             '<img src="'+imgSrc+'" alt="'+title+'"',
                  ' draggable="false" oncontextmenu="return false"',

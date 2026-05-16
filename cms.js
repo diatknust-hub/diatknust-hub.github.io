@@ -221,11 +221,129 @@
       if (!el) return;
       e.preventDefault();
       e.stopPropagation();
-      openModal(el);
+      /* Route image-type fields to upload modal, others to text modal */
+      if (el.dataset.cmsType === 'image') {
+        openImgModal(el);
+      } else {
+        openModal(el);
+      }
     });
   }
 
   /* ── INIT ───────────────────────────────────────────────── */
+  
+  /* ─── IMAGE UPLOAD MODAL ─────────────────────────────────────── */
+  var _imgKey = null, _imgEl = null, _imgLabel = '', _pendingImgData = null;
+
+  function buildImageModal() {
+    var m = document.createElement('div');
+    m.id = 'cms-img-modal';
+    m.style.cssText = 'display:none;position:fixed;inset:0;z-index:2147483647;background:rgba(0,0,0,.65);backdrop-filter:blur(4px);align-items:center;justify-content:center;padding:20px';
+    m.innerHTML =
+      '<div style="background:#fff;border-radius:14px;padding:28px;width:100%;max-width:520px;font-family:Inter,system-ui,sans-serif;box-shadow:0 24px 64px rgba(0,0,0,.3)">' +
+        '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">' +
+          '<h3 id="cim-title" style="font-size:1rem;font-weight:700;color:#1A1A4E"></h3>' +
+          '<button onclick="closeImgModal()" style="background:none;border:none;font-size:1.2rem;cursor:pointer;color:#999;padding:4px 8px;border-radius:6px">&#10005;</button>' +
+        '</div>' +
+        '<p id="cim-key" style="font-size:.7rem;color:#bbb;font-family:monospace;margin-bottom:18px"></p>' +
+        '<div id="cim-drop" style="border:2.5px dashed #C9952A;border-radius:12px;padding:40px 24px;text-align:center;cursor:pointer;background:#FBF4E6;transition:background .2s"' +
+             ' onclick="document.getElementById(\'cim-input\').click()"' +
+             ' ondragover="event.preventDefault()"' +
+             ' ondrop="cimDrop(event)">' +
+          '<input type="file" id="cim-input" accept="image/*" style="display:none" onchange="cimFile(this.files[0])">' +
+          '<div id="cim-idle">' +
+            '<div style="font-size:3rem;margin-bottom:12px;opacity:.45">&#128247;</div>' +
+            '<p style="font-size:1rem;font-weight:700;color:#C9952A;margin-bottom:6px">Click here to upload your image</p>' +
+            '<p style="font-size:.78rem;color:#999">or drag and drop a photo here</p>' +
+            '<p style="font-size:.68rem;color:#bbb;margin-top:8px">JPG or PNG &mdash; max 3 MB recommended</p>' +
+          '</div>' +
+          '<div id="cim-prev" style="display:none">' +
+            '<img id="cim-prev-img" style="max-height:180px;max-width:100%;border-radius:8px;margin:0 auto;display:block;object-fit:contain">' +
+            '<p id="cim-prev-name" style="font-size:.75rem;color:#555;margin-top:10px;text-align:center"></p>' +
+          '</div>' +
+        '</div>' +
+        '<div id="cim-warn" style="display:none;font-size:.7rem;color:#dc3545;margin-top:8px">&#9888; Image is large — may slow the page. Consider resizing before upload.</div>' +
+        '<div style="display:flex;gap:10px;margin-top:16px;align-items:center">' +
+          '<button id="cim-save" onclick="cimSave()" style="display:none;background:#C9952A;color:#fff;border:none;padding:11px 24px;border-radius:50px;cursor:pointer;font-family:inherit;font-size:.84rem;font-weight:700">&#10003; Apply Photo</button>' +
+          '<button onclick="closeImgModal()" style="background:#f4f4f4;color:#555;border:1px solid #ddd;padding:10px 20px;border-radius:50px;cursor:pointer;font-family:inherit;font-size:.84rem">Cancel</button>' +
+        '</div>' +
+        '<div style="margin-top:14px;background:#f0f4ff;border-radius:8px;padding:10px 14px;font-size:.72rem;color:#555;line-height:1.6">' +
+          '&#128161; <strong>Tip:</strong> Photo saves to your browser. To make it permanent for all visitors, also copy the file to your <strong>diatknust-hub.github.io</strong> folder and push to GitHub.' +
+        '</div>' +
+      '</div>';
+    document.body.appendChild(m);
+    m.addEventListener('click', function(e){ if(e.target===m) closeImgModal(); });
+  }
+
+  function cimFile(file) {
+    if (!file || !file.type.startsWith('image/')) return;
+    var kb = file.size / 1024;
+    document.getElementById('cim-warn').style.display = kb > 2048 ? 'block' : 'none';
+    var reader = new FileReader();
+    reader.onload = function(e) {
+      _pendingImgData = e.target.result;
+      document.getElementById('cim-prev-img').src = _pendingImgData;
+      document.getElementById('cim-prev-name').textContent = file.name + ' (' + Math.round(kb) + ' KB)';
+      document.getElementById('cim-idle').style.display = 'none';
+      document.getElementById('cim-prev').style.display = 'block';
+      document.getElementById('cim-save').style.display = 'inline-block';
+    };
+    reader.readAsDataURL(file);
+  }
+
+  function cimDrop(e) {
+    e.preventDefault();
+    var file = e.dataTransfer.files[0];
+    if (file) cimFile(file);
+  }
+
+  function cimSave() {
+    if (!_pendingImgData || !_imgKey || !_imgEl) return;
+    var saved;
+    try { saved = JSON.parse(localStorage.getItem(STORE)||'{}'); } catch(ex) { saved={}; }
+    saved[_imgKey] = _pendingImgData;
+    try {
+      localStorage.setItem(STORE, JSON.stringify(saved));
+    } catch(ex) {
+      showToast('Image too large — try a smaller photo', true);
+      return;
+    }
+    var img = _imgEl.querySelector('img');
+    if (img) {
+      img.src = _pendingImgData;
+    } else {
+      _imgEl.innerHTML = '<img src="' + _pendingImgData + '" alt="' + _imgLabel + '" draggable="false" oncontextmenu="return false" style="width:100%;height:100%;object-fit:cover;display:block">';
+    }
+    if (typeof buildGrid === 'function') buildGrid();
+    showToast('Photo updated ✓');
+    closeImgModal();
+  }
+
+  function openImgModal(el) {
+    _imgEl = el; _imgKey = el.dataset.cmsKey;
+    _imgLabel = el.dataset.cmsLabel || _imgKey;
+    _pendingImgData = null;
+    document.getElementById('cim-title').textContent = 'Upload: ' + _imgLabel;
+    document.getElementById('cim-key').textContent   = 'Key: ' + _imgKey;
+    document.getElementById('cim-idle').style.display = 'block';
+    document.getElementById('cim-prev').style.display = 'none';
+    document.getElementById('cim-save').style.display = 'none';
+    document.getElementById('cim-warn').style.display = 'none';
+    document.getElementById('cim-input').value = '';
+    document.getElementById('cms-img-modal').style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeImgModal() {
+    var m = document.getElementById('cms-img-modal');
+    if (m) m.style.display = 'none';
+    document.body.style.overflow = '';
+    _imgEl = null; _imgKey = null; _pendingImgData = null;
+  }
+
+  window.cimFile = cimFile; window.cimDrop = cimDrop;
+  window.cimSave = cimSave; window.closeImgModal = closeImgModal;
+
   function init() {
     loadContent();
     if (isAdmin()) {
@@ -233,6 +351,8 @@
       buildBar();
       buildTooltip();
       buildModal();
+      buildImageModal();
+      buildToast();
       bindClicks();
     }
   }
