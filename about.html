@@ -713,6 +713,14 @@ var LB_PHOTOS_MASTER = [
 var LB_PHOTOS = [];
 var lbIdx = 0;
 
+/* Smart card click: opens lightbox for visitors, ignored in admin mode */
+function diatCardClick(e, i) {
+  /* If a cms-key element was clicked, let cms.js handle it */
+  if (e.target.closest('[data-cms-key]')) return;
+  /* Otherwise open lightbox */
+  openLightbox(i);
+}
+
 /* Fisher-Yates shuffle */
 function shuffle(arr) {
   var a = arr.slice();
@@ -743,7 +751,7 @@ function buildGrid() {
     LB_PHOTOS[i] = { src:imgSrc, title:title, desc:desc };
 
     return [
-      '<div class="diat-photo-card" onclick="openLightbox('+i+')" title="Click to view full size">',
+      '<div class="diat-photo-card" onclick="diatCardClick(event,'+i+')" title="Click to view full size">',
         '<div class="diat-photo-wrap">',
           /* Editable image wrapper — admin pastes new <img> tag here */
           '<div data-cms-key="about-photo-'+slug+'-src"',

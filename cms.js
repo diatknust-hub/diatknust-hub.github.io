@@ -96,7 +96,15 @@
   function buildStyles() {
     var s = document.createElement('style');
     s.textContent =
-      '[data-cms-key]{cursor:pointer!important}' +
+      '[data-cms-key]{cursor:pointer!important}'+ '[data-cms-type="image"]{cursor:crosshair!important}' +
+      '[data-cms-type="image"]{cursor:crosshair!important}' +
+      'body.diat-admin-mode [data-cms-type="image"]:hover::after{' +
+        'content:"\\1F4F7  Click to upload photo";' +
+        'position:absolute;bottom:8px;left:50%;transform:translateX(-50%);' +
+        'background:rgba(201,149,42,.92);color:#fff;font-size:.72rem;font-weight:700;' +
+        'padding:5px 14px;border-radius:50px;white-space:nowrap;pointer-events:none;' +
+        'font-family:Inter,system-ui,sans-serif;z-index:10;' +
+      '}' + +
       '[data-cms-key]:hover{outline:2px dashed #C9952A!important;outline-offset:3px;border-radius:3px}' +
       '#cms-modal{display:none;position:fixed;inset:0;z-index:2147483647;background:rgba(0,0,0,.6);backdrop-filter:blur(3px);align-items:center;justify-content:center;padding:20px}' +
       '#cms-modal.open{display:flex}' +
@@ -221,13 +229,14 @@
       if (!el) return;
       e.preventDefault();
       e.stopPropagation();
+      e.stopImmediatePropagation();
       /* Route image-type fields to upload modal, others to text modal */
       if (el.dataset.cmsType === 'image') {
         openImgModal(el);
       } else {
         openModal(el);
       }
-    });
+    }, true);
   }
 
   /* ── INIT ───────────────────────────────────────────────── */
