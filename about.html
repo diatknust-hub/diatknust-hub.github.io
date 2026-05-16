@@ -341,14 +341,22 @@
 
 <!-- DEPARTMENT PHOTO BANNER -->
 <div style="width:100%;height:480px;overflow:hidden;position:relative;border-bottom:3px solid var(--gold)">
-  <img src="diat-entrance.jpg" alt="DIAT Department entrance — KNUST, Kumasi, Ghana"
-       style="width:100%;height:100%;object-fit:cover;object-position:center 40%">
+  <!-- TO REPLACE PHOTO: in admin mode, click the image area and paste:
+       <img src="your-new-photo.jpg" alt="Description" style="width:100%;height:100%;object-fit:cover;object-position:center 40%"> -->
+  <div data-cms-key="about-hero-banner-img" data-cms-label="Hero Banner Photo (img tag)"
+       style="width:100%;height:100%">
+    <img src="diat-entrance.jpg" alt="DIAT Department entrance — KNUST, Kumasi, Ghana"
+         style="width:100%;height:100%;object-fit:cover;object-position:center 40%"
+         draggable="false" oncontextmenu="return false">
+  </div>
   <div style="position:absolute;bottom:0;left:0;right:0;height:140px;
-              background:linear-gradient(to top,rgba(0,0,0,.5),transparent)"></div>
+              background:linear-gradient(to top,rgba(0,0,0,.5),transparent);pointer-events:none"></div>
   <div style="position:absolute;bottom:28px;left:40px;color:#fff;font-family:var(--sans)">
-    <p style="font-size:.68rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;
+    <p data-cms-key="about-hero-location" data-cms-label="Hero Banner — Location Text" data-cms-type="text"
+       style="font-size:.68rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;
               color:rgba(255,255,255,.65);margin-bottom:5px">KNUST &middot; Kumasi, Ghana</p>
-    <p style="font-family:var(--serif);font-size:1.35rem;font-weight:600;color:#fff">
+    <p data-cms-key="about-hero-dept-name" data-cms-label="Hero Banner — Department Name" data-cms-type="text"
+       style="font-family:var(--serif);font-size:1.35rem;font-weight:600;color:#fff">
       Department of Indigenous Art &amp; Technology</p>
   </div>
 </div>
@@ -558,101 +566,270 @@
      TRIPARTITE MODEL — Three Arms
 ═══════════════════════════════════════════════════════════ -->
 
-<!-- ═══ PHOTO MOSAIC ═══════════════════════════════════════════════ -->
-<div style="background:#111;padding:56px 40px">
+<!-- ═══ PHOTO GALLERY ══════════════════════════════════════════════ -->
+<div style="background:#111;padding:56px 40px 48px">
   <div style="max-width:1200px;margin:0 auto">
+
+    <!-- Heading -->
     <div style="text-align:center;margin-bottom:36px">
-      <p style="font-size:.68rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;
+      <p data-cms-key="about-gallery-eyebrow" data-cms-label="Gallery Section — Eyebrow Label" data-cms-type="text"
+         style="font-size:.68rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;
                 color:var(--gold);margin-bottom:10px">The Department in Pictures</p>
-      <h2 style="font-family:var(--serif);font-size:clamp(1.8rem,3vw,2.8rem);
+      <h2 data-cms-key="about-gallery-heading" data-cms-label="Gallery Section — Main Heading" data-cms-type="text"
+          style="font-family:var(--serif);font-size:clamp(1.8rem,3vw,2.8rem);
                  font-weight:600;color:#fff;letter-spacing:-.02em">Where Heritage Lives</h2>
+      <p style="font-size:.78rem;color:rgba(255,255,255,.4);margin-top:10px">
+        Click any photo to view full size &nbsp;&middot;&nbsp;
+        <span style="color:var(--gold)">&#169; DIAT, KNUST 2026</span>
+      </p>
     </div>
-    <div style="display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:10px;height:380px">
-      <div style="overflow:hidden;border-radius:10px;position:relative;cursor:pointer">
-        <img src="diat-murals.jpg" alt="Indigenous craft murals — DIAT building facade"
-             style="width:100%;height:100%;object-fit:cover;transition:transform .5s ease"
-             onmouseover="this.style.transform='scale(1.05)'"
-             onmouseout="this.style.transform='scale(1)'">
-        <div style="position:absolute;bottom:0;left:0;right:0;padding:16px;
-                    background:linear-gradient(to top,rgba(0,0,0,.72),transparent)">
-          <p style="color:#fff;font-family:var(--serif);font-size:.95rem;font-weight:600">
-            Craft Heritage Murals</p>
-          <p style="color:rgba(255,255,255,.6);font-size:.68rem">
-            Relief panels on the DIAT facade</p>
-        </div>
-      </div>
-      <div style="display:grid;grid-template-rows:1fr 1fr;gap:10px">
-        <div style="overflow:hidden;border-radius:10px;position:relative;cursor:pointer">
-          <img src="diat-antelope.jpg" alt="Student sculpture — beaded antelope"
-               style="width:100%;height:100%;object-fit:cover;object-position:center 30%;
-                      transition:transform .5s ease"
-               onmouseover="this.style.transform='scale(1.05)'"
-               onmouseout="this.style.transform='scale(1)'">
-          <div style="position:absolute;bottom:0;left:0;right:0;padding:12px;
-                      background:linear-gradient(to top,rgba(0,0,0,.72),transparent)">
-            <p style="color:#fff;font-family:var(--serif);font-size:.85rem;font-weight:600">
-              Student Sculpture</p>
-            <p style="color:rgba(255,255,255,.6);font-size:.65rem">Beaded antelope, open-air campus</p>
-          </div>
-        </div>
-        <div style="overflow:hidden;border-radius:10px;position:relative;cursor:pointer">
-          <img src="diat-courtyard.jpg" alt="DIAT courtyard with decorative fountain"
-               style="width:100%;height:100%;object-fit:cover;object-position:center 65%;
-                      transition:transform .5s ease"
-               onmouseover="this.style.transform='scale(1.05)'"
-               onmouseout="this.style.transform='scale(1)'">
-          <div style="position:absolute;bottom:0;left:0;right:0;padding:12px;
-                      background:linear-gradient(to top,rgba(0,0,0,.72),transparent)">
-            <p style="color:#fff;font-family:var(--serif);font-size:.85rem;font-weight:600">
-              The DIAT Courtyard</p>
-            <p style="color:rgba(255,255,255,.6);font-size:.65rem">Fountain &amp; student installations</p>
-          </div>
-        </div>
-      </div>
-      <div style="overflow:hidden;border-radius:10px;position:relative;cursor:pointer">
-        <img src="diat-building.jpg" alt="DIAT department building and studios"
-             style="width:100%;height:100%;object-fit:cover;transition:transform .5s ease"
-             onmouseover="this.style.transform='scale(1.05)'"
-             onmouseout="this.style.transform='scale(1)'">
-        <div style="position:absolute;bottom:0;left:0;right:0;padding:16px;
-                    background:linear-gradient(to top,rgba(0,0,0,.72),transparent)">
-          <p style="color:#fff;font-family:var(--serif);font-size:.95rem;font-weight:600">
-            Department Studios</p>
-          <p style="color:rgba(255,255,255,.6);font-size:.68rem">
-            Teaching &amp; production spaces</p>
-        </div>
-      </div>
+
+    <!-- Photo grid — built and shuffled by JS on every page load -->
+    <div id="diat-photo-grid"
+         style="display:grid;grid-template-columns:repeat(4,1fr);
+                gap:10px;grid-template-rows:auto auto">
     </div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;height:240px;margin-top:10px">
-      <div style="overflow:hidden;border-radius:10px;position:relative;cursor:pointer">
-        <img src="diat-panorama.jpg" alt="Panoramic view of the DIAT compound"
-             style="width:100%;height:100%;object-fit:cover;object-position:center 35%;
-                    transition:transform .5s ease"
-             onmouseover="this.style.transform='scale(1.05)'"
-             onmouseout="this.style.transform='scale(1)'">
-        <div style="position:absolute;bottom:0;left:0;right:0;padding:14px;
-                    background:linear-gradient(to top,rgba(0,0,0,.65),transparent)">
-          <p style="color:#fff;font-family:var(--serif);font-size:.9rem;font-weight:600">
-            The Department Compound</p>
-          <p style="color:rgba(255,255,255,.6);font-size:.68rem">Panoramic view — DIAT, KNUST</p>
+
+  </div>
+</div>
+
+<!-- ═══ LIGHTBOX ════════════════════════════════════════════════════ -->
+<div id="diat-lightbox" style="display:none;position:fixed;inset:0;z-index:9999;
+     background:rgba(0,0,0,.94);align-items:center;justify-content:center;flex-direction:column"
+     onclick="closeLightbox(event)">
+
+  <!-- Close button -->
+  <button onclick="closeLightbox()" style="position:absolute;top:20px;right:24px;
+    background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.2);
+    width:42px;height:42px;border-radius:50%;font-size:1.2rem;cursor:pointer;
+    font-family:inherit;line-height:1;display:flex;align-items:center;justify-content:center">
+    &#10005;
+  </button>
+
+  <!-- Counter -->
+  <div id="lb-counter" style="position:absolute;top:24px;left:50%;transform:translateX(-50%);
+    color:rgba(255,255,255,.5);font-size:.78rem;font-family:Inter,sans-serif"></div>
+
+  <!-- Prev arrow -->
+  <button onclick="lbNav(-1);event.stopPropagation()" style="position:absolute;left:20px;top:50%;
+    transform:translateY(-50%);background:rgba(255,255,255,.1);color:#fff;
+    border:1px solid rgba(255,255,255,.2);width:48px;height:48px;border-radius:50%;
+    font-size:1.4rem;cursor:pointer;font-family:inherit">&#8249;</button>
+
+  <!-- Next arrow -->
+  <button onclick="lbNav(1);event.stopPropagation()" style="position:absolute;right:20px;top:50%;
+    transform:translateY(-50%);background:rgba(255,255,255,.1);color:#fff;
+    border:1px solid rgba(255,255,255,.2);width:48px;height:48px;border-radius:50%;
+    font-size:1.4rem;cursor:pointer;font-family:inherit">&#8250;</button>
+
+  <!-- Image container -->
+  <div style="position:relative;max-width:90vw;max-height:80vh;display:flex;
+              align-items:center;justify-content:center" onclick="event.stopPropagation()">
+    <img id="lb-img" src="" alt="" draggable="false" oncontextmenu="return false"
+         style="max-width:90vw;max-height:78vh;object-fit:contain;
+                display:block;border-radius:6px">
+    <!-- Watermark overlay on lightbox image -->
+    <div style="position:absolute;bottom:0;left:0;right:0;
+                background:linear-gradient(to top,rgba(0,0,0,.75),transparent);
+                padding:20px 16px 12px;border-radius:0 0 6px 6px;
+                pointer-events:none;user-select:none">
+      <div style="display:flex;justify-content:space-between;align-items:flex-end">
+        <div>
+          <p id="lb-title" style="color:#fff;font-family:Georgia,serif;
+             font-size:1.05rem;font-weight:600;margin-bottom:3px"></p>
+          <p id="lb-desc" style="color:rgba(255,255,255,.65);
+             font-size:.75rem;font-family:Inter,sans-serif"></p>
         </div>
-      </div>
-      <div style="overflow:hidden;border-radius:10px;position:relative;cursor:pointer">
-        <img src="diat-garden.jpg" alt="DIAT sculpture garden with ceramic works"
-             style="width:100%;height:100%;object-fit:cover;object-position:center 40%;
-                    transition:transform .5s ease"
-             onmouseover="this.style.transform='scale(1.05)'"
-             onmouseout="this.style.transform='scale(1)'">
-        <div style="position:absolute;bottom:0;left:0;right:0;padding:14px;
-                    background:linear-gradient(to top,rgba(0,0,0,.65),transparent)">
-          <p style="color:#fff;font-family:var(--serif);font-size:.9rem;font-weight:600">
-            Sculpture Garden</p>
-          <p style="color:rgba(255,255,255,.6);font-size:.68rem">Permanent outdoor installations</p>
+        <!-- Permanent watermark -->
+        <div style="text-align:right;flex-shrink:0;margin-left:20px">
+          <p style="color:rgba(255,255,255,.9);font-family:Georgia,serif;
+             font-size:.75rem;font-weight:600;letter-spacing:.04em">DIAT &middot; KNUST</p>
+          <p style="color:rgba(255,255,255,.55);font-size:.65rem;font-family:Inter,sans-serif">
+            &#169; 2026 &middot; diatknust-hub.github.io</p>
         </div>
       </div>
     </div>
   </div>
+
+  <!-- Thumbnail strip -->
+  <div id="lb-thumbs" style="display:flex;gap:8px;margin-top:16px;
+       overflow-x:auto;max-width:90vw;padding:4px"
+       onclick="event.stopPropagation()"></div>
 </div>
+
+<!-- Gallery CSS -->
+<style>
+.diat-photo-card{cursor:pointer;background:#1a1a1a;border-radius:8px;overflow:hidden;
+  transition:transform .25s ease,box-shadow .25s ease}
+.diat-photo-card:hover{transform:translateY(-4px);box-shadow:0 12px 32px rgba(0,0,0,.5)}
+.diat-photo-wrap{position:relative;width:100%;height:200px;overflow:hidden}
+.diat-photo-wrap img{width:100%;height:100%;object-fit:cover;display:block;
+  transition:transform .4s ease;user-select:none;pointer-events:none}
+.diat-photo-card:hover .diat-photo-wrap img{transform:scale(1.05)}
+/* Watermark — always visible bottom-right */
+.diat-wm{position:absolute;bottom:6px;right:8px;
+  color:rgba(255,255,255,.65);font-size:.58rem;font-weight:600;
+  font-family:Inter,system-ui,sans-serif;letter-spacing:.06em;
+  text-shadow:0 1px 3px rgba(0,0,0,.8);pointer-events:none;user-select:none;
+  background:rgba(0,0,0,.35);padding:2px 6px;border-radius:3px}
+/* Hover overlay */
+.diat-hover-overlay{position:absolute;inset:0;background:rgba(201,149,42,.15);
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;transition:opacity .25s ease;pointer-events:none}
+.diat-photo-card:hover .diat-hover-overlay{opacity:1}
+.diat-hover-overlay span{color:#fff;font-size:1.5rem;
+  background:rgba(201,149,42,.8);padding:10px 18px;border-radius:50px;
+  font-family:Inter,sans-serif;font-size:.82rem;font-weight:600;letter-spacing:.06em}
+/* Caption */
+.diat-caption{padding:10px 12px;background:#1a1a1a}
+.diat-caption strong{display:block;color:#fff;font-family:Georgia,serif;
+  font-size:.85rem;font-weight:600;margin-bottom:2px}
+.diat-caption span{font-size:.68rem;color:rgba(255,255,255,.45);font-family:Inter,sans-serif}
+/* Lightbox thumb */
+.lb-thumb{width:56px;height:40px;object-fit:cover;border-radius:4px;cursor:pointer;
+  opacity:.5;transition:opacity .2s,outline .2s;flex-shrink:0;
+  user-select:none;pointer-events:auto}
+.lb-thumb:hover{opacity:.8}
+.lb-thumb.active{opacity:1;outline:2px solid #C9952A}
+@media(max-width:768px){
+  .diat-photo-wrap{height:150px}
+  [style*="grid-template-columns:repeat(4"]{grid-template-columns:repeat(2,1fr)!important}
+}
+</style>
+
+<!-- Lightbox JS -->
+<script>
+var LB_PHOTOS_MASTER = [
+  {src:'diat-murals.jpg',     title:'Craft Heritage Murals',      desc:'Relief panels on the DIAT building facade'},
+  {src:'diat-antelope.jpg',   title:'Student Sculpture',          desc:'Beaded antelope — open-air campus, DIAT KNUST'},
+  {src:'diat-sculptures.jpg', title:'Open-Air Sculpture Gallery', desc:'Antelope & ostrich installations — DIAT campus'},
+  {src:'diat-building.jpg',   title:'Department Studios',         desc:'Teaching & production spaces — KNUST'},
+  {src:'diat-entrance.jpg',   title:'Department Entrance',        desc:'DIAT signboard — KNUST campus, Kumasi, Ghana'},
+  {src:'diat-courtyard.jpg',  title:'The DIAT Courtyard',         desc:'Decorative fountain & student installations'},
+  {src:'diat-panorama.jpg',   title:'Department Compound',        desc:'Panoramic view — DIAT, KNUST, Kumasi'},
+  {src:'diat-garden.jpg',     title:'Sculpture Garden',           desc:'Permanent outdoor installations — DIAT campus'}
+];
+
+var LB_PHOTOS = [];
+var lbIdx = 0;
+
+/* Fisher-Yates shuffle */
+function shuffle(arr) {
+  var a = arr.slice();
+  for (var i = a.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var tmp = a[i]; a[i] = a[j]; a[j] = tmp;
+  }
+  return a;
+}
+
+function buildGrid() {
+  /* Load any CMS overrides from localStorage */
+  var cms = {};
+  try { cms = JSON.parse(localStorage.getItem('diat_content') || '{}'); } catch(e) {}
+
+  LB_PHOTOS = shuffle(LB_PHOTOS_MASTER);
+  var grid = document.getElementById('diat-photo-grid');
+  if (!grid) return;
+
+  grid.innerHTML = LB_PHOTOS.map(function(p, i) {
+    var slug    = p.src.replace('.jpg','');
+    /* Use CMS-saved values if available, otherwise use defaults */
+    var imgSrc  = cms['about-photo-'+slug+'-src']   || p.src;
+    var title   = cms['about-photo-'+slug+'-title'] || p.title;
+    var desc    = cms['about-photo-'+slug+'-desc']  || p.desc;
+
+    /* Update LB_PHOTOS so lightbox reflects saved changes */
+    LB_PHOTOS[i] = { src:imgSrc, title:title, desc:desc };
+
+    return [
+      '<div class="diat-photo-card" onclick="openLightbox('+i+')" title="Click to view full size">',
+        '<div class="diat-photo-wrap">',
+          /* Editable image wrapper — admin pastes new <img> tag here */
+          '<div data-cms-key="about-photo-'+slug+'-src"',
+               ' data-cms-label="Photo — '+p.title+' (replace src)"',
+               ' data-cms-type="html"',
+               ' style="width:100%;height:100%;position:relative">',
+            '<img src="'+imgSrc+'" alt="'+title+'"',
+                 ' draggable="false" oncontextmenu="return false"',
+                 ' style="width:100%;height:100%;object-fit:cover;display:block;',
+                 'transition:transform .4s ease;user-select:none;pointer-events:none">',
+          '</div>',
+          '<div class="diat-wm">&#169; DIAT &middot; KNUST &middot; 2026</div>',
+          '<div class="diat-hover-overlay"><span>&#128269; View</span></div>',
+        '</div>',
+        '<div class="diat-caption">',
+          '<strong data-cms-key="about-photo-'+slug+'-title"',
+                  ' data-cms-label="Caption — '+p.title+' Title"',
+                  ' data-cms-type="text">'+title+'</strong>',
+          '<span data-cms-key="about-photo-'+slug+'-desc"',
+                ' data-cms-label="Caption — '+p.title+' Description"',
+                ' data-cms-type="text">'+desc+'</span>',
+        '</div>',
+      '</div>'
+    ].join('');
+  }).join('');
+}
+
+function openLightbox(i) {
+  lbIdx = i;
+  var lb = document.getElementById('diat-lightbox');
+  lb.style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+  lbShow();
+  var tb = document.getElementById('lb-thumbs');
+  tb.innerHTML = LB_PHOTOS.map(function(p, j) {
+    return '<img class="lb-thumb" src="'+p.src+'"' +
+      ' draggable="false" oncontextmenu="return false"' +
+      ' onclick="lbGo('+j+');event.stopPropagation()">';
+  }).join('');
+  lbUpdateThumbs();
+}
+
+function lbShow() {
+  var p = LB_PHOTOS[lbIdx];
+  document.getElementById('lb-img').src   = p.src;
+  document.getElementById('lb-img').alt   = p.title;
+  document.getElementById('lb-title').textContent = p.title;
+  document.getElementById('lb-desc').textContent  = p.desc;
+  document.getElementById('lb-counter').textContent = (lbIdx+1) + ' / ' + LB_PHOTOS.length;
+  lbUpdateThumbs();
+}
+
+function lbUpdateThumbs() {
+  document.querySelectorAll('.lb-thumb').forEach(function(t, j) {
+    t.classList.toggle('active', j === lbIdx);
+  });
+}
+
+function lbNav(dir) {
+  lbIdx = (lbIdx + dir + LB_PHOTOS.length) % LB_PHOTOS.length;
+  lbShow();
+}
+
+function lbGo(i) { lbIdx = i; lbShow(); }
+
+function closeLightbox(e) {
+  if (e && e.target !== document.getElementById('diat-lightbox')) return;
+  document.getElementById('diat-lightbox').style.display = 'none';
+  document.body.style.overflow = '';
+}
+
+document.addEventListener('keydown', function(e) {
+  var lb = document.getElementById('diat-lightbox');
+  if (!lb || lb.style.display === 'none') return;
+  if (e.key === 'Escape')     { lb.style.display='none'; document.body.style.overflow=''; }
+  if (e.key === 'ArrowRight') lbNav(1);
+  if (e.key === 'ArrowLeft')  lbNav(-1);
+});
+
+/* Build shuffled grid on every page load */
+document.addEventListener('DOMContentLoaded', function() {
+  buildGrid();
+  /* Re-apply any CMS saved content to dynamically built elements */
+  if (typeof diatCMSRefresh === 'function') diatCMSRefresh();
+});
+</script>
 <!-- ════════════════════════════════════════════════════════════════ -->
 <section class="sec sec-w" id="model">
   <div class="sec-in">
@@ -724,13 +901,16 @@
   <div style="position:absolute;inset:0;background:rgba(26,26,78,.5)"></div>
   <div style="position:absolute;inset:0;display:flex;align-items:center;
               justify-content:center;flex-direction:column;text-align:center;padding:24px">
-    <p style="font-size:.7rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;
+    <p data-cms-key="about-divider-eyebrow" data-cms-label="Divider — Eyebrow Text" data-cms-type="text"
+       style="font-size:.7rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;
               color:var(--gold);margin-bottom:14px">Est. 1976 &mdash; KNUST, Kumasi</p>
-    <h2 style="font-family:var(--serif);font-size:clamp(1.8rem,4vw,3.5rem);font-weight:600;
+    <h2 data-cms-key="about-divider-heading" data-cms-label="Divider — Main Heading" data-cms-type="text"
+        style="font-family:var(--serif);font-size:clamp(1.8rem,4vw,3.5rem);font-weight:600;
                color:#fff;line-height:1.1;max-width:600px;letter-spacing:-.02em">
       Art That Lives<br>in Every Corner
     </h2>
-    <p style="color:rgba(255,255,255,.75);font-size:.95rem;margin-top:16px;
+    <p data-cms-key="about-divider-desc" data-cms-label="Divider — Description Text"
+       style="color:rgba(255,255,255,.75);font-size:.95rem;margin-top:16px;
               max-width:480px;line-height:1.7">
       Student-made sculptures stand permanently in DIAT&#39;s open-air campus &mdash;
       a living gallery of indigenous art at the heart of KNUST.

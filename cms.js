@@ -191,7 +191,16 @@
     location.reload();
   };
 
-  window.diatCMSLogout = function() {
+  /* ── Re-scan DOM after dynamic content is built ────────────── */
+  window.diatCMSRefresh = function() {
+    /* Re-apply saved content to any newly added data-cms-key elements */
+    loadContent();
+  };
+
+  /* Re-scan DOM after dynamic content loads */
+  window.diatCMSRefresh = function() { loadContent(); };
+
+    window.diatCMSLogout = function() {
     localStorage.removeItem(KEY);
     showToast('Signed out');
     setTimeout(function(){ location.reload(); }, 800);
