@@ -715,9 +715,11 @@ var lbIdx = 0;
 
 /* Smart card click: opens lightbox for visitors, ignored in admin mode */
 function diatCardClick(e, i) {
-  /* If a cms-key element was clicked, let cms.js handle it */
-  if (e.target.closest('[data-cms-key]')) return;
-  /* Otherwise open lightbox */
+  /* In admin mode NEVER open lightbox — CMS handles everything */
+  var adminActive = localStorage.getItem('diat_admin_session') === 'true'
+    || (window.location.search && window.location.search.indexOf('cms=on') !== -1);
+  if (adminActive) return;
+  /* For regular visitors: open lightbox */
   openLightbox(i);
 }
 
@@ -1060,6 +1062,6 @@ document.addEventListener('DOMContentLoaded', function() {
     if (e.isIntersecting) { el.classList.add("vis"); }
   }, { threshold: 0.08 }).observe(el));
 </script>
-  <script src="cms.js"></script>
+  <script src="cms.js?v=3"></script>
 </body>
 </html>

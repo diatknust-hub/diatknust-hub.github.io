@@ -1,3 +1,4 @@
+/* DIAT CMS v3.1 — 2026-05-16 */
 /**
  * DIAT CMS v3 — Content Management
  * Activate: open any page with ?cms=on in the URL
@@ -98,6 +99,7 @@
     s.textContent =
       '[data-cms-key]{cursor:pointer!important}'+ '[data-cms-type="image"]{cursor:crosshair!important}' +
       '[data-cms-type="image"]{cursor:crosshair!important}' +
+      'body.diat-admin-mode [data-cms-type="image"]::after{content:"\\1F4F7 Upload";position:absolute;top:8px;right:8px;background:rgba(201,149,42,.9);color:#fff;font-size:.65rem;font-weight:700;padding:3px 8px;border-radius:50px;pointer-events:none;z-index:5;font-family:Inter,sans-serif}' +
       'body.diat-admin-mode [data-cms-type="image"]:hover::after{' +
         'content:"\\1F4F7  Click to upload photo";' +
         'position:absolute;bottom:8px;left:50%;transform:translateX(-50%);' +
