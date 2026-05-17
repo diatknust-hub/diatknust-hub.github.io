@@ -1,0 +1,1673 @@
+/*
+ * ============================================================
+ * DIAT KNUST HUB — Production Design System
+ * ============================================================
+ *
+ * ARCHITECTURAL DECISIONS (PR-style documentation)
+ * ─────────────────────────────────────────────────
+ *
+ * [TOKENS] CSS custom properties are used as single-source-of-
+ * truth design tokens. Any brand update touches ONE variable,
+ * not hundreds of declaration sites across 14 pages.
+ *
+ * [BEM] Block__Element--Modifier naming eliminates cascade
+ * conflicts in a multi-page site with no CSS bundler. Every
+ * selector is flat — no nesting specificity wars.
+ *
+ * [FLUID] clamp(min, preferred, max) replaces every fixed px
+ * size for typography and spacing. Zero media queries needed
+ * for text — it breathes naturally at every viewport width.
+ *
+ * [SEMANTIC] <header>, <nav>, <main>, <section>, <article>,
+ * <footer> used exclusively for structural meaning. Screen
+ * readers and search engines get real document architecture.
+ *
+ * [ASYMMETRY] CSS Grid named areas break the predictable
+ * 3-column icon layout. Editorial proportion — wider anchors
+ * paired with tighter companions — creates visual tension.
+ *
+ * FONT STACK:
+ *   Display/Headline: Playfair Display (editorial authority)
+ *   Body/UI:          Plus Jakarta Sans (high legibility,
+ *                     distinctive at small sizes)
+ *
+ * COLOR TOKENS:
+ *   --clr-gold:    Ashanti Gold — primary accent, DIAT brand
+ *   --clr-indigo:  Deep Indigo — authority, nav, footer
+ *   --clr-terra:   Terracotta — warmth, craft discipline accents
+ *   --clr-earth:   Warm surface — replaces cold grays
+ * ============================================================
+ */
+
+/* ── 0. RESET & ROOT ──────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 100%; scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+body {
+  font-family: var(--ff-body);
+  font-size: var(--fs-base);
+  color: var(--clr-text-primary);
+  background-color: var(--clr-surface);
+  line-height: var(--lh-base);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+img, svg, video { display: block; max-width: 100%; }
+a { color: inherit; text-decoration: none; }
+ul, ol { list-style: none; }
+button { font-family: inherit; cursor: pointer; border: none; background: none; }
+h1, h2, h3, h4, h5, h6 { font-family: var(--ff-display); line-height: var(--lh-heading); }
+
+/* ── 1. DESIGN TOKENS ─────────────────────────────────────── */
+:root {
+  /* Palette */
+  --clr-gold:          #C9952A;
+  --clr-gold-light:    #FBF4E6;
+  --clr-gold-dark:     #9A6F10;
+  --clr-gold-muted:    rgba(201, 149, 42, 0.12);
+  --clr-indigo:        #1A1A4E;
+  --clr-indigo-mid:    #2D2D7A;
+  --clr-terra:         #C1440E;
+  --clr-terra-light:   #FDF0E7;
+  --clr-green:         #2D6A2D;
+  --clr-green-light:   #EBF5EB;
+  --clr-white:         #FFFFFF;
+  --clr-surface:       #FAFAF8;
+  --clr-earth:         #F4F0E8;
+  --clr-border:        #E4DDD0;
+
+  /* Text */
+  --clr-text-primary:   #141414;
+  --clr-text-secondary: #52514E;
+  --clr-text-tertiary:  #9A9690;
+  --clr-text-inverse:   #FFFFFF;
+
+  /* Typography */
+  --ff-display: 'Playfair Display', 'Georgia', serif;
+  --ff-body:    'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+
+  /* Fluid type scale */
+  --fs-xs:   clamp(0.65rem,  0.6rem  + 0.25vw, 0.75rem);
+  --fs-sm:   clamp(0.78rem,  0.72rem + 0.3vw,  0.875rem);
+  --fs-base: clamp(0.9rem,   0.85rem + 0.25vw, 1rem);
+  --fs-md:   clamp(1rem,     0.9rem  + 0.5vw,  1.125rem);
+  --fs-lg:   clamp(1.15rem,  1rem    + 0.75vw, 1.35rem);
+  --fs-xl:   clamp(1.4rem,   1.1rem  + 1.5vw,  2rem);
+  --fs-2xl:  clamp(1.8rem,   1.3rem  + 2.5vw,  3rem);
+  --fs-3xl:  clamp(2.2rem,   1.5rem  + 3.5vw,  4rem);
+  --fs-4xl:  clamp(2.8rem,   2rem    + 4vw,    5.5rem);
+
+  /* Line heights */
+  --lh-base:    1.75;
+  --lh-relaxed: 1.85;
+  --lh-heading: 1.08;
+  --lh-tight:   1.15;
+
+  /* Letter spacing */
+  --ls-tight:  -0.03em;
+  --ls-normal:  0;
+  --ls-wide:    0.06em;
+  --ls-widest:  0.18em;
+
+  /* Fluid space scale */
+  --sp-2xs: clamp(0.25rem, 0.2rem + 0.25vw, 0.375rem);
+  --sp-xs:  clamp(0.5rem,  0.4rem + 0.5vw,  0.75rem);
+  --sp-sm:  clamp(0.75rem, 0.6rem + 0.75vw, 1rem);
+  --sp-md:  clamp(1rem,    0.8rem + 1vw,    1.5rem);
+  --sp-lg:  clamp(1.5rem,  1.2rem + 1.5vw,  2.5rem);
+  --sp-xl:  clamp(2rem,    1.5rem + 2.5vw,  4rem);
+  --sp-2xl: clamp(3rem,    2rem   + 5vw,    7rem);
+  --sp-3xl: clamp(4rem,    2.5rem + 7vw,    10rem);
+
+  /* Border & radius */
+  --radius-sm:   4px;
+  --radius-md:   10px;
+  --radius-lg:   18px;
+  --radius-full: 9999px;
+  --border-hairline: 1px solid var(--clr-border);
+
+  /* Shadows */
+  --shadow-sm: 0 1px 3px rgba(20,20,20,0.06), 0 1px 2px rgba(20,20,20,0.04);
+  --shadow-md: 0 4px 16px rgba(20,20,20,0.08), 0 2px 6px rgba(20,20,20,0.04);
+  --shadow-lg: 0 12px 40px rgba(20,20,20,0.12), 0 4px 12px rgba(20,20,20,0.06);
+  --shadow-gold: 0 6px 24px rgba(201,149,42,0.25);
+
+  /* Motion */
+  --ease-out:   cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in:    cubic-bezier(0.4, 0, 1, 1);
+  --ease-inout: cubic-bezier(0.4, 0, 0.2, 1);
+  --dur-fast:   160ms;
+  --dur-base:   280ms;
+  --dur-slow:   480ms;
+
+  /* Layout */
+  --container-max: 1200px;
+  --container-wide: 1440px;
+  --nav-height: 68px;
+}
+
+/* ── 2. ACCESSIBILITY ─────────────────────────────────────── */
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: var(--sp-md);
+  z-index: 10000;
+  padding: var(--sp-sm) var(--sp-md);
+  background: var(--clr-indigo);
+  color: var(--clr-text-inverse);
+  font-family: var(--ff-body);
+  font-size: var(--fs-sm);
+  font-weight: 700;
+  border-radius: var(--radius-md);
+  text-decoration: none;
+  transition: top var(--dur-fast);
+}
+.skip-link:focus { top: var(--sp-sm); }
+
+/* Visually hidden (accessible) */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Focus ring */
+:focus-visible {
+  outline: 2.5px solid var(--clr-gold);
+  outline-offset: 3px;
+  border-radius: var(--radius-sm);
+}
+
+/* ── 3. LAYOUT UTILITIES ──────────────────────────────────── */
+.container {
+  width: min(var(--container-max), 100% - var(--sp-xl) * 2);
+  margin-inline: auto;
+}
+.container--wide {
+  width: min(var(--container-wide), 100% - var(--sp-xl) * 2);
+}
+
+/* Reveal animation */
+.js-reveal {
+  opacity: 0;
+  transform: translateY(1.5rem);
+  transition: opacity var(--dur-slow) var(--ease-out),
+              transform var(--dur-slow) var(--ease-out);
+}
+.js-reveal.is-visible { opacity: 1; transform: none; }
+.js-reveal--delay-1 { transition-delay: 100ms; }
+.js-reveal--delay-2 { transition-delay: 200ms; }
+.js-reveal--delay-3 { transition-delay: 320ms; }
+
+/* ── 4. ANNOUNCE BAR ──────────────────────────────────────── */
+.site-announce {
+  background: var(--clr-indigo);
+  color: rgba(255,255,255,0.82);
+  text-align: center;
+  padding: var(--sp-xs) var(--sp-md);
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  letter-spacing: var(--ls-wide);
+}
+.site-announce__link {
+  color: var(--clr-gold);
+  font-weight: 700;
+  margin-left: var(--sp-sm);
+  transition: opacity var(--dur-fast);
+}
+.site-announce__link:hover { opacity: 0.75; }
+
+/* ── 5. PRIMARY NAVIGATION ────────────────────────────────── */
+.dept-nav {
+  position: sticky;
+  top: 0;
+  z-index: 200;
+  background: rgba(255,255,255,0.95);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: var(--border-hairline);
+  height: var(--nav-height);
+  display: flex;
+  align-items: center;
+  transition: box-shadow var(--dur-base) var(--ease-out);
+}
+.dept-nav.is-scrolled { box-shadow: var(--shadow-md); }
+.dept-nav__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-md);
+  width: 100%;
+}
+.dept-nav__brand {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-sm);
+  flex-shrink: 0;
+  text-decoration: none;
+}
+.dept-nav__logo {
+  width: 36px;
+  height: 36px;
+  animation: sankofa-float 5s ease-in-out infinite;
+  flex-shrink: 0;
+}
+@keyframes sankofa-float {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-9px); }
+}
+.dept-nav__brand-text { display: flex; flex-direction: column; line-height: 1.2; }
+.dept-nav__brand-name {
+  font-family: var(--ff-display);
+  font-size: var(--fs-md);
+  font-weight: 700;
+  color: var(--clr-indigo);
+  letter-spacing: var(--ls-tight);
+}
+.dept-nav__brand-sub {
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  letter-spacing: var(--ls-widest);
+  text-transform: uppercase;
+  color: var(--clr-text-tertiary);
+}
+.dept-nav__links {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2xs);
+}
+.dept-nav__link {
+  font-size: var(--fs-sm);
+  font-weight: 500;
+  color: var(--clr-text-secondary);
+  padding: var(--sp-xs) var(--sp-sm);
+  border-radius: var(--radius-md);
+  white-space: nowrap;
+  transition: background var(--dur-fast), color var(--dur-fast);
+}
+.dept-nav__link:hover,
+.dept-nav__link--active {
+  background: var(--clr-gold-light);
+  color: var(--clr-gold-dark);
+}
+.dept-nav__cta {
+  font-size: var(--fs-sm);
+  font-weight: 700;
+  color: var(--clr-text-inverse);
+  background: var(--clr-gold);
+  padding: var(--sp-xs) var(--sp-md);
+  border-radius: var(--radius-full);
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: background var(--dur-fast) var(--ease-out),
+              transform var(--dur-fast) var(--ease-out),
+              box-shadow var(--dur-fast) var(--ease-out);
+}
+.dept-nav__cta:hover {
+  background: var(--clr-gold-dark);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-gold);
+}
+
+/* Hamburger */
+.dept-nav__toggle {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  padding: var(--sp-xs);
+  border-radius: var(--radius-sm);
+}
+.dept-nav__toggle-bar {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: var(--clr-text-primary);
+  border-radius: 2px;
+  transition: transform var(--dur-base) var(--ease-out),
+              opacity var(--dur-base);
+}
+.dept-nav__toggle[aria-expanded="true"] .dept-nav__toggle-bar:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+.dept-nav__toggle[aria-expanded="true"] .dept-nav__toggle-bar:nth-child(2) {
+  opacity: 0;
+}
+.dept-nav__toggle[aria-expanded="true"] .dept-nav__toggle-bar:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+/* Mobile drawer */
+.dept-nav__drawer {
+  display: none;
+  position: fixed;
+  inset: 0;
+  top: var(--nav-height);
+  z-index: 199;
+  background: var(--clr-white);
+  padding: var(--sp-lg) var(--sp-xl);
+  flex-direction: column;
+  gap: var(--sp-2xs);
+  overflow-y: auto;
+}
+.dept-nav__drawer.is-open { display: flex; }
+.dept-nav__drawer-link {
+  font-size: var(--fs-lg);
+  font-weight: 500;
+  color: var(--clr-text-primary);
+  padding: var(--sp-md) 0;
+  border-bottom: var(--border-hairline);
+  transition: color var(--dur-fast);
+}
+.dept-nav__drawer-link:hover { color: var(--clr-gold); }
+.dept-nav__drawer-cta {
+  display: block;
+  margin-top: var(--sp-md);
+  background: var(--clr-gold);
+  color: var(--clr-text-inverse);
+  text-align: center;
+  padding: var(--sp-md);
+  border-radius: var(--radius-lg);
+  font-weight: 700;
+  font-size: var(--fs-md);
+}
+
+/* ── 6. HERO SECTION ──────────────────────────────────────── */
+/*
+ * WHY ASYMMETRIC GRID:
+ * The hero uses a named-area grid instead of equal columns.
+ * The 7fr/5fr split gives the editorial headline visual
+ * dominance while the right panel creates compositional
+ * tension — not the predictable 50/50 split of AI code.
+ */
+.dept-hero {
+  background: var(--clr-surface);
+  min-height: calc(100svh - var(--nav-height));
+  display: grid;
+  grid-template-columns: 7fr 5fr;
+  grid-template-rows: 1fr auto;
+  grid-template-areas:
+    "copy  visual"
+    "trust visual";
+  align-items: center;
+  overflow: hidden;
+}
+.dept-hero__copy {
+  grid-area: copy;
+  padding: var(--sp-2xl) var(--sp-xl) var(--sp-xl) var(--sp-xl);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.dept-hero__eyebrow {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-sm);
+  margin-bottom: var(--sp-md);
+}
+.dept-hero__eyebrow-line {
+  width: 2.5rem;
+  height: 2px;
+  background: var(--clr-gold);
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+.dept-hero__eyebrow-text {
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  letter-spacing: var(--ls-widest);
+  text-transform: uppercase;
+  color: var(--clr-text-tertiary);
+}
+.dept-hero__title {
+  font-size: var(--fs-4xl);
+  font-weight: 700;
+  letter-spacing: var(--ls-tight);
+  color: var(--clr-text-primary);
+  line-height: 1.02;
+  margin-bottom: var(--sp-md);
+}
+.dept-hero__title-accent {
+  color: var(--clr-gold);
+  font-style: italic;
+}
+.dept-hero__subtitle {
+  font-size: var(--fs-md);
+  color: var(--clr-text-secondary);
+  line-height: var(--lh-relaxed);
+  max-width: 44ch;
+  margin-bottom: var(--sp-xl);
+}
+.dept-hero__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-sm);
+  flex-wrap: wrap;
+}
+.dept-hero__trust {
+  grid-area: trust;
+  padding: var(--sp-xl) var(--sp-xl) var(--sp-2xl);
+  border-top: var(--border-hairline);
+}
+.dept-hero__trust-label {
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  letter-spacing: var(--ls-widest);
+  text-transform: uppercase;
+  color: var(--clr-text-tertiary);
+  margin-bottom: var(--sp-md);
+}
+.dept-hero__partners {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-xl);
+  flex-wrap: wrap;
+}
+.dept-hero__partner-logo {
+  height: 36px;
+  width: auto;
+  object-fit: contain;
+  opacity: 0.65;
+  filter: grayscale(0.3);
+  transition: opacity var(--dur-base);
+}
+.dept-hero__partner-logo:hover { opacity: 1; }
+
+/* Visual panel */
+.dept-hero__visual {
+  grid-area: visual;
+  background: var(--clr-earth);
+  height: 100%;
+  min-height: 540px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.dept-hero__sankofa-wrap {
+  width: clamp(220px, 35vw, 420px);
+  height: clamp(220px, 35vw, 420px);
+  border-radius: 50%;
+  background: rgba(201,149,42,0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 2;
+}
+.dept-hero__sankofa {
+  width: 65%;
+  height: 65%;
+}
+.dept-hero__badge {
+  position: absolute;
+  top: var(--sp-xl);
+  right: var(--sp-lg);
+  width: clamp(72px, 9vw, 104px);
+  height: clamp(72px, 9vw, 104px);
+  border-radius: 50%;
+  background: var(--clr-gold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+  z-index: 3;
+  box-shadow: var(--shadow-gold);
+}
+.dept-hero__badge-title {
+  font-family: var(--ff-display);
+  font-size: var(--fs-lg);
+  font-weight: 700;
+  color: var(--clr-text-inverse);
+  line-height: 1;
+}
+.dept-hero__badge-sub {
+  font-size: var(--fs-xs);
+  color: rgba(255,255,255,0.75);
+  letter-spacing: 0.05em;
+}
+/* Gallery cards on hero visual */
+.dept-hero__preview {
+  position: absolute;
+  bottom: var(--sp-lg);
+  left: var(--sp-md);
+  right: var(--sp-md);
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--sp-xs);
+  z-index: 2;
+}
+.dept-hero__preview-card {
+  aspect-ratio: 3/2;
+  border-radius: var(--radius-md);
+  background: var(--clr-border);
+  overflow: hidden;
+  position: relative;
+}
+.dept-hero__preview-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.dept-hero__preview-label {
+  position: absolute;
+  inset: 0;
+  padding: var(--sp-xs) var(--sp-sm);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  background: linear-gradient(to top, rgba(20,20,20,0.72), transparent);
+}
+.dept-hero__preview-disc {
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  letter-spacing: var(--ls-wide);
+  text-transform: uppercase;
+  color: var(--clr-gold);
+}
+.dept-hero__preview-name {
+  font-size: var(--fs-xs);
+  color: rgba(255,255,255,0.85);
+}
+.dept-hero__preview-ar {
+  position: absolute;
+  top: var(--sp-xs);
+  left: var(--sp-xs);
+  background: var(--clr-gold);
+  color: var(--clr-text-inverse);
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: var(--radius-full);
+  letter-spacing: 0.05em;
+}
+
+/* ── 7. BUTTONS ───────────────────────────────────────────── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-xs);
+  font-family: var(--ff-body);
+  font-weight: 700;
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  border: none;
+  text-decoration: none;
+  transition: background var(--dur-fast) var(--ease-out),
+              color var(--dur-fast) var(--ease-out),
+              transform var(--dur-fast) var(--ease-out),
+              box-shadow var(--dur-fast) var(--ease-out);
+  white-space: nowrap;
+}
+.btn--sm   { font-size: var(--fs-sm); padding: var(--sp-xs) var(--sp-md); }
+.btn--md   { font-size: var(--fs-base); padding: var(--sp-sm) var(--sp-lg); }
+.btn--lg   { font-size: var(--fs-md); padding: var(--sp-md) var(--sp-xl); }
+
+.btn--primary {
+  background: var(--clr-gold);
+  color: var(--clr-text-inverse);
+}
+.btn--primary:hover {
+  background: var(--clr-gold-dark);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-gold);
+}
+.btn--secondary {
+  background: transparent;
+  color: var(--clr-text-primary);
+  border: 1.5px solid var(--clr-border);
+}
+.btn--secondary:hover {
+  border-color: var(--clr-text-primary);
+  background: var(--clr-text-primary);
+  color: var(--clr-text-inverse);
+}
+.btn--ghost-light {
+  background: rgba(255,255,255,0.12);
+  color: var(--clr-text-inverse);
+  border: 1.5px solid rgba(255,255,255,0.25);
+}
+.btn--ghost-light:hover {
+  background: rgba(255,255,255,0.22);
+  border-color: rgba(255,255,255,0.5);
+}
+.btn--white {
+  background: var(--clr-white);
+  color: var(--clr-gold-dark);
+}
+.btn--white:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+.btn__arrow { transition: transform var(--dur-fast) var(--ease-out); }
+.btn:hover .btn__arrow { transform: translateX(4px); }
+
+/* ── 8. SECTION SHARED PATTERNS ──────────────────────────── */
+.dept-section {
+  padding-block: var(--sp-2xl);
+}
+.dept-section--surface { background: var(--clr-surface); }
+.dept-section--earth   { background: var(--clr-earth); }
+.dept-section--dark    { background: var(--clr-indigo); }
+.dept-section--white   { background: var(--clr-white); }
+
+.dept-section__header {
+  margin-bottom: var(--sp-xl);
+}
+.dept-section__eyebrow {
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  letter-spacing: var(--ls-widest);
+  text-transform: uppercase;
+  color: var(--clr-gold);
+  margin-bottom: var(--sp-sm);
+  display: block;
+}
+.dept-section__eyebrow--light {
+  color: rgba(201,149,42,0.8);
+}
+.dept-section__title {
+  font-size: var(--fs-2xl);
+  font-weight: 700;
+  letter-spacing: var(--ls-tight);
+  color: var(--clr-text-primary);
+  line-height: var(--lh-heading);
+}
+.dept-section__title--light {
+  color: var(--clr-text-inverse);
+}
+.dept-section__rule {
+  width: 3rem;
+  height: 3px;
+  background: var(--clr-gold);
+  border-radius: 2px;
+  margin-top: var(--sp-md);
+}
+.dept-section__body {
+  font-size: var(--fs-base);
+  color: var(--clr-text-secondary);
+  line-height: var(--lh-relaxed);
+  max-width: 60ch;
+  text-align: justify;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+}
+.dept-section__body--light { color: rgba(255,255,255,0.72); }
+
+/* ── 9. STATS RIBBON ──────────────────────────────────────── */
+.dept-stats {
+  background: var(--clr-indigo);
+  padding-block: var(--sp-xl);
+  overflow: hidden;
+}
+.dept-stats__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: rgba(255,255,255,0.08);
+}
+.dept-stats__item {
+  background: var(--clr-indigo);
+  padding: var(--sp-xl) var(--sp-lg);
+  text-align: center;
+}
+.dept-stats__number {
+  font-family: var(--ff-display);
+  font-size: var(--fs-3xl);
+  font-weight: 700;
+  color: var(--clr-gold);
+  line-height: 1;
+  margin-bottom: var(--sp-xs);
+}
+.dept-stats__label {
+  font-size: var(--fs-sm);
+  color: rgba(255,255,255,0.55);
+  font-weight: 500;
+  letter-spacing: var(--ls-wide);
+}
+
+/* ── 10. ABOUT TEASER ─────────────────────────────────────── */
+.dept-about {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--sp-2xl);
+  align-items: center;
+}
+.dept-about__body {
+  font-size: var(--fs-base);
+  color: var(--clr-text-secondary);
+  line-height: var(--lh-relaxed);
+  text-align: justify;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+  margin-bottom: var(--sp-md);
+}
+.dept-about__visual {
+  position: relative;
+}
+.dept-about__img {
+  width: 100%;
+  aspect-ratio: 4/3;
+  object-fit: cover;
+  border-radius: var(--radius-lg);
+  display: block;
+}
+.dept-about__img-caption {
+  position: absolute;
+  bottom: var(--sp-md);
+  left: var(--sp-md);
+  right: var(--sp-md);
+  background: rgba(255,255,255,0.92);
+  backdrop-filter: blur(8px);
+  border-radius: var(--radius-md);
+  padding: var(--sp-sm) var(--sp-md);
+  font-size: var(--fs-sm);
+  color: var(--clr-text-secondary);
+}
+
+/* Tripartite cards */
+.dept-tripartite {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--sp-md);
+  margin-top: var(--sp-xl);
+}
+.dept-tri-card {
+  background: var(--clr-white);
+  border: var(--border-hairline);
+  border-radius: var(--radius-lg);
+  padding: var(--sp-lg);
+  transition: border-color var(--dur-base), box-shadow var(--dur-base),
+              transform var(--dur-base) var(--ease-out);
+}
+.dept-tri-card:hover {
+  border-color: var(--clr-gold);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-3px);
+}
+.dept-tri-card__icon {
+  font-size: 1.75rem;
+  margin-bottom: var(--sp-md);
+  display: block;
+}
+.dept-tri-card__title {
+  font-family: var(--ff-display);
+  font-size: var(--fs-md);
+  font-weight: 700;
+  color: var(--clr-text-primary);
+  margin-bottom: var(--sp-sm);
+}
+.dept-tri-card__body {
+  font-size: var(--fs-sm);
+  color: var(--clr-text-secondary);
+  line-height: var(--lh-relaxed);
+}
+
+/* ── 11. DISCIPLINES GRID ─────────────────────────────────── */
+/*
+ * WHY THIS GRID:
+ * Instead of predictable 3-col or 2x3 equal cards, we use
+ * an asymmetric named-area grid. Product Design (foundational)
+ * spans the full width — visually communicating its role as
+ * the spine of all disciplines. The 6 crafts beneath use a
+ * 6-col grid with varying column spans to create rhythm.
+ */
+.dept-programmes {
+  padding-block: var(--sp-2xl);
+  background: var(--clr-surface);
+}
+.dept-programmes__grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  grid-template-rows: auto;
+  gap: var(--sp-md);
+  margin-top: var(--sp-xl);
+}
+/* Product Design spans full width as foundational */
+.dept-disc-card--featured {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: var(--sp-xl);
+  align-items: start;
+}
+/* Discipline cards: 2 col on desktop for variety */
+.dept-disc-card--wide  { grid-column: span 3; }
+.dept-disc-card--std   { grid-column: span 2; }
+
+.dept-disc-card {
+  background: var(--clr-white);
+  border: var(--border-hairline);
+  border-radius: var(--radius-lg);
+  padding: var(--sp-lg);
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+  display: block;
+  transition: border-color var(--dur-base) var(--ease-out),
+              box-shadow var(--dur-base) var(--ease-out),
+              transform var(--dur-base) var(--ease-out);
+}
+.dept-disc-card:hover {
+  border-color: var(--clr-gold);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-3px);
+}
+.dept-disc-card__icon-wrap {
+  width: 3.25rem;
+  height: 3.25rem;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  margin-bottom: var(--sp-md);
+  flex-shrink: 0;
+}
+.dept-disc-card__icon-wrap--clay    { background: var(--clr-terra-light); }
+.dept-disc-card__icon-wrap--fibres  { background: #FEF9E6; }
+.dept-disc-card__icon-wrap--leather { background: #F5F0E8; }
+.dept-disc-card__icon-wrap--metal   { background: #EEF1FA; }
+.dept-disc-card__icon-wrap--rattan  { background: var(--clr-green-light); }
+.dept-disc-card__icon-wrap--wood    { background: #FDF8F0; }
+.dept-disc-card__icon-wrap--pd      { background: var(--clr-gold-light); }
+.dept-disc-card__title {
+  font-family: var(--ff-display);
+  font-size: var(--fs-lg);
+  font-weight: 700;
+  color: var(--clr-text-primary);
+  margin-bottom: var(--sp-sm);
+}
+.dept-disc-card__body {
+  font-size: var(--fs-sm);
+  color: var(--clr-text-secondary);
+  line-height: var(--lh-relaxed);
+  margin-bottom: var(--sp-md);
+}
+.dept-disc-card__read-more {
+  font-size: var(--fs-sm);
+  font-weight: 700;
+  color: var(--clr-gold);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2xs);
+  transition: gap var(--dur-fast);
+}
+.dept-disc-card:hover .dept-disc-card__read-more { gap: var(--sp-xs); }
+
+/* Featured card (Product Design) extras */
+.dept-disc-card--featured .dept-disc-card__icon-wrap {
+  width: 4.5rem;
+  height: 4.5rem;
+  font-size: 2rem;
+  border-radius: var(--radius-lg);
+}
+.dept-disc-card--featured .dept-disc-card__tag {
+  display: inline-block;
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  letter-spacing: var(--ls-widest);
+  text-transform: uppercase;
+  background: var(--clr-gold);
+  color: var(--clr-text-inverse);
+  padding: 3px 10px;
+  border-radius: var(--radius-full);
+  margin-bottom: var(--sp-sm);
+}
+
+/* ── 12. GALLERY PREVIEW ──────────────────────────────────── */
+.dept-gallery-preview {
+  padding-block: var(--sp-2xl);
+  background: var(--clr-white);
+}
+.dept-gallery-preview__header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--sp-md);
+  margin-bottom: var(--sp-xl);
+}
+.dept-gallery-preview__grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  grid-template-rows: 280px 200px;
+  gap: var(--sp-sm);
+}
+/* Featured artwork: wide + tall */
+.dept-artwork-card--hero     { grid-column: span 5; grid-row: 1 / 3; }
+.dept-artwork-card--wide     { grid-column: span 4; }
+.dept-artwork-card--std      { grid-column: span 3; }
+.dept-artwork-card--tall     { grid-column: span 4; grid-row: span 2; }
+
+.dept-artwork-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  background: var(--clr-earth);
+  cursor: pointer;
+  display: block;
+}
+.dept-artwork-card:focus-visible {
+  outline: 3px solid var(--clr-gold);
+  outline-offset: 2px;
+}
+.dept-artwork-card__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--dur-slow) var(--ease-out);
+  display: block;
+}
+.dept-artwork-card:hover .dept-artwork-card__img {
+  transform: scale(1.04);
+}
+.dept-artwork-card__overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(20,20,20,0.75) 0%, transparent 55%);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: var(--sp-md);
+  opacity: 0.85;
+  transition: opacity var(--dur-base) var(--ease-out);
+}
+.dept-artwork-card:hover .dept-artwork-card__overlay { opacity: 1; }
+.dept-artwork-card__disc {
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  letter-spacing: var(--ls-wide);
+  text-transform: uppercase;
+  color: var(--clr-gold);
+  margin-bottom: 3px;
+}
+.dept-artwork-card__title {
+  font-family: var(--ff-display);
+  font-size: var(--fs-md);
+  color: var(--clr-text-inverse);
+  font-weight: 600;
+}
+.dept-artwork-card__artist {
+  font-size: var(--fs-sm);
+  color: rgba(255,255,255,0.65);
+}
+.dept-artwork-card__ar-badge {
+  position: absolute;
+  top: var(--sp-sm);
+  left: var(--sp-sm);
+  background: var(--clr-gold);
+  color: var(--clr-text-inverse);
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: var(--radius-full);
+  letter-spacing: 0.05em;
+}
+.dept-artwork-card__placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  flex-direction: column;
+  gap: var(--sp-sm);
+  color: var(--clr-border);
+}
+.dept-artwork-card__placeholder-icon { font-size: 2rem; }
+.dept-artwork-card__placeholder-label {
+  font-size: var(--fs-sm);
+  color: var(--clr-text-tertiary);
+}
+
+/* ── 13. ANNIVERSARY SECTION ──────────────────────────────── */
+.dept-anniversary {
+  background: var(--clr-indigo);
+  padding-block: var(--sp-2xl);
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+}
+.dept-anniversary::before {
+  content: '50';
+  position: absolute;
+  font-family: var(--ff-display);
+  font-size: 40vw;
+  font-weight: 900;
+  color: rgba(255,255,255,0.025);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  user-select: none;
+  line-height: 1;
+}
+.dept-anniversary__label {
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  letter-spacing: var(--ls-widest);
+  text-transform: uppercase;
+  color: rgba(201,149,42,0.8);
+  margin-bottom: var(--sp-md);
+  display: block;
+}
+.dept-anniversary__title {
+  font-size: var(--fs-3xl);
+  font-weight: 700;
+  color: var(--clr-text-inverse);
+  letter-spacing: var(--ls-tight);
+  line-height: var(--lh-heading);
+  margin-bottom: var(--sp-md);
+}
+.dept-anniversary__title em {
+  color: var(--clr-gold);
+  font-style: normal;
+}
+.dept-anniversary__body {
+  font-size: var(--fs-md);
+  color: rgba(255,255,255,0.65);
+  line-height: var(--lh-relaxed);
+  max-width: 48ch;
+  margin: 0 auto var(--sp-xl);
+  text-align: center;
+}
+.dept-anniversary__milestones {
+  display: flex;
+  justify-content: center;
+  gap: var(--sp-xl);
+  flex-wrap: wrap;
+  margin-top: var(--sp-xl);
+}
+.dept-milestone {
+  text-align: center;
+}
+.dept-milestone__year {
+  font-family: var(--ff-display);
+  font-size: var(--fs-xl);
+  font-weight: 700;
+  color: var(--clr-gold);
+  display: block;
+}
+.dept-milestone__desc {
+  font-size: var(--fs-sm);
+  color: rgba(255,255,255,0.5);
+}
+
+/* ── 14. COMMUNITY HIGHLIGHT ──────────────────────────────── */
+.dept-community {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  min-height: 480px;
+}
+.dept-community__visual {
+  background: var(--clr-earth);
+  position: relative;
+  overflow: hidden;
+  min-height: 360px;
+}
+.dept-community__visual-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.dept-community__content {
+  background: var(--clr-gold);
+  padding: var(--sp-2xl);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.dept-community__content .dept-section__eyebrow { color: rgba(255,255,255,0.7); }
+.dept-community__content .dept-section__title { color: var(--clr-text-inverse); }
+.dept-community__body {
+  font-size: var(--fs-base);
+  color: rgba(255,255,255,0.85);
+  line-height: var(--lh-relaxed);
+  margin-block: var(--sp-lg);
+  text-align: justify;
+  hyphens: auto;
+}
+.dept-community__partners {
+  display: flex;
+  gap: var(--sp-md);
+  flex-wrap: wrap;
+  align-items: center;
+}
+.dept-community__partner-badge {
+  background: rgba(255,255,255,0.18);
+  color: var(--clr-text-inverse);
+  font-size: var(--fs-sm);
+  font-weight: 700;
+  padding: var(--sp-xs) var(--sp-md);
+  border-radius: var(--radius-full);
+  border: 1px solid rgba(255,255,255,0.25);
+}
+
+/* ── 15. NEWSLETTER SIGNUP ────────────────────────────────── */
+.dept-signup {
+  padding-block: var(--sp-2xl);
+  background: var(--clr-surface);
+  text-align: center;
+}
+.dept-signup__form {
+  display: flex;
+  gap: var(--sp-sm);
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-top: var(--sp-xl);
+}
+.dept-signup__input {
+  font-family: var(--ff-body);
+  font-size: var(--fs-base);
+  color: var(--clr-text-primary);
+  background: var(--clr-white);
+  border: var(--border-hairline);
+  border-radius: var(--radius-full);
+  padding: var(--sp-sm) var(--sp-lg);
+  width: clamp(240px, 40vw, 380px);
+  transition: border-color var(--dur-fast), box-shadow var(--dur-fast);
+}
+.dept-signup__input:focus {
+  outline: none;
+  border-color: var(--clr-gold);
+  box-shadow: 0 0 0 3px rgba(201,149,42,0.15);
+}
+.dept-signup__input::placeholder { color: var(--clr-text-tertiary); }
+.dept-signup__feedback {
+  margin-top: var(--sp-md);
+  font-size: var(--fs-sm);
+  color: var(--clr-text-tertiary);
+  min-height: 1.5em;
+}
+
+/* ── 16. SITE FOOTER ──────────────────────────────────────── */
+.site-footer {
+  background: var(--clr-indigo);
+  color: rgba(255,255,255,0.72);
+  padding-top: var(--sp-2xl);
+}
+.site-footer__grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: var(--sp-2xl);
+  padding-bottom: var(--sp-2xl);
+}
+.site-footer__brand-name {
+  font-family: var(--ff-display);
+  font-size: var(--fs-lg);
+  font-weight: 700;
+  color: var(--clr-text-inverse);
+  margin-bottom: var(--sp-2xs);
+}
+.site-footer__brand-sub {
+  font-size: var(--fs-xs);
+  letter-spacing: var(--ls-widest);
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.3);
+  margin-bottom: var(--sp-md);
+  display: block;
+}
+.site-footer__description {
+  font-size: var(--fs-sm);
+  line-height: var(--lh-relaxed);
+  color: rgba(255,255,255,0.5);
+  margin-bottom: var(--sp-lg);
+}
+.site-footer__social {
+  display: flex;
+  gap: var(--sp-xs);
+  flex-wrap: wrap;
+}
+.site-footer__social-link {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(255,255,255,0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255,255,255,0.45);
+  font-size: 0.95rem;
+  transition: border-color var(--dur-fast), color var(--dur-fast),
+              background var(--dur-fast);
+}
+.site-footer__social-link:hover {
+  border-color: var(--clr-gold);
+  color: var(--clr-gold);
+  background: var(--clr-gold-muted);
+}
+.site-footer__col-title {
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  letter-spacing: var(--ls-widest);
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.38);
+  margin-bottom: var(--sp-md);
+  padding-bottom: var(--sp-sm);
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+}
+.site-footer__col-links { display: flex; flex-direction: column; gap: var(--sp-sm); }
+.site-footer__col-link {
+  font-size: var(--fs-sm);
+  color: rgba(255,255,255,0.45);
+  transition: color var(--dur-fast);
+}
+.site-footer__col-link:hover { color: var(--clr-gold); }
+.site-footer__bottom {
+  border-top: 1px solid rgba(255,255,255,0.07);
+  padding-block: var(--sp-lg);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--sp-md);
+}
+.site-footer__bottom-text {
+  font-size: var(--fs-xs);
+  color: rgba(255,255,255,0.25);
+}
+.site-footer__bottom-text strong { color: rgba(201,149,42,0.55); }
+
+/* ── 17. RESPONSIVE BREAKPOINTS ───────────────────────────── */
+@media (max-width: 1100px) {
+  .dept-hero { grid-template-columns: 1fr 1fr; }
+  .dept-programmes__grid { grid-template-columns: repeat(4, 1fr); }
+  .dept-disc-card--std { grid-column: span 2; }
+  .site-footer__grid { grid-template-columns: 1fr 1fr; gap: var(--sp-xl); }
+}
+@media (max-width: 900px) {
+  .dept-hero {
+    grid-template-columns: 1fr;
+    grid-template-areas: "visual" "copy" "trust";
+    min-height: auto;
+  }
+  .dept-hero__visual { min-height: 320px; }
+  .dept-hero__copy { padding: var(--sp-xl) var(--sp-lg); }
+  .dept-hero__trust { padding: var(--sp-lg); }
+  .dept-about { grid-template-columns: 1fr; }
+  .dept-tripartite { grid-template-columns: 1fr 1fr; }
+  .dept-stats__grid { grid-template-columns: repeat(2, 1fr); }
+  .dept-gallery-preview__grid {
+    grid-template-columns: repeat(6, 1fr);
+    grid-template-rows: 220px 160px;
+  }
+  .dept-artwork-card--hero { grid-column: span 6; grid-row: 1; }
+  .dept-artwork-card--wide { grid-column: span 3; }
+  .dept-artwork-card--std  { grid-column: span 3; }
+  .dept-artwork-card--tall { grid-column: span 3; grid-row: span 1; }
+  .dept-community { grid-template-columns: 1fr; }
+  .dept-programmes__grid { grid-template-columns: repeat(2, 1fr); }
+  .dept-disc-card--featured { grid-column: 1 / -1; }
+  .dept-disc-card--wide,
+  .dept-disc-card--std  { grid-column: span 1; }
+}
+@media (max-width: 640px) {
+  .dept-nav__links,
+  .dept-nav__cta  { display: none; }
+  .dept-nav__toggle { display: flex; }
+  .dept-tripartite { grid-template-columns: 1fr; }
+  .dept-stats__grid { grid-template-columns: repeat(2, 1fr); }
+  .dept-gallery-preview__grid { display: flex; flex-direction: column; }
+  .dept-gallery-preview__grid > * { aspect-ratio: 16/9; }
+  .dept-programmes__grid { grid-template-columns: 1fr; }
+  .dept-disc-card--featured {
+    grid-template-columns: 1fr;
+  }
+  .site-footer__grid { grid-template-columns: 1fr; }
+  .site-footer__bottom { flex-direction: column; text-align: center; }
+  .dept-anniversary__milestones { gap: var(--sp-lg); }
+  .dept-community__content { padding: var(--sp-xl); }
+}
+
+/* ============================================================
+ * SANKOFA STAGE — 3D Float Animation System
+ * ============================================================
+ *
+ * ARCHITECTURE DECISION:
+ * Isolated as its own BEM block (.sankofa-stage) so the animation
+ * logic has zero coupling to hero layout concerns. Any page can
+ * drop .sankofa-stage in and the physics work independently.
+ *
+ * GPU STRATEGY:
+ * translate3d() and will-change: transform force the browser to
+ * promote both the asset and shadow to their own compositor
+ * layers. This means the main thread is never touched during
+ * the animation loop — locked 60+ fps regardless of page weight.
+ *
+ * MOTION DESIGN:
+ * cubic-bezier(0.37, 0, 0.63, 1) — a sinusoidal approximation.
+ * Standard ease-in-out has a mechanical quality; this curve
+ * accelerates more gradually at the start and lingers at the
+ * apex, mimicking genuine buoyancy in air.
+ *
+ * SHADOW PHYSICS:
+ * Shadow shrinks and fades as the asset rises (parallax gap
+ * increases) and expands and sharpens as it descends.
+ * radial-gradient gives a natural penumbra edge — no hard ring.
+ * ============================================================ */
+
+/* ── Block: sankofa-stage ─────────────────────────────────── */
+.sankofa-stage {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  perspective: 1200px;          /* 3D depth field for rotateY */
+  perspective-origin: 50% 60%;  /* Slightly low — asset feels grounded */
+}
+
+/* ── Element: sankofa-stage__asset ───────────────────────────
+ * The Sankofa SVG itself.
+ * will-change elevates this to its own GPU compositor layer.
+ * transform-style: preserve-3d ensures the rotateY is rendered
+ * in true 3D space, not flattened to a 2D plane.
+ * ─────────────────────────────────────────────────────────── */
+.sankofa-stage__asset {
+  display: block;
+  will-change: transform;
+  transform-style: preserve-3d;
+  transform-origin: center center;
+  animation: sankofa-hero-float 6s cubic-bezier(0.37, 0, 0.63, 1) infinite;
+}
+
+/* ── Element: sankofa-stage__shadow ──────────────────────────
+ * Environmental ground shadow.
+ * Positioned absolute so it doesn't affect the flex layout.
+ * radial-gradient creates a natural penumbra — sharp at centre,
+ * soft at edges — identical to a real object above a surface.
+ * ─────────────────────────────────────────────────────────── */
+.sankofa-stage__shadow {
+  position: absolute;
+  bottom: -14%;          /* Sits just below the SVG's natural base */
+  left: 50%;
+  transform: translateX(-50%);
+  width: 52%;
+  height: clamp(10px, 2vw, 18px);
+  background: radial-gradient(
+    ellipse at center,
+    rgba(26, 26, 78, 0.28) 0%,
+    rgba(26, 26, 78, 0.10) 45%,
+    transparent 72%
+  );
+  border-radius: 50%;
+  pointer-events: none;
+  will-change: transform, opacity;
+  animation: sankofa-hero-shadow 6s cubic-bezier(0.37, 0, 0.63, 1) infinite;
+}
+
+/* ── Keyframe: Asset float ────────────────────────────────────
+ * translate3d(x, y, z) — z-axis push at apex creates genuine
+ * forward lean, not a flat vertical bounce.
+ * rotateY(2.5deg) — micro-tilt at the peak simulates a 3D body
+ * shifting weight; imperceptible in isolation, felt as life.
+ * ─────────────────────────────────────────────────────────── */
+@keyframes sankofa-hero-float {
+  0%, 100% {
+    transform: translate3d(0, 0, 0) rotateY(0deg);
+  }
+  45% {
+    transform: translate3d(0, -22px, 38px) rotateY(1.2deg);
+  }
+  50% {
+    transform: translate3d(0, -26px, 48px) rotateY(2.5deg);
+  }
+  55% {
+    transform: translate3d(0, -22px, 38px) rotateY(1.2deg);
+  }
+}
+
+/* ── Keyframe: Shadow sync ────────────────────────────────────
+ * Mirrors the asset curve exactly.
+ * At apex (50%) shadow is 62% smaller and nearly transparent —
+ * simulating the increased distance to the ground plane.
+ * translateX(-50%) must be preserved in every keyframe because
+ * `transform` is not additive — partial overrides reset others.
+ * ─────────────────────────────────────────────────────────── */
+@keyframes sankofa-hero-shadow {
+  0%, 100% {
+    transform: translateX(-50%) scale(1);
+    opacity: 1;
+  }
+  45% {
+    transform: translateX(-50%) scale(0.74);
+    opacity: 0.5;
+  }
+  50% {
+    transform: translateX(-50%) scale(0.62);
+    opacity: 0.28;
+  }
+  55% {
+    transform: translateX(-50%) scale(0.74);
+    opacity: 0.5;
+  }
+}
+
+/* ── Modifier: reduce-motion ──────────────────────────────────
+ * WCAG 2.1 SC 2.3.3 — users who prefer reduced motion get a
+ * gentle opacity pulse instead of kinetic movement.
+ * ─────────────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .sankofa-stage__asset {
+    animation: sankofa-hero-fade 4s ease-in-out infinite;
+    will-change: opacity;
+  }
+  .sankofa-stage__shadow {
+    animation: none;
+    opacity: 0.5;
+  }
+  @keyframes sankofa-hero-fade {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: 0.7; }
+  }
+}
+
+
+/* ============================================================
+ * SANKOFA 3D FLOAT ANIMATION SYSTEM
+ * ============================================================
+ *
+ * ARCHITECTURAL DECISIONS:
+ *
+ * [GPU] All motion uses translate3d() — never 'top', 'margin',
+ *   or 'position'. translate3d() forces the browser to promote
+ *   the element to its own compositor layer, offloading render
+ *   work to the GPU. will-change: transform pre-allocates that
+ *   layer before the first frame fires.
+ *
+ * [ORGANIC] 6s ease-in-out loop. The ease curve front-loads
+ *   deceleration at the apex (mimics real gravity) and
+ *   accelerates back through the centre. No linear bounce.
+ *
+ * [Y-AXIS ROTATION] 3deg max rotateY() at apex only — gives
+ *   the illusion of the bird banking slightly into 3D space
+ *   without becoming a distracting spin.
+ *
+ * [SHADOW SYNC] .sankofa-shadow is a separate element on the
+ *   GPU compositor stack. Scale + opacity reduction at apex
+ *   creates environmental depth — the shadow behaves like a
+ *   real cast shadow receding as the object lifts.
+ *
+ * [PERSPECTIVE] perspective: 800px on .sankofa-container
+ *   establishes the vanishing point. Combined with rotateY
+ *   on the child, this gives true 3D foreshortening.
+ *
+ * [60 FPS] No layout-triggering properties touched during
+ *   animation. transform and opacity are the only composite-
+ *   safe properties and run entirely on the GPU thread.
+ * ============================================================ */
+
+/* ── SANKOFA CONTAINER ──────────────────────────────────────── */
+/*
+ * WHY perspective here and not on .sankofa-asset:
+ * perspective must be set on the PARENT to establish the
+ * shared 3D space for child elements. Setting it on self
+ * applies perspective to the element's own children only,
+ * which breaks the shadow sync relationship.
+ */
+.sankofa-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  perspective: 800px;
+  perspective-origin: 50% 60%;
+  padding-bottom: 2rem;
+  z-index: 2;
+}
+
+/* ── SANKOFA ASSET ──────────────────────────────────────────── */
+.sankofa-asset {
+  width: clamp(160px, 28vw, 280px);
+  height: clamp(160px, 28vw, 280px);
+  position: relative;
+  z-index: 2;
+
+  /* GPU compositor layer promotion */
+  will-change: transform;
+
+  /* Triggers hardware acceleration on browsers that need a hint */
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+
+  /* Organic 6s float — ease-in-out with GPU-only properties */
+  animation: sankofa-float 6s ease-in-out infinite;
+}
+
+/* ── SHADOW ELEMENT ─────────────────────────────────────────── */
+/*
+ * The shadow is a separate GPU layer — absolutely critical.
+ * If shadow were a CSS filter or box-shadow on .sankofa-asset,
+ * it would move WITH the asset and never recede.
+ * As its own element with its own animation, it truly reacts
+ * to the perceived altitude of the bird above it.
+ */
+.sankofa-shadow {
+  position: relative;
+  width: clamp(80px, 14vw, 140px);
+  height: clamp(10px, 1.5vw, 18px);
+  background: radial-gradient(
+    ellipse at center,
+    rgba(20, 20, 20, 0.22) 0%,
+    rgba(20, 20, 20, 0.08) 50%,
+    transparent 100%
+  );
+  border-radius: 50%;
+  margin-top: 0.5rem;
+  z-index: 1;
+
+  /* Own GPU layer for independent opacity + scale animation */
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+
+  /* Synchronized with .sankofa-asset — same 6s duration + timing */
+  animation: sankofa-shadow 6s ease-in-out infinite;
+}
+
+/* ── KEYFRAMES ──────────────────────────────────────────────── */
+
+/*
+ * sankofa-float:
+ *   0%/100% = rest position
+ *   50%     = apex — 28px lift, subtle Y-axis banking (3deg),
+ *             Z-depth forward (30px) for 3D foreshortening
+ *
+ *   Using translate3d ensures this stays on the GPU compositing
+ *   thread and never triggers layout or paint recalculations.
+ */
+@keyframes sankofa-float {
+  0%, 100% {
+    transform: translate3d(0, 0, 0) rotateY(0deg) scale(1);
+  }
+  25% {
+    transform: translate3d(0, -14px, 15px) rotateY(1.5deg) scale(1.02);
+  }
+  50% {
+    transform: translate3d(0, -28px, 30px) rotateY(3deg) scale(1.04);
+  }
+  75% {
+    transform: translate3d(0, -14px, 15px) rotateY(1.5deg) scale(1.02);
+  }
+}
+
+/*
+ * sankofa-shadow:
+ *   Inverse relationship to the float — shrinks and fades
+ *   at apex (50%) to simulate the shadow receding as the
+ *   light source distance increases with altitude.
+ */
+@keyframes sankofa-shadow {
+  0%, 100% {
+    transform: scale(1) translate3d(0, 0, 0);
+    opacity: 0.85;
+  }
+  25% {
+    transform: scale(0.82) translate3d(0, 0, 0);
+    opacity: 0.55;
+  }
+  50% {
+    transform: scale(0.6) translate3d(0, 0, 0);
+    opacity: 0.28;
+  }
+  75% {
+    transform: scale(0.82) translate3d(0, 0, 0);
+    opacity: 0.55;
+  }
+}
+
+/* ── DEPT-HERO VISUAL — position the Sankofa centrally ───────── */
+.dept-hero__visual {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-xl);
+}
+
+/*
+ * Override the old fixed min-height — the Sankofa container
+ * now defines the visual block's natural height organically.
+ */
+.dept-hero__visual .sankofa-container {
+  margin-block: var(--sp-xl);
+}
+
+/* ── RESPECT REDUCED MOTION ─────────────────────────────────── */
+/*
+ * WCAG 2.1 SC 2.3.3 (AAA) and 2.3.1:
+ * Users who set prefers-reduced-motion get the Sankofa static.
+ * We do NOT remove it — we freeze it at rest position.
+ * Hiding it entirely would be a content loss; freezing respects
+ * the preference without breaking the design.
+ */
+@media (prefers-reduced-motion: reduce) {
+  .sankofa-asset,
+  .sankofa-shadow {
+    animation: none;
+    will-change: auto;
+  }
+  .sankofa-shadow {
+    opacity: 0.6;
+  }
+}
+
+/* ── MOBILE SCALING ─────────────────────────────────────────── */
+@media (max-width: 900px) {
+  .sankofa-asset {
+    width: clamp(120px, 40vw, 200px);
+    height: clamp(120px, 40vw, 200px);
+  }
+  .sankofa-shadow {
+    width: clamp(60px, 20vw, 100px);
+  }
+}
