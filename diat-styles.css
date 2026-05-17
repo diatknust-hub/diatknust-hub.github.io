@@ -294,16 +294,15 @@ h1, h2, h3, h4, h5, h6 { font-family: var(--ff-display); line-height: var(--lh-h
   justify-content: space-between;
   gap: var(--sp-md);
   width: 100%;
+  min-width: 0;
 
   /*
-   * FIX J — min-width: 0:
-   *   Flex containers have an implicit min-width: auto which
-   *   prevents children from shrinking below their content size.
-   *   Setting min-width: 0 on the flex container allows children
-   *   (nav links) to compress proportionally rather than overflow
-   *   or wrap at mid-desktop breakpoints (1024–1280px).
+   * FIX 3 — padding-inline pushes brand and CTA inward.
+   * Brand moves right away from left edge;
+   * CTA moves left away from right edge.
+   * Uses clamp() so it breathes on narrow desktops too.
    */
-  min-width: 0;
+  padding-inline: clamp(var(--sp-md), 3vw, var(--sp-xl));
 }
 .dept-nav__brand {
   display: flex;
@@ -502,16 +501,8 @@ h1, h2, h3, h4, h5, h6 { font-family: var(--ff-display); line-height: var(--lh-h
 }
 .dept-hero__copy {
   grid-area: copy;
-
-  /*
-   * FIX G — explicit column + row placement:
-   *   Prevents grid auto-placement from misassigning this item
-   *   when viewport width transitions trigger grid reflow.
-   */
   grid-column: 1;
   grid-row: 1;
-
-  /* min-height: 0 — break implicit sizing cycle inside 1fr row */
   min-height: 0;
 
   padding: var(--sp-2xl) var(--sp-xl) var(--sp-xl) var(--sp-xl);
@@ -519,8 +510,14 @@ h1, h2, h3, h4, h5, h6 { font-family: var(--ff-display); line-height: var(--lh-h
   flex-direction: column;
   justify-content: center;
 
-  /* Safety: if copy is unusually tall, scroll internally */
-  overflow-y: auto;
+  /*
+   * FIX 4 — overflow-y removed (was: auto).
+   * overflow-y: auto was clipping .dept-hero__actions buttons
+   * at the bottom of this column when browser zoom = 100%.
+   * The hero's outer height: clamp() caps the section;
+   * this column must be visible, never scrollable.
+   */
+  overflow: visible;
 }
 .dept-hero__eyebrow {
   display: flex;
@@ -1007,7 +1004,15 @@ h1, h2, h3, h4, h5, h6 { font-family: var(--ff-display); line-height: var(--lh-h
 }
 /* Discipline cards: 2 col on desktop for variety */
 .dept-disc-card--wide  { grid-column: span 3; }
-.dept-disc-card--std   { grid-column: span 2; }
+.dept-disc-card--std   {
+  grid-column: span 3;
+  /*
+   * FIX 1+2: Changed span 2 → span 3.
+   * All 6-col rows now resolve to 3+3=6, matching the full
+   * container width. Fixes Product Design appearing wider than
+   * discipline rows, and Wood & Furniture stopping short.
+   */
+}
 
 .dept-disc-card {
   background: var(--clr-white);
@@ -1462,9 +1467,12 @@ h1, h2, h3, h4, h5, h6 { font-family: var(--ff-display); line-height: var(--lh-h
     height: clamp(600px, calc(100svh - var(--nav-height)), 100svh);
   }
   .dept-hero__copy {
-    /* Cap copy column so long CMS text never bleeds into visual */
+    /*
+     * FIX 4 (desktop): overflow-y: hidden removed.
+     * Was clipping action buttons at 100% browser zoom.
+     * max-width: 100% kept — prevents copy from bleeing into visual.
+     */
     max-width: 100%;
-    overflow-y: hidden;
   }
   .dept-hero__visual {
     /* Visual column fills its full allocated cell height */
