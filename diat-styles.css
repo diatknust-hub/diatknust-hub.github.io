@@ -505,18 +505,25 @@ h1, h2, h3, h4, h5, h6 { font-family: var(--ff-display); line-height: var(--lh-h
   grid-row: 1;
   min-height: 0;
 
-  padding: var(--sp-2xl) var(--sp-xl) var(--sp-xl) var(--sp-xl);
+  /*
+   * FIX C — justify-content: flex-end (was: center).
+   *
+   * center was vertically centering all copy content in a
+   * potentially 750px+ tall row, placing buttons far from the
+   * section bottom and leaving a large empty zone below them.
+   *
+   * flex-end anchors all copy content (title, subtitle, buttons)
+   * to the BOTTOM of the copy row. This creates a natural reading
+   * flow: content leads into the partners section below it.
+   *
+   * padding-bottom creates explicit physical separation between
+   * action buttons and the trust row's border-top — the gap is
+   * guaranteed regardless of row height.
+   */
+  padding: var(--sp-2xl) var(--sp-xl) var(--sp-lg) var(--sp-xl);
   display: flex;
   flex-direction: column;
-  justify-content: center;
-
-  /*
-   * FIX 4 — overflow-y removed (was: auto).
-   * overflow-y: auto was clipping .dept-hero__actions buttons
-   * at the bottom of this column when browser zoom = 100%.
-   * The hero's outer height: clamp() caps the section;
-   * this column must be visible, never scrollable.
-   */
+  justify-content: flex-end;
   overflow: visible;
 }
 .dept-hero__eyebrow {
@@ -566,18 +573,25 @@ h1, h2, h3, h4, h5, h6 { font-family: var(--ff-display); line-height: var(--lh-h
 }
 .dept-hero__trust {
   grid-area: trust;
-
-  /*
-   * FIX H — explicit placement + bottom anchor:
-   *   Locks the trust/partners row to column 1, row 2.
-   *   align-self: end anchors it to the bottom of its cell
-   *   so it never floats upward into the copy area.
-   */
   grid-column: 1;
   grid-row: 2;
-  align-self: end;
 
-  padding: var(--sp-xl) var(--sp-xl) var(--sp-2xl);
+  /*
+   * FIX B — align-self: start (was: end).
+   *
+   * align-self: end was pinning trust to the absolute bottom of
+   * the hero. At tall viewports (900px+) this created a large
+   * visual gap, placing "RECOGNISED & SUPPORTED BY" text at the
+   * same screen level as the action buttons via their overflow:
+   * visible spill.
+   *
+   * align-self: start locks trust to the TOP of row 2 — directly
+   * adjacent to the copy row's bottom edge.
+   * padding-top provides the visual separation from the buttons.
+   */
+  align-self: start;
+
+  padding: var(--sp-lg) var(--sp-xl) var(--sp-xl);
   border-top: var(--border-hairline);
 }
 .dept-hero__trust-label {
@@ -1481,6 +1495,42 @@ h1, h2, h3, h4, h5, h6 { font-family: var(--ff-display); line-height: var(--lh-h
   .dept-nav__link {
     /* Tighten link padding at medium desktop to buy nav space */
     padding: var(--sp-xs) calc(var(--sp-sm) * 0.85);
+  }
+}
+
+
+/* ── DESKTOP SCALE CALIBRATION ──────────────────────────────────────────────
+ *
+ * WHY THIS EXISTS:
+ *   clamp() values are calibrated for a wide viewport. At 80% browser zoom
+ *   the browser internally treats the viewport as wider (1366/0.8 = 1707px),
+ *   picks the larger clamp values, then scales them down 20% on display —
+ *   which looks perfectly proportioned. At 100% zoom those same values render
+ *   ~18% larger on screen with no display scaling, creating the crowded look.
+ *
+ * APPROACH — token override inside media query:
+ *   Only the preferred + max legs of the clamp() are reduced (~18%).
+ *   The minimum leg is kept so text never gets smaller than the floor.
+ *   Because ALL components use these tokens via var(), every element
+ *   scales down automatically — no component rules need changing.
+ *
+ * TARGET: 100% zoom should look like 80% zoom at 1366px.
+ *   --fs-4xl target at 1366px = 70px (was 87px → 87 × 0.80 = 69.6)
+ *   --sp-2xl target = ~90px  (was 112px → 112 × 0.80 = 89.6)
+ * ─────────────────────────────────────────────────────────────────────────── */
+@media (min-width: 1025px) {
+  :root {
+    /* ── Font scale ─────────────────────────────────────── */
+    --fs-lg:  clamp(1.05rem,  0.9rem  + 0.6vw,  1.15rem);
+    --fs-xl:  clamp(1.15rem,  0.9rem  + 1.1vw,  1.5rem);
+    --fs-2xl: clamp(1.45rem,  1rem    + 1.5vw,  2rem);
+    --fs-3xl: clamp(1.75rem,  1.2rem  + 1.8vw,  2.6rem);
+    --fs-4xl: clamp(2.2rem,   1.5rem  + 3vw,    4rem);
+
+    /* ── Spacing scale ──────────────────────────────────── */
+    --sp-xl:  clamp(1.5rem,   1.2rem  + 1.5vw,  2.5rem);
+    --sp-2xl: clamp(2.2rem,   1.5rem  + 3.5vw,  4.5rem);
+    --sp-3xl: clamp(3rem,     2rem    + 4.5vw,  6rem);
   }
 }
 
