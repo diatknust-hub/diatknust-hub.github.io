@@ -12,169 +12,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="diat-styles.css"/>
 
-  <style>
-    /*
-     * ─── SANKOFA 3D FLOAT SYSTEM ────────────────────────────────────
-     *
-     * ARCHITECTURE RATIONALE (inline here so this file is self-contained;
-     * in production, move these rules to diat-styles.css):
-     *
-     * [GPU COMPOSITING]  Only transform + opacity are animated —
-     *   the two properties browsers can handle entirely on the
-     *   GPU compositor thread without touching layout or paint.
-     *   will-change: transform pre-promotes the element to its
-     *   own compositor layer before frame 1.
-     *
-     * [perspective on PARENT, not self]  CSS perspective must be
-     *   declared on .sankofa-container (the parent) to establish
-     *   a shared 3D rendering context for both child elements.
-     *   Setting it on the asset itself only affects its children.
-     *
-     * [SHADOW as separate element]  .sankofa-shadow is a sibling,
-     *   not a pseudo-element or box-shadow, so it can run its own
-     *   independent keyframe timeline synchronized by duration alone.
-     *
-     * [REDUCED MOTION]  Frozen at rest — not hidden.
-     *   Hiding the Sankofa would be a content loss.
-     * ─────────────────────────────────────────────────────────────── */
-
-    /* Header: pinned top-left, floats above all hero layers */
-    .site-header {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      padding: clamp(1.25rem, 2.5vw, 2.5rem) clamp(1.5rem, 4vw, 4rem);
-      z-index: 100;
-      pointer-events: none; /* Clicks pass through to nav links beneath */
-    }
-    .site-header__logo-container {
-      display: inline-flex;
-      align-items: center;
-      pointer-events: auto;
-    }
-    .site-header__logo {
-      height: clamp(38px, 4.5vw, 60px);
-      width: auto;
-      display: block;
-    }
-
-    /* Visual wrapper — centres the Sankofa in its hero panel */
-    .hero-section__visual-wrapper {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 100%;
-      height: 100%;
-      padding: var(--sp-xl, 2rem);
-    }
-
-    /* 3D stage — perspective set here to share depth space with shadow */
-    .sankofa-container {
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      perspective: 900px;
-      perspective-origin: 50% 55%;
-    }
-
-    /* The Sankofa bird — GPU compositor layer */
-    .sankofa-asset {
-      width: clamp(150px, 26vw, 280px);
-      height: clamp(150px, 26vw, 280px);
-      position: relative;
-      z-index: 2;
-      will-change: transform;
-      backface-visibility: hidden;
-      -webkit-backface-visibility: hidden;
-      animation: sankofaFloat 6s ease-in-out infinite;
-    }
-    .sankofa-asset svg {
-      width: 100%;
-      height: 100%;
-    }
-
-    /* Environmental shadow — own GPU layer, own keyframe timeline */
-    .sankofa-shadow {
-      width: clamp(70px, 13vw, 140px);
-      height: clamp(10px, 1.2vw, 16px);
-      border-radius: 50%;
-      background: radial-gradient(
-        ellipse at center,
-        rgba(20, 20, 20, 0.25) 0%,
-        rgba(20, 20, 20, 0.10) 45%,
-        transparent 100%
-      );
-      filter: blur(6px);
-      margin-top: 0.75rem;
-      will-change: transform, opacity;
-      backface-visibility: hidden;
-      -webkit-backface-visibility: hidden;
-      animation: sankofaShadow 6s ease-in-out infinite;
-    }
-
-    /* ── Keyframes ─────────────────────────────────────────────── */
-
-    /*
-     * sankofaFloat  —  four control points for gravitational feel:
-     *   25% / 75% intermediate stops prevent the ease curve from
-     *   rushing through the apex. The bird decelerates INTO the top,
-     *   holds briefly, then accelerates back down — mimicking mass.
-     *
-     *   rotateY: 3deg max. Subtle banking effect — not a spin.
-     *   scale(1.04): slight size growth at apex simulates parallax
-     *   (nearer objects appear larger as they approach the viewer).
-     */
-    @keyframes sankofaFloat {
-      0%, 100% {
-        transform: translate3d(0,    0px,   0px)  rotateY(0deg)  scale(1);
-      }
-      25% {
-        transform: translate3d(0,  -13px,  14px)  rotateY(1.5deg) scale(1.02);
-      }
-      50% {
-        transform: translate3d(0,  -26px,  28px)  rotateY(3deg)  scale(1.04);
-      }
-      75% {
-        transform: translate3d(0,  -13px,  14px)  rotateY(1.5deg) scale(1.02);
-      }
-    }
-
-    /*
-     * sankofaShadow  —  inversely mirrors the float.
-     * scale(0.58) at apex → shadow is 42% smaller when bird is highest.
-     * opacity: 0.22 → almost transparent, suggesting distant ground contact.
-     */
-    @keyframes sankofaShadow {
-      0%, 100% {
-        transform: scale(1)    translate3d(0, 0, 0);
-        opacity: 0.85;
-      }
-      25% {
-        transform: scale(0.78) translate3d(0, 0, 0);
-        opacity: 0.52;
-      }
-      50% {
-        transform: scale(0.58) translate3d(0, 0, 0);
-        opacity: 0.22;
-      }
-      75% {
-        transform: scale(0.78) translate3d(0, 0, 0);
-        opacity: 0.52;
-      }
-    }
-
-    /* Accessibility: freeze (do not hide) for reduced-motion users */
-    @media (prefers-reduced-motion: reduce) {
-      .sankofa-asset,
-      .sankofa-shadow {
-        animation: none;
-        will-change: auto;
-      }
-    }
-  </style>
 </head>
 <body>
 
@@ -309,33 +146,82 @@
       </div>
 
       <div class="dept-hero__visual" aria-hidden="true">
-        <div class="dept-hero__sankofa-wrap">
-          <svg class="dept-hero__sankofa" viewBox="0 0 60 60" fill="none"
-               xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
-            <ellipse cx="30" cy="34" rx="14" ry="10" fill="#C9952A" opacity=".18"/>
-            <circle cx="30" cy="22" r="10" fill="#C9952A" opacity=".25"/>
-            <circle cx="30" cy="22" r="6"  fill="#C9952A"/>
-            <circle cx="34" cy="19" r="2"  fill="#fff"/>
-            <circle cx="34.8" cy="19" r=".8" fill="#1A1A4E"/>
-            <path d="M24 22 Q18 10 26 8 Q30 7 30 12" stroke="#C9952A" stroke-width="2.2" fill="none" stroke-linecap="round"/>
-            <path d="M30 12 Q32 6 36 8 Q40 10 36 16" stroke="#C9952A" stroke-width="2" fill="none" stroke-linecap="round"/>
-            <path d="M20 30 Q16 40 24 42 Q28 43 30 38" stroke="#C9952A" stroke-width="2" fill="none" stroke-linecap="round"/>
-            <path d="M40 30 Q44 40 36 42 Q32 43 30 38" stroke="#C9952A" stroke-width="2" fill="none" stroke-linecap="round"/>
-            <path d="M26 32 L22 44 M30 34 L30 46 M34 32 L38 44" stroke="#C9952A" stroke-width="1.5" stroke-linecap="round"/>
-          </svg>
-        </div>
-        <div class="dept-hero__badge" role="img" aria-label="DIAT at 50, Est. 1976">
+
+        <!--
+          .dept-hero__visual → CSS grid-area: "visual" (5fr column)
+          .sankofa-container → 3D perspective stage, DIRECT child
+          No wrapper div — intermediate nodes break grid alignment.
+          All CSS rules: diat-styles.css § SANKOFA 3D FLOAT SYSTEM
+        -->
+        <div class="sankofa-container">
+
+          <div class="sankofa-asset"
+               role="img"
+               aria-label="Sankofa bird — DIAT departmental symbol representing the principle of learning from the past">
+            <!--
+              Inline SVG chosen over <img> for:
+                1. No HTTP request — zero load-time penalty
+                2. Inherits CSS currentColor for theming
+                3. Perfectly crisp at any DPI (true vector)
+              Replace this SVG with a higher-fidelity version
+              or a WebGL canvas if 3D rotation is required.
+            -->
+            <svg viewBox="0 0 120 120" fill="none"
+                 xmlns="http://www.w3.org/2000/svg"
+                 aria-hidden="true" focusable="false">
+              <!-- Primary body mass -->
+              <ellipse cx="60" cy="72" rx="28" ry="20" fill="#C9952A" opacity=".2"/>
+              <circle  cx="60" cy="44" r="20" fill="#C9952A" opacity=".28"/>
+              <circle  cx="60" cy="44" r="13" fill="#C9952A"/>
+              <!-- Eye with specular highlight -->
+              <circle cx="67" cy="38" r="4"   fill="#ffffff"/>
+              <circle cx="68" cy="38" r="1.8" fill="#1A1A4E"/>
+              <circle cx="67.4" cy="37.3" r=".65" fill="#ffffff" opacity=".75"/>
+              <!-- Neck arcing back — Sankofa's defining pose -->
+              <path d="M48 44 Q36 20 52 16 Q60 14 60 24"
+                    stroke="#C9952A" stroke-width="4.5" fill="none"
+                    stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M60 24 Q64 12 72 16 Q80 20 72 32"
+                    stroke="#C9952A" stroke-width="3.5" fill="none"
+                    stroke-linecap="round" stroke-linejoin="round"/>
+              <!-- Wings -->
+              <path d="M40 60 Q32 80 48 84 Q56 86 60 76"
+                    stroke="#C9952A" stroke-width="3.5" fill="none"
+                    stroke-linecap="round"/>
+              <path d="M80 60 Q88 80 72 84 Q64 86 60 76"
+                    stroke="#C9952A" stroke-width="3.5" fill="none"
+                    stroke-linecap="round"/>
+              <!-- Tail feathers -->
+              <path d="M52 64 L44 88 M60 68 L60 92 M68 64 L76 88"
+                    stroke="#C9952A" stroke-width="3" stroke-linecap="round"/>
+              <!-- Adinkra body detail ring -->
+              <circle cx="60" cy="44" r="6"
+                      stroke="rgba(255,255,255,0.2)"
+                      stroke-width="1.5" fill="none"/>
+            </svg>
+          </div>
+
+          <!-- Synchronized environmental shadow — own keyframe timeline -->
+          <div class="sankofa-shadow" aria-hidden="true"></div>
+
+        </div><!-- /.sankofa-container -->
+
+        <div class="dept-hero__badge"
+             role="img"
+             aria-label="DIAT at 50, established 1976">
           <span class="dept-hero__badge-title">DIAT<br>@50</span>
           <span class="dept-hero__badge-sub">Est. 1976</span>
         </div>
-        <div class="dept-hero__preview" aria-label="Featured artworks preview">
+
+        <div class="dept-hero__preview"
+             aria-label="Featured artworks preview">
           <article class="dept-hero__preview-card">
             <div class="dept-artwork-card__placeholder">
               <span class="dept-artwork-card__placeholder-icon" aria-hidden="true">&#128444;</span>
             </div>
             <div class="dept-hero__preview-label">
               <span class="dept-hero__preview-disc">Rattan &amp; Bamboo</span>
-              <span class="dept-hero__preview-name">[Artwork — replace]</span>
+              <span class="dept-hero__preview-name">[Artwork &mdash; replace]</span>
             </div>
           </article>
           <article class="dept-hero__preview-card">
@@ -344,7 +230,7 @@
             </div>
             <div class="dept-hero__preview-label">
               <span class="dept-hero__preview-disc">Wood &amp; Furniture</span>
-              <span class="dept-hero__preview-name">[Artwork — replace]</span>
+              <span class="dept-hero__preview-name">[Artwork &mdash; replace]</span>
             </div>
           </article>
           <article class="dept-hero__preview-card">
@@ -354,11 +240,12 @@
             </div>
             <div class="dept-hero__preview-label">
               <span class="dept-hero__preview-disc">Metal Production</span>
-              <span class="dept-hero__preview-name">[Artwork — replace]</span>
+              <span class="dept-hero__preview-name">[Artwork &mdash; replace]</span>
             </div>
           </article>
-        </div>
-      </div>
+        </div><!-- /.dept-hero__preview -->
+
+      </div><!-- /.dept-hero__visual -->
     </section>
 
     <!-- STATS RIBBON -->

@@ -222,6 +222,40 @@ h1, h2, h3, h4, h5, h6 { font-family: var(--ff-display); line-height: var(--lh-h
 }
 .site-announce__link:hover { opacity: 0.75; }
 
+
+/* ── SITE HEADER — logo pinned absolute top-left ─────────────────────────────
+ *
+ * WHY absolute + z-index 100:
+ *   The .dept-hero grid uses its own stacking context. The logo must float
+ *   ABOVE all hero grid children without participating in the grid layout —
+ *   absolute positioning removes it from flow entirely while z-index: 100
+ *   guarantees it clears the .sankofa-badge (z-index: 3) and any overlays.
+ *
+ * WHY pointer-events: none on header, auto on container:
+ *   The header spans full width (width: 100%) so it would block clicks across
+ *   the entire top strip. pointer-events: none passes all events through;
+ *   only the logo container re-enables interaction for actual link clicks.
+ * ─────────────────────────────────────────────────────────────────────────── */
+.site-header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: clamp(1.25rem, 2.5vw, 2.5rem) clamp(1.5rem, 4vw, 4rem);
+  z-index: 100;
+  pointer-events: none;
+}
+.site-header__logo-container {
+  display: inline-flex;
+  align-items: center;
+  pointer-events: auto;
+}
+.site-header__logo {
+  height: clamp(38px, 4.5vw, 60px);
+  width: auto;
+  display: block;
+}
+
 /* ── 5. PRIMARY NAVIGATION ────────────────────────────────── */
 .dept-nav {
   position: sticky;
@@ -484,9 +518,15 @@ h1, h2, h3, h4, h5, h6 { font-family: var(--ff-display); line-height: var(--lh-h
   height: 100%;
   min-height: 540px;
   position: relative;
+
+  /* Flex column: sankofa-container stacks above preview cards */
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: var(--sp-lg);
+
+  /* Clip the animated Sankofa so it never bleeds outside grid column */
   overflow: hidden;
 }
 .dept-hero__sankofa-wrap {
@@ -1469,205 +1509,201 @@ h1, h2, h3, h4, h5, h6 { font-family: var(--ff-display); line-height: var(--lh-h
   }
 }
 
-
 /* ============================================================
- * SANKOFA 3D FLOAT ANIMATION SYSTEM
+ * SANKOFA 3D FLOAT SYSTEM — Canonical Rules
  * ============================================================
  *
- * ARCHITECTURAL DECISIONS:
+ * ARCHITECTURAL DECISIONS (PR documentation):
  *
- * [GPU] All motion uses translate3d() — never 'top', 'margin',
- *   or 'position'. translate3d() forces the browser to promote
- *   the element to its own compositor layer, offloading render
- *   work to the GPU. will-change: transform pre-allocates that
- *   layer before the first frame fires.
+ * [SINGLE SOURCE] These rules are the ONE canonical definition.
+ *   There are no inline <style> overrides in index.html.
+ *   All animation physics live here and nowhere else.
  *
- * [ORGANIC] 6s ease-in-out loop. The ease curve front-loads
- *   deceleration at the apex (mimics real gravity) and
- *   accelerates back through the centre. No linear bounce.
+ * [GPU PIPELINE]
+ *   - will-change: transform pre-promotes elements to their own
+ *     GPU compositor layer before frame 1 fires.
+ *   - backface-visibility: hidden prevents ghost renders during
+ *     rotateY on WebKit/Blink engines.
+ *   - Only transform + opacity are animated — the two properties
+ *     that run entirely on the compositor thread, never triggering
+ *     layout or paint recalculations.
+ *   - translate3d() (not translateX/Y) forces hardware path even
+ *     on browsers that lazy-promote 2D transforms.
  *
- * [Y-AXIS ROTATION] 3deg max rotateY() at apex only — gives
- *   the illusion of the bird banking slightly into 3D space
- *   without becoming a distracting spin.
+ * [perspective on PARENT]
+ *   perspective must be declared on .sankofa-container (the parent)
+ *   to establish a shared 3D rendering context for both child
+ *   elements. Setting it on .sankofa-asset itself would only
+ *   apply depth to that element's own children, breaking the
+ *   shadow's depth relationship entirely.
  *
- * [SHADOW SYNC] .sankofa-shadow is a separate element on the
- *   GPU compositor stack. Scale + opacity reduction at apex
- *   creates environmental depth — the shadow behaves like a
- *   real cast shadow receding as the object lifts.
+ * [SHADOW AS SIBLING]
+ *   .sankofa-shadow is a sibling element, not a pseudo-element,
+ *   box-shadow, or filter. This is the only way to run a fully
+ *   independent keyframe timeline synchronized purely by
+ *   matching duration and timing-function.
  *
- * [PERSPECTIVE] perspective: 800px on .sankofa-container
- *   establishes the vanishing point. Combined with rotateY
- *   on the child, this gives true 3D foreshortening.
+ * [ORGANIC MOTION — 4 stops not 2]
+ *   Two-stop keyframes (0%/100% only) produce a mechanical sine
+ *   wave. Four stops (0→25→50→75→100%) give the ease curve
+ *   intermediate velocity targets — the bird decelerates INTO
+ *   the apex and re-accelerates downward, mimicking real mass
+ *   under gravity.
  *
- * [60 FPS] No layout-triggering properties touched during
- *   animation. transform and opacity are the only composite-
- *   safe properties and run entirely on the GPU thread.
+ * [WCAG 2.1 SC 2.3.3 — Reduced Motion]
+ *   animation: none freezes both elements at rest. We do NOT
+ *   hide the Sankofa — hiding would be a content loss.
+ *   Freezing respects the preference without breaking design.
  * ============================================================ */
 
-/* ── SANKOFA CONTAINER ──────────────────────────────────────── */
-/*
- * WHY perspective here and not on .sankofa-asset:
- * perspective must be set on the PARENT to establish the
- * shared 3D space for child elements. Setting it on self
- * applies perspective to the element's own children only,
- * which breaks the shadow sync relationship.
- */
+/* ── Sankofa 3D stage ────────────────────────────────────────── */
 .sankofa-container {
   position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  perspective: 800px;
-  perspective-origin: 50% 60%;
-  padding-bottom: 2rem;
+
+  /*
+   * perspective on the PARENT, not the child.
+   * 900px = natural depth for a ~280px asset at this scale.
+   * perspective-origin 50% 55% drops the vanishing point just
+   * below visual centre — the bird appears to float ABOVE the
+   * viewer's eye level rather than exactly at it.
+   */
+  perspective: 900px;
+  perspective-origin: 50% 55%;
+
+  /* Internal gap between bird and shadow */
+  gap: var(--sp-sm);
+  padding-block: var(--sp-md);
   z-index: 2;
 }
 
-/* ── SANKOFA ASSET ──────────────────────────────────────────── */
+/* ── Sankofa bird asset ─────────────────────────────────────── */
 .sankofa-asset {
-  width: clamp(160px, 28vw, 280px);
-  height: clamp(160px, 28vw, 280px);
+  width: clamp(150px, 26vw, 280px);
+  height: clamp(150px, 26vw, 280px);
   position: relative;
   z-index: 2;
+  flex-shrink: 0;
 
-  /* GPU compositor layer promotion */
+  /* GPU compositor layer pre-promotion */
   will-change: transform;
-
-  /* Triggers hardware acceleration on browsers that need a hint */
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
 
-  /* Organic 6s float — ease-in-out with GPU-only properties */
-  animation: sankofa-float 6s ease-in-out infinite;
+  animation: sankofaFloat 6s ease-in-out infinite;
+}
+.sankofa-asset svg {
+  width: 100%;
+  height: 100%;
+  display: block;
 }
 
-/* ── SHADOW ELEMENT ─────────────────────────────────────────── */
+/* ── Environmental shadow ───────────────────────────────────── */
 /*
- * The shadow is a separate GPU layer — absolutely critical.
- * If shadow were a CSS filter or box-shadow on .sankofa-asset,
- * it would move WITH the asset and never recede.
- * As its own element with its own animation, it truly reacts
- * to the perceived altitude of the bird above it.
+ * Must be a SIBLING of .sankofa-asset (not a child, not a
+ * pseudo-element) so it can run its own keyframe timeline.
+ * Its animation is synchronized only by matching duration (6s)
+ * and timing-function (ease-in-out) — not by JS.
+ *
+ * radial-gradient produces a physically plausible penumbra:
+ * dense core with soft, diffused edges. filter: blur adds a
+ * final pass of softening that static CSS can't replicate.
  */
 .sankofa-shadow {
-  position: relative;
-  width: clamp(80px, 14vw, 140px);
-  height: clamp(10px, 1.5vw, 18px);
+  width: clamp(70px, 13vw, 140px);
+  height: clamp(9px, 1.1vw, 15px);
+  border-radius: 50%;
+  flex-shrink: 0;
+
   background: radial-gradient(
     ellipse at center,
-    rgba(20, 20, 20, 0.22) 0%,
-    rgba(20, 20, 20, 0.08) 50%,
+    rgba(20, 20, 20, 0.26) 0%,
+    rgba(20, 20, 20, 0.10) 50%,
     transparent 100%
   );
-  border-radius: 50%;
-  margin-top: 0.5rem;
-  z-index: 1;
+  filter: blur(5px);
 
-  /* Own GPU layer for independent opacity + scale animation */
+  /* Own GPU compositor layer */
   will-change: transform, opacity;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
 
-  /* Synchronized with .sankofa-asset — same 6s duration + timing */
-  animation: sankofa-shadow 6s ease-in-out infinite;
+  animation: sankofaShadow 6s ease-in-out infinite;
 }
 
-/* ── KEYFRAMES ──────────────────────────────────────────────── */
-
-/*
- * sankofa-float:
- *   0%/100% = rest position
- *   50%     = apex — 28px lift, subtle Y-axis banking (3deg),
- *             Z-depth forward (30px) for 3D foreshortening
+/* ── @keyframes: sankofaFloat ───────────────────────────────────
  *
- *   Using translate3d ensures this stays on the GPU compositing
- *   thread and never triggers layout or paint recalculations.
- */
-@keyframes sankofa-float {
+ * translate3d(x, y, z):
+ *   y = vertical lift   → -26px at apex
+ *   z = depth pull      → +28px at apex (foreshortening via perspective)
+ *
+ * rotateY(3deg): maximum 3deg micro-bank at apex only.
+ * scale(1.04): subtle size growth at apex — objects appear
+ *   slightly larger as they approach the viewer in 3D space.
+ *
+ * 25% and 75% intermediate stops exist so the ease curve has
+ * velocity targets mid-arc. Without them the motion feels
+ * like a rubber band, not a floating object.
+ * ─────────────────────────────────────────────────────────── */
+@keyframes sankofaFloat {
   0%, 100% {
-    transform: translate3d(0, 0, 0) rotateY(0deg) scale(1);
+    transform: translate3d(0,    0px,   0px)  rotateY(0deg)   scale(1);
   }
   25% {
-    transform: translate3d(0, -14px, 15px) rotateY(1.5deg) scale(1.02);
+    transform: translate3d(0,  -13px,  14px)  rotateY(1.5deg) scale(1.02);
   }
   50% {
-    transform: translate3d(0, -28px, 30px) rotateY(3deg) scale(1.04);
+    transform: translate3d(0,  -26px,  28px)  rotateY(3deg)   scale(1.04);
   }
   75% {
-    transform: translate3d(0, -14px, 15px) rotateY(1.5deg) scale(1.02);
+    transform: translate3d(0,  -13px,  14px)  rotateY(1.5deg) scale(1.02);
   }
 }
 
-/*
- * sankofa-shadow:
- *   Inverse relationship to the float — shrinks and fades
- *   at apex (50%) to simulate the shadow receding as the
- *   light source distance increases with altitude.
- */
-@keyframes sankofa-shadow {
+/* ── @keyframes: sankofaShadow ──────────────────────────────────
+ *
+ * Inverse relationship to sankofaFloat.
+ * At apex (50%): scale(0.58) — shadow is 42% smaller,
+ *   simulating the ground-cast shadow receding as altitude
+ *   increases and the light source angle widens.
+ * opacity: 0.22 — nearly transparent at maximum altitude.
+ * At rest (0%/100%): scale(1) opacity: 0.85 — dense, close,
+ *   bird is nearly at ground level.
+ * ─────────────────────────────────────────────────────────── */
+@keyframes sankofaShadow {
   0%, 100% {
-    transform: scale(1) translate3d(0, 0, 0);
+    transform: scale(1)    translate3d(0, 0, 0);
     opacity: 0.85;
   }
   25% {
-    transform: scale(0.82) translate3d(0, 0, 0);
-    opacity: 0.55;
+    transform: scale(0.78) translate3d(0, 0, 0);
+    opacity: 0.52;
   }
   50% {
-    transform: scale(0.6) translate3d(0, 0, 0);
-    opacity: 0.28;
+    transform: scale(0.58) translate3d(0, 0, 0);
+    opacity: 0.22;
   }
   75% {
-    transform: scale(0.82) translate3d(0, 0, 0);
-    opacity: 0.55;
+    transform: scale(0.78) translate3d(0, 0, 0);
+    opacity: 0.52;
   }
 }
 
-/* ── DEPT-HERO VISUAL — position the Sankofa centrally ───────── */
-.dept-hero__visual {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: var(--sp-xl);
+/* ── Responsive scaling ─────────────────────────────────────── */
+@media (max-width: 900px) {
+  .sankofa-asset  { width: clamp(110px, 38vw, 190px); height: clamp(110px, 38vw, 190px); }
+  .sankofa-shadow { width: clamp(55px,  19vw,  95px); }
 }
 
-/*
- * Override the old fixed min-height — the Sankofa container
- * now defines the visual block's natural height organically.
- */
-.dept-hero__visual .sankofa-container {
-  margin-block: var(--sp-xl);
-}
-
-/* ── RESPECT REDUCED MOTION ─────────────────────────────────── */
-/*
- * WCAG 2.1 SC 2.3.3 (AAA) and 2.3.1:
- * Users who set prefers-reduced-motion get the Sankofa static.
- * We do NOT remove it — we freeze it at rest position.
- * Hiding it entirely would be a content loss; freezing respects
- * the preference without breaking the design.
- */
+/* ── WCAG 2.1 SC 2.3.3 — Reduced Motion ────────────────────── */
 @media (prefers-reduced-motion: reduce) {
   .sankofa-asset,
   .sankofa-shadow {
     animation: none;
     will-change: auto;
   }
-  .sankofa-shadow {
-    opacity: 0.6;
-  }
-}
-
-/* ── MOBILE SCALING ─────────────────────────────────────────── */
-@media (max-width: 900px) {
-  .sankofa-asset {
-    width: clamp(120px, 40vw, 200px);
-    height: clamp(120px, 40vw, 200px);
-  }
-  .sankofa-shadow {
-    width: clamp(60px, 20vw, 100px);
-  }
+  .sankofa-shadow { opacity: 0.55; }
 }
