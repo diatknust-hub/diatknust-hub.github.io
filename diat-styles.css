@@ -462,42 +462,49 @@ h1, h2, h3, h4, h5, h6 { font-family: var(--ff-display); line-height: var(--lh-h
   background: var(--clr-surface);
 
   /*
-   * FIX A — height not min-height:
-   *   min-height does not constrain grid row sizing. The 'auto'
-   *   trust row grows freely, pushing total height past the
-   *   specified value and bleeding into the next section.
-   *   height: clamp() caps the container firmly while remaining
-   *   fluid. min-height: 600px is the floor for short viewports.
+   * FIX A — height not min-height (preserved):
+   *   clamp() caps the section firmly; min-height: 600px
+   *   is the absolute floor for short viewports.
    */
   height: clamp(600px, calc(100svh - var(--nav-height)), 100svh);
   min-height: 600px;
 
   display: grid;
-  grid-template-columns: 7fr 5fr;
+
+  /*
+   * GRID COLUMN UPDATE — 1.2fr 0.8fr (was 7fr 5fr):
+   *   Functionally identical 60/40 split, but the 1.2/0.8 form
+   *   self-documents copy structural dominance. The text column
+   *   has a proportional advantage over the visual zone, ensuring
+   *   longer phrases never collapse to single-word orphan lines.
+   */
+  grid-template-columns: 1.2fr 0.8fr;
   grid-template-rows: 1fr auto;
   grid-template-areas:
     "copy  visual"
     "trust visual";
 
-  /*
-   * FIX B — align-items: stretch not center:
-   *   center was vertically centering ALL grid children including
-   *   .dept-hero__visual, causing height: 100% on the visual to
-   *   shrink-wrap rather than fill the full column height.
-   *   stretch forces the visual column to fill both grid rows.
-   */
-  align-items: stretch;
-
-  /*
-   * FIX C — position: relative as positioning context:
-   *   .site-header is position: absolute. Without a positioned
-   *   ancestor, it escapes to the viewport and collides with
-   *   .dept-nav at z-index: 200. Scoping it to the hero panel
-   *   pins the logo inside the hero visual area where it belongs.
-   */
-  position: relative;
-
+  align-items: stretch;   /* FIX B — visual column fills full height */
+  position: relative;     /* FIX C — positioning context for site-header */
   overflow: hidden;
+
+  /*
+   * ULTRA-WIDE CEILING — max-width: 1440px + margin-inline: auto:
+   *   On monitors wider than 1440px the fractional columns would
+   *   drift apart as they scale with the full viewport width.
+   *   This boundary caps the hero layout zone and centres it,
+   *   keeping copy and visual column at readable proportions.
+   *
+   * FLUID HORIZONTAL PADDING — padding-inline: clamp():
+   *   Compresses to var(--sp-md) on narrow laptops (~1024px),
+   *   expands to var(--sp-2xl) within the 1440px safe zone,
+   *   ensuring the text column has structured breathing room
+   *   without touching the typography scale or spacing tokens.
+   */
+  max-width: 1440px;
+  margin-inline: auto;
+  padding-inline: clamp(var(--sp-md), 4vw, var(--sp-2xl));
+  width: 100%;
 }
 .dept-hero__copy {
   grid-area: copy;
