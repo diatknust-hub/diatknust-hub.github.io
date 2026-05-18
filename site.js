@@ -62,15 +62,7 @@
       </svg>
     </div>
   </header>
-
-  <a href="#main-content" class="skip-link">Skip to main content</a>
-
-  <div class="site-announce" role="region" aria-label="Site announcement">
-    &#127881; DIAT@50 &mdash; Est. 1976 &nbsp;&middot;&nbsp; Ghana&#39;s premier indigenous art department
-    <a href="#signup" class="site-announce__link">Register for Updates &#8594;</a>
-  </div>
-
-  <header>
+<header>
     <nav class="dept-nav" id="dept-nav" aria-label="Primary navigation">
       <div class="container dept-nav__inner">
         <a href="index.html" class="dept-nav__brand" aria-label="DIAT KNUST home">

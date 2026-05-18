@@ -332,7 +332,15 @@ h1, h2, h3, h4, h5, h6 { font-family: var(--ff-display); line-height: var(--lh-h
 .dept-nav__brand-sub {
   font-size: var(--fs-xs);
   font-weight: 600;
-  letter-spacing: var(--ls-widest);
+
+  /*
+   * FIX 2a — letter-spacing reduced desktop:
+   *   var(--ls-widest) = 0.18em × 37 chars ≈ +73px extra width.
+   *   The nav brand column can't accommodate that, clipping the text.
+   *   0.06em is tight enough to fit in full while still reading as
+   *   a small-caps style subtitle alongside the brand name.
+   */
+  letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--clr-text-tertiary);
 }
@@ -3294,22 +3302,24 @@ h1, h2, h3, h4, h5, h6 { font-family: var(--ff-display); line-height: var(--lh-h
 }
 
 @media (max-width: 480px) {
-  /* Restore subtitle with corrected formatting */
+  /* Brand subtitle — full text, wraps to 2 lines if needed */
   .dept-nav__brand-sub {
     display: block;
-    font-size: 0.58rem;
+    font-size: 0.56rem;
 
     /*
-     * Letter-spacing override: 0.04em (was 0.18em desktop).
-     * 37 chars × 0.04em × ~9px = ~13px total spacing overhead.
-     * At 0.18em that was ~60px — far exceeding the column width.
+     * FIX 2b — mobile brand subtitle:
+     *   Removed max-width: 155px and text-overflow: ellipsis that
+     *   were clipping the subtitle to "DEPT. OF INDIGENOUS ART & T...".
+     *   white-space: normal allows 2-line wrap within the brand column.
+     *   The brand column is naturally constrained by the nav layout,
+     *   so the text wraps cleanly without overflowing the nav bar.
+     *   letter-spacing: 0.04em keeps the small-caps aesthetic compact.
      */
     letter-spacing: 0.04em;
-    line-height: 1.25;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-width: 155px;
+    line-height: 1.3;
+    white-space: normal;
+    overflow: visible;
     color: var(--clr-text-tertiary);
   }
 
