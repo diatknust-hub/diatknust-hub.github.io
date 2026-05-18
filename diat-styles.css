@@ -1643,6 +1643,16 @@ h1, h2, h3, h4, h5, h6 { font-family: var(--ff-display); line-height: var(--lh-h
   .dept-hero {
     grid-template-columns: 1fr;
     grid-template-areas: "visual" "copy" "trust";
+
+    /*
+     * FIX — height: auto overrides the desktop clamp() height.
+     * On desktop, height: clamp(600px, 100svh, ...) creates a
+     * viewport-tall hero. In the mobile single-column layout,
+     * align-items: stretch causes .dept-hero__visual to fill that
+     * entire height — pushing .dept-hero__copy off-screen below.
+     * height: auto lets the three stacked rows size by their content.
+     */
+    height: auto;
     min-height: auto;
   }
   .dept-hero__visual { min-height: 320px; }
