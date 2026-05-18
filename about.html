@@ -316,49 +316,73 @@
          style="max-width:90vw;max-height:78vh;object-fit:contain;
                 display:block;border-radius:6px">
     <!--
-      OVERLAY BAR — compact single-line layout (mobile-first)
+      LIGHTBOX OVERLAY BAR v3 — reduced fonts, generous padding
       ─────────────────────────────────────────────────────────
-      BEFORE: title stacked above desc at 1.05rem + 0.75rem
-        → wraps to 4 lines, covers ~40% of image on phones.
-      AFTER:  title · desc in ONE flex row at reduced sizes
-        → stays within 1 line on most phones, covers <12% of image.
-      Watermark stays right-aligned, reduced to 0.6rem.
-      Gradient shortened from padding:20px to padding:24px 12px 8px
-        so the dark zone is shallower on the image.
+      Layout:
+        [Title · Truncated description…]      [DIAT · KNUST]
+                                                   [© 2026]
+
+      Font sizes (further reduced from v2):
+        Title       0.62rem bold  (was 0.72rem)
+        Separator   0.52rem       (was 0.60rem)
+        Description 0.58rem       (was 0.65rem)
+        Watermark   0.58rem bold  (was 0.62rem)
+        Copyright   0.52rem       (was 0.58rem)
+
+      Padding: 32px top → 14px sides → 12px bottom
+        The 32px top padding creates the gradient breathing zone
+        that lets the dark area fade naturally into the image above,
+        giving visual breathing room around the text row.
     -->
     <div style="position:absolute;bottom:0;left:0;right:0;
-                background:linear-gradient(to top,rgba(0,0,0,.78) 0%,transparent 100%);
-                padding:24px 12px 8px;border-radius:0 0 6px 6px;
+                background:linear-gradient(to top,rgba(0,0,0,.82) 0%,rgba(0,0,0,.3) 65%,transparent 100%);
+                padding:32px 14px 12px;border-radius:0 0 6px 6px;
                 pointer-events:none;user-select:none">
-      <div style="display:flex;justify-content:space-between;
-                  align-items:flex-end;gap:8px">
 
-        <!-- LEFT: title · desc on one line -->
+      <div style="display:flex;justify-content:space-between;
+                  align-items:flex-end;gap:6px;flex-wrap:nowrap">
+
+        <!-- LEFT: title · description — clipped to one line -->
         <div style="display:flex;align-items:baseline;
-                    gap:4px;flex:1;min-width:0;overflow:hidden">
+                    gap:4px;flex:1;min-width:0;
+                    overflow:hidden;white-space:nowrap">
           <span id="lb-title"
-                style="color:#fff;font-family:Georgia,serif;
-                       font-size:.72rem;font-weight:700;
-                       white-space:nowrap;flex-shrink:0"></span>
-          <span style="color:rgba(255,255,255,.3);
-                       font-size:.6rem;flex-shrink:0">&middot;</span>
+                style="color:#ffffff;
+                       font-family:Georgia,serif;
+                       font-size:.62rem;
+                       font-weight:700;
+                       letter-spacing:.01em;
+                       white-space:nowrap;
+                       flex-shrink:0"></span>
+          <span aria-hidden="true"
+                style="color:rgba(255,255,255,.28);
+                       font-size:.52rem;
+                       flex-shrink:0">&middot;</span>
           <span id="lb-desc"
-                style="color:rgba(255,255,255,.6);
+                style="color:rgba(255,255,255,.58);
                        font-family:Inter,system-ui,sans-serif;
-                       font-size:.65rem;
-                       white-space:nowrap;overflow:hidden;
-                       text-overflow:ellipsis"></span>
+                       font-size:.58rem;
+                       white-space:nowrap;
+                       overflow:hidden;
+                       text-overflow:ellipsis;
+                       min-width:0"></span>
         </div>
 
-        <!-- RIGHT: watermark compact stack -->
-        <div style="text-align:right;flex-shrink:0;white-space:nowrap">
-          <p style="color:rgba(255,255,255,.82);
+        <!-- RIGHT: DIAT watermark — stacked, right-aligned, compact -->
+        <div style="text-align:right;
+                    flex-shrink:0;
+                    white-space:nowrap;
+                    padding-left:8px">
+          <p style="color:rgba(255,255,255,.78);
                     font-family:Georgia,serif;
-                    font-size:.62rem;font-weight:700;
-                    letter-spacing:.04em;margin-bottom:1px">DIAT &middot; KNUST</p>
-          <p style="color:rgba(255,255,255,.42);
+                    font-size:.58rem;
+                    font-weight:700;
+                    letter-spacing:.04em;
+                    margin:0 0 2px 0">DIAT &middot; KNUST</p>
+          <p style="color:rgba(255,255,255,.38);
                     font-family:Inter,system-ui,sans-serif;
-                    font-size:.58rem">&#169; 2026</p>
+                    font-size:.52rem;
+                    margin:0">&#169; 2026</p>
         </div>
 
       </div>
