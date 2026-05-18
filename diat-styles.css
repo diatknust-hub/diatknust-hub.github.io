@@ -521,24 +521,29 @@ h1, h2, h3, h4, h5, h6 { font-family: var(--ff-display); line-height: var(--lh-h
   min-height: 0;
 
   /*
-   * FIX C — justify-content: flex-end (was: center).
+   * justify-content: center — vertically centres copy content in row 1.
    *
-   * center was vertically centering all copy content in a
-   * potentially 750px+ tall row, placing buttons far from the
-   * section bottom and leaving a large empty zone below them.
+   * WHY center (not flex-end):
+   *   flex-end was added to stop buttons overlapping the trust section,
+   *   but it created a large empty zone ABOVE the eyebrow text in tall
+   *   hero containers (desktop mode on mobile, wide monitors).
    *
-   * flex-end anchors all copy content (title, subtitle, buttons)
-   * to the BOTTOM of the copy row. This creates a natural reading
-   * flow: content leads into the partners section below it.
+   * WHY it is safe now:
+   *   .dept-hero__trust has align-self: start, so it anchors directly
+   *   to the TOP of row 2 regardless of where copy content sits in row 1.
+   *   Buttons in a centred 700px row sit at ~50% height — well clear of
+   *   the trust row boundary below. No overlap is possible.
    *
-   * padding-bottom creates explicit physical separation between
-   * action buttons and the trust row's border-top — the gap is
-   * guaranteed regardless of row height.
+   * VISUAL RESULT:
+   *   Both copy (center) and visual (justify-content: center) align
+   *   their content at the same vertical band — the h1 and Sankofa
+   *   appear at the same eye level, creating the balanced two-column
+   *   layout seen in the perfect desktop screenshot.
    */
   padding: var(--sp-2xl) var(--sp-xl) var(--sp-lg) var(--sp-xl);
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
+  justify-content: center;
   overflow: visible;
 }
 .dept-hero__eyebrow {
@@ -1671,9 +1676,23 @@ h1, h2, h3, h4, h5, h6 { font-family: var(--ff-display); line-height: var(--lh-h
   .dept-artwork-card--tall { grid-column: span 3; grid-row: span 1; }
   .dept-community { grid-template-columns: 1fr; }
   .dept-programmes__grid { grid-template-columns: repeat(2, 1fr); }
-  .dept-disc-card--featured { grid-column: 1 / -1; }
+  /*
+   * PROGRAMMES GRID — 2-column at tablet/mobile.
+   * Base rule is repeat(6,1fr). Without this override, span-1 cards
+   * try to fit 6-across in one row and wrap unpredictably, leaving
+   * Clay and Metal without partners (empty right halves).
+   * 2-column grid + span 1 = exactly 2 cards per row, always paired.
+   */
+  .dept-programmes__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .dept-disc-card--featured {
+    grid-column: 1 / -1;
+    grid-template-columns: 1fr; /* inner grid also single column */
+  }
   .dept-disc-card--wide,
-  .dept-disc-card--std  { grid-column: span 1; }
+  .dept-disc-card--std { grid-column: span 1; }
 }
 @media (max-width: 640px) {
   .dept-nav__links,
@@ -1683,10 +1702,11 @@ h1, h2, h3, h4, h5, h6 { font-family: var(--ff-display); line-height: var(--lh-h
   .dept-stats__grid { grid-template-columns: repeat(2, 1fr); }
   .dept-gallery-preview__grid { display: flex; flex-direction: column; }
   .dept-gallery-preview__grid > * { aspect-ratio: 16/9; }
+  /* Programmes: single-column on small phones */
   .dept-programmes__grid { grid-template-columns: 1fr; }
-  .dept-disc-card--featured {
-    grid-template-columns: 1fr;
-  }
+  .dept-disc-card--featured { grid-column: 1 / -1; grid-template-columns: 1fr; }
+  .dept-disc-card--wide,
+  .dept-disc-card--std  { grid-column: span 1; }
   .site-footer__grid { grid-template-columns: 1fr; }
   .site-footer__bottom { flex-direction: column; text-align: center; }
   .dept-anniversary__milestones { gap: var(--sp-lg); }
