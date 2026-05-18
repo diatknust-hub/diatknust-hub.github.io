@@ -2,382 +2,47 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
-  <title>WebAR Viewer — DIAT | KNUST Ghana</title>
-  <meta name="description" content="View DIAT artworks in augmented reality — place any artwork in your own space using your phone camera. No app download required."/>
-
-  <!-- Model-Viewer — handles 3D display AND AR on iOS/Android -->
-  <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"></script>
-
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="theme-color" content="#1A1A4E"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
-
-  <style>
-    :root{
-      --white:#FFFFFF; --surface:#FAFAF8; --border:#E8E4DC;
-      --t1:#111111; --t2:#555555; --t3:#999999;
-      --gold:#C9952A; --gold-light:#FBF4E6; --gold-dark:#9A6F10;
-      --indigo:#1A1A4E; --indigo-mid:#252565;
-      --terra:#C1440E;
-      --sans:"Inter",system-ui,sans-serif;
-      --serif:"Cormorant Garamond",Georgia,serif;
-    }
-    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-    html,body{height:100%;font-family:var(--sans);-webkit-font-smoothing:antialiased;overflow:hidden;background:#0a0a0a}
-    a{text-decoration:none;color:inherit}
-    button{font-family:var(--sans);cursor:pointer;border:none;background:none}
-
-    /* ═══════════════════════════════════════════════════════════
-       FULL-SCREEN MODEL VIEWER
-    ═══════════════════════════════════════════════════════════ */
-    model-viewer{
-      width:100vw;
-      height:100vh;
-      background:transparent;
-      --poster-color:transparent;
-    }
-
-    /* ═══════════════════════════════════════════════════════════
-       TOP BAR — floats over the viewer
-    ═══════════════════════════════════════════════════════════ */
-    .top-bar{
-      position:fixed;top:0;left:0;right:0;
-      z-index:100;
-      padding:env(safe-area-inset-top,0) 0 0;
-      background:linear-gradient(to bottom,rgba(0,0,0,.75) 0%,transparent 100%);
-      display:flex;align-items:center;justify-content:space-between;
-      padding:16px 20px;
-    }
-
-    /* Back button */
-    .back-btn{
-      display:flex;align-items:center;gap:8px;
-      color:rgba(255,255,255,.9);font-size:.82rem;font-weight:500;
-      background:rgba(0,0,0,.4);backdrop-filter:blur(8px);
-      border:1px solid rgba(255,255,255,.15);
-      border-radius:50px;padding:8px 16px;
-      transition:all .2s ease;
-    }
-    .back-btn:hover{background:rgba(0,0,0,.6);color:#fff}
-    .back-btn svg{width:16px;height:16px;flex-shrink:0}
-
-    /* DIAT brand centre */
-    .top-brand{
-      display:flex;align-items:center;gap:8px;
-      position:absolute;left:50%;transform:translateX(-50%);
-    }
-    .top-brand-icon{width:28px;height:28px}
-    .top-brand-text{
-      font-family:var(--serif);font-size:.85rem;font-weight:600;
-      color:rgba(255,255,255,.9);letter-spacing:.02em;
-    }
-
-    /* Share button */
-    .share-btn{
-      display:flex;align-items:center;gap:8px;
-      color:rgba(255,255,255,.9);font-size:.82rem;font-weight:500;
-      background:rgba(0,0,0,.4);backdrop-filter:blur(8px);
-      border:1px solid rgba(255,255,255,.15);
-      border-radius:50px;padding:8px 16px;
-      transition:all .2s ease;
-    }
-    .share-btn:hover{background:rgba(201,149,42,.6);border-color:var(--gold)}
-    .share-btn svg{width:16px;height:16px;flex-shrink:0}
-
-    /* ═══════════════════════════════════════════════════════════
-       BOTTOM INFO CARD
-    ═══════════════════════════════════════════════════════════ */
-    .info-card{
-      position:fixed;
-      bottom:0;left:0;right:0;
-      z-index:100;
-      padding:0 0 env(safe-area-inset-bottom,16px);
-      background:linear-gradient(to top,rgba(0,0,0,.9) 0%,rgba(0,0,0,.6) 60%,transparent 100%);
-    }
-    .info-card-inner{
-      padding:20px 20px 24px;
-    }
-
-    /* Drag handle */
-    .card-handle{
-      width:36px;height:4px;background:rgba(255,255,255,.25);
-      border-radius:2px;margin:0 auto 16px;cursor:pointer;
-    }
-
-    /* Artwork discipline tag */
-    .card-disc{
-      display:inline-flex;align-items:center;gap:6px;
-      font-size:.65rem;font-weight:700;letter-spacing:.12em;
-      text-transform:uppercase;color:var(--gold);
-      background:rgba(201,149,42,.15);border:1px solid rgba(201,149,42,.3);
-      padding:4px 10px;border-radius:50px;margin-bottom:10px;
-    }
-
-    /* Title */
-    .card-title{
-      font-family:var(--serif);
-      font-size:clamp(1.3rem,4vw,1.8rem);
-      font-weight:600;color:#fff;line-height:1.15;
-      margin-bottom:6px;
-    }
-
-    /* Artist + year */
-    .card-artist{
-      font-size:.82rem;color:rgba(255,255,255,.6);
-      margin-bottom:14px;
-    }
-    .card-artist span{color:rgba(255,255,255,.35);margin:0 6px}
-
-    /* Metadata row */
-    .card-meta{
-      display:flex;gap:20px;flex-wrap:wrap;
-      margin-bottom:18px;
-    }
-    .meta-item{}
-    .meta-label{font-size:.6rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.35);margin-bottom:2px}
-    .meta-val{font-size:.8rem;font-weight:500;color:rgba(255,255,255,.8)}
-
-    /* Action buttons */
-    .card-actions{display:flex;gap:10px;flex-wrap:wrap}
-
-    /* AR launch button (custom slot) */
-    #ar-button{
-      display:flex;align-items:center;gap:8px;
-      background:var(--gold);color:#fff;
-      font-size:.85rem;font-weight:600;padding:13px 24px;
-      border-radius:50px;border:none;cursor:pointer;
-      transition:background .2s,transform .2s;
-      flex:1;justify-content:center;
-    }
-    #ar-button:hover{background:var(--gold-dark);transform:scale(1.02)}
-    #ar-button svg{width:18px;height:18px;flex-shrink:0}
-    #ar-button[slot="ar-button"]{display:flex}
-
-    /* Gallery link button */
-    .gallery-btn{
-      display:flex;align-items:center;gap:8px;
-      background:rgba(255,255,255,.1);color:rgba(255,255,255,.85);
-      font-size:.82rem;font-weight:500;padding:12px 20px;
-      border-radius:50px;border:1px solid rgba(255,255,255,.2);
-      transition:background .2s;
-    }
-    .gallery-btn:hover{background:rgba(255,255,255,.2)}
-
-    /* ═══════════════════════════════════════════════════════════
-       LOADING OVERLAY
-    ═══════════════════════════════════════════════════════════ */
-    .loading-overlay{
-      position:fixed;inset:0;z-index:200;
-      background:#0a0a0a;
-      display:flex;flex-direction:column;
-      align-items:center;justify-content:center;
-      gap:16px;
-      transition:opacity .5s ease;
-    }
-    .loading-overlay.fade{opacity:0;pointer-events:none}
-    .loading-sankofa{
-      width:80px;height:80px;
-      animation:pulse 2s ease-in-out infinite;
-    }
-    @keyframes pulse{0%,100%{transform:scale(1);opacity:.8}50%{transform:scale(1.08);opacity:1}}
-    .loading-text{font-size:.8rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.4)}
-    .loading-spinner{
-      width:32px;height:32px;
-      border:2px solid rgba(255,255,255,.1);
-      border-top-color:var(--gold);
-      border-radius:50%;
-      animation:spin .8s linear infinite;
-    }
-    @keyframes spin{to{transform:rotate(360deg)}}
-
-    /* ═══════════════════════════════════════════════════════════
-       HOW TO USE — first-visit guide
-    ═══════════════════════════════════════════════════════════ */
-    .how-overlay{
-      position:fixed;inset:0;z-index:150;
-      background:rgba(0,0,0,.85);backdrop-filter:blur(6px);
-      display:flex;align-items:center;justify-content:center;
-      padding:24px;
-    }
-    .how-overlay.hidden{display:none}
-    .how-box{
-      background:rgba(26,26,78,.95);
-      border:1px solid rgba(201,149,42,.25);
-      border-radius:20px;padding:32px 28px;
-      max-width:380px;width:100%;
-      text-align:center;
-    }
-    .how-box h3{
-      font-family:var(--serif);font-size:1.4rem;font-weight:600;
-      color:#fff;margin-bottom:6px;
-    }
-    .how-box>p{font-size:.82rem;color:rgba(255,255,255,.55);margin-bottom:24px;line-height:1.6}
-    .how-steps{list-style:none;text-align:left;margin-bottom:24px}
-    .how-steps li{
-      display:flex;align-items:flex-start;gap:12px;
-      font-size:.82rem;color:rgba(255,255,255,.75);
-      padding:10px 0;border-bottom:1px solid rgba(255,255,255,.07);
-      line-height:1.5;
-    }
-    .how-steps li:last-child{border-bottom:none}
-    .how-step-num{
-      width:24px;height:24px;border-radius:50%;
-      background:var(--gold);color:#fff;
-      font-size:.72rem;font-weight:700;
-      display:flex;align-items:center;justify-content:center;
-      flex-shrink:0;margin-top:1px;
-    }
-    .how-start{
-      width:100%;background:var(--gold);color:#fff;
-      font-size:.88rem;font-weight:600;padding:14px;
-      border-radius:50px;border:none;cursor:pointer;
-      transition:background .2s;
-    }
-    .how-start:hover{background:var(--gold-dark)}
-    .how-note{font-size:.7rem;color:rgba(255,255,255,.3);margin-top:12px;line-height:1.5}
-
-    /* ═══════════════════════════════════════════════════════════
-       AR NOT SUPPORTED MESSAGE
-    ═══════════════════════════════════════════════════════════ */
-    .no-ar-msg{
-      display:none;
-      background:rgba(201,149,42,.12);
-      border:1px solid rgba(201,149,42,.25);
-      border-radius:10px;padding:12px 16px;
-      font-size:.78rem;color:rgba(255,255,255,.7);
-      line-height:1.5;margin-top:12px;
-    }
-    .no-ar-msg.show{display:block}
-
-    /* ═══════════════════════════════════════════════════════════
-       SHARE TOAST
-    ═══════════════════════════════════════════════════════════ */
-    .share-toast{
-      position:fixed;top:80px;left:50%;transform:translateX(-50%);
-      z-index:300;
-      background:rgba(0,0,0,.85);backdrop-filter:blur(8px);
-      color:#fff;font-size:.82rem;font-weight:500;
-      padding:10px 20px;border-radius:50px;
-      border:1px solid rgba(255,255,255,.15);
-      display:none;
-      white-space:nowrap;
-      animation:toastIn .3s ease;
-    }
-    .share-toast.show{display:block}
-    @keyframes toastIn{from{opacity:0;transform:translateX(-50%) translateY(-8px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
-
-    /* Responsive — taller card on desktop */
-    @media(min-width:768px){
-      .info-card-inner{padding:24px 36px 32px}
-      .card-title{font-size:2rem}
-      .card-meta{gap:32px}
-    }
-  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="diat-styles.css"/>
+  <meta name="description" content="View DIAT indigenous artworks in augmented reality. Place student-created craft objects in your physical space."/>
+  <title>WebAR Viewer — DIAT | KNUST Ghana</title>
 </head>
 <body>
-
-<!-- ═══════════════════════════════════════════════════════════
-     LOADING OVERLAY
-═══════════════════════════════════════════════════════════ -->
-<div class="loading-overlay" id="loading">
-  <svg class="loading-sankofa" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <ellipse cx="56" cy="75" rx="26" ry="18" stroke="#C9952A" stroke-width="2.5"/>
-    <path d="M56 57 C56 42 80 33 86 43 C92 53 80 64 70 60" stroke="#C9952A" stroke-width="2.5" stroke-linecap="round" fill="none"/>
-    <circle cx="76" cy="56" r="12" stroke="#C9952A" stroke-width="2.5" fill="none"/>
-    <circle cx="79" cy="52" r="2.5" fill="#C9952A"/>
-    <path d="M86 58 L96 55 L86 64" stroke="#C9952A" stroke-width="2.2" stroke-linejoin="round" fill="none"/>
-    <ellipse cx="42" cy="64" rx="8" ry="10" stroke="#C9952A" stroke-width="2" fill="none"/>
-    <path d="M30 75 C20 83 14 96 20 102" stroke="#C9952A" stroke-width="2.5" stroke-linecap="round" fill="none"/>
-  </svg>
-  <div class="loading-spinner"></div>
-  <p class="loading-text" id="load-msg">Fetching 3D model&hellip;</p>
-  <p style="font-size:.65rem;color:rgba(255,255,255,.25);margin-top:-8px;letter-spacing:.1em;text-transform:uppercase;text-align:center;padding:0 20px">This may take a few seconds on mobile data</p>
-</div>
-
-<!-- ═══════════════════════════════════════════════════════════
-     HOW TO USE — shown on first visit
-═══════════════════════════════════════════════════════════ -->
-<div class="how-overlay" id="how-overlay">
-  <div class="how-box">
-    <h3 data-cms-key="webar-h-webar-viewer" data-cms-label="WebAR Viewer" data-cms-type="text">WebAR Viewer</h3>
-    <p>Place any DIAT artwork in your own space using your phone camera &mdash; no app download needed.</p>
-    <ul class="how-steps">
-      <li>
-        <span class="how-step-num">1</span>
-        <span>Rotate and zoom the 3D model on screen to explore it fully before going AR</span>
-      </li>
-      <li>
-        <span class="how-step-num">2</span>
-        <span>Tap <strong style="color:var(--gold)">"Launch in AR"</strong> to activate your camera and place the artwork in your real space</span>
-      </li>
-      <li>
-        <span class="how-step-num">3</span>
-        <span>Point your camera at a flat surface &mdash; floor, table, or desk &mdash; and tap to place the artwork</span>
-      </li>
-      <li>
-        <span class="how-step-num">4</span>
-        <span>Walk around to view it from all angles, then use <strong style="color:var(--gold)">Share</strong> to send to WhatsApp or Instagram</span>
-      </li>
-    </ul>
-    <button class="how-start" onclick="dismissHow()">Got it &mdash; Show Me the Artwork &rarr;</button>
-    <p class="how-note">AR requires Chrome on Android or Safari on iOS 12+.<br/>Works best in a well-lit environment.</p>
+<header class="site-header" role="banner" aria-label="Site brand">
+    <div class="site-header__logo-container">
+      <!--
+        Replace the SVG below with your actual DIAT logo file.
+        Minimum: 2× resolution PNG or true SVG vector.
+        Alt text follows the pattern: "[Org Name] official logo"
+      -->
+      <svg class="site-header__logo" viewBox="0 0 160 48" fill="none"
+           xmlns="http://www.w3.org/2000/svg"
+           aria-label="DIAT — Department of Indigenous Art and Technology, KNUST"
+           role="img" focusable="false">
+        <!-- Wordmark placeholder — replace src with real logo asset -->
+        <text x="0" y="34" font-family="Georgia, serif" font-size="22"
+              font-weight="700" fill="#1A1A4E" letter-spacing="-0.5">DIAT</text>
+        <text x="60" y="34" font-family="Georgia, serif" font-size="12"
+              fill="#C9952A" letter-spacing="0">&#183; KNUST</text>
+        <line x1="0" y1="40" x2="160" y2="40" stroke="#C9952A"
+              stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+    </div>
+  </header>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+<div class="site-announce" role="region" aria-label="Site announcement">
+    &#127881; DIAT@50 &mdash; Est. 1976 &nbsp;&middot;&nbsp; Ghana&#39;s premier indigenous art department
+    <a href="#signup" class="site-announce__link">Register for Updates &#8594;</a>
   </div>
-</div>
-
-<!-- ═══════════════════════════════════════════════════════════
-     THE 3D / AR VIEWER
-═══════════════════════════════════════════════════════════ -->
-<!-- Model src: set via URL params or defaults to Pictorial Coffee Table demo -->
-<model-viewer
-  id="mv"
-  src=""
-  ios-src=""
-  alt="Pictorial Coffee Table — Wood &amp; Furniture, DIAT KNUST"
-  ar
-  ar-modes="webxr scene-viewer quick-look"
-  ar-scale="auto"
-  camera-controls
-  auto-rotate
-  auto-rotate-delay="2000"
-  rotation-per-second="15deg"
-  shadow-intensity="1"
-  shadow-softness="0.8"
-  exposure="1.1"
-  environment-image="neutral"
-  interaction-prompt="auto"
-  loading="eager"
-  reveal="manual"
-  style="background:#0f0f0f">
-
-  <!-- Custom AR launch button (appears inside model-viewer) -->
-  <button id="ar-button" slot="ar-button">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-      <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
-      <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
-      <line x1="12" y1="22.08" x2="12" y2="12"/>
-    </svg>
-    Launch in AR
-  </button>
-
-</model-viewer>
-
-<!-- ═══════════════════════════════════════════════════════════
-     TOP BAR
-═══════════════════════════════════════════════════════════ -->
-<div class="top-bar">
-
-  <!-- Back to gallery -->
-  <a href="gallery.html" class="back-btn">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-      <polyline points="15 18 9 12 15 6"/>
-    </svg>
-    Gallery
-  </a>
-
-  <!-- DIAT brand -->
-  <div class="top-brand">
-    <svg class="top-brand-icon" viewBox="0 0 60 60" fill="none">
+<header>
+    <nav class="dept-nav" id="dept-nav" aria-label="Primary navigation">
+      <div class="container dept-nav__inner">
+        <a href="index.html" class="dept-nav__brand" aria-label="DIAT KNUST home">
+          <svg class="dept-nav__logo" aria-hidden="true" focusable="false" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
       <ellipse cx="28" cy="38" rx="14" ry="9" stroke="#C9952A" stroke-width="2"/>
       <path d="M28 29 C28 20 40 16 43 22 C46 28 40 33 35 31" stroke="#C9952A" stroke-width="2" stroke-linecap="round" fill="none"/>
       <circle cx="37" cy="28" r="7" stroke="#C9952A" stroke-width="2" fill="none"/>
@@ -386,204 +51,161 @@
       <ellipse cx="20" cy="32" rx="4.5" ry="5.5" stroke="#C9952A" stroke-width="1.6" fill="none"/>
       <path d="M14 38 C9 43 7 50 11 54" stroke="#C9952A" stroke-width="2" stroke-linecap="round" fill="none"/>
     </svg>
-    <span class="top-brand-text">DIAT &middot; KNUST</span>
-  </div>
-
-  <!-- Share -->
-  <button class="share-btn" onclick="shareArtwork()">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-      <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>
-      <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/>
-      <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
-    </svg>
-    Share
-  </button>
-
-</div>
-
-<!-- ═══════════════════════════════════════════════════════════
-     BOTTOM INFO CARD
-═══════════════════════════════════════════════════════════ -->
-<div class="info-card">
-  <div class="info-card-inner">
-    <div class="card-handle"></div>
-
-    <div class="card-disc" id="card-disc">
-      <svg width="8" height="8" viewBox="0 0 8 8"><circle cx="4" cy="4" r="4" fill="currentColor"/></svg>
-      <span id="disc-text">Loading&hellip;</span>
-    </div>
-
-    <h2 class="card-title" id="card-title" data-cms-key="webar-h-loading-artwork" data-cms-label="Loading artwork" data-cms-type="text">Loading artwork&hellip;</h2>
-    <p class="card-artist">
-      <span id="card-artist">—</span>
-      <span>&middot;</span>
-      <span id="card-year">—</span>
-      <span>&middot;</span>
-      DIAT, KNUST
-    </p>
-
-    <div class="card-meta">
-      <div class="meta-item">
-        <div class="meta-label">Materials</div>
-        <div class="meta-val" id="card-materials">—</div>
+          <div class="dept-nav__brand-text">
+            <span class="dept-nav__brand-name">DIAT &middot; KNUST</span>
+            <span class="dept-nav__brand-sub">Dept. of Indigenous Art &amp; Technology</span>
+          </div>
+        </a>
+        <ul class="dept-nav__links" role="list">
+          <li><a href="index.html"      class="dept-nav__link">Home</a></li>
+          <li><a href="gallery.html"    class="dept-nav__link">Gallery</a></li>
+          <li><a href="webar.html"      class="dept-nav__link">WebAR</a></li>
+          <li><a href="about.html"      class="dept-nav__link">About</a></li>
+          <li><a href="programmes.html" class="dept-nav__link">Programmes</a></li>
+          <li><a href="community.html"  class="dept-nav__link">Community</a></li>
+          <li><a href="staff.html"      class="dept-nav__link">Staff</a></li>
+          <li><a href="archive.html"    class="dept-nav__link">Archive</a></li>
+        </ul>
+        <a href="gallery.html" class="dept-nav__cta">View Gallery</a>
+        <button class="dept-nav__toggle" id="nav-toggle"
+                aria-label="Open navigation menu" aria-expanded="false" aria-controls="nav-drawer">
+          <span class="dept-nav__toggle-bar"></span>
+          <span class="dept-nav__toggle-bar"></span>
+          <span class="dept-nav__toggle-bar"></span>
+        </button>
       </div>
-      <div class="meta-item">
-        <div class="meta-label">Dimensions</div>
-        <div class="meta-val" id="card-dims">—</div>
+    </nav>
+    <nav class="dept-nav__drawer" id="nav-drawer"
+         aria-label="Mobile navigation" aria-hidden="true">
+      <a href="index.html"      class="dept-nav__drawer-link" onclick="closeDrawer()">Home</a>
+      <a href="gallery.html"    class="dept-nav__drawer-link" onclick="closeDrawer()">Artwork Gallery</a>
+      <a href="webar.html"      class="dept-nav__drawer-link" onclick="closeDrawer()">WebAR Viewer</a>
+      <a href="about.html"      class="dept-nav__drawer-link" onclick="closeDrawer()">About DIAT</a>
+      <a href="programmes.html" class="dept-nav__drawer-link" onclick="closeDrawer()">Academic Programmes</a>
+      <a href="community.html"  class="dept-nav__drawer-link" onclick="closeDrawer()">Community &amp; Internship</a>
+      <a href="staff.html"      class="dept-nav__drawer-link" onclick="closeDrawer()">Staff Profiles</a>
+      <a href="contact.html"    class="dept-nav__drawer-link" onclick="closeDrawer()">Contact</a>
+      <a href="gallery.html"    class="dept-nav__drawer-cta"  onclick="closeDrawer()">View Gallery &#8594;</a>
+    </nav>
+  </header>
+  <main id="main-content">
+
+    <!-- WebAR layout: sidebar + stage (no footer shown in viewer mode) -->
+    <div class="webar-layout" aria-label="WebAR artwork viewer">
+
+      <!-- Artwork selector sidebar -->
+      <aside class="webar-sidebar" aria-label="Select artwork to view">
+        <h2 class="webar-sidebar__heading">Artworks in AR</h2>
+        <p style="font-size:var(--fs-xs);color:rgba(255,255,255,.35);margin-bottom:var(--sp-md)">
+          Select an artwork to view it in 3D. Tap &#127918; on mobile to place in your space.
+        </p>
+        <div id="artwork-list" role="list" aria-label="Artwork list">
+          <!-- Populated by JS -->
+        </div>
+        <div style="margin-top:auto;padding-top:var(--sp-lg);border-top:1px solid rgba(255,255,255,.08)">
+          <a href="gallery.html" class="btn btn--ghost-light btn--sm" style="width:100%;justify-content:center">
+            &#8592; Full Gallery
+          </a>
+        </div>
+      </aside>
+
+      <!-- 3D viewer stage -->
+      <div class="webar-stage" id="webar-stage" aria-label="3D artwork viewer">
+        <div id="viewer-container" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center">
+          <div style="text-align:center;color:var(--clr-text-tertiary)">
+            <p style="font-size:3rem;margin-bottom:var(--sp-md)" aria-hidden="true">&#127918;</p>
+            <p style="font-family:var(--ff-display);font-size:var(--fs-lg);color:var(--clr-text-secondary);margin-bottom:var(--sp-sm)">
+              Select an artwork to begin
+            </p>
+            <p style="font-size:var(--fs-sm)">Choose from the list on the left to view in 3D</p>
+          </div>
+        </div>
       </div>
-      <div class="meta-item">
-        <div class="meta-label">Classification</div>
-        <div class="meta-val" id="card-class">—</div>
+    </div>
+
+  </main>
+<footer class="site-footer" role="contentinfo" aria-label="Site footer">
+    <div class="container">
+      <div class="site-footer__grid">
+        <div>
+          <p class="site-footer__brand-name">Dept. of Indigenous Art &amp; Technology</p>
+          <span class="site-footer__brand-sub">KNUST &middot; College of Art and Built Environment &middot; Kumasi, Ghana</span>
+          <p class="site-footer__description">DIAT is dedicated to the preservation, teaching, and global promotion of Ghana&#39;s indigenous art and craft heritage &mdash; Est. 1976.</p>
+          <nav class="site-footer__social" aria-label="Social media">
+            <a href="#" class="site-footer__social-link" aria-label="Instagram">&#128247;</a>
+            <a href="#" class="site-footer__social-link" aria-label="Facebook">&#127760;</a>
+            <a href="#" class="site-footer__social-link" aria-label="TikTok">&#127925;</a>
+            <a href="#" class="site-footer__social-link" aria-label="WhatsApp">&#128172;</a>
+            <a href="#" class="site-footer__social-link" aria-label="YouTube">&#9654;</a>
+          </nav>
+        </div>
+        <nav aria-label="Explore"><h3 class="site-footer__col-title">Explore</h3><ul class="site-footer__col-links" role="list"><li><a href="gallery.html" class="site-footer__col-link">Artwork Gallery</a></li><li><a href="webar.html" class="site-footer__col-link">WebAR Viewer</a></li><li><a href="about.html" class="site-footer__col-link">About DIAT</a></li><li><a href="archive.html" class="site-footer__col-link">Digital Archive</a></li></ul></nav>
+        <nav aria-label="Academic"><h3 class="site-footer__col-title">Academic</h3><ul class="site-footer__col-links" role="list"><li><a href="programmes.html" class="site-footer__col-link">All Programmes</a></li><li><a href="staff.html" class="site-footer__col-link">Staff Directory</a></li><li><a href="community.html" class="site-footer__col-link">Internship</a></li></ul></nav>
+        <nav aria-label="Connect"><h3 class="site-footer__col-title">Connect</h3><ul class="site-footer__col-links" role="list"><li><a href="contact.html" class="site-footer__col-link">Contact Us</a></li><li><a href="#signup" class="site-footer__col-link">Newsletter</a></li><li><a href="contact.html" class="site-footer__col-link">Commission Artwork</a></li></ul></nav>
+      </div>
+      <div class="site-footer__bottom">
+        <p class="site-footer__bottom-text">&copy; 2026 DIAT, <strong>KNUST</strong>. All rights reserved.</p>
+        <p class="site-footer__bottom-text">MPhil research project &mdash; <strong>CABE, KNUST.</strong></p>
       </div>
     </div>
+  </footer>
+  <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"></script>
+  <script>
+    var ARTWORKS = [];
 
-    <!-- AR not supported notice -->
-    <div class="no-ar-msg" id="no-ar-msg">
-      &#9432; AR is not supported on this browser. You can still explore the full 3D model by rotating and zooming. For AR, open this page in <strong>Chrome on Android</strong> or <strong>Safari on iPhone/iPad</strong>.
-    </div>
+    var currentArt = null;
 
-    <div class="card-actions">
-      <!-- AR button is inside model-viewer slot above. This is the fallback gallery link -->
-      <a href="gallery.html" class="gallery-btn">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
-          <rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
-        </svg>
-        All Artworks
-      </a>
-    </div>
-
-  </div>
-</div>
-
-<!-- Share confirmation toast -->
-<div class="share-toast" id="share-toast">&#10003; Link copied to clipboard &mdash; share to WhatsApp or Instagram</div>
-
-<script>
-  // ── READ ARTWORK FROM URL PARAMS ─────────────────────────────────────────
-  // gallery.html passes artwork data as URL params:
-  // webar.html?title=Vessel&artist=Kofi&year=2024&disc=Clay+%26+Earthenware
-  //           &materials=Clay%2C+ochre&dims=30x20cm&class=Student+Work&src=artwork.glb
-  const params = new URLSearchParams(location.search);
-
-  const artwork = {
-    title:     params.get("title")     || "[Artwork Title]",
-    artist:    params.get("artist")    || "[Artist Name — replace]",
-    year:      params.get("year")      || "[Year]",
-    disc:      params.get("disc")      || "DIAT Collection",
-    materials: params.get("materials") || "[Materials — replace]",
-    dims:      params.get("dims")      || "[Dimensions — replace]",
-    cls:       params.get("class")     || "Student Work",
-    src: params.get("src") || "",
-  };
-
-  // ── POPULATE INFO CARD ─────────────────────────────────────────────────────
-  document.getElementById("card-title").textContent    = artwork.title;
-  document.getElementById("card-artist").textContent   = artwork.artist;
-  document.getElementById("card-year").textContent     = artwork.year;
-  document.getElementById("disc-text").textContent     = artwork.disc;
-  document.getElementById("card-materials").textContent= artwork.materials;
-  document.getElementById("card-dims").textContent     = artwork.dims;
-  document.getElementById("card-class").textContent    = artwork.cls;
-  document.title = artwork.title + " — DIAT WebAR Viewer";
-
-  // ── SET MODEL SRC ──────────────────────────────────────────────────────────
-  const mv = document.getElementById("mv");
-
-  // src is already set in the HTML attribute — override only if URL param given
-  if (params.get("src")) {
-    mv.setAttribute("src", params.get("src"));
-  }
-  // ios-src override for USDZ
-  if (params.get("usdz")) {
-    mv.setAttribute("ios-src", params.get("usdz"));
-  }
-
-  // ── MODEL LOADING EVENTS ───────────────────────────────────────────────────
-  mv.addEventListener("load", () => {
-    mv.dismissPoster();
-    // Fade out loading overlay
-    const lo = document.getElementById("loading");
-    lo.classList.add("fade");
-    setTimeout(() => lo.style.display = "none", 500);
-  });
-
-  mv.addEventListener("error", (e) => {
-    console.error("Model-viewer error:", e);
-    const lo = document.getElementById("loading");
-    // Show an error message instead of blank screen
-    lo.querySelector(".loading-spinner").style.display = "none";
-    const msg = document.getElementById("load-msg");
-    msg.style.color = "#C9952A";
-    msg.textContent = "Could not load 3D model";
-    // Add troubleshoot note
-    const note = document.createElement("p");
-    note.style.cssText = "font-size:.72rem;color:rgba(255,255,255,.45);margin-top:8px;text-align:center;padding:0 24px;line-height:1.6";
-    note.innerHTML = "The model file may still be uploading to GitHub.<br/>Wait 1–2 minutes and reload the page.<br/><br/>"
-      + "<strong style='color:rgba(255,255,255,.6)'>Expecting:</strong><br/>"
-      + "<code style='font-size:.65rem;color:var(--gold)'>" + artwork.src + "</code>";
-    lo.appendChild(note);
-    // Add reload button
-    const btn = document.createElement("button");
-    btn.textContent = "Reload Page";
-    btn.style.cssText = "margin-top:16px;background:var(--gold);color:#fff;border:none;padding:10px 24px;border-radius:50px;font-size:.82rem;font-weight:600;cursor:pointer";
-    btn.onclick = () => location.reload();
-    lo.appendChild(btn);
-  });
-
-  // Dismiss loading if no src provided (no model to wait for)
-  if (!artwork.src) {
-    setTimeout(() => {
-      const lo = document.getElementById("loading");
-      lo.classList.add("fade");
-      setTimeout(() => lo.style.display = "none", 500);
-    }, 1500);
-  }
-
-  // ── AR SUPPORT CHECK ──────────────────────────────────────────────────────
-  // After model-viewer initialises, check if AR is available
-  mv.addEventListener("ar-status", e => {
-    if (e.detail.status === "failed") {
-      document.getElementById("no-ar-msg").classList.add("show");
+    function buildList() {
+      var list = document.getElementById('artwork-list');
+      if (!list) return;
+      var arWorks = ARTWORKS.filter(function(a) { return a.ar && a.glb; });
+      if (arWorks.length === 0) {
+        list.innerHTML = '<p style="color:rgba(255,255,255,.35);font-size:var(--fs-sm)">No AR artworks uploaded yet.</p>';
+        return;
+      }
+      list.innerHTML = arWorks.map(function(art, i) {
+        return '<button class="webar-artwork-btn" onclick="loadArtwork(' + i + ')" role="listitem">' +
+               '<span class="webar-artwork-btn__name">' + (art.title || 'Artwork ' + (i+1)) + '</span>' +
+               '<span class="webar-artwork-btn__disc">' + (art.disciplineLabel || art.discipline || '') + '</span>' +
+               '</button>';
+      }).join('');
     }
-  });
 
-  // ── HOW-TO GUIDE — show once per browser session ─────────────────────────
-  function dismissHow() {
-    document.getElementById("how-overlay").classList.add("hidden");
-    sessionStorage.setItem("diat_ar_how", "1");
-  }
-  // Only show on first visit to WebAR in this session
-  if (sessionStorage.getItem("diat_ar_how")) {
-    document.getElementById("how-overlay").classList.add("hidden");
-  }
-
-  // ── SHARE ─────────────────────────────────────────────────────────────────
-  function shareArtwork() {
-    const shareData = {
-      title: artwork.title + " — DIAT, KNUST",
-      text:  `Check out "${artwork.title}" by ${artwork.artist} from DIAT, KNUST Ghana — view it in augmented reality!`,
-      url:   location.href,
-    };
-
-    if (navigator.share) {
-      // Native share sheet (iOS / Android)
-      navigator.share(shareData).catch(() => {});
-    } else {
-      // Fallback: copy URL to clipboard
-      navigator.clipboard.writeText(
-        shareData.text + "\n" + shareData.url
-      ).then(() => {
-        const t = document.getElementById("share-toast");
-        t.classList.add("show");
-        setTimeout(() => t.classList.remove("show"), 3000);
-      }).catch(() => {
-        // Last resort: prompt
-        prompt("Copy this link to share:", location.href);
+    function loadArtwork(i) {
+      var arWorks = ARTWORKS.filter(function(a) { return a.ar && a.glb; });
+      var art = arWorks[i];
+      if (!art) return;
+      currentArt = art;
+      document.querySelectorAll('.webar-artwork-btn').forEach(function(b, j) {
+        b.classList.toggle('is-active', j === i);
       });
+      var stage = document.getElementById('viewer-container');
+      stage.innerHTML =
+        '<model-viewer' +
+        ' src="' + art.glb + '"' +
+        ' alt="' + (art.title || 'DIAT artwork') + ' — 3D model"' +
+        ' ar ar-modes="webxr scene-viewer quick-look"' +
+        ' camera-controls touch-action="pan-y"' +
+        ' auto-rotate rotation-per-second="15deg"' +
+        ' style="width:100%;height:100%;min-height:500px;background:transparent">' +
+        '<button slot="ar-button" class="btn btn--primary btn--md"' +
+        ' style="position:absolute;bottom:var(--sp-lg);right:var(--sp-lg)">' +
+        '&#127918; View in AR</button>' +
+        '</model-viewer>';
     }
-  }
-</script>
-  <script src="cms.js"></script>
+
+    /* Check URL param for direct artwork link */
+    document.addEventListener('DOMContentLoaded', function() {
+      buildList();
+      var params = new URLSearchParams(window.location.search);
+      var artTitle = params.get('art');
+      if (artTitle) {
+        var arWorks = ARTWORKS.filter(function(a) { return a.ar && a.glb; });
+        var idx = arWorks.findIndex(function(a) { return a.title === artTitle; });
+        if (idx >= 0) loadArtwork(idx);
+      }
+    });
+  </script>
+  <script src="cms.js?v=3"></script>
 </body>
 </html>

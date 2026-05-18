@@ -3,207 +3,46 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Product Design — DIAT Foundational Programme | KNUST Ghana</title>
-  <meta name="description" content="Product Design is the foundational programme at DIAT, KNUST — taught across all years from Year 1 to Year 4, underpinning all six indigenous craft disciplines through CAD, design methodology, and digital prototyping."/>
+  <meta name="theme-color" content="#1A1A4E"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
-  <style>
-    :root{
-      --white:#FFFFFF;--surface:#FAFAF8;--border:#E8E4DC;
-      --t1:#111111;--t2:#555555;--t3:#999999;
-      --gold:#C9952A;--gold-light:#FBF4E6;--gold-dark:#9A6F10;
-      --terra:#C1440E;--terra-light:#FDF0E7;
-      --green:#2D6A2D;--green-light:#EBF5EB;
-      --indigo:#1A1A4E;
-      --serif:"Cormorant Garamond",Georgia,serif;
-      --sans:"Inter",system-ui,-apple-system,sans-serif;
-      --r:10px;--t:0.25s ease;
-    }
-    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-    html{font-size:16px;scroll-behavior:smooth}
-    body{font-family:var(--sans);color:var(--t1);background:var(--white);-webkit-font-smoothing:antialiased;overflow-x:hidden}
-    a{text-decoration:none;color:inherit}
-    img{display:block;max-width:100%;width:100%;object-fit:cover}
-    button{font-family:var(--sans);cursor:pointer;border:none}
-    .prose p{text-align:justify;hyphens:auto;-webkit-hyphens:auto;line-height:1.85;font-size:.97rem;color:var(--t2);margin-bottom:18px}
-    .prose p:last-child{margin-bottom:0}
-    /* ANNOUNCE */
-    .abar{background:var(--indigo);color:rgba(255,255,255,.85);text-align:center;padding:10px 24px;font-size:.78rem;font-weight:500;letter-spacing:.04em}
-    .abar a{color:var(--gold);font-weight:600;margin-left:10px;transition:opacity .25s}
-    .abar a:hover{opacity:.75}
-    /* NAVBAR */
-    .nav{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 40px;transition:box-shadow var(--t)}
-    .nav.shadow{box-shadow:0 2px 20px rgba(0,0,0,.08)}
-    .nbrand{display:flex;align-items:center;gap:10px;flex-shrink:0}
-    .nbrand-svg{width:34px;height:34px;animation:float 5s ease-in-out infinite}
-    @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
-    .nbrand-txt{display:flex;flex-direction:column;line-height:1.15}
-    .nbrand-txt .nd{font-family:var(--serif);font-size:.95rem;font-weight:600;color:var(--indigo)}
-    .nbrand-txt .nu{font-size:.58rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--t3)}
-    .nlinks{display:flex;align-items:center;gap:2px;list-style:none}
-    .nlinks a{font-size:.78rem;font-weight:500;color:var(--t2);padding:6px 11px;border-radius:6px;transition:background var(--t),color var(--t);white-space:nowrap}
-    .nlinks a:hover,.nlinks a.active{background:var(--gold-light);color:var(--gold-dark)}
-    .ncta{background:var(--gold);color:#fff;font-size:.78rem;font-weight:600;padding:9px 20px;border-radius:50px;transition:background var(--t),transform var(--t);white-space:nowrap;flex-shrink:0}
-    .ncta:hover{background:var(--gold-dark);transform:translateY(-1px)}
-    .ham{display:none;background:none;border:none;padding:8px;flex-direction:column;gap:5px}
-    .ham span{display:block;width:22px;height:2px;background:var(--t1);border-radius:2px;transition:transform var(--t),opacity var(--t)}
-    .ham.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
-    .ham.open span:nth-child(2){opacity:0}
-    .ham.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
-    .mob-drawer{display:none;position:fixed;inset:0;background:var(--white);z-index:99;padding:90px 32px 32px;flex-direction:column;gap:8px;overflow-y:auto}
-    .mob-drawer.open{display:flex}
-    .mob-drawer a{font-size:1.1rem;font-weight:500;color:var(--t1);padding:14px 0;border-bottom:1px solid var(--border);transition:color var(--t)}
-    .mob-drawer a:hover{color:var(--gold)}
-    .mob-cta-link{margin-top:16px;background:var(--gold);color:#fff;text-align:center;padding:16px;border-radius:10px;font-weight:600;font-size:.95rem}
-
-    /* ── HERO BANNER — same rectangular shape as all discipline pages ── */
-    .disc-banner{
-      position:relative;
-      width:100%;height:480px;
-      background:var(--gold-light);
-      overflow:hidden;
-      border-bottom:3px solid var(--gold);
-    }
-    .disc-banner img{width:100%;height:100%;object-fit:cover;display:block}
-    .disc-banner-ph{
-      position:absolute;inset:0;
-      display:flex;flex-direction:column;
-      align-items:center;justify-content:center;gap:12px;
-    }
-    .disc-banner-ph .ph-icon{font-size:3.5rem;opacity:.35}
-    .disc-banner-ph .ph-title{font-family:var(--serif);font-size:1.1rem;font-weight:600;color:var(--gold-dark);opacity:.6}
-    .disc-banner-ph .ph-hint{font-size:.75rem;color:var(--t3);max-width:420px;text-align:center;line-height:1.5;padding:0 24px}
-    .disc-banner-ph .ph-tag{background:var(--gold);color:#fff;font-size:.65rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:6px 16px;border-radius:50px;opacity:.7;margin-top:6px}
-
-    /* META BAR */
-    .disc-meta-bar{background:var(--surface);border-bottom:1px solid var(--border);padding:20px 40px}
-    .disc-meta-in{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
-    .breadcrumb{display:flex;align-items:center;gap:8px;font-size:.72rem;font-weight:500;color:var(--t3);letter-spacing:.04em}
-    .breadcrumb a{color:var(--t3);transition:color var(--t)}.breadcrumb a:hover{color:var(--gold)}
-    .breadcrumb span{color:var(--border)}
-    .disc-tags{display:flex;gap:8px;flex-wrap:wrap}
-    .disc-tag-pill{font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:4px 12px;border-radius:50px;background:var(--gold-light);color:var(--gold-dark);border:1px solid rgba(201,149,42,.3)}
-    .disc-tag-pill.gold{background:var(--gold);color:#fff}
-
-    /* YEAR STRIP — unique to Product Design showing Year 1-4 coverage */
-    .year-strip{background:var(--indigo);padding:0 40px}
-    .year-strip-in{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(255,255,255,.08)}
-    .year-cell{background:var(--indigo);padding:20px 24px;text-align:center;position:relative}
-    .year-cell.active{background:rgba(201,149,42,.12)}
-    .year-cell .yc-num{font-family:var(--serif);font-size:1.6rem;font-weight:700;color:var(--gold);line-height:1;margin-bottom:4px}
-    .year-cell .yc-lbl{font-size:.65rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.45)}
-    .year-cell .yc-note{font-size:.7rem;color:rgba(255,255,255,.3);margin-top:4px;font-style:italic}
-    .year-cell .yc-active-tag{position:absolute;top:8px;right:8px;background:var(--gold);color:#fff;font-size:.55rem;font-weight:700;padding:2px 6px;border-radius:50px;letter-spacing:.06em}
-
-    /* LAYOUT */
-    .sec{padding:80px 40px}
-    .sec-w{background:var(--white)}
-    .sec-s{background:var(--surface)}
-    .sec-ind{background:var(--indigo)}
-    .sec-in{max-width:1200px;margin:0 auto}
-    .eyebrow{font-size:.68rem;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:12px}
-    .sh2{font-family:var(--serif);font-size:clamp(1.8rem,3.5vw,3rem);font-weight:600;color:var(--t1);line-height:1.1;letter-spacing:-.02em;margin-bottom:16px}
-    .sh2-w{color:#fff}
-    .rule{width:48px;height:3px;background:var(--gold);border-radius:2px;margin-bottom:24px}
-    .rule-w{background:rgba(255,255,255,.4)}
-    .two-col{display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:start}
-    .three-col{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
-
-    /* Intro block */
-    .disc-intro{max-width:1200px;margin:0 auto;padding:64px 40px}
-    .disc-icon-wrap{display:flex;align-items:center;gap:20px;margin-bottom:24px}
-    .disc-big-icon{width:72px;height:72px;border-radius:18px;background:var(--gold-light);border:2px solid rgba(201,149,42,.3);display:flex;align-items:center;justify-content:center;font-size:2rem;flex-shrink:0}
-    .disc-tag-inline{font-size:.65rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:4px 12px;border-radius:50px;background:var(--gold);color:#fff}
-    .disc-h1{font-family:var(--serif);font-size:clamp(2.4rem,5vw,4rem);font-weight:600;color:var(--t1);line-height:1.05;letter-spacing:-.02em;margin-bottom:8px}
-    .disc-tagline{font-family:var(--serif);font-size:1.2rem;font-style:italic;color:var(--t3);margin-bottom:28px}
-
-    /* At a Glance card */
-    .glance-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:24px}
-    .glance-card .gc-title{font-size:.68rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);margin-bottom:18px}
-    .glance-row{display:flex;gap:12px;margin-bottom:14px}
-    .glance-row:last-child{margin-bottom:0}
-    .glance-row .gr-icon{font-size:1rem;flex-shrink:0;margin-top:1px}
-    .glance-row .gr-lbl{font-size:.68rem;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:2px}
-    .glance-row .gr-val{font-size:.85rem;color:var(--t1);font-weight:500;line-height:1.4}
-
-    /* UNIQUE: How-it-connects section */
-    .connects-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
-    .connect-card{background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:20px;transition:border-color var(--t),transform var(--t);text-decoration:none;color:inherit;display:block}
-    .connect-card:hover{border-color:var(--gold);transform:translateY(-3px)}
-    .connect-card .cc-icon{font-size:1.4rem;margin-bottom:10px}
-    .connect-card h4{font-family:var(--serif);font-size:.95rem;font-weight:600;color:var(--t1);margin-bottom:6px}
-    .connect-card p{font-size:.78rem;color:var(--t2);line-height:1.6}
-    .connect-card .cc-link{font-size:.72rem;font-weight:600;color:var(--gold);margin-top:10px;display:flex;align-items:center;gap:4px}
-    .connect-card .cc-link::after{content:"→"}
-
-    /* Skills list */
-    .skills-list{list-style:none;display:flex;flex-direction:column;gap:12px}
-    .skills-list li{display:flex;gap:12px;align-items:flex-start;font-size:.88rem;color:var(--t2);line-height:1.65;padding:12px 16px;background:var(--white);border:1px solid var(--border);border-radius:var(--r);border-left:3px solid var(--gold)}
-    .skills-list li::before{content:"✓";color:var(--gold);font-weight:700;flex-shrink:0;margin-top:1px}
-
-    /* Outcomes */
-    .oc-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-    .oc-item{display:flex;gap:12px;align-items:flex-start;padding:14px 16px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r)}
-    .oc-dot{width:10px;height:10px;border-radius:50%;background:var(--gold);flex-shrink:0;margin-top:4px}
-    .oc-item p{font-size:.84rem;color:var(--t2);line-height:1.6;margin:0;text-align:justify;hyphens:auto}
-
-    /* Careers band */
-    .careers-band{background:var(--indigo);padding:56px 40px;text-align:center}
-    .careers-band-in{max-width:680px;margin:0 auto}
-    .careers-band h2{font-family:var(--serif);font-size:clamp(1.6rem,3vw,2.5rem);font-weight:600;color:#fff;margin-bottom:16px}
-    .careers-band p{font-size:.95rem;color:rgba(255,255,255,.7);line-height:1.75;margin-bottom:28px}
-    .career-pills{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-bottom:32px}
-    .career-pill{background:rgba(201,149,42,.15);color:var(--gold);border:1px solid rgba(201,149,42,.3);font-size:.78rem;font-weight:600;padding:6px 16px;border-radius:50px}
-    .btn-white{display:inline-flex;align-items:center;gap:8px;background:#fff;color:var(--gold-dark);font-size:.82rem;font-weight:700;padding:13px 28px;border-radius:50px;transition:transform var(--t),box-shadow var(--t);margin-right:10px}
-    .btn-white:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.15)}
-    .btn-white::after{content:"→"}
-    .btn-outline-w{display:inline-flex;align-items:center;gap:8px;background:transparent;color:rgba(255,255,255,.8);border:1.5px solid rgba(255,255,255,.3);font-size:.82rem;font-weight:600;padding:12px 28px;border-radius:50px;transition:border-color var(--t),color var(--t)}
-    .btn-outline-w:hover{border-color:#fff;color:#fff}
-    .btn-outline-w::after{content:"→"}
-
-    /* Other disciplines */
-    .other-discs{display:grid;grid-template-columns:repeat(6,1fr);gap:12px}
-    .od-card{background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:16px 12px;text-align:center;cursor:pointer;transition:border-color var(--t),transform var(--t);text-decoration:none;color:inherit}
-    .od-card:hover{border-color:var(--gold);transform:translateY(-2px)}
-    .od-card .od-icon{font-size:1.4rem;margin-bottom:8px}
-    .od-card .od-name{font-family:var(--serif);font-size:.78rem;font-weight:600;color:var(--t1);line-height:1.3}
-
-    /* Reveal */
-    .rv{opacity:0;transform:translateY(24px);transition:opacity .65s ease,transform .65s ease}
-    .rv.vis{opacity:1;transform:none}
-    .d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}
-
-    /* Footer */
-    footer{background:var(--indigo);color:rgba(255,255,255,.75);padding:56px 40px 28px}
-    .fg{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr;gap:48px;margin-bottom:48px}
-    .fbn{font-family:var(--serif);font-size:1rem;font-weight:600;color:#fff;margin-bottom:4px}
-    .fbu{font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:12px}
-    .fbd{font-size:.8rem;line-height:1.65;color:rgba(255,255,255,.5);margin-bottom:0}
-    .fc h5{font-size:.68rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.35);margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid rgba(255,255,255,.08)}
-    .fc ul{list-style:none}.fc ul li{margin-bottom:8px}
-    .fc ul li a{font-size:.8rem;color:rgba(255,255,255,.45);transition:color var(--t)}
-    .fc ul li a:hover{color:var(--gold)}
-    .fb{max-width:1200px;margin:0 auto;padding-top:20px;border-top:1px solid rgba(255,255,255,.08);display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
-    .fb p{font-size:.7rem;color:rgba(255,255,255,.25)}
-    .fb p span{color:rgba(201,149,42,.6)}
-
-    @media(max-width:1024px){.nav{padding:0 24px}.sec{padding:56px 24px}.disc-intro{padding:48px 24px}.disc-meta-bar{padding:16px 24px}.year-strip{padding:0 24px}.two-col{grid-template-columns:1fr;gap:40px}.connects-grid{grid-template-columns:1fr 1fr}.oc-grid{grid-template-columns:1fr}.other-discs{grid-template-columns:repeat(3,1fr)}.fg{grid-template-columns:1fr 1fr;gap:32px}}
-    @media(max-width:768px){.nlinks,.ncta{display:none}.ham{display:flex}.disc-banner{height:280px}.year-strip-in{grid-template-columns:1fr 1fr}.connects-grid{grid-template-columns:1fr}.other-discs{grid-template-columns:repeat(2,1fr)}.fg{grid-template-columns:1fr}.fb{flex-direction:column}}
-  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="diat-styles.css"/>
+  <meta name="description" content="Study Product Design at DIAT KNUST Ghana. Before any student throws clay, cuts leather, or forges metal, they design it digitally. Product Des..."/>
+  <title>Product Design — DIAT Programme | KNUST Ghana</title>
 </head>
 <body>
-
-<!-- ANNOUNCE BAR -->
-<div class="abar">
-  &#127881; DIAT@50 &mdash; Est. 1976 &nbsp;&middot;&nbsp; Ghana's premier indigenous art department
-  <a href="index.html#signup">Register for Updates &rarr;</a>
-</div>
-
-<!-- NAVBAR -->
-<nav class="nav" id="nav">
-  <a href="index.html" class="nbrand">
-    <svg class="nbrand-svg" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+<header class="site-header" role="banner" aria-label="Site brand">
+    <div class="site-header__logo-container">
+      <!--
+        Replace the SVG below with your actual DIAT logo file.
+        Minimum: 2× resolution PNG or true SVG vector.
+        Alt text follows the pattern: "[Org Name] official logo"
+      -->
+      <svg class="site-header__logo" viewBox="0 0 160 48" fill="none"
+           xmlns="http://www.w3.org/2000/svg"
+           aria-label="DIAT — Department of Indigenous Art and Technology, KNUST"
+           role="img" focusable="false">
+        <!-- Wordmark placeholder — replace src with real logo asset -->
+        <text x="0" y="34" font-family="Georgia, serif" font-size="22"
+              font-weight="700" fill="#1A1A4E" letter-spacing="-0.5">DIAT</text>
+        <text x="60" y="34" font-family="Georgia, serif" font-size="12"
+              fill="#C9952A" letter-spacing="0">&#183; KNUST</text>
+        <line x1="0" y1="40" x2="160" y2="40" stroke="#C9952A"
+              stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+    </div>
+  </header>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+<div class="site-announce" role="region" aria-label="Site announcement">
+    &#127881; DIAT@50 &mdash; Est. 1976 &nbsp;&middot;&nbsp; Ghana&#39;s premier indigenous art department
+    <a href="#signup" class="site-announce__link">Register for Updates &#8594;</a>
+  </div>
+<header>
+    <nav class="dept-nav" id="dept-nav" aria-label="Primary navigation">
+      <div class="container dept-nav__inner">
+        <a href="index.html" class="dept-nav__brand" aria-label="DIAT KNUST home">
+          <svg class="dept-nav__logo" aria-hidden="true" focusable="false" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
       <ellipse cx="28" cy="38" rx="14" ry="9" stroke="#C9952A" stroke-width="2"/>
       <path d="M28 29 C28 20 40 16 43 22 C46 28 40 33 35 31" stroke="#C9952A" stroke-width="2" stroke-linecap="round" fill="none"/>
       <circle cx="37" cy="28" r="7" stroke="#C9952A" stroke-width="2" fill="none"/>
@@ -212,374 +51,237 @@
       <ellipse cx="20" cy="32" rx="4.5" ry="5.5" stroke="#C9952A" stroke-width="1.6" fill="none"/>
       <path d="M14 38 C9 43 7 50 11 54" stroke="#C9952A" stroke-width="2" stroke-linecap="round" fill="none"/>
     </svg>
-    <div class="nbrand-txt">
-      <span class="nd">DIAT &middot; KNUST</span>
-      <span class="nu">Dept. of Indigenous Art &amp; Technology</span>
-    </div>
-  </a>
-  <ul class="nlinks"><li><a href="index.html">Home</a></li><li><a href="gallery.html">Gallery</a></li><li><a href="webar.html">WebAR</a></li><li><a href="about.html">About</a></li><li><a href="programmes.html">Programmes</a></li><li><a href="community.html">Community</a></li><li><a href="staff.html">Staff</a></li><li><a href="archive.html">Archive</a></li></ul>
-  <a href="gallery.html" class="ncta">View Gallery</a>
-  <button class="ham" id="ham" aria-label="Open menu" aria-expanded="false">
-    <span></span><span></span><span></span>
-  </button>
-</nav>
-<div class="mob-drawer" id="md">
-  <a href="index.html" onclick="cd()">Home</a>
-  <a href="gallery.html" onclick="cd()">Artwork Gallery</a>
-  <a href="webar.html" onclick="cd()">WebAR Viewer</a>
-  <a href="about.html" onclick="cd()">About DIAT</a>
-  <a href="programmes.html" onclick="cd()">Academic Programmes</a>
-  <a href="community.html" onclick="cd()">Community &amp; Internship</a>
-  <a href="staff.html" onclick="cd()">Staff Profiles</a>
-  <a href="contact.html" onclick="cd()">Contact &amp; Social Media</a>
-  <a href="archive.html" onclick="cd()">Digital Archive</a>
-  <a href="gallery.html" class="mob-cta-link" onclick="cd()">View Gallery &rarr;</a>
-</div>
+          <div class="dept-nav__brand-text">
+            <span class="dept-nav__brand-name">DIAT &middot; KNUST</span>
+            <span class="dept-nav__brand-sub">Dept. of Indigenous Art &amp; Technology</span>
+          </div>
+        </a>
+        <ul class="dept-nav__links" role="list">
+          <li><a href="index.html"      class="dept-nav__link">Home</a></li>
+          <li><a href="gallery.html"    class="dept-nav__link">Gallery</a></li>
+          <li><a href="webar.html"      class="dept-nav__link">WebAR</a></li>
+          <li><a href="about.html"      class="dept-nav__link">About</a></li>
+          <li><a href="programmes.html" class="dept-nav__link dept-nav__link--active" aria-current="page">Programmes</a></li>
+          <li><a href="community.html"  class="dept-nav__link">Community</a></li>
+          <li><a href="staff.html"      class="dept-nav__link">Staff</a></li>
+          <li><a href="archive.html"    class="dept-nav__link">Archive</a></li>
+        </ul>
+        <a href="gallery.html" class="dept-nav__cta">View Gallery</a>
+        <button class="dept-nav__toggle" id="nav-toggle"
+                aria-label="Open navigation menu" aria-expanded="false" aria-controls="nav-drawer">
+          <span class="dept-nav__toggle-bar"></span>
+          <span class="dept-nav__toggle-bar"></span>
+          <span class="dept-nav__toggle-bar"></span>
+        </button>
+      </div>
+    </nav>
+    <nav class="dept-nav__drawer" id="nav-drawer"
+         aria-label="Mobile navigation" aria-hidden="true">
+      <a href="index.html"      class="dept-nav__drawer-link" onclick="closeDrawer()">Home</a>
+      <a href="gallery.html"    class="dept-nav__drawer-link" onclick="closeDrawer()">Artwork Gallery</a>
+      <a href="webar.html"      class="dept-nav__drawer-link" onclick="closeDrawer()">WebAR Viewer</a>
+      <a href="about.html"      class="dept-nav__drawer-link" onclick="closeDrawer()">About DIAT</a>
+      <a href="programmes.html" class="dept-nav__drawer-link" onclick="closeDrawer()">Academic Programmes</a>
+      <a href="community.html"  class="dept-nav__drawer-link" onclick="closeDrawer()">Community &amp; Internship</a>
+      <a href="staff.html"      class="dept-nav__drawer-link" onclick="closeDrawer()">Staff Profiles</a>
+      <a href="contact.html"    class="dept-nav__drawer-link" onclick="closeDrawer()">Contact</a>
+      <a href="gallery.html"    class="dept-nav__drawer-cta"  onclick="closeDrawer()">View Gallery &#8594;</a>
+    </nav>
+  </header>
+  <main id="main-content">
 
-
-<!-- ═══ HERO BANNER — same rectangular shape as all 6 discipline pages ═══
-     Replace placeholder with your image:
-     <img src="product-design-students.jpg" alt="Product Design — DIAT KNUST">
-     Recommended: 1400 x 480px — students at CAD workstations or
-     reviewing technical drawings and 3D models
-════════════════════════════════════════════════════════════════════════ -->
-<div class="disc-banner" id="disc-banner-product" data-cms-key="disc-product-banner-img" data-cms-label="Hero Banner Image (HTML img tag)">
-  <div class="disc-banner-ph">
-    <div class="ph-icon">&#128247;</div>
-    <div class="ph-title">Product Design — Hero Image</div>
-    <div class="ph-hint">Students at CAD workstations, reviewing technical drawings, or working on 3D models before moving to craft production<br/>Recommended size: 1400 &times; 480px</div>
-    <div class="ph-tag">&#128247; Upload discipline image here</div>
-  </div>
-</div>
-
-
-<!-- META BAR -->
-<div class="disc-meta-bar">
-  <div class="disc-meta-in">
-    <div class="breadcrumb">
-      <a href="index.html">Home</a><span>&#8250;</span>
-      <a href="programmes.html">Programmes</a><span>&#8250;</span>
-      <span style="color:var(--t1);font-weight:500">Product Design</span>
-    </div>
-    <div class="disc-tags">
-      <span class="disc-tag-pill gold">Foundational &mdash; All Years</span>
-      <span class="disc-tag-pill">Year 1 &ndash; Year 4</span>
-      <span class="disc-tag-pill">Underpins All 6 Disciplines</span>
-      <span class="disc-tag-pill">DIAT, KNUST</span>
-    </div>
-  </div>
-</div>
-
-
-<!-- YEAR STRIP — unique to Product Design, showing Year 1–4 coverage -->
-<div class="year-strip">
-  <div class="year-strip-in">
-    <div class="year-cell active">
-      <span class="yc-active-tag">Active</span>
-      <div class="yc-num">1</div>
-      <div class="yc-lbl">Year One</div>
-      <div class="yc-note">Design fundamentals &amp; CAD introduction</div>
-    </div>
-    <div class="year-cell active">
-      <span class="yc-active-tag">Active</span>
-      <div class="yc-num">2</div>
-      <div class="yc-lbl">Year Two</div>
-      <div class="yc-note">Advanced CAD &amp; design methodology</div>
-    </div>
-    <div class="year-cell active">
-      <span class="yc-active-tag">Active</span>
-      <div class="yc-num">3</div>
-      <div class="yc-lbl">Year Three</div>
-      <div class="yc-note">Design for production &amp; community context</div>
-    </div>
-    <div class="year-cell active">
-      <span class="yc-active-tag">Active</span>
-      <div class="yc-num">4</div>
-      <div class="yc-lbl">Year Four</div>
-      <div class="yc-note">Final portfolio &amp; professional practice</div>
-    </div>
-  </div>
-</div>
-
-
-<!-- INTRO -->
-<div class="disc-intro rv">
-  <div class="disc-icon-wrap">
-    <div class="disc-big-icon">&#128208;</div>
-    <span class="disc-tag-inline">Foundational Programme &mdash; All Disciplines &mdash; All Years</span>
-  </div>
-  <h1 class="disc-h1" data-cms-key="disc-product-title" data-cms-label="Discipline Title" data-cms-type="text">Product Design</h1>
-  <p class="disc-tagline" data-cms-key="disc-product-tagline" data-cms-label="Discipline Tagline" data-cms-type="text">Designing the Future Before You Make It</p>
-
-  <div class="two-col">
-    <div class="prose">
-      <p data-cms-key="disc-product-intro1" data-cms-label="Introduction Paragraph 1">
-        Product Design is not one discipline among six at DIAT &mdash; it is the
-        intellectual and technical spine that holds all six together. Every student,
-        regardless of their chosen craft specialisation, studies Product Design from
-        Year 1 through to final year. Before any student throws clay, cuts leather,
-        welds metal, or carves wood, they have already designed what they intend to
-        make &mdash; digitally, precisely, and professionally.
-      </p>
-      <p data-cms-key="disc-product-intro2" data-cms-label="Introduction Paragraph 2">
-        At DIAT, Product Design means learning to use Computer-Aided Design (CAD)
-        software to produce technical drawings, 3D models, and rendered visualisations
-        of craft objects before physical production begins. Students learn to write design
-        briefs, specify materials, calculate dimensions, and present their concepts to
-        a professional standard &mdash; the skills that allow a DIAT graduate to walk
-        into any client meeting, gallery, or design competition and communicate their
-        work with authority.
-      </p>
-      <p data-cms-key="disc-product-intro3" data-cms-label="Introduction Paragraph 3">
-        This CAD-to-craft approach &mdash; designing digitally, then making by hand &mdash;
-        is what distinguishes DIAT graduates from craft practitioners who have not passed
-        through formal design education. It is what allows the department&#39;s indigenous
-        craft traditions to compete in the contemporary global design economy without
-        losing their cultural identity or material integrity.
-      </p>
-    </div>
-
-    <!-- At a Glance -->
-    <div class="glance-card">
-      <div class="gc-title">Programme at a Glance</div>
-      <div class="glance-row">
-        <span class="gr-icon">&#127891;</span>
-        <div>
-          <div class="gr-lbl">Programme Level</div>
-          <div class="gr-val">Undergraduate Specialisation (Year 1&ndash;4)<br/>Postgraduate MPhil in Art (Year 1&ndash;2)</div>
+    <section class="disc-hero disc-hero--pd" aria-labelledby="disc-title">
+      <div class="container">
+        <nav class="page-hero__breadcrumb" aria-label="Breadcrumb">
+          <a href="index.html" class="page-hero__breadcrumb-link" style="color:rgba(255,255,255,.4)">Home</a>
+          <span class="page-hero__breadcrumb-sep" aria-hidden="true" style="color:rgba(255,255,255,.2)">/</span>
+          <a href="programmes.html" class="page-hero__breadcrumb-link" style="color:rgba(255,255,255,.4)">Programmes</a>
+          <span class="page-hero__breadcrumb-sep" aria-hidden="true" style="color:rgba(255,255,255,.2)">/</span>
+          <span class="page-hero__breadcrumb-current">Product Design</span>
+        </nav>
+        <div class="disc-hero__inner">
+          <div>
+            <span class="disc-hero__icon" aria-hidden="true">&#128208;</span>
+            <span class="page-hero__eyebrow">The Foundational Discipline &mdash; All Years</span>
+            <h1 class="disc-hero__title" id="disc-title"
+                data-cms-key="pd-hero-title" data-cms-label="Product Design Hero Title" data-cms-type="text">
+              Product Design
+            </h1>
+            <p class="disc-hero__body"
+               data-cms-key="pd-hero-desc" data-cms-label="Product Design Hero Description">
+              Before any student throws clay, cuts leather, or forges metal, they design it digitally. Product Design runs across all four years — the intellectual and technical spine connecting every craft discipline at DIAT.
+            </p>
+          </div>
+          <div class="disc-hero__stat-block" role="img" aria-label="4 Years Across All Years">
+            <span class="disc-hero__stat-num">4 Years</span>
+            <span class="disc-hero__stat-label">Across All Years</span>
+          </div>
         </div>
       </div>
-      <div class="glance-row">
-        <span class="gr-icon">&#128197;</span>
-        <div>
-          <div class="gr-lbl">Taught Across</div>
-          <div class="gr-val">All four years &mdash; Year 1 through Year 4 &mdash; without exception</div>
+    </section>
+
+    <section class="dept-section dept-section--surface" aria-labelledby="skills-heading">
+      <div class="container">
+        <header class="dept-section__header">
+          <span class="dept-section__eyebrow">Curriculum</span>
+          <h2 class="dept-section__title" id="skills-heading"
+              data-cms-key="pd-skills-h2" data-cms-label="Product Design Skills Heading" data-cms-type="text">
+            Skills &amp; Techniques
+          </h2>
+          <div class="dept-section__rule" aria-hidden="true"></div>
+          <p class="dept-section__body" style="margin-top:var(--sp-md)"
+             data-cms-key="pd-skills-intro" data-cms-label="Product Design Skills Intro">
+            Core skills developed across the four-year programme, building progressively from
+            foundational technique to advanced, professional-level practice.
+          </p>
+        </header>
+        <div class="skill-grid">
+          <article class="skill-card">
+            <span class="skill-card__num" aria-hidden="true">01</span>
+            <h3 class="skill-card__title" data-cms-key="pd-skill1-t" data-cms-label="Product Design Skill 1 Title" data-cms-type="text">Computer-Aided Design (CAD)</h3>
+            <p class="skill-card__body" data-cms-key="pd-skill1-b" data-cms-label="Product Design Skill 1 Body">Using industry-standard software to design objects and products before physical production — from concept sketches to full 3D models.</p>
+          </article>
+          <article class="skill-card">
+            <span class="skill-card__num" aria-hidden="true">02</span>
+            <h3 class="skill-card__title" data-cms-key="pd-skill2-t" data-cms-label="Product Design Skill 2 Title" data-cms-type="text">Design Thinking & Research</h3>
+            <p class="skill-card__body" data-cms-key="pd-skill2-b" data-cms-label="Product Design Skill 2 Body">User-centred research, problem definition, ideation, prototyping, and iteration methodologies applied to craft product development.</p>
+          </article>
+          <article class="skill-card">
+            <span class="skill-card__num" aria-hidden="true">03</span>
+            <h3 class="skill-card__title" data-cms-key="pd-skill3-t" data-cms-label="Product Design Skill 3 Title" data-cms-type="text">Materials Science</h3>
+            <p class="skill-card__body" data-cms-key="pd-skill3-b" data-cms-label="Product Design Skill 3 Body">Understanding the properties and limitations of clay, leather, metal, fibre, rattan, and wood as design materials.</p>
+          </article>
+          <article class="skill-card">
+            <span class="skill-card__num" aria-hidden="true">04</span>
+            <h3 class="skill-card__title" data-cms-key="pd-skill4-t" data-cms-label="Product Design Skill 4 Title" data-cms-type="text">Technical Drawing & Specification</h3>
+            <p class="skill-card__body" data-cms-key="pd-skill4-b" data-cms-label="Product Design Skill 4 Body">Producing professional technical drawings, measurements, and production specifications for craft objects.</p>
+          </article>
+          <article class="skill-card">
+            <span class="skill-card__num" aria-hidden="true">05</span>
+            <h3 class="skill-card__title" data-cms-key="pd-skill5-t" data-cms-label="Product Design Skill 5 Title" data-cms-type="text">Prototype Development</h3>
+            <p class="skill-card__body" data-cms-key="pd-skill5-b" data-cms-label="Product Design Skill 5 Body">Translating digital designs into physical prototypes using workshop tools, assessing fit, function, and aesthetics.</p>
+          </article>
+          <article class="skill-card">
+            <span class="skill-card__num" aria-hidden="true">06</span>
+            <h3 class="skill-card__title" data-cms-key="pd-skill6-t" data-cms-label="Product Design Skill 6 Title" data-cms-type="text">Commercial Design Practice</h3>
+            <p class="skill-card__body" data-cms-key="pd-skill6-b" data-cms-label="Product Design Skill 6 Body">Understanding market contexts, costing, client briefs, and the business of bringing craft objects to market.</p>
+          </article>
         </div>
       </div>
-      <div class="glance-row">
-        <span class="gr-icon">&#128208;</span>
-        <div>
-          <div class="gr-lbl">Underpins</div>
-          <div class="gr-val">All six indigenous craft disciplines</div>
+    </section>
+
+    <section class="dept-section dept-section--white" aria-labelledby="outcomes-heading">
+      <div class="container">
+        <header class="dept-section__header">
+          <span class="dept-section__eyebrow">Careers</span>
+          <h2 class="dept-section__title" id="outcomes-heading"
+              data-cms-key="pd-oc-h2" data-cms-label="Product Design Outcomes Heading" data-cms-type="text">
+            Where This Takes You
+          </h2>
+          <div class="dept-section__rule" aria-hidden="true"></div>
+          <p class="dept-section__body" style="margin-top:var(--sp-md)"
+             data-cms-key="pd-oc-intro" data-cms-label="Product Design Outcomes Intro">
+            DIAT graduates specialising in Product Design enter a wide range of creative,
+            commercial, and academic careers — equipped with both deep craft expertise and
+            modern design professionalism.
+          </p>
+        </header>
+        <div class="outcome-grid">
+          <article class="outcome-card">
+            <span class="outcome-card__icon" aria-hidden="true">&#128240;</span>
+            <div>
+              <h3 class="outcome-card__title" data-cms-key="pd-oc1-t" data-cms-label="Product Design Outcome 1 Title" data-cms-type="text">Design Consultant</h3>
+              <p class="outcome-card__body" data-cms-key="pd-oc1-b" data-cms-label="Product Design Outcome 1 Body">Working with manufacturers, craft enterprises, and NGOs as an indigenous craft design specialist.</p>
+            </div>
+          </article>
+          <article class="outcome-card">
+            <span class="outcome-card__icon" aria-hidden="true">&#127760;</span>
+            <div>
+              <h3 class="outcome-card__title" data-cms-key="pd-oc2-t" data-cms-label="Product Design Outcome 2 Title" data-cms-type="text">Product Developer</h3>
+              <p class="outcome-card__body" data-cms-key="pd-oc2-b" data-cms-label="Product Design Outcome 2 Body">Developing new craft-informed products for local and international markets with cultural relevance.</p>
+            </div>
+          </article>
+          <article class="outcome-card">
+            <span class="outcome-card__icon" aria-hidden="true">&#127891;</span>
+            <div>
+              <h3 class="outcome-card__title" data-cms-key="pd-oc3-t" data-cms-label="Product Design Outcome 3 Title" data-cms-type="text">Academic / Researcher</h3>
+              <p class="outcome-card__body" data-cms-key="pd-oc3-b" data-cms-label="Product Design Outcome 3 Body">Teaching and researching at university level within craft design, material culture, or design education.</p>
+            </div>
+          </article>
+          <article class="outcome-card">
+            <span class="outcome-card__icon" aria-hidden="true">&#127756;</span>
+            <div>
+              <h3 class="outcome-card__title" data-cms-key="pd-oc4-t" data-cms-label="Product Design Outcome 4 Title" data-cms-type="text">Craft Entrepreneur</h3>
+              <p class="outcome-card__body" data-cms-key="pd-oc4-b" data-cms-label="Product Design Outcome 4 Body">Founding your own studio, workshop, or craft brand combining digital design capability with hand production.</p>
+            </div>
+          </article>
+        </div>
+        <div style="text-align:center;margin-top:var(--sp-xl)">
+          <a href="gallery.html" class="btn btn--primary btn--md">
+            View Artworks &#8594;
+          </a>
+          <a href="webar.html" class="btn btn--secondary btn--md" style="margin-left:var(--sp-sm)">
+            Experience in AR &#8599;
+          </a>
         </div>
       </div>
-      <div class="glance-row">
-        <span class="gr-icon">&#128187;</span>
-        <div>
-          <div class="gr-lbl">Key Tool</div>
-          <div class="gr-val">Computer-Aided Design (CAD) software + technical drawing</div>
+    </section>
+
+    <section class="dept-section dept-section--surface" aria-labelledby="related-heading">
+      <div class="container">
+        <header class="dept-section__header">
+          <span class="dept-section__eyebrow">Related Programmes</span>
+          <h2 class="dept-section__title" id="related-heading">Explore Other Disciplines</h2>
+          <div class="dept-section__rule" aria-hidden="true"></div>
+        </header>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:var(--sp-md);margin-top:var(--sp-xl)">
+          
+          <a href="clay-earthenware.html" class="dept-disc-card" style="text-decoration:none">
+            <div class="dept-disc-card__icon-wrap" style="background:var(--clr-gold-light)"><span aria-hidden="true">&#127994;</span></div>
+            <h3 class="dept-disc-card__title">Clay &amp; Earthenware</h3>
+            <span class="dept-disc-card__read-more">Read more <span class="btn__arrow" aria-hidden="true">&#8594;</span></span>
+          </a>
+          <a href="metal-production.html" class="dept-disc-card" style="text-decoration:none">
+            <div class="dept-disc-card__icon-wrap" style="background:var(--clr-gold-light)"><span aria-hidden="true">&#9881;</span></div>
+            <h3 class="dept-disc-card__title">Metal Production</h3>
+            <span class="dept-disc-card__read-more">Read more <span class="btn__arrow" aria-hidden="true">&#8594;</span></span>
+          </a>
+          <a href="wood-furniture.html" class="dept-disc-card" style="text-decoration:none">
+            <div class="dept-disc-card__icon-wrap" style="background:var(--clr-gold-light)"><span aria-hidden="true">&#129683;</span></div>
+            <h3 class="dept-disc-card__title">Wood &amp; Furniture</h3>
+            <span class="dept-disc-card__read-more">Read more <span class="btn__arrow" aria-hidden="true">&#8594;</span></span>
+          </a>
         </div>
       </div>
-      <div class="glance-row">
-        <span class="gr-icon">&#127759;</span>
+    </section>
+
+  </main>
+<footer class="site-footer" role="contentinfo" aria-label="Site footer">
+    <div class="container">
+      <div class="site-footer__grid">
         <div>
-          <div class="gr-lbl">Institution</div>
-          <div class="gr-val">DIAT, College of Art &amp; Built Environment, KNUST</div>
+          <p class="site-footer__brand-name">Dept. of Indigenous Art &amp; Technology</p>
+          <span class="site-footer__brand-sub">KNUST &middot; College of Art and Built Environment &middot; Kumasi, Ghana</span>
+          <p class="site-footer__description">DIAT is dedicated to the preservation, teaching, and global promotion of Ghana&#39;s indigenous art and craft heritage &mdash; Est. 1976.</p>
+          <nav class="site-footer__social" aria-label="Social media">
+            <a href="#" class="site-footer__social-link" aria-label="Instagram">&#128247;</a>
+            <a href="#" class="site-footer__social-link" aria-label="Facebook">&#127760;</a>
+            <a href="#" class="site-footer__social-link" aria-label="TikTok">&#127925;</a>
+            <a href="#" class="site-footer__social-link" aria-label="WhatsApp">&#128172;</a>
+            <a href="#" class="site-footer__social-link" aria-label="YouTube">&#9654;</a>
+          </nav>
         </div>
+        <nav aria-label="Explore"><h3 class="site-footer__col-title">Explore</h3><ul class="site-footer__col-links" role="list"><li><a href="gallery.html" class="site-footer__col-link">Artwork Gallery</a></li><li><a href="webar.html" class="site-footer__col-link">WebAR Viewer</a></li><li><a href="about.html" class="site-footer__col-link">About DIAT</a></li><li><a href="archive.html" class="site-footer__col-link">Digital Archive</a></li></ul></nav>
+        <nav aria-label="Academic"><h3 class="site-footer__col-title">Academic</h3><ul class="site-footer__col-links" role="list"><li><a href="programmes.html" class="site-footer__col-link">All Programmes</a></li><li><a href="staff.html" class="site-footer__col-link">Staff Directory</a></li><li><a href="community.html" class="site-footer__col-link">Internship</a></li></ul></nav>
+        <nav aria-label="Connect"><h3 class="site-footer__col-title">Connect</h3><ul class="site-footer__col-links" role="list"><li><a href="contact.html" class="site-footer__col-link">Contact Us</a></li><li><a href="#signup" class="site-footer__col-link">Newsletter</a></li><li><a href="contact.html" class="site-footer__col-link">Commission Artwork</a></li></ul></nav>
+      </div>
+      <div class="site-footer__bottom">
+        <p class="site-footer__bottom-text">&copy; 2026 DIAT, <strong>KNUST</strong>. All rights reserved.</p>
+        <p class="site-footer__bottom-text">MPhil research project &mdash; <strong>CABE, KNUST.</strong></p>
       </div>
     </div>
-  </div>
-</div>
+  </footer>
 
-
-<!-- HOW PRODUCT DESIGN CONNECTS TO ALL 6 DISCIPLINES -->
-<section class="sec sec-s">
-  <div class="sec-in">
-    <div class="rv" style="max-width:680px;margin-bottom:48px">
-      <p class="eyebrow">The Connective Strand</p>
-      <h2 class="sh2" data-cms-key="disc-product-connects-heading" data-cms-label="Connects Section Heading" data-cms-type="text">How Product Design Underpins Every Discipline</h2>
-      <div class="rule"></div>
-      <p style="font-size:.97rem;color:var(--t2);line-height:1.8;text-align:justify;hyphens:auto" data-cms-key="disc-product-connects-intro" data-cms-label="Connects Introduction">
-        In every DIAT studio, the same sequence applies: design it first, then make it.
-        Product Design provides the common language &mdash; technical drawing, CAD
-        modelling, and design specification &mdash; that connects all six craft disciplines
-        into one coherent academic programme. Click any discipline to see how Product
-        Design feeds directly into its production process.
-      </p>
-    </div>
-
-    <div class="connects-grid rv d1">
-      <a href="clay-earthenware.html" class="connect-card">
-        <div class="cc-icon">&#127994;</div>
-        <h4 data-cms-key="pd-h-clay-earthenware" data-cms-label="Clay  Earthenware" data-cms-type="text">Clay &amp; Earthenware</h4>
-        <p>CAD drawings specify vessel dimensions, wall thickness, and surface motif placement before clay is thrown or hand-built.</p>
-        <div class="cc-link">Open discipline</div>
-      </a>
-      <a href="fibres-fabrics.html" class="connect-card">
-        <div class="cc-icon">&#129525;</div>
-        <h4 data-cms-key="pd-h-fibres-fabrics" data-cms-label="Fibres  Fabrics" data-cms-type="text">Fibres &amp; Fabrics</h4>
-        <p>Pattern design, repeat structure, and colour specification are developed digitally before weaving, dyeing, or printing begins.</p>
-        <div class="cc-link">Open discipline</div>
-      </a>
-      <a href="leather-technology.html" class="connect-card">
-        <div class="cc-icon">&#128092;</div>
-        <h4 data-cms-key="pd-h-leather-technology" data-cms-label="Leather Technology" data-cms-type="text">Leather Technology</h4>
-        <p>Patterns and templates for bags, footwear, and accessories are drafted and refined in CAD before the first leather is cut.</p>
-        <div class="cc-link">Open discipline</div>
-      </a>
-      <a href="metal-production.html" class="connect-card">
-        <div class="cc-icon">&#9881;</div>
-        <h4 data-cms-key="pd-h-metal-production" data-cms-label="Metal Production" data-cms-type="text">Metal Production</h4>
-        <p>Jewellery and sculptural pieces are modelled in 3D and technically specified before casting, forging, or fabrication begins.</p>
-        <div class="cc-link">Open discipline</div>
-      </a>
-      <a href="rattan-bamboo.html" class="connect-card">
-        <div class="cc-icon">&#127819;</div>
-        <h4 data-cms-key="pd-h-rattan-bamboo" data-cms-label="Rattan  Bamboo" data-cms-type="text">Rattan &amp; Bamboo</h4>
-        <p>Structural furniture and object designs are drawn and load-tested digitally before rattan or bamboo construction begins.</p>
-        <div class="cc-link">Open discipline</div>
-      </a>
-      <a href="wood-furniture.html" class="connect-card">
-        <div class="cc-icon">&#129683;</div>
-        <h4 data-cms-key="pd-h-wood-furniture" data-cms-label="Wood  Furniture" data-cms-type="text">Wood &amp; Furniture</h4>
-        <p>Joinery details, dimensions, and furniture assembly sequences are drafted in CAD before any wood is cut or carved.</p>
-        <div class="cc-link">Open discipline</div>
-      </a>
-    </div>
-  </div>
-</section>
-
-
-<!-- SKILLS & TECHNIQUES -->
-<section class="sec sec-w">
-  <div class="sec-in">
-    <div class="rv" style="max-width:640px;margin-bottom:40px">
-      <p class="eyebrow">What You Will Learn</p>
-      <h2 class="sh2" data-cms-key="disc-product-skills-heading" data-cms-label="Skills Heading" data-cms-type="text">Skills &amp; Techniques</h2>
-      <div class="rule"></div>
-      <p style="font-size:.97rem;color:var(--t2);line-height:1.75;text-align:justify;hyphens:auto" data-cms-key="disc-product-skills-intro" data-cms-label="Skills Introduction">
-        Product Design skills at DIAT build progressively across all four years &mdash;
-        from foundational drawing and digital literacy in Year 1 through to advanced
-        design practice, professional presentation, and portfolio development in Year 4.
-      </p>
-    </div>
-    <ul class="skills-list rv d1">
-      <li data-cms-key="disc-product-skill-1" data-cms-label="Skill 1">Technical drawing: orthographic projection, sectional views, and dimensioned drawings for craft objects</li>
-      <li data-cms-key="disc-product-skill-2" data-cms-label="Skill 2">CAD software proficiency: producing 2D technical plans and 3D models of craft products prior to production</li>
-      <li data-cms-key="disc-product-skill-3" data-cms-label="Skill 3">3D rendering and visualisation: presenting photorealistic digital images of proposed craft works to clients and supervisors</li>
-      <li data-cms-key="disc-product-skill-4" data-cms-label="Skill 4">Design brief writing: defining project scope, materials, dimensions, cultural references, and production constraints</li>
-      <li data-cms-key="disc-product-skill-5" data-cms-label="Skill 5">Prototype development: producing scaled or full-size physical models to test form, proportion, and ergonomics before final production</li>
-      <li data-cms-key="disc-product-skill-6" data-cms-label="Skill 6">Material specification: selecting, testing, and documenting appropriate materials for each craft discipline and intended use</li>
-      <li data-cms-key="disc-product-skill-7" data-cms-label="Skill 7">Ergonomics and human-centred design: designing products that are comfortable, functional, and appropriate for their intended users</li>
-      <li data-cms-key="disc-product-skill-8" data-cms-label="Skill 8">Professional presentation: assembling design portfolios, client boards, and exhibition proposals to industry standards</li>
-    </ul>
-  </div>
-</section>
-
-
-<!-- GRADUATE OUTCOMES -->
-<section class="sec sec-s">
-  <div class="sec-in">
-    <div class="two-col">
-      <div class="rv">
-        <p class="eyebrow">What Graduates Achieve</p>
-        <h2 class="sh2" data-cms-key="disc-product-outcomes-heading" data-cms-label="Outcomes Heading" data-cms-type="text">Graduate Outcomes</h2>
-        <div class="rule"></div>
-        <p style="font-size:.97rem;color:var(--t2);line-height:1.8;margin-bottom:28px;text-align:justify;hyphens:auto" data-cms-key="disc-product-outcomes-intro" data-cms-label="Outcomes Introduction">
-          Because Product Design runs across all four years, every DIAT graduate &mdash;
-          regardless of their craft specialisation &mdash; leaves with the following
-          design competencies embedded in their professional practice.
-        </p>
-        <a href="contact.html" style="display:inline-flex;align-items:center;gap:8px;padding:13px 28px;background:var(--gold);border-radius:50px;font-size:.82rem;font-weight:600;color:#fff;transition:background var(--t),transform var(--t)">Apply / Enquire &rarr;</a>
-      </div>
-      <div class="oc-grid rv d2">
-        <div class="oc-item"><div class="oc-dot"></div><p>Produce professional-quality technical drawings and CAD models for any craft object in any discipline</p></div>
-        <div class="oc-item"><div class="oc-dot"></div><p>Write and present a complete design brief from client brief to material specification and production schedule</p></div>
-        <div class="oc-item"><div class="oc-dot"></div><p>Communicate design intent clearly to clients, galleries, commissioners, and collaborators</p></div>
-        <div class="oc-item"><div class="oc-dot"></div><p>Produce rendered visualisations of proposed works for client approval before any material is committed</p></div>
-        <div class="oc-item"><div class="oc-dot"></div><p>Assemble a professional design portfolio suitable for employment, freelance practice, or postgraduate applications</p></div>
-        <div class="oc-item"><div class="oc-dot"></div><p>Apply design methodology to indigenous craft problems &mdash; solving production, ergonomic, and market challenges with design thinking</p></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-
-<!-- CAREER PATHWAYS -->
-<div class="careers-band">
-  <div class="careers-band-in rv">
-    <h2 data-cms-key="disc-product-careers-heading" data-cms-label="Careers Heading" data-cms-type="text">Where Product Design Takes You</h2>
-    <p data-cms-key="disc-product-careers-intro" data-cms-label="Careers Introduction">
-      DIAT graduates carry Product Design skills into every creative career path &mdash;
-      using CAD proficiency, design methodology, and professional presentation skills
-      to distinguish themselves across the creative economy.
-    </p>
-    <div class="career-pills">
-      <span class="career-pill">Product Designer</span>
-      <span class="career-pill">Industrial Designer</span>
-      <span class="career-pill">Design Consultant</span>
-      <span class="career-pill">CAD Technician</span>
-      <span class="career-pill">Craft Designer</span>
-      <span class="career-pill">Design Educator</span>
-      <span class="career-pill">Creative Director</span>
-      <span class="career-pill">Design Entrepreneur</span>
-    </div>
-    <div>
-      <a href="contact.html" class="btn-white">Apply Now</a>
-      <a href="programmes.html" class="btn-outline-w">All Programmes</a>
-    </div>
-  </div>
-</div>
-
-
-<!-- ALL SIX CRAFT DISCIPLINES -->
-<section class="sec sec-w">
-  <div class="sec-in rv">
-    <p class="eyebrow" style="text-align:center;margin-bottom:8px">Explore the Six Craft Disciplines</p>
-    <h2 class="sh2" style="text-align:center;font-size:clamp(1.4rem,2.5vw,2rem);margin-bottom:32px" data-cms-key="pd-h-product-design-underpins-all-o" data-cms-label="Product Design Underpins All of These" data-cms-type="text">
-      Product Design Underpins All of These
-    </h2>
-    <div class="other-discs">
-      <a href="clay-earthenware.html"   class="od-card"><div class="od-icon">&#127994;</div><div class="od-name">Clay &amp; Earthenware</div></a>
-      <a href="fibres-fabrics.html"     class="od-card"><div class="od-icon">&#129525;</div><div class="od-name">Fibres &amp; Fabrics</div></a>
-      <a href="leather-technology.html" class="od-card"><div class="od-icon">&#128092;</div><div class="od-name">Leather Technology</div></a>
-      <a href="metal-production.html"   class="od-card"><div class="od-icon">&#9881;</div><div class="od-name">Metal Production</div></a>
-      <a href="rattan-bamboo.html"      class="od-card"><div class="od-icon">&#127819;</div><div class="od-name">Rattan &amp; Bamboo</div></a>
-      <a href="wood-furniture.html"     class="od-card"><div class="od-icon">&#129683;</div><div class="od-name">Wood &amp; Furniture</div></a>
-    </div>
-  </div>
-</section>
-
-
-<!-- FOOTER -->
-<footer>
-  <div class="fg">
-    <div>
-      <div class="fbn">Dept. of Indigenous Art &amp; Technology</div>
-      <div class="fbu">KNUST &middot; CABE &middot; Kumasi, Ghana</div>
-      <p class="fbd">DIAT &mdash; Est. 1976. Fifty years of indigenous art innovation.</p>
-    </div>
-    <div class="fc"><h5>Programmes</h5><ul>
-      <li><a href="product-design.html">Product Design</a></li>
-      <li><a href="clay-earthenware.html">Clay &amp; Earthenware</a></li>
-      <li><a href="fibres-fabrics.html">Fibres &amp; Fabrics</a></li>
-      <li><a href="leather-technology.html">Leather Technology</a></li>
-      <li><a href="metal-production.html">Metal Production</a></li>
-      <li><a href="rattan-bamboo.html">Rattan &amp; Bamboo</a></li>
-      <li><a href="wood-furniture.html">Wood &amp; Furniture</a></li>
-    </ul></div>
-    <div class="fc"><h5>Site</h5><ul>
-      <li><a href="index.html">Home</a></li>
-      <li><a href="gallery.html">Gallery</a></li>
-      <li><a href="about.html">About DIAT</a></li>
-      <li><a href="community.html">Community</a></li>
-      <li><a href="contact.html">Contact</a></li>
-    </ul></div>
-  </div>
-  <div class="fb">
-    <p>&copy; 2026 DIAT, <span>KNUST</span>. All rights reserved.</p>
-    <p>MPhil research project &mdash; <span>CABE, KNUST.</span></p>
-  </div>
-</footer>
-
-<script>
-  const nav=document.getElementById("nav");
-  window.addEventListener("scroll",()=>nav.classList.toggle("shadow",scrollY>10));
-  const ham=document.getElementById("ham"),md=document.getElementById("md");
-  ham.addEventListener("click",()=>{const o=md.classList.toggle("open");ham.classList.toggle("open",o);ham.setAttribute("aria-expanded",o);document.body.style.overflow=o?"hidden":""});
-  function cd(){md.classList.remove("open");ham.classList.remove("open");ham.setAttribute("aria-expanded","false");document.body.style.overflow=""}
-  document.querySelectorAll(".rv").forEach(el=>new IntersectionObserver(([e])=>{if(e.isIntersecting)el.classList.add("vis")},{threshold:.08}).observe(el));
-</script>
-<script src="cms.js"></script>
+  <script src="cms.js?v=3"></script>
 </body>
 </html>

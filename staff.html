@@ -3,199 +3,46 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Staff Profiles — DIAT | KNUST Ghana</title>
-  <meta name="description" content="Meet the academic, technical and administrative staff of the Department of Indigenous Art and Technology (DIAT) at KNUST Ghana."/>
+  <meta name="theme-color" content="#1A1A4E"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
-  <style>
-    :root{
-      --white:#FFFFFF;--surface:#FAFAF8;--border:#E8E4DC;
-      --t1:#111111;--t2:#555555;--t3:#999999;
-      --gold:#C9952A;--gold-light:#FBF4E6;--gold-dark:#9A6F10;
-      --terra:#C1440E;--terra-light:#FDF0E7;
-      --green:#2D6A2D;--green-light:#EBF5EB;
-      --indigo:#1A1A4E;
-      --serif:"Cormorant Garamond",Georgia,serif;
-      --sans:"Inter",system-ui,-apple-system,sans-serif;
-      --r:10px;--t:0.25s ease;
-    }
-    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-    html{font-size:16px;scroll-behavior:smooth}
-    body{font-family:var(--sans);color:var(--t1);background:var(--white);-webkit-font-smoothing:antialiased;overflow-x:hidden}
-    a{text-decoration:none;color:inherit}
-    img{display:block;max-width:100%;width:100%;height:100%;object-fit:cover}
-    button{font-family:var(--sans);cursor:pointer;border:none}
-
-    /* ABAR */
-    .abar{background:var(--indigo);color:rgba(255,255,255,.85);text-align:center;padding:10px 24px;font-size:.78rem;font-weight:500;letter-spacing:.04em}
-    .abar a{color:var(--gold);font-weight:600;margin-left:10px;transition:opacity .25s}
-    .abar a:hover{opacity:.75}
-
-    /* NAVBAR */
-    .nav{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 40px;transition:box-shadow var(--t)}
-    .nav.shadow{box-shadow:0 2px 20px rgba(0,0,0,.08)}
-    .nbrand{display:flex;align-items:center;gap:10px;flex-shrink:0}
-    .nbrand-svg{width:34px;height:34px;animation:float 5s ease-in-out infinite}
-    @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
-    .nbrand-txt{display:flex;flex-direction:column;line-height:1.15}
-    .nbrand-txt .nd{font-family:var(--serif);font-size:.95rem;font-weight:600;color:var(--indigo)}
-    .nbrand-txt .nu{font-size:.58rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--t3)}
-    .nlinks{display:flex;align-items:center;gap:2px;list-style:none}
-    .nlinks a{font-size:.78rem;font-weight:500;color:var(--t2);padding:6px 11px;border-radius:6px;transition:background var(--t),color var(--t);white-space:nowrap}
-    .nlinks a:hover,.nlinks a.active{background:var(--gold-light);color:var(--gold-dark)}
-    .ncta{background:var(--gold);color:#fff;font-size:.78rem;font-weight:600;padding:9px 20px;border-radius:50px;transition:background var(--t),transform var(--t);white-space:nowrap;flex-shrink:0}
-    .ncta:hover{background:var(--gold-dark);transform:translateY(-1px)}
-    .ham{display:none;background:none;border:none;padding:8px;flex-direction:column;gap:5px}
-    .ham span{display:block;width:22px;height:2px;background:var(--t1);border-radius:2px;transition:transform var(--t),opacity var(--t)}
-    .ham.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
-    .ham.open span:nth-child(2){opacity:0}
-    .ham.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
-    .mob-drawer{display:none;position:fixed;inset:0;background:var(--white);z-index:99;padding:90px 32px 32px;flex-direction:column;gap:8px;overflow-y:auto}
-    .mob-drawer.open{display:flex}
-    .mob-drawer a{font-size:1.1rem;font-weight:500;color:var(--t1);padding:14px 0;border-bottom:1px solid var(--border);transition:color var(--t)}
-    .mob-drawer a:hover{color:var(--gold)}
-    .mob-cta-link{margin-top:16px;background:var(--gold);color:#fff;text-align:center;padding:16px;border-radius:10px;font-weight:600;font-size:.95rem}
-
-    /* PAGE HERO */
-    .page-hero{background:var(--surface);border-bottom:1px solid var(--border);padding:56px 40px 48px}
-    .page-hero-in{max-width:1200px;margin:0 auto}
-    .breadcrumb{display:flex;align-items:center;gap:8px;font-size:.72rem;font-weight:500;color:var(--t3);margin-bottom:20px;letter-spacing:.04em}
-    .breadcrumb a{color:var(--t3);transition:color var(--t)}.breadcrumb a:hover{color:var(--gold)}
-    .breadcrumb span{color:var(--border)}
-    .eyebrow{font-size:.68rem;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:12px}
-    .page-title{font-family:var(--serif);font-size:clamp(2.4rem,5vw,4rem);font-weight:600;color:var(--t1);line-height:1.05;letter-spacing:-.02em;margin-bottom:16px}
-    .page-sub{font-size:1.05rem;color:var(--t2);line-height:1.7;max-width:600px;text-align:justify;hyphens:auto}
-
-    /* FILTER BAR */
-    .filter-bar{background:rgba(255,255,255,.97);backdrop-filter:blur(10px);border-bottom:1px solid var(--border);padding:14px 40px;position:sticky;top:64px;z-index:90}
-    .filter-bar-in{max-width:1200px;margin:0 auto;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-    .filter-lbl{font-size:.68rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--t3);white-space:nowrap}
-    .chip{font-size:.75rem;font-weight:500;padding:7px 14px;border-radius:50px;border:1.5px solid var(--border);background:var(--white);color:var(--t2);cursor:pointer;transition:all .2s ease;white-space:nowrap}
-    .chip:hover{border-color:var(--gold);color:var(--gold-dark)}
-    .chip.active{background:var(--gold);border-color:var(--gold);color:#fff;font-weight:600}
-    .staff-count{margin-left:auto;font-size:.78rem;color:var(--t3);white-space:nowrap}
-    .staff-count strong{color:var(--t1)}
-
-    /* MAIN CONTENT */
-    .main{padding:56px 40px 80px;max-width:1200px;margin:0 auto}
-
-    /* HOD FEATURED SECTION */
-    .hod-section{margin-bottom:60px}
-    .hod-card{display:grid;grid-template-columns:200px 1fr;gap:40px;align-items:start;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:36px;border-left:4px solid var(--gold)}
-    .hod-photo{width:200px;height:220px;border-radius:var(--r);overflow:hidden;background:#EEE9E0;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px;flex-shrink:0}
-    .hod-photo img{width:100%;height:100%;object-fit:cover}
-    .hod-photo-ph{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;width:100%;height:100%}
-    .hod-photo-ph .ph-icon{font-size:2.5rem;opacity:.25}
-    .hod-photo-ph .ph-hint{font-size:.6rem;color:var(--t3);text-align:center;padding:0 8px;line-height:1.4}
-    .hod-tag{display:inline-flex;align-items:center;gap:6px;font-size:.62rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);background:var(--gold-light);border:1px solid rgba(201,149,42,.25);padding:4px 10px;border-radius:50px;margin-bottom:12px}
-    .hod-name{font-family:var(--serif);font-size:2rem;font-weight:600;color:var(--t1);line-height:1.1;margin-bottom:6px}
-    .hod-role{font-size:.88rem;font-weight:600;color:var(--t2);margin-bottom:4px}
-    .hod-qual{font-size:.8rem;color:var(--t3);margin-bottom:16px}
-    .hod-bio{font-size:.93rem;color:var(--t2);line-height:1.8;text-align:justify;hyphens:auto;margin-bottom:16px}
-    .hod-meta{display:flex;gap:20px;flex-wrap:wrap}
-    .hod-meta-item .m-label{font-size:.62rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--t3);margin-bottom:2px}
-    .hod-meta-item .m-val{font-size:.82rem;color:var(--t1);font-weight:500}
-
-    /* SECTION HEADING */
-    .sec-head{margin-bottom:28px;padding-bottom:16px;border-bottom:2px solid var(--border)}
-    .sec-head h2{font-family:var(--serif);font-size:1.6rem;font-weight:600;color:var(--t1);display:flex;align-items:center;gap:12px}
-    .sec-head h2 .count-badge{font-family:var(--sans);font-size:.7rem;font-weight:700;background:var(--gold);color:#fff;padding:3px 8px;border-radius:50px}
-
-    /* STAFF GRID */
-    .staff-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-bottom:60px}
-    .staff-card{background:var(--white);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;transition:box-shadow var(--t),transform var(--t)}
-    .staff-card:hover{box-shadow:0 8px 28px rgba(0,0,0,.07);transform:translateY(-3px)}
-    .staff-card.hidden{display:none}
-
-    /* Photo area */
-    .sc-photo{width:100%;height:200px;background:#EEE9E0;overflow:hidden;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:6px;position:relative}
-    .sc-photo img{width:100%;height:100%;object-fit:cover}
-    .sc-photo-ph{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;width:100%;height:100%}
-    .sc-photo-ph .ph-icon{font-size:2rem;opacity:.2}
-    .sc-photo-ph .ph-hint{font-size:.58rem;color:var(--t3);text-align:center;padding:0 12px;line-height:1.4}
-    .sc-cat-badge{position:absolute;top:10px;left:10px;font-size:.58rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:3px 8px;border-radius:50px;background:rgba(255,255,255,.9)}
-    .badge-academic{color:var(--indigo)}
-    .badge-technical{color:var(--terra)}
-    .badge-admin{color:var(--green)}
-
-    /* Card body */
-    .sc-body{padding:20px}
-    .sc-name{font-family:var(--serif);font-size:1.15rem;font-weight:600;color:var(--t1);margin-bottom:4px;line-height:1.2}
-    .sc-role{font-size:.78rem;font-weight:600;color:var(--gold-dark);margin-bottom:3px}
-    .sc-qual{font-size:.72rem;color:var(--t3);margin-bottom:10px}
-    .sc-disc{display:inline-block;font-size:.62rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:3px 8px;border-radius:50px;background:var(--surface);color:var(--terra);border:1px solid var(--border);margin-bottom:12px}
-    .sc-bio{font-size:.82rem;color:var(--t2);line-height:1.65;text-align:justify;hyphens:auto;margin-bottom:14px}
-    .sc-contact{display:flex;align-items:center;gap:6px;font-size:.75rem;color:var(--t3);border-top:1px solid var(--border);padding-top:12px}
-    .sc-contact a{color:var(--gold);font-weight:500;transition:color var(--t)}
-    .sc-contact a:hover{color:var(--gold-dark)}
-
-    /* PLACEHOLDER CARD for adding new staff */
-    .staff-card-add{background:var(--surface);border:1.5px dashed var(--border);border-radius:var(--r);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:10px;min-height:300px;color:var(--t3);cursor:default}
-    .staff-card-add .add-icon{font-size:2rem;opacity:.3}
-    .staff-card-add p{font-size:.78rem;text-align:center;max-width:160px;line-height:1.5;font-style:italic}
-
-    /* CTA BAND */
-    .cta-band{background:var(--indigo);padding:72px 40px;text-align:center}
-    .cta-band-in{max-width:640px;margin:0 auto}
-    .cta-band h2{font-family:var(--serif);font-size:clamp(1.8rem,4vw,3rem);font-weight:600;color:#fff;margin-bottom:16px}
-    .cta-band p{font-size:1rem;color:rgba(255,255,255,.7);line-height:1.7;margin-bottom:32px;text-align:justify;hyphens:auto}
-    .btn-white{display:inline-flex;align-items:center;gap:8px;background:#fff;color:var(--gold-dark);font-size:.82rem;font-weight:700;padding:13px 28px;border-radius:50px;transition:transform var(--t),box-shadow var(--t)}
-    .btn-white:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.15)}
-    .btn-white::after{content:"→"}
-
-    /* FOOTER */
-    footer{background:var(--indigo);color:rgba(255,255,255,.75);padding:72px 40px 32px}
-    .fg{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:60px;margin-bottom:60px}
-    .fbn{font-family:var(--serif);font-size:1.1rem;font-weight:600;color:#fff;margin-bottom:4px}
-    .fbu{font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:16px}
-    .fbd{font-size:.82rem;line-height:1.7;color:rgba(255,255,255,.5);margin-bottom:20px}
-    .fsc{display:flex;gap:8px;flex-wrap:wrap}
-    .fs{width:34px;height:34px;border-radius:8px;border:1px solid rgba(255,255,255,.12);display:flex;align-items:center;justify-content:center;font-size:.9rem;color:rgba(255,255,255,.5);cursor:pointer;transition:border-color var(--t),color var(--t),background var(--t)}
-    .fs:hover{border-color:var(--gold);color:var(--gold);background:rgba(201,149,42,.08)}
-    .fc h5{font-size:.72rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:18px;padding-bottom:10px;border-bottom:1px solid rgba(255,255,255,.08)}
-    .fc ul{list-style:none}.fc ul li{margin-bottom:10px}
-    .fc ul li a{font-size:.82rem;color:rgba(255,255,255,.5);transition:color var(--t)}
-    .fc ul li a:hover{color:var(--gold)}
-    .fb{max-width:1200px;margin:0 auto;padding-top:24px;border-top:1px solid rgba(255,255,255,.08);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
-    .fb p{font-size:.72rem;color:rgba(255,255,255,.28)}
-    .fb p span{color:rgba(201,149,42,.6)}
-
-    /* REVEAL */
-    .rv{opacity:0;transform:translateY(24px);transition:opacity .65s ease,transform .65s ease}
-    .rv.vis{opacity:1;transform:none}
-    .d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}
-
-    @media(max-width:1024px){
-      .staff-grid{grid-template-columns:1fr 1fr}
-      .hod-card{grid-template-columns:160px 1fr;gap:28px}
-      .hod-photo{width:160px;height:180px}
-      .nav,.filter-bar,.page-hero,.main{padding-left:24px;padding-right:24px}
-      .fg{grid-template-columns:1fr 1fr;gap:40px}
-    }
-    @media(max-width:768px){
-      .nlinks,.ncta{display:none}.ham{display:flex}
-      .staff-grid{grid-template-columns:1fr}
-      .hod-card{grid-template-columns:1fr}
-      .hod-photo{width:100%;height:220px}
-      .fg{grid-template-columns:1fr;gap:32px}
-      .fb{flex-direction:column;text-align:center}
-      .filter-bar-in{gap:6px}
-    }
-  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="diat-styles.css"/>
+  <meta name="description" content="Meet the academic and technical team at DIAT, Department of Indigenous Art and Technology, KNUST Ghana."/>
+  <title>Staff Profiles — DIAT | KNUST Ghana</title>
 </head>
 <body>
-
-<!-- ANNOUNCE BAR -->
-<div class="abar">
-  &#127881; DIAT@50 &mdash; Est. 1976 &nbsp;&middot;&nbsp; Ghana's premier indigenous art department
-  <a href="index.html#signup">Register for Updates &rarr;</a>
-</div>
-
-<!-- NAVBAR -->
-<nav class="nav" id="nav">
-  <a href="index.html" class="nbrand">
-    <svg class="nbrand-svg" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+<header class="site-header" role="banner" aria-label="Site brand">
+    <div class="site-header__logo-container">
+      <!--
+        Replace the SVG below with your actual DIAT logo file.
+        Minimum: 2× resolution PNG or true SVG vector.
+        Alt text follows the pattern: "[Org Name] official logo"
+      -->
+      <svg class="site-header__logo" viewBox="0 0 160 48" fill="none"
+           xmlns="http://www.w3.org/2000/svg"
+           aria-label="DIAT — Department of Indigenous Art and Technology, KNUST"
+           role="img" focusable="false">
+        <!-- Wordmark placeholder — replace src with real logo asset -->
+        <text x="0" y="34" font-family="Georgia, serif" font-size="22"
+              font-weight="700" fill="#1A1A4E" letter-spacing="-0.5">DIAT</text>
+        <text x="60" y="34" font-family="Georgia, serif" font-size="12"
+              fill="#C9952A" letter-spacing="0">&#183; KNUST</text>
+        <line x1="0" y1="40" x2="160" y2="40" stroke="#C9952A"
+              stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+    </div>
+  </header>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+<div class="site-announce" role="region" aria-label="Site announcement">
+    &#127881; DIAT@50 &mdash; Est. 1976 &nbsp;&middot;&nbsp; Ghana&#39;s premier indigenous art department
+    <a href="#signup" class="site-announce__link">Register for Updates &#8594;</a>
+  </div>
+<header>
+    <nav class="dept-nav" id="dept-nav" aria-label="Primary navigation">
+      <div class="container dept-nav__inner">
+        <a href="index.html" class="dept-nav__brand" aria-label="DIAT KNUST home">
+          <svg class="dept-nav__logo" aria-hidden="true" focusable="false" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
       <ellipse cx="28" cy="38" rx="14" ry="9" stroke="#C9952A" stroke-width="2"/>
       <path d="M28 29 C28 20 40 16 43 22 C46 28 40 33 35 31" stroke="#C9952A" stroke-width="2" stroke-linecap="round" fill="none"/>
       <circle cx="37" cy="28" r="7" stroke="#C9952A" stroke-width="2" fill="none"/>
@@ -204,417 +51,275 @@
       <ellipse cx="20" cy="32" rx="4.5" ry="5.5" stroke="#C9952A" stroke-width="1.6" fill="none"/>
       <path d="M14 38 C9 43 7 50 11 54" stroke="#C9952A" stroke-width="2" stroke-linecap="round" fill="none"/>
     </svg>
-    <div class="nbrand-txt">
-      <span class="nd">DIAT &middot; KNUST</span>
-      <span class="nu">Dept. of Indigenous Art &amp; Technology</span>
-    </div>
-  </a>
-  <ul class="nlinks">
-    <li><a href="index.html">Home</a></li>
-    <li><a href="gallery.html">Gallery</a></li>
-    <li><a href="webar.html">WebAR</a></li>
-    <li><a href="about.html">About</a></li>
-    <li><a href="programmes.html">Programmes</a></li>
-    <li><a href="community.html">Community</a></li>
-    <li><a href="staff.html" class="active">Staff</a></li>
-    <li><a href="archive.html">Archive</a></li>
-  </ul>
-  <a href="gallery.html" class="ncta">View Gallery</a>
-  <button class="ham" id="ham" aria-label="Open menu" aria-expanded="false">
-    <span></span><span></span><span></span>
-  </button>
-</nav>
-
-<!-- MOBILE DRAWER -->
-<div class="mob-drawer" id="md">
-  <a href="index.html"      onclick="cd()">Home</a>
-  <a href="gallery.html"    onclick="cd()">Artwork Gallery</a>
-  <a href="webar.html"      onclick="cd()">WebAR Viewer</a>
-  <a href="about.html"      onclick="cd()">About DIAT</a>
-  <a href="programmes.html" onclick="cd()">Academic Programmes</a>
-  <a href="community.html"  onclick="cd()">Community &amp; Internship</a>
-  <a href="staff.html"      onclick="cd()">Staff Profiles</a>
-  <a href="contact.html"    onclick="cd()">Contact &amp; Social Media</a>
-  <a href="archive.html"    onclick="cd()">Digital Archive</a>
-  <a href="gallery.html"    class="mob-cta-link" onclick="cd()">View Gallery &rarr;</a>
-</div>
-
-<!-- PAGE HERO -->
-<div class="page-hero">
-  <div class="page-hero-in">
-    <div class="breadcrumb">
-      <a href="index.html">Home</a><span>&#8250;</span>
-      <span style="color:var(--t1);font-weight:500">Staff Profiles</span>
-    </div>
-    <p class="eyebrow" data-cms-key="staff-eyebrow" data-cms-label="Page Eyebrow" data-cms-type="text">Our People</p>
-    <h1 class="page-title" data-cms-key="staff-page-h1" data-cms-label="Page Title" data-cms-type="text">Staff Profiles</h1>
-    <p class="page-sub" data-cms-key="staff-page-sub" data-cms-label="Page Introduction">
-      Meet the academics, practitioners, and support staff who make DIAT one of Ghana's
-      most distinctive university departments. Our staff bring together deep indigenous
-      craft expertise, academic research excellence, and professional industry experience.
-    </p>
-  </div>
-</div>
-
-<!-- FILTER BAR -->
-<div class="filter-bar">
-  <div class="filter-bar-in">
-    <span class="filter-lbl">Category</span>
-    <button class="chip active" data-cat="all"       onclick="filterStaff(this)">All</button>
-    <button class="chip"        data-cat="hod"        onclick="filterStaff(this)">Leadership</button>
-    <button class="chip"        data-cat="academic"   onclick="filterStaff(this)">Academic</button>
-    <button class="chip"        data-cat="technical"  onclick="filterStaff(this)">Technical</button>
-    <button class="chip"        data-cat="admin"      onclick="filterStaff(this)">Administrative</button>
-    <span class="staff-count">Showing <strong id="staff-vis">13</strong> staff members</span>
-  </div>
-</div>
-
-<!-- MAIN CONTENT -->
-<div class="main">
-
-  <!-- HEAD OF DEPARTMENT -->
-  <div class="hod-section rv" id="section-hod">
-    <div class="sec-head">
-      <h2 data-cms-key="staff-hod-heading" data-cms-label="Leadership Section Heading" data-cms-type="text">
-        Departmental Leadership
-        <span class="count-badge">HOD</span>
-      </h2>
-    </div>
-
-    <div class="hod-card" data-cat="hod">
-      <!-- Photo — replace placeholder with: <img src="hod-photo.jpg" alt="Head of Department"> -->
-      <div class="hod-photo" data-cms-key="staff-hod-photo" data-cms-label="HOD Photo (img tag)">
-        <div class="hod-photo-ph">
-          <span class="ph-icon">&#128247;</span>
-          <span class="ph-hint">Upload HOD photo<br/>Recommended: 400&times;440px</span>
-        </div>
+          <div class="dept-nav__brand-text">
+            <span class="dept-nav__brand-name">DIAT &middot; KNUST</span>
+            <span class="dept-nav__brand-sub">Dept. of Indigenous Art &amp; Technology</span>
+          </div>
+        </a>
+        <ul class="dept-nav__links" role="list">
+          <li><a href="index.html"      class="dept-nav__link">Home</a></li>
+          <li><a href="gallery.html"    class="dept-nav__link">Gallery</a></li>
+          <li><a href="webar.html"      class="dept-nav__link">WebAR</a></li>
+          <li><a href="about.html"      class="dept-nav__link">About</a></li>
+          <li><a href="programmes.html" class="dept-nav__link">Programmes</a></li>
+          <li><a href="community.html"  class="dept-nav__link">Community</a></li>
+          <li><a href="staff.html"      class="dept-nav__link">Staff</a></li>
+          <li><a href="archive.html"    class="dept-nav__link">Archive</a></li>
+        </ul>
+        <a href="gallery.html" class="dept-nav__cta">View Gallery</a>
+        <button class="dept-nav__toggle" id="nav-toggle"
+                aria-label="Open navigation menu" aria-expanded="false" aria-controls="nav-drawer">
+          <span class="dept-nav__toggle-bar"></span>
+          <span class="dept-nav__toggle-bar"></span>
+          <span class="dept-nav__toggle-bar"></span>
+        </button>
       </div>
+    </nav>
+    <nav class="dept-nav__drawer" id="nav-drawer"
+         aria-label="Mobile navigation" aria-hidden="true">
+      <a href="index.html"      class="dept-nav__drawer-link" onclick="closeDrawer()">Home</a>
+      <a href="gallery.html"    class="dept-nav__drawer-link" onclick="closeDrawer()">Artwork Gallery</a>
+      <a href="webar.html"      class="dept-nav__drawer-link" onclick="closeDrawer()">WebAR Viewer</a>
+      <a href="about.html"      class="dept-nav__drawer-link" onclick="closeDrawer()">About DIAT</a>
+      <a href="programmes.html" class="dept-nav__drawer-link" onclick="closeDrawer()">Academic Programmes</a>
+      <a href="community.html"  class="dept-nav__drawer-link" onclick="closeDrawer()">Community &amp; Internship</a>
+      <a href="staff.html"      class="dept-nav__drawer-link" onclick="closeDrawer()">Staff Profiles</a>
+      <a href="contact.html"    class="dept-nav__drawer-link" onclick="closeDrawer()">Contact</a>
+      <a href="gallery.html"    class="dept-nav__drawer-cta"  onclick="closeDrawer()">View Gallery &#8594;</a>
+    </nav>
+  </header>
+  <main id="main-content">
 
-      <div>
-        <span class="hod-tag">&#9733; Head of Department</span>
-        <h2 class="hod-name" data-cms-key="staff-hod-name" data-cms-label="HOD Full Name" data-cms-type="text">[Name — replace]</h2>
-        <p class="hod-role" data-cms-key="staff-hod-role" data-cms-label="HOD Job Title" data-cms-type="text">[Job Title — replace]</p>
-        <p class="hod-qual" data-cms-key="staff-hod-qual" data-cms-label="HOD Qualifications" data-cms-type="text">[Qualifications — e.g. PhD, MFA, BA — replace]</p>
-        <p class="hod-bio" data-cms-key="staff-hod-bio" data-cms-label="HOD Biography">
-          [Write a short biography of the Head of Department here — covering their academic background,
-          research interests, professional experience, and contribution to DIAT. Minimum 80 words.
-          Replace this placeholder with real content.]
+    <section class="page-hero" aria-labelledby="staff-title">
+      <div class="container">
+        <nav class="page-hero__breadcrumb" aria-label="Breadcrumb">
+          <a href="index.html" class="page-hero__breadcrumb-link">Home</a>
+          <span class="page-hero__breadcrumb-sep" aria-hidden="true">/</span>
+          <span class="page-hero__breadcrumb-current">Staff</span>
+        </nav>
+        <span class="page-hero__eyebrow">Our People</span>
+        <h1 class="page-hero__title" id="staff-title"
+            data-cms-key="staff-hero-title" data-cms-label="Staff Page Title" data-cms-type="text">
+          Staff Profiles
+        </h1>
+        <p class="page-hero__body"
+           data-cms-key="staff-hero-body" data-cms-label="Staff Page Body">
+          The academic, technical, and administrative team driving DIAT&rsquo;s mission of
+          indigenous craft excellence at KNUST.
         </p>
-        <div class="hod-meta">
-          <div class="hod-meta-item">
-            <div class="m-label">Specialisation</div>
-            <div class="m-val" data-cms-key="staff-hod-spec" data-cms-label="HOD Specialisation" data-cms-type="text">[Discipline specialisation — replace]</div>
-          </div>
-          <div class="hod-meta-item">
-            <div class="m-label">Research Interests</div>
-            <div class="m-val" data-cms-key="staff-hod-research" data-cms-label="HOD Research Interests" data-cms-type="text">[Research interests — replace]</div>
-          </div>
-          <div class="hod-meta-item">
-            <div class="m-label">Email</div>
-            <div class="m-val"><a href="mailto:" style="color:var(--gold)" data-cms-key="staff-hod-email" data-cms-label="HOD Email" data-cms-type="text">[email@knust.edu.gh — replace]</a></div>
-          </div>
+        <div class="page-hero__rule" aria-hidden="true"></div>
+      </div>
+    </section>
+
+    <!-- HOD -->
+    <section class="dept-section dept-section--white" aria-labelledby="leadership-heading">
+      <div class="container">
+        <header class="dept-section__header">
+          <span class="dept-section__eyebrow">Departmental Leadership</span>
+          <h2 class="dept-section__title" id="leadership-heading"
+              data-cms-key="staff-leadership-h2" data-cms-label="Leadership Heading" data-cms-type="text">
+            Head of Department
+          </h2>
+          <div class="dept-section__rule" aria-hidden="true"></div>
+        </header>
+
+        <div class="staff-grid staff-grid--wide" style="margin-top:var(--sp-xl)">
+          <article class="staff-card staff-card--hod">
+            <div class="staff-card__photo-placeholder" aria-label="Staff photo placeholder">&#128100;</div>
+            <div class="staff-card__body">
+              <p class="staff-card__role" data-cms-key="hod-role" data-cms-label="HOD Role" data-cms-type="text">Head of Department</p>
+              <h3 class="staff-card__name" data-cms-key="hod-name" data-cms-label="HOD Name" data-cms-type="text">[Name &mdash; replace]</h3>
+              <p class="staff-card__quals" data-cms-key="hod-quals" data-cms-label="HOD Qualifications" data-cms-type="text">[Qualifications &mdash; replace]</p>
+              <p class="staff-card__bio" data-cms-key="hod-bio" data-cms-label="HOD Biography">
+                [Biography &mdash; replace via admin mode. Describe the Head of Department&rsquo;s research interests, publications, and academic background.]
+              </p>
+              <a data-cms-key="hod-email" data-cms-label="HOD Email" data-cms-type="text"
+                 class="staff-card__email" href="mailto:hod@diat.knust.edu.gh">hod@diat.knust.edu.gh</a>
+            </div>
+          </article>
         </div>
+      </div>
+    </section>
+
+    <!-- ACADEMIC STAFF -->
+    <section class="dept-section dept-section--surface" aria-labelledby="academic-heading">
+      <div class="container">
+        <header class="dept-section__header">
+          <span class="dept-section__eyebrow">Academic Team</span>
+          <h2 class="dept-section__title" id="academic-heading"
+              data-cms-key="staff-academic-h2" data-cms-label="Academic Staff Heading" data-cms-type="text">
+            Academic Staff
+          </h2>
+          <div class="dept-section__rule" aria-hidden="true"></div>
+        </header>
+        <div class="staff-grid" style="margin-top:var(--sp-xl)">
+          <article class="staff-card">
+            <div class="staff-card__photo-placeholder" aria-label="Staff photo placeholder">&#128100;</div>
+            <div class="staff-card__body">
+              <p class="staff-card__role" data-cms-key="staff-ac1-role" data-cms-label="Academic Staff 1 Role" data-cms-type="text">[Role &mdash; replace]</p>
+              <h3 class="staff-card__name" data-cms-key="staff-ac1-name" data-cms-label="Academic Staff 1 Name" data-cms-type="text">[Name &mdash; replace]</h3>
+              <p class="staff-card__quals" data-cms-key="staff-ac1-quals" data-cms-label="Academic Staff 1 Quals" data-cms-type="text">[Qualifications]</p>
+              <a data-cms-key="staff-ac1-email" data-cms-label="Academic Staff 1 Email" data-cms-type="text"
+                 class="staff-card__email" href="mailto:staff@knust.edu.gh">staff@knust.edu.gh</a>
+            </div>
+          </article>
+          <article class="staff-card">
+            <div class="staff-card__photo-placeholder" aria-label="Staff photo placeholder">&#128100;</div>
+            <div class="staff-card__body">
+              <p class="staff-card__role" data-cms-key="staff-ac2-role" data-cms-label="Academic Staff 2 Role" data-cms-type="text">[Role &mdash; replace]</p>
+              <h3 class="staff-card__name" data-cms-key="staff-ac2-name" data-cms-label="Academic Staff 2 Name" data-cms-type="text">[Name &mdash; replace]</h3>
+              <p class="staff-card__quals" data-cms-key="staff-ac2-quals" data-cms-label="Academic Staff 2 Quals" data-cms-type="text">[Qualifications]</p>
+              <a data-cms-key="staff-ac2-email" data-cms-label="Academic Staff 2 Email" data-cms-type="text"
+                 class="staff-card__email" href="mailto:staff@knust.edu.gh">staff@knust.edu.gh</a>
+            </div>
+          </article>
+          <article class="staff-card">
+            <div class="staff-card__photo-placeholder" aria-label="Staff photo placeholder">&#128100;</div>
+            <div class="staff-card__body">
+              <p class="staff-card__role" data-cms-key="staff-ac3-role" data-cms-label="Academic Staff 3 Role" data-cms-type="text">[Role &mdash; replace]</p>
+              <h3 class="staff-card__name" data-cms-key="staff-ac3-name" data-cms-label="Academic Staff 3 Name" data-cms-type="text">[Name &mdash; replace]</h3>
+              <p class="staff-card__quals" data-cms-key="staff-ac3-quals" data-cms-label="Academic Staff 3 Quals" data-cms-type="text">[Qualifications]</p>
+              <a data-cms-key="staff-ac3-email" data-cms-label="Academic Staff 3 Email" data-cms-type="text"
+                 class="staff-card__email" href="mailto:staff@knust.edu.gh">staff@knust.edu.gh</a>
+            </div>
+          </article>
+          <article class="staff-card">
+            <div class="staff-card__photo-placeholder" aria-label="Staff photo placeholder">&#128100;</div>
+            <div class="staff-card__body">
+              <p class="staff-card__role" data-cms-key="staff-ac4-role" data-cms-label="Academic Staff 4 Role" data-cms-type="text">[Role &mdash; replace]</p>
+              <h3 class="staff-card__name" data-cms-key="staff-ac4-name" data-cms-label="Academic Staff 4 Name" data-cms-type="text">[Name &mdash; replace]</h3>
+              <p class="staff-card__quals" data-cms-key="staff-ac4-quals" data-cms-label="Academic Staff 4 Quals" data-cms-type="text">[Qualifications]</p>
+              <a data-cms-key="staff-ac4-email" data-cms-label="Academic Staff 4 Email" data-cms-type="text"
+                 class="staff-card__email" href="mailto:staff@knust.edu.gh">staff@knust.edu.gh</a>
+            </div>
+          </article>
+          <article class="staff-card">
+            <div class="staff-card__photo-placeholder" aria-label="Staff photo placeholder">&#128100;</div>
+            <div class="staff-card__body">
+              <p class="staff-card__role" data-cms-key="staff-ac5-role" data-cms-label="Academic Staff 5 Role" data-cms-type="text">[Role &mdash; replace]</p>
+              <h3 class="staff-card__name" data-cms-key="staff-ac5-name" data-cms-label="Academic Staff 5 Name" data-cms-type="text">[Name &mdash; replace]</h3>
+              <p class="staff-card__quals" data-cms-key="staff-ac5-quals" data-cms-label="Academic Staff 5 Quals" data-cms-type="text">[Qualifications]</p>
+              <a data-cms-key="staff-ac5-email" data-cms-label="Academic Staff 5 Email" data-cms-type="text"
+                 class="staff-card__email" href="mailto:staff@knust.edu.gh">staff@knust.edu.gh</a>
+            </div>
+          </article>
+          <article class="staff-card">
+            <div class="staff-card__photo-placeholder" aria-label="Staff photo placeholder">&#128100;</div>
+            <div class="staff-card__body">
+              <p class="staff-card__role" data-cms-key="staff-ac6-role" data-cms-label="Academic Staff 6 Role" data-cms-type="text">[Role &mdash; replace]</p>
+              <h3 class="staff-card__name" data-cms-key="staff-ac6-name" data-cms-label="Academic Staff 6 Name" data-cms-type="text">[Name &mdash; replace]</h3>
+              <p class="staff-card__quals" data-cms-key="staff-ac6-quals" data-cms-label="Academic Staff 6 Quals" data-cms-type="text">[Qualifications]</p>
+              <a data-cms-key="staff-ac6-email" data-cms-label="Academic Staff 6 Email" data-cms-type="text"
+                 class="staff-card__email" href="mailto:staff@knust.edu.gh">staff@knust.edu.gh</a>
+            </div>
+          </article>
+          <article class="staff-card">
+            <div class="staff-card__photo-placeholder" aria-label="Staff photo placeholder">&#128100;</div>
+            <div class="staff-card__body">
+              <p class="staff-card__role" data-cms-key="staff-ac7-role" data-cms-label="Academic Staff 7 Role" data-cms-type="text">[Role &mdash; replace]</p>
+              <h3 class="staff-card__name" data-cms-key="staff-ac7-name" data-cms-label="Academic Staff 7 Name" data-cms-type="text">[Name &mdash; replace]</h3>
+              <p class="staff-card__quals" data-cms-key="staff-ac7-quals" data-cms-label="Academic Staff 7 Quals" data-cms-type="text">[Qualifications]</p>
+              <a data-cms-key="staff-ac7-email" data-cms-label="Academic Staff 7 Email" data-cms-type="text"
+                 class="staff-card__email" href="mailto:staff@knust.edu.gh">staff@knust.edu.gh</a>
+            </div>
+          </article>
+          <article class="staff-card">
+            <div class="staff-card__photo-placeholder" aria-label="Staff photo placeholder">&#128100;</div>
+            <div class="staff-card__body">
+              <p class="staff-card__role" data-cms-key="staff-ac8-role" data-cms-label="Academic Staff 8 Role" data-cms-type="text">[Role &mdash; replace]</p>
+              <h3 class="staff-card__name" data-cms-key="staff-ac8-name" data-cms-label="Academic Staff 8 Name" data-cms-type="text">[Name &mdash; replace]</h3>
+              <p class="staff-card__quals" data-cms-key="staff-ac8-quals" data-cms-label="Academic Staff 8 Quals" data-cms-type="text">[Qualifications]</p>
+              <a data-cms-key="staff-ac8-email" data-cms-label="Academic Staff 8 Email" data-cms-type="text"
+                 class="staff-card__email" href="mailto:staff@knust.edu.gh">staff@knust.edu.gh</a>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- TECHNICAL STAFF -->
+    <section class="dept-section dept-section--white" aria-labelledby="technical-heading">
+      <div class="container">
+        <header class="dept-section__header">
+          <span class="dept-section__eyebrow">Technical Team</span>
+          <h2 class="dept-section__title" id="technical-heading"
+              data-cms-key="staff-tech-h2" data-cms-label="Technical Staff Heading" data-cms-type="text">
+            Technical Staff
+          </h2>
+          <div class="dept-section__rule" aria-hidden="true"></div>
+        </header>
+        <div class="staff-grid" style="margin-top:var(--sp-xl)">
+          <article class="staff-card">
+            <div class="staff-card__photo-placeholder" aria-label="Staff photo placeholder">&#128100;</div>
+            <div class="staff-card__body">
+              <p class="staff-card__role" data-cms-key="staff-tc1-role" data-cms-label="Technical Staff 1 Role" data-cms-type="text">[Role &mdash; replace]</p>
+              <h3 class="staff-card__name" data-cms-key="staff-tc1-name" data-cms-label="Technical Staff 1 Name" data-cms-type="text">[Name &mdash; replace]</h3>
+              <p class="staff-card__quals" data-cms-key="staff-tc1-quals" data-cms-label="Technical Staff 1 Quals" data-cms-type="text">[Qualifications]</p>
+              <a data-cms-key="staff-tc1-email" data-cms-label="Technical Staff 1 Email" data-cms-type="text"
+                 class="staff-card__email" href="mailto:staff@knust.edu.gh">staff@knust.edu.gh</a>
+            </div>
+          </article>
+          <article class="staff-card">
+            <div class="staff-card__photo-placeholder" aria-label="Staff photo placeholder">&#128100;</div>
+            <div class="staff-card__body">
+              <p class="staff-card__role" data-cms-key="staff-tc2-role" data-cms-label="Technical Staff 2 Role" data-cms-type="text">[Role &mdash; replace]</p>
+              <h3 class="staff-card__name" data-cms-key="staff-tc2-name" data-cms-label="Technical Staff 2 Name" data-cms-type="text">[Name &mdash; replace]</h3>
+              <p class="staff-card__quals" data-cms-key="staff-tc2-quals" data-cms-label="Technical Staff 2 Quals" data-cms-type="text">[Qualifications]</p>
+              <a data-cms-key="staff-tc2-email" data-cms-label="Technical Staff 2 Email" data-cms-type="text"
+                 class="staff-card__email" href="mailto:staff@knust.edu.gh">staff@knust.edu.gh</a>
+            </div>
+          </article>
+          <article class="staff-card">
+            <div class="staff-card__photo-placeholder" aria-label="Staff photo placeholder">&#128100;</div>
+            <div class="staff-card__body">
+              <p class="staff-card__role" data-cms-key="staff-tc3-role" data-cms-label="Technical Staff 3 Role" data-cms-type="text">[Role &mdash; replace]</p>
+              <h3 class="staff-card__name" data-cms-key="staff-tc3-name" data-cms-label="Technical Staff 3 Name" data-cms-type="text">[Name &mdash; replace]</h3>
+              <p class="staff-card__quals" data-cms-key="staff-tc3-quals" data-cms-label="Technical Staff 3 Quals" data-cms-type="text">[Qualifications]</p>
+              <a data-cms-key="staff-tc3-email" data-cms-label="Technical Staff 3 Email" data-cms-type="text"
+                 class="staff-card__email" href="mailto:staff@knust.edu.gh">staff@knust.edu.gh</a>
+            </div>
+          </article>
+          <article class="staff-card">
+            <div class="staff-card__photo-placeholder" aria-label="Staff photo placeholder">&#128100;</div>
+            <div class="staff-card__body">
+              <p class="staff-card__role" data-cms-key="staff-tc4-role" data-cms-label="Technical Staff 4 Role" data-cms-type="text">[Role &mdash; replace]</p>
+              <h3 class="staff-card__name" data-cms-key="staff-tc4-name" data-cms-label="Technical Staff 4 Name" data-cms-type="text">[Name &mdash; replace]</h3>
+              <p class="staff-card__quals" data-cms-key="staff-tc4-quals" data-cms-label="Technical Staff 4 Quals" data-cms-type="text">[Qualifications]</p>
+              <a data-cms-key="staff-tc4-email" data-cms-label="Technical Staff 4 Email" data-cms-type="text"
+                 class="staff-card__email" href="mailto:staff@knust.edu.gh">staff@knust.edu.gh</a>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+  </main>
+<footer class="site-footer" role="contentinfo" aria-label="Site footer">
+    <div class="container">
+      <div class="site-footer__grid">
+        <div>
+          <p class="site-footer__brand-name">Dept. of Indigenous Art &amp; Technology</p>
+          <span class="site-footer__brand-sub">KNUST &middot; College of Art and Built Environment &middot; Kumasi, Ghana</span>
+          <p class="site-footer__description">DIAT is dedicated to the preservation, teaching, and global promotion of Ghana&#39;s indigenous art and craft heritage &mdash; Est. 1976.</p>
+          <nav class="site-footer__social" aria-label="Social media">
+            <a href="#" class="site-footer__social-link" aria-label="Instagram">&#128247;</a>
+            <a href="#" class="site-footer__social-link" aria-label="Facebook">&#127760;</a>
+            <a href="#" class="site-footer__social-link" aria-label="TikTok">&#127925;</a>
+            <a href="#" class="site-footer__social-link" aria-label="WhatsApp">&#128172;</a>
+            <a href="#" class="site-footer__social-link" aria-label="YouTube">&#9654;</a>
+          </nav>
+        </div>
+        <nav aria-label="Explore"><h3 class="site-footer__col-title">Explore</h3><ul class="site-footer__col-links" role="list"><li><a href="gallery.html" class="site-footer__col-link">Artwork Gallery</a></li><li><a href="webar.html" class="site-footer__col-link">WebAR Viewer</a></li><li><a href="about.html" class="site-footer__col-link">About DIAT</a></li><li><a href="archive.html" class="site-footer__col-link">Digital Archive</a></li></ul></nav>
+        <nav aria-label="Academic"><h3 class="site-footer__col-title">Academic</h3><ul class="site-footer__col-links" role="list"><li><a href="programmes.html" class="site-footer__col-link">All Programmes</a></li><li><a href="staff.html" class="site-footer__col-link">Staff Directory</a></li><li><a href="community.html" class="site-footer__col-link">Internship</a></li></ul></nav>
+        <nav aria-label="Connect"><h3 class="site-footer__col-title">Connect</h3><ul class="site-footer__col-links" role="list"><li><a href="contact.html" class="site-footer__col-link">Contact Us</a></li><li><a href="#signup" class="site-footer__col-link">Newsletter</a></li><li><a href="contact.html" class="site-footer__col-link">Commission Artwork</a></li></ul></nav>
+      </div>
+      <div class="site-footer__bottom">
+        <p class="site-footer__bottom-text">&copy; 2026 DIAT, <strong>KNUST</strong>. All rights reserved.</p>
+        <p class="site-footer__bottom-text">MPhil research project &mdash; <strong>CABE, KNUST.</strong></p>
       </div>
     </div>
-  </div>
+  </footer>
 
-  <!-- ACADEMIC STAFF -->
-  <div class="rv d1" id="section-academic">
-    <div class="sec-head">
-      <h2 data-cms-key="staff-academic-heading" data-cms-label="Academic Staff Heading" data-cms-type="text">
-        Academic Staff
-        <span class="count-badge" id="academic-count">6</span>
-      </h2>
-    </div>
-
-    <div class="staff-grid" id="academic-grid">
-
-      <!-- Academic Staff Card 1 -->
-      <div class="staff-card" data-cat="academic">
-        <div class="sc-photo">
-          <div class="sc-photo-ph">
-            <span class="ph-icon">&#128247;</span>
-            <span class="ph-hint">Upload staff photo<br/>300&times;200px</span>
-          </div>
-          <span class="sc-cat-badge badge-academic">Academic</span>
-        </div>
-        <div class="sc-body">
-          <h3 class="sc-name" data-cms-key="staff-a1-name" data-cms-label="Academic Staff 1 — Name" data-cms-type="text">[Name — replace]</h3>
-          <p class="sc-role" data-cms-key="staff-a1-role" data-cms-label="Academic Staff 1 — Role" data-cms-type="text">[Senior Lecturer / Lecturer — replace]</p>
-          <p class="sc-qual" data-cms-key="staff-a1-qual" data-cms-label="Academic Staff 1 — Qualifications" data-cms-type="text">[Qualifications — replace]</p>
-          <span class="sc-disc" data-cms-key="staff-a1-disc" data-cms-label="Academic Staff 1 — Discipline" data-cms-type="text">[Discipline — replace]</span>
-          <p class="sc-bio" data-cms-key="staff-a1-bio" data-cms-label="Academic Staff 1 — Bio">[Brief biography covering academic background, teaching areas, and research interests. Replace with real content.]</p>
-          <div class="sc-contact">&#9993; <a href="mailto:" data-cms-key="staff-a1-email" data-cms-label="Academic Staff 1 — Email" data-cms-type="text">[email@knust.edu.gh]</a></div>
-        </div>
-      </div>
-
-      <!-- Academic Staff Card 2 -->
-      <div class="staff-card" data-cat="academic">
-        <div class="sc-photo">
-          <div class="sc-photo-ph"><span class="ph-icon">&#128247;</span><span class="ph-hint">Upload staff photo<br/>300&times;200px</span></div>
-          <span class="sc-cat-badge badge-academic">Academic</span>
-        </div>
-        <div class="sc-body">
-          <h3 class="sc-name" data-cms-key="staff-a2-name" data-cms-label="Academic Staff 2 — Name" data-cms-type="text">[Name — replace]</h3>
-          <p class="sc-role" data-cms-key="staff-a2-role" data-cms-label="Academic Staff 2 — Role" data-cms-type="text">[Role — replace]</p>
-          <p class="sc-qual" data-cms-key="staff-a2-qual" data-cms-label="Academic Staff 2 — Qualifications" data-cms-type="text">[Qualifications — replace]</p>
-          <span class="sc-disc" data-cms-key="staff-a2-disc" data-cms-label="Academic Staff 2 — Discipline" data-cms-type="text">[Discipline — replace]</span>
-          <p class="sc-bio" data-cms-key="staff-a2-bio" data-cms-label="Academic Staff 2 — Bio">[Brief biography — replace with real content.]</p>
-          <div class="sc-contact">&#9993; <a href="mailto:" data-cms-key="staff-a2-email" data-cms-label="Academic Staff 2 — Email" data-cms-type="text">[email@knust.edu.gh]</a></div>
-        </div>
-      </div>
-
-      <!-- Academic Staff Card 3 -->
-      <div class="staff-card" data-cat="academic">
-        <div class="sc-photo">
-          <div class="sc-photo-ph"><span class="ph-icon">&#128247;</span><span class="ph-hint">Upload staff photo<br/>300&times;200px</span></div>
-          <span class="sc-cat-badge badge-academic">Academic</span>
-        </div>
-        <div class="sc-body">
-          <h3 class="sc-name" data-cms-key="staff-a3-name" data-cms-label="Academic Staff 3 — Name" data-cms-type="text">[Name — replace]</h3>
-          <p class="sc-role" data-cms-key="staff-a3-role" data-cms-label="Academic Staff 3 — Role" data-cms-type="text">[Role — replace]</p>
-          <p class="sc-qual" data-cms-key="staff-a3-qual" data-cms-label="Academic Staff 3 — Qualifications" data-cms-type="text">[Qualifications — replace]</p>
-          <span class="sc-disc" data-cms-key="staff-a3-disc" data-cms-label="Academic Staff 3 — Discipline" data-cms-type="text">[Discipline — replace]</span>
-          <p class="sc-bio" data-cms-key="staff-a3-bio" data-cms-label="Academic Staff 3 — Bio">[Brief biography — replace with real content.]</p>
-          <div class="sc-contact">&#9993; <a href="mailto:" data-cms-key="staff-a3-email" data-cms-label="Academic Staff 3 — Email" data-cms-type="text">[email@knust.edu.gh]</a></div>
-        </div>
-      </div>
-
-      <!-- Academic Staff Card 4 -->
-      <div class="staff-card" data-cat="academic">
-        <div class="sc-photo">
-          <div class="sc-photo-ph"><span class="ph-icon">&#128247;</span><span class="ph-hint">Upload staff photo<br/>300&times;200px</span></div>
-          <span class="sc-cat-badge badge-academic">Academic</span>
-        </div>
-        <div class="sc-body">
-          <h3 class="sc-name" data-cms-key="staff-a4-name" data-cms-label="Academic Staff 4 — Name" data-cms-type="text">[Name — replace]</h3>
-          <p class="sc-role" data-cms-key="staff-a4-role" data-cms-label="Academic Staff 4 — Role" data-cms-type="text">[Role — replace]</p>
-          <p class="sc-qual" data-cms-key="staff-a4-qual" data-cms-label="Academic Staff 4 — Qualifications" data-cms-type="text">[Qualifications — replace]</p>
-          <span class="sc-disc" data-cms-key="staff-a4-disc" data-cms-label="Academic Staff 4 — Discipline" data-cms-type="text">[Discipline — replace]</span>
-          <p class="sc-bio" data-cms-key="staff-a4-bio" data-cms-label="Academic Staff 4 — Bio">[Brief biography — replace with real content.]</p>
-          <div class="sc-contact">&#9993; <a href="mailto:" data-cms-key="staff-a4-email" data-cms-label="Academic Staff 4 — Email" data-cms-type="text">[email@knust.edu.gh]</a></div>
-        </div>
-      </div>
-
-      <!-- Academic Staff Card 5 -->
-      <div class="staff-card" data-cat="academic">
-        <div class="sc-photo">
-          <div class="sc-photo-ph"><span class="ph-icon">&#128247;</span><span class="ph-hint">Upload staff photo<br/>300&times;200px</span></div>
-          <span class="sc-cat-badge badge-academic">Academic</span>
-        </div>
-        <div class="sc-body">
-          <h3 class="sc-name" data-cms-key="staff-a5-name" data-cms-label="Academic Staff 5 — Name" data-cms-type="text">[Name — replace]</h3>
-          <p class="sc-role" data-cms-key="staff-a5-role" data-cms-label="Academic Staff 5 — Role" data-cms-type="text">[Role — replace]</p>
-          <p class="sc-qual" data-cms-key="staff-a5-qual" data-cms-label="Academic Staff 5 — Qualifications" data-cms-type="text">[Qualifications — replace]</p>
-          <span class="sc-disc" data-cms-key="staff-a5-disc" data-cms-label="Academic Staff 5 — Discipline" data-cms-type="text">[Discipline — replace]</span>
-          <p class="sc-bio" data-cms-key="staff-a5-bio" data-cms-label="Academic Staff 5 — Bio">[Brief biography — replace with real content.]</p>
-          <div class="sc-contact">&#9993; <a href="mailto:" data-cms-key="staff-a5-email" data-cms-label="Academic Staff 5 — Email" data-cms-type="text">[email@knust.edu.gh]</a></div>
-        </div>
-      </div>
-
-      <!-- Academic Staff Card 6 -->
-      <div class="staff-card" data-cat="academic">
-        <div class="sc-photo">
-          <div class="sc-photo-ph"><span class="ph-icon">&#128247;</span><span class="ph-hint">Upload staff photo<br/>300&times;200px</span></div>
-          <span class="sc-cat-badge badge-academic">Academic</span>
-        </div>
-        <div class="sc-body">
-          <h3 class="sc-name" data-cms-key="staff-a6-name" data-cms-label="Academic Staff 6 — Name" data-cms-type="text">[Name — replace]</h3>
-          <p class="sc-role" data-cms-key="staff-a6-role" data-cms-label="Academic Staff 6 — Role" data-cms-type="text">[Role — replace]</p>
-          <p class="sc-qual" data-cms-key="staff-a6-qual" data-cms-label="Academic Staff 6 — Qualifications" data-cms-type="text">[Qualifications — replace]</p>
-          <span class="sc-disc" data-cms-key="staff-a6-disc" data-cms-label="Academic Staff 6 — Discipline" data-cms-type="text">[Discipline — replace]</span>
-          <p class="sc-bio" data-cms-key="staff-a6-bio" data-cms-label="Academic Staff 6 — Bio">[Brief biography — replace with real content.]</p>
-          <div class="sc-contact">&#9993; <a href="mailto:" data-cms-key="staff-a6-email" data-cms-label="Academic Staff 6 — Email" data-cms-type="text">[email@knust.edu.gh]</a></div>
-        </div>
-      </div>
-
-    </div><!-- /academic-grid -->
-  </div>
-
-  <!-- TECHNICAL STAFF -->
-  <div class="rv d2" id="section-technical">
-    <div class="sec-head">
-      <h2 data-cms-key="staff-tech-heading" data-cms-label="Technical Staff Heading" data-cms-type="text">
-        Technical Staff
-        <span class="count-badge" id="technical-count">3</span>
-      </h2>
-    </div>
-    <div class="staff-grid">
-
-      <div class="staff-card" data-cat="technical">
-        <div class="sc-photo"><div class="sc-photo-ph"><span class="ph-icon">&#128247;</span><span class="ph-hint">Upload staff photo</span></div><span class="sc-cat-badge badge-technical">Technical</span></div>
-        <div class="sc-body">
-          <h3 class="sc-name" data-cms-key="staff-t1-name" data-cms-label="Technical Staff 1 — Name" data-cms-type="text">[Name — replace]</h3>
-          <p class="sc-role" data-cms-key="staff-t1-role" data-cms-label="Technical Staff 1 — Role" data-cms-type="text">[Role — e.g. Studio Technician — replace]</p>
-          <p class="sc-qual" data-cms-key="staff-t1-qual" data-cms-label="Technical Staff 1 — Qualifications" data-cms-type="text">[Qualifications — replace]</p>
-          <span class="sc-disc" data-cms-key="staff-t1-disc" data-cms-label="Technical Staff 1 — Area" data-cms-type="text">[Area — replace]</span>
-          <p class="sc-bio" data-cms-key="staff-t1-bio" data-cms-label="Technical Staff 1 — Bio">[Brief biography — replace with real content.]</p>
-          <div class="sc-contact">&#9993; <a href="mailto:" data-cms-key="staff-t1-email" data-cms-label="Technical Staff 1 — Email" data-cms-type="text">[email@knust.edu.gh]</a></div>
-        </div>
-      </div>
-
-      <div class="staff-card" data-cat="technical">
-        <div class="sc-photo"><div class="sc-photo-ph"><span class="ph-icon">&#128247;</span><span class="ph-hint">Upload staff photo</span></div><span class="sc-cat-badge badge-technical">Technical</span></div>
-        <div class="sc-body">
-          <h3 class="sc-name" data-cms-key="staff-t2-name" data-cms-label="Technical Staff 2 — Name" data-cms-type="text">[Name — replace]</h3>
-          <p class="sc-role" data-cms-key="staff-t2-role" data-cms-label="Technical Staff 2 — Role" data-cms-type="text">[Role — replace]</p>
-          <p class="sc-qual" data-cms-key="staff-t2-qual" data-cms-label="Technical Staff 2 — Qualifications" data-cms-type="text">[Qualifications — replace]</p>
-          <span class="sc-disc" data-cms-key="staff-t2-disc" data-cms-label="Technical Staff 2 — Area" data-cms-type="text">[Area — replace]</span>
-          <p class="sc-bio" data-cms-key="staff-t2-bio" data-cms-label="Technical Staff 2 — Bio">[Brief biography — replace with real content.]</p>
-          <div class="sc-contact">&#9993; <a href="mailto:" data-cms-key="staff-t2-email" data-cms-label="Technical Staff 2 — Email" data-cms-type="text">[email@knust.edu.gh]</a></div>
-        </div>
-      </div>
-
-      <div class="staff-card" data-cat="technical">
-        <div class="sc-photo"><div class="sc-photo-ph"><span class="ph-icon">&#128247;</span><span class="ph-hint">Upload staff photo</span></div><span class="sc-cat-badge badge-technical">Technical</span></div>
-        <div class="sc-body">
-          <h3 class="sc-name" data-cms-key="staff-t3-name" data-cms-label="Technical Staff 3 — Name" data-cms-type="text">[Name — replace]</h3>
-          <p class="sc-role" data-cms-key="staff-t3-role" data-cms-label="Technical Staff 3 — Role" data-cms-type="text">[Role — replace]</p>
-          <p class="sc-qual" data-cms-key="staff-t3-qual" data-cms-label="Technical Staff 3 — Qualifications" data-cms-type="text">[Qualifications — replace]</p>
-          <span class="sc-disc" data-cms-key="staff-t3-disc" data-cms-label="Technical Staff 3 — Area" data-cms-type="text">[Area — replace]</span>
-          <p class="sc-bio" data-cms-key="staff-t3-bio" data-cms-label="Technical Staff 3 — Bio">[Brief biography — replace with real content.]</p>
-          <div class="sc-contact">&#9993; <a href="mailto:" data-cms-key="staff-t3-email" data-cms-label="Technical Staff 3 — Email" data-cms-type="text">[email@knust.edu.gh]</a></div>
-        </div>
-      </div>
-
-    </div>
-  </div>
-
-  <!-- ADMINISTRATIVE STAFF -->
-  <div class="rv d3" id="section-admin">
-    <div class="sec-head">
-      <h2 data-cms-key="staff-admin-heading" data-cms-label="Admin Staff Heading" data-cms-type="text">
-        Administrative Staff
-        <span class="count-badge" id="admin-count">3</span>
-      </h2>
-    </div>
-    <div class="staff-grid">
-
-      <div class="staff-card" data-cat="admin">
-        <div class="sc-photo"><div class="sc-photo-ph"><span class="ph-icon">&#128247;</span><span class="ph-hint">Upload staff photo</span></div><span class="sc-cat-badge badge-admin">Admin</span></div>
-        <div class="sc-body">
-          <h3 class="sc-name" data-cms-key="staff-adm1-name" data-cms-label="Admin Staff 1 — Name" data-cms-type="text">[Name — replace]</h3>
-          <p class="sc-role" data-cms-key="staff-adm1-role" data-cms-label="Admin Staff 1 — Role" data-cms-type="text">[Role — e.g. Departmental Secretary — replace]</p>
-          <p class="sc-qual" data-cms-key="staff-adm1-qual" data-cms-label="Admin Staff 1 — Qualifications" data-cms-type="text">[Qualifications — replace]</p>
-          <span class="sc-disc" data-cms-key="staff-adm1-area" data-cms-label="Admin Staff 1 — Area" data-cms-type="text">[Area — replace]</span>
-          <p class="sc-bio" data-cms-key="staff-adm1-bio" data-cms-label="Admin Staff 1 — Bio">[Brief biography — replace with real content.]</p>
-          <div class="sc-contact">&#9993; <a href="mailto:" data-cms-key="staff-adm1-email" data-cms-label="Admin Staff 1 — Email" data-cms-type="text">[email@knust.edu.gh]</a></div>
-        </div>
-      </div>
-
-      <div class="staff-card" data-cat="admin">
-        <div class="sc-photo"><div class="sc-photo-ph"><span class="ph-icon">&#128247;</span><span class="ph-hint">Upload staff photo</span></div><span class="sc-cat-badge badge-admin">Admin</span></div>
-        <div class="sc-body">
-          <h3 class="sc-name" data-cms-key="staff-adm2-name" data-cms-label="Admin Staff 2 — Name" data-cms-type="text">[Name — replace]</h3>
-          <p class="sc-role" data-cms-key="staff-adm2-role" data-cms-label="Admin Staff 2 — Role" data-cms-type="text">[Role — replace]</p>
-          <p class="sc-qual" data-cms-key="staff-adm2-qual" data-cms-label="Admin Staff 2 — Qualifications" data-cms-type="text">[Qualifications — replace]</p>
-          <span class="sc-disc" data-cms-key="staff-adm2-area" data-cms-label="Admin Staff 2 — Area" data-cms-type="text">[Area — replace]</span>
-          <p class="sc-bio" data-cms-key="staff-adm2-bio" data-cms-label="Admin Staff 2 — Bio">[Brief biography — replace with real content.]</p>
-          <div class="sc-contact">&#9993; <a href="mailto:" data-cms-key="staff-adm2-email" data-cms-label="Admin Staff 2 — Email" data-cms-type="text">[email@knust.edu.gh]</a></div>
-        </div>
-      </div>
-
-      <!-- Add more staff placeholder -->
-      <div class="staff-card-add">
-        <span class="add-icon">&#43;</span>
-        <p>Add more staff members using the Admin panel &rarr; Pages, or by editing this page directly</p>
-      </div>
-
-    </div>
-  </div>
-
-</div><!-- /main -->
-
-<!-- JOIN THE TEAM CTA -->
-<div class="cta-band">
-  <div class="cta-band-in rv">
-    <h2 data-cms-key="staff-cta-h2" data-cms-label="CTA Heading" data-cms-type="text">Join the DIAT Team</h2>
-    <p data-cms-key="staff-cta-text" data-cms-label="CTA Description">
-      DIAT welcomes applications from academic and technical professionals with expertise
-      in indigenous craft disciplines, design education, or related fields. Open positions
-      are advertised through KNUST's central human resources office.
-    </p>
-    <a href="contact.html" class="btn-white">Get in Touch</a>
-  </div>
-</div>
-
-<!-- FOOTER -->
-<footer>
-  <div class="fg">
-    <div>
-      <div class="fbn">Dept. of Indigenous Art &amp; Technology</div>
-      <div class="fbu">KNUST &middot; College of Art and Built Environment &middot; Kumasi, Ghana</div>
-      <p class="fbd">DIAT &mdash; Est. 1976. Fifty years of indigenous art innovation.</p>
-      <div class="fsc">
-        <a class="fs" href="#" aria-label="Instagram">&#128247;</a>
-        <a class="fs" href="#" aria-label="Facebook">&#127760;</a>
-        <a class="fs" href="#" aria-label="TikTok">&#127925;</a>
-        <a class="fs" href="#" aria-label="WhatsApp">&#128172;</a>
-        <a class="fs" href="#" aria-label="YouTube">&#9654;</a>
-      </div>
-    </div>
-    <div class="fc"><h5>Explore</h5><ul>
-      <li><a href="gallery.html">Artwork Gallery</a></li>
-      <li><a href="webar.html">WebAR Viewer</a></li>
-      <li><a href="about.html">About DIAT</a></li>
-      <li><a href="archive.html">Digital Archive</a></li>
-    </ul></div>
-    <div class="fc"><h5>Academic</h5><ul>
-      <li><a href="programmes.html">All Programmes</a></li>
-      <li><a href="staff.html">Staff Directory</a></li>
-      <li><a href="community.html">Internship Programme</a></li>
-    </ul></div>
-    <div class="fc"><h5>Connect</h5><ul>
-      <li><a href="contact.html">Contact Us</a></li>
-      <li><a href="index.html#signup">Newsletter</a></li>
-      <li><a href="contact.html">Commission Artwork</a></li>
-    </ul></div>
-  </div>
-  <div class="fb">
-    <p>&copy; 2026 DIAT, <span>KNUST</span>. All rights reserved.</p>
-    <p>MPhil research project &mdash; <span>CABE, KNUST.</span></p>
-  </div>
-</footer>
-
-<script>
-  const nav = document.getElementById("nav");
-  window.addEventListener("scroll", () => nav.classList.toggle("shadow", scrollY > 10));
-  const ham = document.getElementById("ham"), md = document.getElementById("md");
-  ham.addEventListener("click", () => {
-    const o = md.classList.toggle("open");
-    ham.classList.toggle("open", o);
-    ham.setAttribute("aria-expanded", o);
-    document.body.style.overflow = o ? "hidden" : "";
-  });
-  function cd() { md.classList.remove("open"); ham.classList.remove("open"); ham.setAttribute("aria-expanded","false"); document.body.style.overflow = ""; }
-
-  // Reveal
-  document.querySelectorAll(".rv").forEach(el =>
-    new IntersectionObserver(([e]) => { if (e.isIntersecting) el.classList.add("vis"); }, { threshold: .08 }).observe(el)
-  );
-
-  // Filter
-  function filterStaff(btn) {
-    const cat = btn.dataset.cat;
-    document.querySelectorAll(".filter-bar .chip").forEach(c => c.classList.remove("active"));
-    btn.classList.add("active");
-    const cards = document.querySelectorAll(".staff-card");
-    let vis = 0;
-    cards.forEach(card => {
-      const show = cat === "all" || card.dataset.cat === cat;
-      card.classList.toggle("hidden", !show);
-      if (show) vis++;
-    });
-    document.getElementById("staff-vis").textContent = vis;
-    // Show/hide sections
-    ["hod","academic","technical","admin"].forEach(s => {
-      const sec = document.getElementById("section-" + s);
-      if (!sec) return;
-      if (cat === "all" || cat === s) { sec.style.display = ""; }
-      else { sec.style.display = "none"; }
-    });
-  }
-</script>
-<script src="cms.js?v=3"></script>
+  <script src="cms.js?v=3"></script>
 </body>
 </html>
