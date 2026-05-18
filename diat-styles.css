@@ -3564,3 +3564,75 @@ h1, h2, h3, h4, h5, h6 { font-family: var(--ff-display); line-height: var(--lh-h
 }
 
 /* ── END MOBILE FOOTER GRID ─────────────────────────────────── */
+
+
+/* ============================================================
+ * MOBILE: content-split__aside image card
+ * ============================================================
+ *
+ * Target: the off-white card containing diat-courtyard.jpg
+ *   on the About page (and wherever content-split__aside
+ *   is used). Desktop presentation is unchanged.
+ *
+ * ROOT CAUSE:
+ *   .content-split__aside has padding: var(--sp-xl) ≈ 25–30px
+ *   on all four sides. At 360px phone width the card is ~310px
+ *   wide; the image only fills 260px (84%) — leaving 25px of
+ *   off-white background visible on every edge.
+ *
+ * FIX STRATEGY:
+ *   Reduce padding to var(--sp-xs) ≈ 6–8px on mobile so the
+ *   image fills ~95% of the card width, making the off-white
+ *   border a thin, elegant frame rather than a wide mat.
+ *   The image's own border-radius is reduced to match the
+ *   tighter inset — it should look nested, not floating.
+ *   Caption: centred and proportional so it reads balanced
+ *   on both sides of the narrower mobile card.
+ *
+ * WHY !important on img margin-bottom:
+ *   The <img> element carries an inline style="margin-bottom:
+ *   var(--sp-md)" in the HTML. Inline styles override external
+ *   CSS selectors. The !important flag is used ONLY here to
+ *   override this single inline declaration — a legitimate and
+ *   targeted use, not a cascade shortcut.
+ * ============================================================ */
+
+@media (max-width: 640px) {
+
+  /* 1. Tighten the card padding — near full-bleed image */
+  .content-split__aside {
+    padding: var(--sp-xs);
+  }
+
+  /* 2. Reduce image corner radius to sit inside the card shell
+   *    cleanly at the new tight padding level.
+   *    !important overrides the inline style="border-radius:..."
+   *    on the img element only.
+   */
+  .content-split__aside figure img {
+    border-radius: var(--radius-sm) !important;
+
+    /* Override inline margin-bottom so gap to caption is
+     * proportional to the new compact padding, not the desktop value */
+    margin-bottom: var(--sp-sm) !important;
+    display: block;
+    width: 100%;
+  }
+
+  /* 3. Caption: centred text, proportional font size.
+   *    text-align: center creates visual balance on both sides.
+   *    padding-inline: var(--sp-sm) gives the caption breathing
+   *    room matching the reduced card padding.
+   *    !important overrides the inline style="font-size:..."
+   */
+  .content-split__aside figcaption {
+    font-size: var(--fs-xs) !important;
+    text-align: center;
+    padding-inline: var(--sp-sm);
+    line-height: 1.5;
+    color: var(--clr-text-tertiary);
+    padding-bottom: var(--sp-xs);
+  }
+}
+
+/* ── END ASIDE IMAGE MOBILE FIX ─────────────────────────────── */
