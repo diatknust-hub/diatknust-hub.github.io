@@ -3146,3 +3146,197 @@ h1, h2, h3, h4, h5, h6 { font-family: var(--ff-display); line-height: var(--lh-h
   .staff-grid--wide{ grid-template-columns: 1fr; }
   .gallery-masonry { columns: 1; }
 }
+
+
+/* ============================================================
+ * MOBILE LAYOUT PATCH — diat-styles.css
+ * ============================================================
+ *
+ * Scope: ALL rules below apply only to mobile viewports.
+ *        Desktop (≥769px) behaviour is 100% unchanged.
+ *
+ * Bugs addressed:
+ *   BUG-M1  White vertical strip on right side of every page
+ *   BUG-M2  Hamburger menu too close to right viewport edge
+ *   BUG-M3  Nav brand subtitle overlapping DIAT name
+ *   BUG-M4  Stats gold rule misaligned + labels wrapping in 2×2 grid
+ *
+ * Architectural notes:
+ *   • overflow-x: hidden on html prevents the scrollable width
+ *     from exceeding the viewport — eliminates the white strip.
+ *   • Hiding .dept-nav__brand-sub at narrow widths is correct
+ *     because the Sankofa logo + 'DIAT · KNUST' alone provides
+ *     unambiguous identity at a glance. The full subtitle is
+ *     only needed at desktop where horizontal space exists.
+ *   • The stats ::after gold rule uses top: 50% of the section
+ *     height. On desktop (1×4 row) that bisects the single row
+ *     cleanly. On mobile (2×2 grid) 50% falls between the two
+ *     rows — creating a misaligned stub. Hiding it and using a
+ *     border-bottom on the top-row items is structurally correct.
+ * ============================================================ */
+
+
+/* ── BUG-M1: Horizontal overflow → white right strip ──────────
+ *
+ * overflow-x: hidden on html clips any child that exceeds
+ * the viewport width. This is the global fix — it catches
+ * any overflowing element regardless of which component
+ * is the original source (announce bar text, hero preview
+ * grid, nav inner, or any future addition).
+ *
+ * max-width: 100% on body ensures flex/grid children that
+ * use width: 100% resolve against the viewport, not a
+ * theoretical larger containing block.
+ * ──────────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  html {
+    overflow-x: hidden;
+    max-width: 100vw;
+  }
+
+  body {
+    overflow-x: hidden;
+    max-width: 100%;
+  }
+
+  /*
+   * Announce bar: constrain text so it cannot push the bar
+   * wider than the viewport on very narrow screens.
+   */
+  .site-announce {
+    white-space: normal;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: var(--fs-xs);
+    padding: var(--sp-xs) var(--sp-sm);
+  }
+
+  /*
+   * Ensure all major layout containers respect viewport width.
+   * min-width: 0 is the flex/grid minimum-sizing fix that
+   * prevents children from overflowing their allocated space.
+   */
+  .dept-nav,
+  .dept-hero,
+  .dept-stats,
+  .dept-section {
+    max-width: 100vw;
+    overflow-x: hidden;
+  }
+}
+
+
+/* ── BUG-M2: Hamburger too close to right edge ─────────────────
+ *
+ * .dept-nav__toggle sits at the flex end of .dept-nav__inner.
+ * The inner has padding-inline but at 360px that resolves to
+ * only ~16px. Adding an explicit margin-right pulls the
+ * hamburger visually inward to match the left brand position,
+ * creating a balanced inset on both sides of the nav bar.
+ * ──────────────────────────────────────────────────────────── */
+@media (max-width: 640px) {
+  .dept-nav__toggle {
+    margin-right: var(--sp-sm); /* pulls bars inward from right edge */
+  }
+
+  /*
+   * Tighten nav inner padding at mobile so brand + toggle
+   * have symmetrical spacing from both viewport edges.
+   */
+  .dept-nav__inner {
+    padding-inline: var(--sp-sm);
+  }
+}
+
+
+/* ── BUG-M3: Brand subtitle overlapping at mobile ──────────────
+ *
+ * 'DEPT. OF INDIGENOUS ART & TECHNOLOGY' with letter-spacing:
+ * 0.18em spans ~280px at 11px — wider than a phone viewport
+ * half (brand column ≈ 200px). Hiding it at mobile is correct:
+ *   • The Sankofa mark + 'DIAT · KNUST' is sufficient identity
+ *   • The full name appears in the footer on every page
+ *   • The mobile drawer nav also carries the full brand name
+ *
+ * Keeping .dept-nav__brand-name visible (the 'DIAT · KNUST'
+ * text) at a touch-friendly size ensures the logo area
+ * remains accessible and identifiable.
+ * ──────────────────────────────────────────────────────────── */
+@media (max-width: 480px) {
+  /* Hide the long subtitle — causes overlap on narrow phones */
+  .dept-nav__brand-sub {
+    display: none;
+  }
+
+  /* Ensure brand name sits cleanly beside the Sankofa logo */
+  .dept-nav__brand {
+    gap: var(--sp-xs);
+  }
+
+  .dept-nav__brand-name {
+    font-size: var(--fs-sm);
+    letter-spacing: 0;
+    line-height: 1.1;
+  }
+
+  .dept-nav__logo {
+    width: 28px;
+    height: 28px;
+    flex-shrink: 0;
+  }
+}
+
+
+/* ── BUG-M4: Stats gold rule + label wrapping in 2×2 grid ──────
+ *
+ * On mobile the stats grid collapses to 2 columns (2×2 layout).
+ * The desktop ::after rule uses top: 50% of the SECTION height —
+ * on desktop (single row) this bisects that row perfectly.
+ * On mobile (two rows stacked) top: 50% falls between the rows,
+ * creating a misaligned short gold stub visible on the left edge.
+ *
+ * Fix strategy:
+ *   1. Hide the ::after pseudo-element on mobile
+ *   2. Add a gold border-bottom directly to the first-row items
+ *      (nth-child 1 and 2) as the horizontal separator
+ *   3. Reduce label font size so 'Artworks in Collection' and
+ *      'Community Internship' stay on one line without wrapping
+ *   4. Add padding-bottom/top to the rows for breathing room
+ * ──────────────────────────────────────────────────────────── */
+@media (max-width: 640px) {
+  /* 1. Kill the full-section pseudo-element rule */
+  .dept-stats::after {
+    display: none;
+  }
+
+  /* 2. Gold separator on the BOTTOM of each top-row item */
+  .dept-stats__item:nth-child(1),
+  .dept-stats__item:nth-child(2) {
+    border-bottom: 1.5px solid var(--clr-gold);
+    padding-bottom: var(--sp-md);
+  }
+
+  .dept-stats__item:nth-child(3),
+  .dept-stats__item:nth-child(4) {
+    padding-top: var(--sp-md);
+  }
+
+  /* 3. Smaller label font + no wrap for compact inline display */
+  .dept-stats__label {
+    font-size: var(--fs-xs);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* 4. Scale number down slightly for the narrower 2-col grid */
+  .dept-stats__number {
+    font-size: var(--fs-xl);
+  }
+
+  .dept-stats__item {
+    padding: var(--sp-sm) var(--sp-sm);
+    gap: var(--sp-2xs);
+  }
+}
+/* ── END MOBILE PATCH ─────────────────────────────────────── */
