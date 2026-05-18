@@ -224,6 +224,53 @@
     </div>
   </footer>
 
-  <script src="cms.js?v=3"></script>
+  <script>
+    /*
+     * NAVIGATION — hamburger toggle + mobile drawer
+     * Applied to all inner pages (about, staff, gallery, etc.)
+     *
+     * WHY it was missing: page_shell() built the nav HTML from a
+     * shared template but did not include this JavaScript. The toggle
+     * button and drawer existed in the DOM but had no event listeners,
+     * making the hamburger visually present but completely inactive.
+     *
+     * closeDrawer() is declared as a plain function (not var/const)
+     * so it is hoisted and accessible from inline onclick="" attributes
+     * on the drawer links before the script block finishes parsing.
+     */
+    (function() {
+      var _nav    = document.getElementById('dept-nav');
+      var _toggle = document.getElementById('nav-toggle');
+      var _drawer = document.getElementById('nav-drawer');
+
+      /* Sticky nav shadow on scroll */
+      if (_nav) {
+        window.addEventListener('scroll', function() {
+          _nav.classList.toggle('is-scrolled', window.scrollY > 8);
+        }, { passive: true });
+      }
+
+      /* Hamburger toggle */
+      if (_toggle && _drawer) {
+        _toggle.addEventListener('click', function() {
+          var open = _drawer.classList.toggle('is-open');
+          _toggle.setAttribute('aria-expanded', String(open));
+          _drawer.setAttribute('aria-hidden', String(!open));
+          document.body.style.overflow = open ? 'hidden' : '';
+        });
+      }
+    })();
+
+    /* Global close — called by inline onclick="closeDrawer()" on drawer links */
+    function closeDrawer() {
+      var d = document.getElementById('nav-drawer');
+      var t = document.getElementById('nav-toggle');
+      if (d) d.classList.remove('is-open');
+      if (t) t.setAttribute('aria-expanded', 'false');
+      if (d) d.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+    }
+  </script>
+    <script src="cms.js?v=3"></script>
 </body>
 </html>

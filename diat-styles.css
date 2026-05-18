@@ -3643,3 +3643,37 @@ h1, h2, h3, h4, h5, h6 { font-family: var(--ff-display); line-height: var(--lh-h
 }
 
 /* ── END ASIDE IMAGE MOBILE FIX ─────────────────────────────── */
+
+/* ── MOBILE DRAWER — compact, readable font sizes ──────────────
+ *
+ * WHY: .dept-nav__drawer-link uses font-size: var(--fs-lg) ≈ 1.15rem
+ *   which is intentionally large for the desktop "full-screen" drawer
+ *   aesthetic. On a 360px mobile phone this makes each link ~42px tall
+ *   with generous padding — readable but uses a lot of vertical space.
+ *
+ * FIX: At ≤640px reduce to var(--fs-md) ≈ 1rem and tighten padding
+ *   so all 8 nav links + CTA fit comfortably in one screenful.
+ *   The CTA button also scales down proportionally.
+ *   tap targets stay ≥44px via combined font + padding height.
+ * ──────────────────────────────────────────────────────────── */
+@media (max-width: 640px) {
+  .dept-nav__drawer {
+    padding: var(--sp-md) var(--sp-lg);
+    gap: 0;
+  }
+  .dept-nav__drawer-link {
+    font-size: var(--fs-base);   /* was fs-lg — visibly smaller, still clear */
+    font-weight: 500;
+    padding: var(--sp-sm) 0;     /* was sp-md — tighter row height */
+    letter-spacing: 0;
+  }
+  .dept-nav__drawer-cta {
+    font-size: var(--fs-sm);     /* CTA scales with links */
+    padding: var(--sp-sm) var(--sp-md);
+    margin-top: var(--sp-sm);
+    border-radius: var(--radius-md);
+    text-align: center;
+    display: block;
+  }
+}
+/* ── END DRAWER MOBILE ──────────────────────────────────────── */
