@@ -882,33 +882,82 @@ h1, h2, h3, h4, h5, h6 { font-family: var(--ff-display); line-height: var(--lh-h
 /* ── 9. STATS RIBBON ──────────────────────────────────────── */
 .dept-stats {
   background: var(--clr-indigo);
-  padding-block: var(--sp-xl);
+
+  /*
+   * FIX 1a — compressed vertical padding.
+   * The section should be just tall enough for one line of content.
+   * padding-block: var(--sp-md) gives ~1rem top and bottom.
+   */
+  padding-block: var(--sp-md);
   overflow: hidden;
+  position: relative;
+}
+
+/*
+ * FIX 1b — gold horizontal rule across the full-width section.
+ * The single gold line the stats "sit on" in the design.
+ * z-index: 0 keeps it behind the grid items (z-index: 1).
+ */
+.dept-stats::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 1.5px;
+  background: var(--clr-gold);
+  pointer-events: none;
+  z-index: 0;
 }
 .dept-stats__grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 1px;
   background: rgba(255,255,255,0.08);
+  position: relative;
+  z-index: 1; /* sits above the ::after gold line */
 }
 .dept-stats__item {
   background: var(--clr-indigo);
-  padding: var(--sp-xl) var(--sp-lg);
-  text-align: center;
+
+  /*
+   * FIX 1c — flex row: number and label sit INLINE on one line.
+   * Replaced text-align: center with flexbox centering so both
+   * elements share a single horizontal baseline — the gold rule.
+   */
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  justify-content: center;
+  gap: var(--sp-xs);
+  padding: var(--sp-md) var(--sp-md);
+  text-align: left;
 }
 .dept-stats__number {
   font-family: var(--ff-display);
-  font-size: var(--fs-3xl);
+
+  /*
+   * FIX 1d — smaller font + no bottom margin.
+   * --fs-2xl gives a prominent but compact number.
+   * margin-bottom removed — number and label are now siblings
+   * in a flex row, not stacked vertically.
+   */
+  font-size: var(--fs-2xl);
   font-weight: 700;
   color: var(--clr-gold);
   line-height: 1;
-  margin-bottom: var(--sp-xs);
+  flex-shrink: 0;
 }
 .dept-stats__label {
+  /*
+   * FIX 1e — label sits inline beside number.
+   * Smaller font size so it reads as a label not a heading.
+   * No letter-spacing: the tight inline context reads better plain.
+   */
   font-size: var(--fs-sm);
   color: rgba(255,255,255,0.55);
   font-weight: 500;
-  letter-spacing: var(--ls-wide);
+  line-height: 1.2;
 }
 
 /* ── 10. ABOUT TEASER ─────────────────────────────────────── */
@@ -1234,6 +1283,40 @@ h1, h2, h3, h4, h5, h6 { font-family: var(--ff-display); line-height: var(--lh-h
   user-select: none;
   line-height: 1;
 }
+
+
+/* ── ANNIVERSARY — Photo Background Modifier ─────────────────────────
+ *
+ * Applied to .dept-anniversary on index.html only.
+ * Uses diat-sculptures.jpg (the antelope + ostrich + murals photo)
+ * as a full-bleed background with an indigo overlay for legibility.
+ *
+ * The existing ::before rule (watermark '50' text) continues to
+ * render above the overlay and below the content.
+ * ─────────────────────────────────────────────────────────────────── */
+.dept-anniversary--photo {
+  background-image: url('diat-sculptures.jpg');
+  background-size: cover;
+  background-position: center 35%;
+  background-repeat: no-repeat;
+}
+
+/* Indigo photo overlay — replaces the plain background colour */
+.dept-anniversary--photo::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(26, 26, 78, 0.68);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Push all direct children above both overlays */
+.dept-anniversary--photo > * {
+  position: relative;
+  z-index: 2;
+}
+
 .dept-anniversary__label {
   font-size: var(--fs-xs);
   font-weight: 700;
