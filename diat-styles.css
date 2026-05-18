@@ -3395,3 +3395,172 @@ h1, h2, h3, h4, h5, h6 { font-family: var(--ff-display); line-height: var(--lh-h
   }
 }
 /* ── END MOBILE PATCH v2 ──────────────────────────────────── */
+
+
+/* ============================================================
+ * MOBILE FOOTER GRID LAYOUT
+ * ============================================================
+ *
+ * Scope: ≤640px only. Desktop 4-column footer is unchanged.
+ *
+ * Layout produced on mobile:
+ *
+ *   ┌──────────────────────────────────────────────┐
+ *   │  Brand (description + social icons)          │  ← full width
+ *   └──────────────────────────────────────────────┘
+ *   ┌──────────────────────────────────────────────┐
+ *   │  EXPLORE                                     │  ← full width box
+ *   │  Artwork Gallery   │  About DIAT             │  ← 2-col links grid
+ *   │  WebAR Viewer      │  Digital Archive        │
+ *   └──────────────────────────────────────────────┘
+ *   ┌─────────────────────┐  ┌─────────────────────┐
+ *   │  ACADEMIC           │  │  CONNECT            │  ← side by side
+ *   │  All Programmes     │  │  Contact Us         │
+ *   │  Staff Directory    │  │  Newsletter         │
+ *   │  Internship         │  │  Commission Artwork │
+ *   └─────────────────────┘  └─────────────────────┘
+ *
+ * Architectural decisions:
+ *   • grid-template-areas name each child explicitly so the
+ *     layout is future-proof — adding a new nav column won't
+ *     silently break the grid areas.
+ *   • The Explore box uses an inner CSS grid (2-col) on its
+ *     .site-footer__col-links so the four links pair naturally:
+ *     [Artwork Gallery] [About DIAT]
+ *     [WebAR Viewer]    [Digital Archive]
+ *   • Subtle border + background on each box creates the
+ *     'rectangle' visual the design calls for without adding
+ *     HTML wrapper divs. Pure CSS, zero DOM changes.
+ *   • box-sizing context for padding is correct because the
+ *     existing * { box-sizing: border-box } rule applies.
+ * ============================================================ */
+
+@media (max-width: 640px) {
+
+  /* ── Outer grid: 2-col, 3 rows ─────────────────────────────
+   *   Row 1: brand spans both columns (full width)
+   *   Row 2: explore spans both columns (full width)
+   *   Row 3: academic (left) + connect (right) side by side
+   * ──────────────────────────────────────────────────────── */
+  .site-footer__grid {
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+      "brand    brand"
+      "explore  explore"
+      "academic connect";
+    gap: var(--sp-sm);
+    padding-bottom: var(--sp-xl);
+  }
+
+  /* Brand: full width, row 1 */
+  .site-footer__grid > div:first-child {
+    grid-area: brand;
+    padding-bottom: var(--sp-md);
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+    margin-bottom: var(--sp-xs);
+  }
+
+  /* Explore: full width box, row 2 */
+  .site-footer__grid > nav[aria-label="Explore"] {
+    grid-area: explore;
+  }
+
+  /* Academic: left half box, row 3 */
+  .site-footer__grid > nav[aria-label="Academic"] {
+    grid-area: academic;
+  }
+
+  /* Connect: right half box, row 3 */
+  .site-footer__grid > nav[aria-label="Connect"] {
+    grid-area: connect;
+  }
+
+  /* ── Shared box styling for all three nav sections ─────────
+   *
+   * Semi-transparent white border and very subtle fill
+   * create the 'rectangle box' visual requested.
+   * border-radius matches the site's --radius-md token.
+   * padding gives breathing room inside each box.
+   * ──────────────────────────────────────────────────────── */
+  .site-footer__grid > nav {
+    border: 1px solid rgba(255,255,255,0.10);
+    border-radius: var(--radius-md);
+    padding: var(--sp-md);
+    background: rgba(255,255,255,0.03);
+  }
+
+  /* Box title: gold underline rule, clear from links */
+  .site-footer__grid > nav .site-footer__col-title {
+    font-size: var(--fs-xs);
+    letter-spacing: var(--ls-widest);
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.45);
+    margin-bottom: var(--sp-sm);
+    padding-bottom: var(--sp-xs);
+    border-bottom: 1px solid rgba(201,149,42,0.4);
+  }
+
+  /* Box links: tighter gap inside the compact boxes */
+  .site-footer__grid > nav .site-footer__col-links {
+    gap: var(--sp-xs);
+  }
+
+  .site-footer__grid > nav .site-footer__col-link {
+    font-size: var(--fs-sm);
+    color: rgba(255,255,255,0.5);
+    line-height: 1.5;
+    display: block;
+  }
+
+  /* ── Explore box: 2×2 inner grid for the four links ────────
+   *
+   * Pairs the four Explore links into two columns:
+   *   Col 1 (left):  Artwork Gallery, WebAR Viewer
+   *   Col 2 (right): About DIAT, Digital Archive
+   *
+   * The natural DOM order maps correctly because the links
+   * exist in the order: Gallery → WebAR → About → Archive.
+   * CSS grid places them left-col first, then right-col,
+   * filling row by row — so:
+   *   [Gallery]  [WebAR]    ← grid item 1 and 2 → col 1
+   *   [About]    [Archive]  ← grid item 3 and 4 → col 2
+   *
+   * Wait — grid fills left-to-right, top-to-bottom:
+   *   col1 row1: Gallery   col2 row1: WebAR
+   *   col1 row2: About     col2 row2: Archive
+   *
+   * This gives:
+   *   Gallery  │ WebAR
+   *   About    │ Archive
+   *
+   * User wants: Gallery / WebAR on LEFT, About / Archive on RIGHT.
+   * That means we need grid-auto-flow: column so items fill
+   * down each column before moving to the next:
+   *   col1: Gallery, WebAR
+   *   col2: About, Archive
+   * ──────────────────────────────────────────────────────── */
+  .site-footer__grid > nav[aria-label="Explore"] .site-footer__col-links {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-auto-flow: column;
+    gap: var(--sp-xs) var(--sp-sm);
+  }
+
+  /* Academic and Connect: standard vertical flex stack */
+  .site-footer__grid > nav[aria-label="Academic"] .site-footer__col-links,
+  .site-footer__grid > nav[aria-label="Connect"] .site-footer__col-links {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-xs);
+  }
+
+  /* Footer bottom row: stack on mobile */
+  .site-footer__bottom {
+    flex-direction: column;
+    text-align: center;
+    gap: var(--sp-xs);
+    padding-block: var(--sp-md);
+  }
+}
+
+/* ── END MOBILE FOOTER GRID ─────────────────────────────────── */
