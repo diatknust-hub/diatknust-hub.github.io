@@ -4,109 +4,598 @@
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <meta name="theme-color" content="#1A1A4E"/>
+  <meta name="description" content="DIAT WebAR — View indigenous craft artworks in Augmented Reality. Place student-made 3D objects in your real environment."/>
+  <title>WebAR Viewer — DIAT | KNUST Ghana</title>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="diat-styles.css"/>
-  <meta name="description" content="View DIAT indigenous artworks in augmented reality. Place student-created craft objects in your physical space."/>
-  <title>WebAR Viewer — DIAT | KNUST Ghana</title>
+
+  <!--
+    model-viewer v3.5.0 — Google's official WebAR/3D component.
+    Loaded from Google Ajax CDN for maximum reliability.
+    Supports: Android Chrome (Scene Viewer + WebXR), iOS Safari (Quick Look),
+              Desktop (3D viewer with camera controls).
+  -->
+  <script type="module"
+    src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.5.0/model-viewer.min.js">
+  </script>
+
+  <style>
+    /* ═══════════════════════════════════════════════════════════════
+     * WebAR PAGE STYLES
+     * All tokens reference diat-styles.css variables.
+     * ═══════════════════════════════════════════════════════════════ */
+
+    /* Full-height layout so the viewer fills the screen */
+    body { display: flex; flex-direction: column; min-height: 100vh; }
+    main { flex: 1; display: flex; flex-direction: column; }
+
+    /* ── ARTWORK SELECTOR SIDEBAR ─────────────────────────────── */
+    .webar-page {
+      display: grid;
+      grid-template-columns: 300px 1fr;
+      flex: 1;
+      min-height: 0;
+    }
+
+    .webar-sidebar {
+      background: var(--clr-indigo);
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .webar-sidebar__header {
+      padding: var(--sp-lg);
+      border-bottom: 1px solid rgba(255,255,255,.08);
+      flex-shrink: 0;
+    }
+    .webar-sidebar__heading {
+      font-family: var(--ff-display);
+      font-size: var(--fs-md);
+      font-weight: 700;
+      color: var(--clr-text-inverse);
+      margin-bottom: var(--sp-2xs);
+    }
+    .webar-sidebar__sub {
+      font-size: var(--fs-xs);
+      color: rgba(255,255,255,.4);
+      line-height: 1.4;
+    }
+
+    .webar-sidebar__list {
+      padding: var(--sp-sm);
+      display: flex;
+      flex-direction: column;
+      gap: var(--sp-xs);
+      flex: 1;
+    }
+
+    .webar-artwork-btn {
+      display: block;
+      width: 100%;
+      text-align: left;
+      padding: var(--sp-md);
+      background: rgba(255,255,255,.04);
+      border: 1px solid rgba(255,255,255,.06);
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      font-family: var(--ff-body);
+      color: rgba(255,255,255,.6);
+      transition: all var(--dur-fast) var(--ease-out);
+      position: relative;
+    }
+    .webar-artwork-btn:hover {
+      background: rgba(201,149,42,.12);
+      border-color: rgba(201,149,42,.3);
+      color: rgba(255,255,255,.85);
+    }
+    .webar-artwork-btn.is-active {
+      background: rgba(201,149,42,.18);
+      border-color: var(--clr-gold);
+      color: var(--clr-text-inverse);
+    }
+    .webar-artwork-btn.is-active::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 3px;
+      background: var(--clr-gold);
+      border-radius: var(--radius-sm) 0 0 var(--radius-sm);
+    }
+    .webar-artwork-btn__pilot {
+      display: inline-block;
+      font-size: 0.55rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      background: var(--clr-gold);
+      color: var(--clr-text-inverse);
+      padding: 2px 6px;
+      border-radius: var(--radius-full);
+      margin-bottom: var(--sp-2xs);
+    }
+    .webar-artwork-btn__name {
+      display: block;
+      font-size: var(--fs-sm);
+      font-weight: 600;
+      line-height: 1.3;
+      margin-bottom: 2px;
+    }
+    .webar-artwork-btn__meta {
+      font-size: var(--fs-xs);
+      color: var(--clr-gold);
+      letter-spacing: var(--ls-wide);
+      text-transform: uppercase;
+    }
+
+    .webar-sidebar__footer {
+      padding: var(--sp-md);
+      border-top: 1px solid rgba(255,255,255,.06);
+      flex-shrink: 0;
+    }
+
+    /* ── VIEWER STAGE ─────────────────────────────────────────── */
+    .webar-stage {
+      display: flex;
+      flex-direction: column;
+      background: var(--clr-earth);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* model-viewer fills the stage */
+    model-viewer {
+      width: 100%;
+      flex: 1;
+      min-height: 0;
+      background: transparent;
+      --progress-bar-color: var(--clr-gold);
+      --progress-bar-height: 3px;
+    }
+
+    /* ── EMPTY STATE (no artwork selected) ────────────────────── */
+    .webar-empty {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: var(--sp-md);
+      text-align: center;
+      padding: var(--sp-2xl);
+      pointer-events: none;
+    }
+    .webar-empty__icon { font-size: 3.5rem; }
+    .webar-empty__title {
+      font-family: var(--ff-display);
+      font-size: var(--fs-lg);
+      color: var(--clr-text-secondary);
+    }
+    .webar-empty__body {
+      font-size: var(--fs-sm);
+      color: var(--clr-text-tertiary);
+      max-width: 30ch;
+    }
+
+    /* ── ARTWORK INFO CARD (bottom of stage) ──────────────────── */
+    .webar-info {
+      background: var(--clr-white);
+      border-top: 3px solid var(--clr-gold);
+      padding: var(--sp-md) var(--sp-lg);
+      display: none;
+      align-items: center;
+      gap: var(--sp-md);
+      flex-shrink: 0;
+      flex-wrap: wrap;
+    }
+    .webar-info.is-visible { display: flex; }
+
+    .webar-info__text { flex: 1; min-width: 0; }
+    .webar-info__disc {
+      font-size: var(--fs-xs);
+      font-weight: 700;
+      letter-spacing: var(--ls-wide);
+      text-transform: uppercase;
+      color: var(--clr-gold-dark);
+      margin-bottom: 2px;
+    }
+    .webar-info__title {
+      font-family: var(--ff-display);
+      font-size: var(--fs-md);
+      font-weight: 700;
+      color: var(--clr-text-primary);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .webar-info__artist {
+      font-size: var(--fs-xs);
+      color: var(--clr-text-tertiary);
+      margin-top: 1px;
+    }
+
+    /* Custom AR launch button inside model-viewer slot */
+    .ar-launch-btn {
+      background: var(--clr-gold);
+      color: var(--clr-text-inverse);
+      font-family: var(--ff-body);
+      font-size: var(--fs-sm);
+      font-weight: 700;
+      border: none;
+      border-radius: var(--radius-full);
+      padding: var(--sp-md) var(--sp-xl);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: var(--sp-sm);
+      box-shadow: 0 4px 16px rgba(201,149,42,.35);
+      transition: all var(--dur-fast) var(--ease-out);
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .ar-launch-btn:hover {
+      background: var(--clr-gold-dark);
+      box-shadow: 0 6px 24px rgba(201,149,42,.45);
+      transform: translateY(-1px);
+    }
+    .ar-launch-btn__icon { font-size: 1.1rem; }
+
+    /* AR not available notice */
+    .ar-unavailable {
+      font-size: var(--fs-xs);
+      color: var(--clr-text-tertiary);
+      text-align: center;
+      padding: var(--sp-sm);
+    }
+
+    /* Instructions panel */
+    .webar-instructions {
+      background: var(--clr-indigo);
+      color: rgba(255,255,255,.6);
+      font-size: var(--fs-xs);
+      padding: var(--sp-sm) var(--sp-lg);
+      display: flex;
+      gap: var(--sp-xl);
+      flex-shrink: 0;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .webar-instructions__step {
+      display: flex;
+      align-items: center;
+      gap: var(--sp-xs);
+      white-space: nowrap;
+    }
+    .webar-instructions__num {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: rgba(201,149,42,.3);
+      color: var(--clr-gold);
+      font-size: 0.6rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    /* ── RESPONSIVE ───────────────────────────────────────────── */
+    @media (max-width: 768px) {
+      .webar-page {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto 1fr;
+      }
+      .webar-sidebar {
+        max-height: 200px;
+        overflow-x: auto;
+        overflow-y: hidden;
+      }
+      .webar-sidebar__list {
+        flex-direction: row;
+        padding: var(--sp-sm);
+        gap: var(--sp-sm);
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+      }
+      .webar-sidebar__list::-webkit-scrollbar { display: none; }
+      .webar-artwork-btn {
+        flex-shrink: 0;
+        width: 200px;
+      }
+      .webar-artwork-btn.is-active::before {
+        width: 100%;
+        height: 3px;
+        top: 0;
+        bottom: auto;
+        left: 0;
+        border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+      }
+      .webar-instructions { gap: var(--sp-md); padding: var(--sp-xs) var(--sp-md); }
+    }
+  </style>
 </head>
 <body data-page="webar">
-<a href="#main-content" class="skip-link">Skip to main content</a>
-<main id="main-content">
+  <a href="#main-content" class="skip-link">Skip to main content</a>
 
-    <!-- WebAR layout: sidebar + stage (no footer shown in viewer mode) -->
-    <div class="webar-layout" aria-label="WebAR artwork viewer">
+  <main id="main-content">
+    <div class="webar-page" aria-label="WebAR Artwork Viewer">
 
-      <!-- Artwork selector sidebar -->
+      <!-- ═══ SIDEBAR: Artwork selector ═════════════════════════════════ -->
       <aside class="webar-sidebar" aria-label="Select artwork to view">
-        <h2 class="webar-sidebar__heading">Artworks in AR</h2>
-        <p style="font-size:var(--fs-xs);color:rgba(255,255,255,.35);margin-bottom:var(--sp-md)">
-          Select an artwork to view it in 3D. Tap &#127918; on mobile to place in your space.
-        </p>
-        <div id="artwork-list" role="list" aria-label="Artwork list">
-          <!-- Populated by JS -->
+        <div class="webar-sidebar__header">
+          <p class="webar-sidebar__heading">&#127918; WebAR Gallery</p>
+          <p class="webar-sidebar__sub">
+            Select a work below. Tap <strong style="color:var(--clr-gold)">View in AR</strong>
+            to place it in your space.
+          </p>
         </div>
-        <div style="margin-top:auto;padding-top:var(--sp-lg);border-top:1px solid rgba(255,255,255,.08)">
-          <a href="gallery.html" class="btn btn--ghost-light btn--sm" style="width:100%;justify-content:center">
-            &#8592; Full Gallery
-          </a>
+
+        <div class="webar-sidebar__list" role="list" id="artwork-list">
+
+          <!--
+            PILOT MODEL — Traditional Drum Stool
+            ─────────────────────────────────────────────────────────────
+            Selected for the pilot because:
+            • Traditional Drum Stool is an iconic DIAT/Ashanti cultural object
+            • Both .glb (Android/web) and .usdz (iOS) formats available
+            • Compact standalone geometry — ideal AR object
+            • Discipline: Wood & Furniture / Metal Production crossover
+
+            Files served via jsDelivr CDN — mirrors the diatknust-hub/diatknust
+            GitHub repo with proper CORS headers and fast global edge delivery.
+            URL pattern: cdn.jsdelivr.net/gh/[user]/[repo]@[branch]/[file]
+          -->
+          <button class="webar-artwork-btn is-active"
+                  onclick="loadArtwork(this)"
+                  data-glb="https://cdn.jsdelivr.net/gh/diatknust-hub/diatknust@main/Traditional-Drum-Stool.glb"
+                  data-usdz="https://cdn.jsdelivr.net/gh/diatknust-hub/diatknust@main/Traditional-Drum-Stool.usdz"
+                  data-title="Traditional Drum Stool"
+                  data-discipline="Wood &amp; Furniture"
+                  data-artist="DIAT, KNUST"
+                  aria-pressed="true"
+                  role="listitem">
+            <span class="webar-artwork-btn__pilot">&#9733; Pilot Model</span>
+            <span class="webar-artwork-btn__name">Traditional Drum Stool</span>
+            <span class="webar-artwork-btn__meta">Wood &amp; Furniture</span>
+          </button>
+
+          <!--
+            COMING SOON cards — full catalogue loads after pilot confirmation.
+            These are listed to show stakeholders the scope of the collection.
+          -->
+          <button class="webar-artwork-btn"
+                  onclick="loadArtwork(this)"
+                  data-glb="https://cdn.jsdelivr.net/gh/diatknust-hub/diatknust@main/3-faced-pots.glb"
+                  data-usdz="https://cdn.jsdelivr.net/gh/diatknust-hub/diatknust@main/3-faced-pots.usdz"
+                  data-title="3-Faced Pots"
+                  data-discipline="Clay &amp; Earthenware"
+                  data-artist="DIAT, KNUST"
+                  aria-pressed="false"
+                  role="listitem">
+            <span class="webar-artwork-btn__name">3-Faced Pots</span>
+            <span class="webar-artwork-btn__meta">Clay &amp; Earthenware</span>
+          </button>
+
+          <button class="webar-artwork-btn"
+                  onclick="loadArtwork(this)"
+                  data-glb="https://cdn.jsdelivr.net/gh/diatknust-hub/diatknust@main/Metal-sculpture-parrot.glb"
+                  data-usdz="https://cdn.jsdelivr.net/gh/diatknust-hub/diatknust@main/Metal-sculpture-parrot.usdz"
+                  data-title="Metal Sculpture — Parrot"
+                  data-discipline="Metal Production"
+                  data-artist="DIAT, KNUST"
+                  aria-pressed="false"
+                  role="listitem">
+            <span class="webar-artwork-btn__name">Metal Sculpture — Parrot</span>
+            <span class="webar-artwork-btn__meta">Metal Production</span>
+          </button>
+
+          <button class="webar-artwork-btn"
+                  onclick="loadArtwork(this)"
+                  data-glb="https://cdn.jsdelivr.net/gh/diatknust-hub/diatknust@main/Gold-Colored-Maceame-bag.glb"
+                  data-usdz="https://cdn.jsdelivr.net/gh/diatknust-hub/diatknust@main/Gold-Colored-Maceame-bag.usdz"
+                  data-title="Gold Coloured Macramé Bag"
+                  data-discipline="Fibres &amp; Fabrics"
+                  data-artist="DIAT, KNUST"
+                  aria-pressed="false"
+                  role="listitem">
+            <span class="webar-artwork-btn__name">Gold Macramé Bag</span>
+            <span class="webar-artwork-btn__meta">Fibres &amp; Fabrics</span>
+          </button>
+
+          <button class="webar-artwork-btn"
+                  onclick="loadArtwork(this)"
+                  data-glb="https://cdn.jsdelivr.net/gh/diatknust-hub/diatknust@main/Cane-Lampshade.glb"
+                  data-usdz="https://cdn.jsdelivr.net/gh/diatknust-hub/diatknust@main/Cane-Lampshade.usdz"
+                  data-title="Cane Lampshade"
+                  data-discipline="Rattan &amp; Bamboo"
+                  data-artist="DIAT, KNUST"
+                  aria-pressed="false"
+                  role="listitem">
+            <span class="webar-artwork-btn__name">Cane Lampshade</span>
+            <span class="webar-artwork-btn__meta">Rattan &amp; Bamboo</span>
+          </button>
+
+          <button class="webar-artwork-btn"
+                  onclick="loadArtwork(this)"
+                  data-glb="https://cdn.jsdelivr.net/gh/diatknust-hub/diatknust@main/Single-Chair.glb"
+                  data-usdz="https://cdn.jsdelivr.net/gh/diatknust-hub/diatknust@main/Single-Chair.usdz"
+                  data-title="Single Chair"
+                  data-discipline="Wood &amp; Furniture"
+                  data-artist="DIAT, KNUST"
+                  aria-pressed="false"
+                  role="listitem">
+            <span class="webar-artwork-btn__name">Single Chair</span>
+            <span class="webar-artwork-btn__meta">Wood &amp; Furniture</span>
+          </button>
+
+        </div>
+
+        <div class="webar-sidebar__footer">
+          <p style="font-size:var(--fs-xs);color:rgba(255,255,255,.3);
+                    text-align:center;line-height:1.5">
+            3D models scanned via Polycam 2025<br>
+            <strong style="color:rgba(255,255,255,.5)">diatknust-hub/diatknust</strong>
+          </p>
         </div>
       </aside>
 
-      <!-- 3D viewer stage -->
-      <div class="webar-stage" id="webar-stage" aria-label="3D artwork viewer">
-        <div id="viewer-container" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center">
-          <div style="text-align:center;color:var(--clr-text-tertiary)">
-            <p style="font-size:3rem;margin-bottom:var(--sp-md)" aria-hidden="true">&#127918;</p>
-            <p style="font-family:var(--ff-display);font-size:var(--fs-lg);color:var(--clr-text-secondary);margin-bottom:var(--sp-sm)">
-              Select an artwork to begin
-            </p>
-            <p style="font-size:var(--fs-sm)">Choose from the list on the left to view in 3D</p>
+      <!-- ═══ VIEWER STAGE ═══════════════════════════════════════════════ -->
+      <div class="webar-stage" id="webar-stage">
+
+        <!--
+          model-viewer CONFIGURATION — Pixel 8 Pro optimised
+          ────────────────────────────────────────────────────────────────
+          ar-modes priority order:
+            1. scene-viewer  — Android: opens Google Scene Viewer (most reliable,
+                               works on all ARCore devices including Pixel 8 Pro)
+            2. webxr         — Android Chrome 81+: in-browser AR via WebXR API
+            3. quick-look    — iOS: opens AR Quick Look (for iPhone users visiting)
+
+          shadow-intensity: realistic ground shadow so the object "sits" in space.
+          exposure: slightly boosted for Ghana's bright-light demo environment.
+          camera-orbit: slightly elevated default view angle.
+          ar-scale: "auto" lets Scene Viewer/WebXR determine real-world scale.
+        -->
+        <model-viewer
+          id="main-viewer"
+          alt="Traditional Drum Stool — a hand-carved wooden stool from DIAT, KNUST Ghana"
+
+          src="https://cdn.jsdelivr.net/gh/diatknust-hub/diatknust@main/Traditional-Drum-Stool.glb"
+          ios-src="https://cdn.jsdelivr.net/gh/diatknust-hub/diatknust@main/Traditional-Drum-Stool.usdz"
+
+          ar
+          ar-modes="scene-viewer webxr quick-look"
+          ar-scale="auto"
+
+          camera-controls
+          touch-action="pan-y"
+          auto-rotate
+          rotation-per-second="10deg"
+
+          shadow-intensity="1.2"
+          shadow-softness="0.8"
+          exposure="1.1"
+
+          camera-orbit="30deg 75deg 120%"
+          min-camera-orbit="auto auto 50%"
+          max-camera-orbit="auto auto 200%"
+
+          loading="eager"
+          reveal="auto"
+
+          style="width:100%;height:100%;background:transparent">
+
+          <!-- Custom AR launch button — appears inside the viewer -->
+          <button
+            slot="ar-button"
+            class="ar-launch-btn"
+            style="position:absolute;bottom:var(--sp-xl);left:50%;
+                   transform:translateX(-50%)">
+            <span class="ar-launch-btn__icon">&#127918;</span>
+            View in AR
+          </button>
+
+          <!-- Loading progress poster -->
+          <div slot="progress-bar"></div>
+
+        </model-viewer>
+
+        <!-- Empty state overlay — hidden once a model loads -->
+        <div class="webar-empty" id="webar-empty" aria-hidden="true" style="display:none">
+          <span class="webar-empty__icon">&#127918;</span>
+          <p class="webar-empty__title">Select an artwork</p>
+          <p class="webar-empty__body">Choose from the panel to view it in 3D and AR</p>
+        </div>
+
+        <!-- Info card: title + AR button -->
+        <div class="webar-info is-visible" id="webar-info" aria-live="polite">
+          <div class="webar-info__text">
+            <p class="webar-info__disc" id="info-disc">Wood &amp; Furniture</p>
+            <p class="webar-info__title" id="info-title">Traditional Drum Stool</p>
+            <p class="webar-info__artist" id="info-artist">DIAT, KNUST &middot; Polycam 2025</p>
           </div>
         </div>
-      </div>
-    </div>
 
+        <!-- How-to instructions strip -->
+        <div class="webar-instructions" aria-label="How to use WebAR">
+          <span class="webar-instructions__step">
+            <span class="webar-instructions__num">1</span>
+            Select artwork
+          </span>
+          <span class="webar-instructions__step">
+            <span class="webar-instructions__num">2</span>
+            Rotate &amp; inspect in 3D
+          </span>
+          <span class="webar-instructions__step">
+            <span class="webar-instructions__num">3</span>
+            Tap <strong style="color:var(--clr-gold)">&nbsp;View in AR&nbsp;</strong>
+          </span>
+          <span class="webar-instructions__step">
+            <span class="webar-instructions__num">4</span>
+            Point at a surface — object appears
+          </span>
+        </div>
+
+      </div><!-- /.webar-stage -->
+    </div><!-- /.webar-page -->
   </main>
-<script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"></script>
+
   <script>
-    var ARTWORKS = [];
+    /*
+     * WebAR — Artwork switcher
+     * ─────────────────────────────────────────────────────────────────────
+     * loadArtwork(btn): reads data-glb, data-usdz, data-title,
+     *   data-discipline from the button, updates model-viewer src and
+     *   ios-src attributes, updates the info card.
+     *
+     * model-viewer handles all 3D rendering and AR launch internally.
+     * We only need to swap the src attributes and update the UI.
+     */
 
-    var currentArt = null;
+    var viewer   = document.getElementById('main-viewer');
+    var infoDisc = document.getElementById('info-disc');
+    var infoTitle = document.getElementById('info-title');
+    var infoInfo  = document.getElementById('webar-info');
 
-    function buildList() {
-      var list = document.getElementById('artwork-list');
-      if (!list) return;
-      var arWorks = ARTWORKS.filter(function(a) { return a.ar && a.glb; });
-      if (arWorks.length === 0) {
-        list.innerHTML = '<p style="color:rgba(255,255,255,.35);font-size:var(--fs-sm)">No AR artworks uploaded yet.</p>';
-        return;
-      }
-      list.innerHTML = arWorks.map(function(art, i) {
-        return '<button class="webar-artwork-btn" onclick="loadArtwork(' + i + ')" role="listitem">' +
-               '<span class="webar-artwork-btn__name">' + (art.title || 'Artwork ' + (i+1)) + '</span>' +
-               '<span class="webar-artwork-btn__disc">' + (art.disciplineLabel || art.discipline || '') + '</span>' +
-               '</button>';
-      }).join('');
-    }
-
-    function loadArtwork(i) {
-      var arWorks = ARTWORKS.filter(function(a) { return a.ar && a.glb; });
-      var art = arWorks[i];
-      if (!art) return;
-      currentArt = art;
-      document.querySelectorAll('.webar-artwork-btn').forEach(function(b, j) {
-        b.classList.toggle('is-active', j === i);
+    function loadArtwork(btn) {
+      /* Update active state on buttons */
+      document.querySelectorAll('.webar-artwork-btn').forEach(function(b) {
+        b.classList.remove('is-active');
+        b.setAttribute('aria-pressed', 'false');
       });
-      var stage = document.getElementById('viewer-container');
-      stage.innerHTML =
-        '<model-viewer' +
-        ' src="' + art.glb + '"' +
-        ' alt="' + (art.title || 'DIAT artwork') + ' — 3D model"' +
-        ' ar ar-modes="webxr scene-viewer quick-look"' +
-        ' camera-controls touch-action="pan-y"' +
-        ' auto-rotate rotation-per-second="15deg"' +
-        ' style="width:100%;height:100%;min-height:500px;background:transparent">' +
-        '<button slot="ar-button" class="btn btn--primary btn--md"' +
-        ' style="position:absolute;bottom:var(--sp-lg);right:var(--sp-lg)">' +
-        '&#127918; View in AR</button>' +
-        '</model-viewer>';
-    }
+      btn.classList.add('is-active');
+      btn.setAttribute('aria-pressed', 'true');
 
-    /* Check URL param for direct artwork link */
-    document.addEventListener('DOMContentLoaded', function() {
-      buildList();
-      var params = new URLSearchParams(window.location.search);
-      var artTitle = params.get('art');
-      if (artTitle) {
-        var arWorks = ARTWORKS.filter(function(a) { return a.ar && a.glb; });
-        var idx = arWorks.findIndex(function(a) { return a.title === artTitle; });
-        if (idx >= 0) loadArtwork(idx);
-      }
-    });
+      /* Swap model-viewer src */
+      var glb   = btn.getAttribute('data-glb');
+      var usdz  = btn.getAttribute('data-usdz');
+      var title = btn.getAttribute('data-title');
+      var disc  = btn.getAttribute('data-discipline') || '';
+      var artist = btn.getAttribute('data-artist') || 'DIAT, KNUST';
+
+      viewer.setAttribute('src',     glb);
+      viewer.setAttribute('ios-src', usdz);
+      viewer.setAttribute('alt',     title + ' — a DIAT KNUST artwork scanned in 3D');
+
+      /* Update info card */
+      infoDisc.innerHTML  = disc;
+      infoTitle.textContent = title;
+      document.getElementById('info-artist').textContent = artist + ' · Polycam 2025';
+      infoInfo.classList.add('is-visible');
+
+      /* Scroll the selected button into view on mobile */
+      btn.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+    }
   </script>
-    <script src="site.js"></script>
+
+  <script src="site.js"></script>
   <script src="cms.js?v=3"></script>
 </body>
 </html>
