@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="theme-color" content="#1A1A4E"/>
+  <meta name="description" content="DIAT Digital Archive — fifty years of research, student works, indigenous craft documentation, publications and historical records from the Department of Indigenous Art & Technology, KNUST Ghana."/>
+  <title>Digital Archive — DIAT | KNUST Ghana</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="diat-styles.css"/>
+  <style>
+    /* ── ARCHIVE-SPECIFIC STYLES ─────────────────────────────────
+     * Scoped only to archive.html. Uses existing CSS tokens.
+     * All colours, spacing and typography reference the token set
+     * from diat-styles.css — no new values introduced.
+     * ─────────────────────────────────────────────────────────── */
+
+    /* Search + filter bar */
+    .arc-controls {
+      display: flex;
+      gap: var(--sp-md);
+      flex-wrap: wrap;
+      align-items: center;
+      margin-bottom: var(--sp-xl);
+    }
+    .arc-search {
+      flex: 1;
+      min-width: 200px;
+      display: flex;
+      align-items: center;
+      gap: var(--sp-sm);
+      background: var(--clr-white);
+      border: var(--border-hairline);
+      border-radius: var(--radius-full);
+      padding: var(--sp-sm) var(--sp-md);
+      transition: border-color var(--dur-fast), box-shadow var(--dur-fast);
+    }
+    .arc-search:focus-within {
+      border-color: var(--clr-gold);
+      box-shadow: 0 0 0 3px rgba(201,149,42,.12);
+    }
+    .arc-search__icon { color: var(--clr-text-tertiary); flex-shrink: 0; }
+    .arc-search__input {
+      border: none;
+      outline: none;
+      font-family: var(--ff-body);
+      font-size: var(--fs-sm);
+      color: var(--clr-text-primary);
+      background: transparent;
+      width: 100%;
+    }
+    .arc-search__input::placeholder { color: var(--clr-text-tertiary); }
+
+    /* Category filter chips */
+    .arc-filters {
+      display: flex;
+      gap: var(--sp-xs);
+      flex-wrap: wrap;
+    }
+    .arc-chip {
+      font-family: var(--ff-body);
+      font-size: var(--fs-xs);
+      font-weight: 600;
+      letter-spacing: var(--ls-wide);
+      text-transform: uppercase;
+      color: var(--clr-text-secondary);
+      background: var(--clr-white);
+      border: var(--border-hairline);
+      padding: var(--sp-xs) var(--sp-md);
+      border-radius: var(--radius-full);
+      cursor: pointer;
+      transition: all var(--dur-fast) var(--ease-out);
+      white-space: nowrap;
+    }
+    .arc-chip:hover { border-color: var(--clr-gold); color: var(--clr-gold); }
+    .arc-chip.is-active {
+      background: var(--clr-gold);
+      color: var(--clr-text-inverse);
+      border-color: var(--clr-gold);
+    }
+
+    /* Archive grid */
+    .arc-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--sp-md);
+    }
+
+    /* Archive card */
+    .arc-card {
+      background: var(--clr-white);
+      border: var(--border-hairline);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: box-shadow var(--dur-base), transform var(--dur-base) var(--ease-out),
+                  border-color var(--dur-base);
+      cursor: pointer;
+    }
+    .arc-card:hover {
+      box-shadow: var(--shadow-md);
+      transform: translateY(-3px);
+      border-color: var(--clr-gold);
+    }
+    .arc-card.is-hidden { display: none; }
+
+    /* Card colour-coded top bar by category */
+    .arc-card__bar {
+      height: 3px;
+      flex-shrink: 0;
+    }
+    .arc-card__bar--research   { background: var(--clr-indigo); }
+    .arc-card__bar--history    { background: var(--clr-gold); }
+    .arc-card__bar--student    { background: var(--clr-terra); }
+    .arc-card__bar--community  { background: #2A7A2A; }
+    .arc-card__bar--exhibition { background: #7A2A7A; }
+
+    .arc-card__body { padding: var(--sp-md); flex: 1; display: flex; flex-direction: column; }
+
+    .arc-card__category {
+      font-size: var(--fs-xs);
+      font-weight: 700;
+      letter-spacing: var(--ls-wide);
+      text-transform: uppercase;
+      margin-bottom: var(--sp-xs);
+    }
+    .arc-card__category--research   { color: var(--clr-indigo); }
+    .arc-card__category--history    { color: var(--clr-gold-dark); }
+    .arc-card__category--student    { color: var(--clr-terra); }
+    .arc-card__category--community  { color: #2A7A2A; }
+    .arc-card__category--exhibition { color: #7A2A7A; }
+
+    .arc-card__title {
+      font-family: var(--ff-display);
+      font-size: var(--fs-md);
+      font-weight: 700;
+      color: var(--clr-text-primary);
+      line-height: var(--lh-heading);
+      margin-bottom: var(--sp-xs);
+      flex: 1;
+    }
+    .arc-card__meta {
+      font-size: var(--fs-xs);
+      color: var(--clr-text-tertiary);
+      display: flex;
+      align-items: center;
+      gap: var(--sp-sm);
+      margin-top: var(--sp-sm);
+      flex-wrap: wrap;
+    }
+    .arc-card__meta-item {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .arc-card__type-badge {
+      font-size: 0.6rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 2px 7px;
+      border-radius: var(--radius-full);
+      background: var(--clr-earth);
+      color: var(--clr-text-secondary);
+      margin-left: auto;
+      flex-shrink: 0;
+    }
+
+    /* Featured item — full width across grid */
+    .arc-card--featured {
+      grid-column: 1 / -1;
+      flex-direction: row;
+    }
+    .arc-card--featured .arc-card__bar {
+      width: 3px;
+      height: auto;
+    }
+    .arc-card--featured .arc-card__body {
+      padding: var(--sp-xl);
+    }
+    .arc-card--featured .arc-card__title {
+      font-size: var(--fs-xl);
+    }
+    .arc-card--featured .arc-card__thumb {
+      width: 220px;
+      flex-shrink: 0;
+      background: var(--clr-earth);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3rem;
+    }
+
+    /* Stats strip inside the archive */
+    .arc-stats {
+      display: flex;
+      gap: var(--sp-xl);
+      flex-wrap: wrap;
+      padding: var(--sp-lg) var(--sp-xl);
+      background: var(--clr-indigo);
+      border-radius: var(--radius-lg);
+      margin-bottom: var(--sp-xl);
+    }
+    .arc-stat { text-align: center; flex: 1; min-width: 100px; }
+    .arc-stat__num {
+      font-family: var(--ff-display);
+      font-size: var(--fs-2xl);
+      font-weight: 700;
+      color: var(--clr-gold);
+      display: block;
+    }
+    .arc-stat__label {
+      font-size: var(--fs-xs);
+      color: rgba(255,255,255,.5);
+      letter-spacing: var(--ls-wide);
+      text-transform: uppercase;
+    }
+
+    /* Empty state */
+    .arc-empty {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: var(--sp-2xl);
+      color: var(--clr-text-tertiary);
+      display: none;
+    }
+    .arc-empty.is-visible { display: block; }
+    .arc-empty__icon { font-size: 3rem; margin-bottom: var(--sp-md); }
+
+    /* Submit contribution CTA */
+    .arc-contribute {
+      background: var(--clr-earth);
+      border: var(--border-hairline);
+      border-radius: var(--radius-lg);
+      padding: var(--sp-xl);
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: var(--sp-xl);
+      align-items: center;
+      margin-top: var(--sp-xl);
+    }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .arc-grid { grid-template-columns: repeat(2, 1fr); }
+      .arc-card--featured { flex-direction: column; }
+      .arc-card--featured .arc-card__bar { width: 100%; height: 3px; }
+      .arc-card--featured .arc-card__thumb { width: 100%; height: 160px; }
+    }
+    @media (max-width: 640px) {
+      .arc-grid { grid-template-columns: 1fr; }
+      .arc-controls { flex-direction: column; align-items: stretch; }
+      .arc-search { min-width: 0; }
+      .arc-stats { gap: var(--sp-md); padding: var(--sp-md); }
+      .arc-contribute { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body data-page="archive">
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+  <main id="main-content">
+
+    <!-- ═══ PAGE HERO ═══════════════════════════════════════════════════════ -->
+    <section class="page-hero" aria-labelledby="arc-title">
+      <div class="container">
+        <nav class="page-hero__breadcrumb" aria-label="Breadcrumb">
+          <a href="index.html" class="page-hero__breadcrumb-link">Home</a>
+          <span class="page-hero__breadcrumb-sep" aria-hidden="true">/</span>
+          <span class="page-hero__breadcrumb-current">Digital Archive</span>
+        </nav>
+        <span class="page-hero__eyebrow">Est. 1976 &mdash; DIAT, KNUST, Kumasi</span>
+        <h1 class="page-hero__title" id="arc-title"
+            data-cms-key="arc-hero-title" data-cms-label="Archive Page Title" data-cms-type="text">
+          Digital Archive
+        </h1>
+        <p class="page-hero__body"
+           data-cms-key="arc-hero-body" data-cms-label="Archive Hero Body">
+          Fifty years of indigenous craft knowledge, research, student works,
+          community documentation, and institutional records &mdash; preserved
+          and made accessible for scholars, practitioners, and the public.
+        </p>
+        <div class="page-hero__rule" aria-hidden="true"></div>
+      </div>
+    </section>
+
+    <!-- ═══ ARCHIVE STATS STRIP ═════════════════════════════════════════════ -->
+    <section class="dept-section dept-section--surface" aria-label="Archive statistics">
+      <div class="container">
+
+        <div class="arc-stats" role="list" aria-label="Archive collection figures">
+          <div class="arc-stat" role="listitem">
+            <span class="arc-stat__num" data-cms-key="arc-stat1-num" data-cms-type="text">50+</span>
+            <span class="arc-stat__label">Years of Records</span>
+          </div>
+          <div class="arc-stat" role="listitem">
+            <span class="arc-stat__num" data-cms-key="arc-stat2-num" data-cms-type="text">200+</span>
+            <span class="arc-stat__label">Student Theses</span>
+          </div>
+          <div class="arc-stat" role="listitem">
+            <span class="arc-stat__num" data-cms-key="arc-stat3-num" data-cms-type="text">6</span>
+            <span class="arc-stat__label">Craft Disciplines</span>
+          </div>
+          <div class="arc-stat" role="listitem">
+            <span class="arc-stat__num" data-cms-key="arc-stat4-num" data-cms-type="text">36+</span>
+            <span class="arc-stat__label">Community Reports</span>
+          </div>
+          <div class="arc-stat" role="listitem">
+            <span class="arc-stat__num" data-cms-key="arc-stat5-num" data-cms-type="text">12+</span>
+            <span class="arc-stat__label">Research Papers</span>
+          </div>
+        </div>
+
+        <!-- Search + filter controls -->
+        <div class="arc-controls" role="search" aria-label="Search and filter archive">
+
+          <label class="arc-search" aria-label="Search archive items">
+            <span class="arc-search__icon" aria-hidden="true">&#128269;</span>
+            <input class="arc-search__input"
+                   type="search"
+                   id="arc-search-input"
+                   placeholder="Search by title, author, discipline&hellip;"
+                   autocomplete="off"
+                   aria-label="Search archive">
+          </label>
+
+          <div class="arc-filters" role="group" aria-label="Filter by category">
+            <button class="arc-chip is-active" data-filter="all"
+                    aria-pressed="true">All</button>
+            <button class="arc-chip" data-filter="research"
+                    aria-pressed="false">Research</button>
+            <button class="arc-chip" data-filter="history"
+                    aria-pressed="false">History</button>
+            <button class="arc-chip" data-filter="student"
+                    aria-pressed="false">Student Works</button>
+            <button class="arc-chip" data-filter="community"
+                    aria-pressed="false">Community</button>
+            <button class="arc-chip" data-filter="exhibition"
+                    aria-pressed="false">Exhibitions</button>
+          </div>
+        </div>
+
+        <!-- Archive grid -->
+        <div class="arc-grid" id="arc-grid" aria-label="Archive items">
+
+          <!-- ── FEATURED ITEM ── -->
+          <article class="arc-card arc-card--featured"
+                   data-category="history"
+                   data-title="DIAT at 50 — A Departmental History"
+                   tabindex="0" role="article"
+                   aria-label="Featured: DIAT at 50 Departmental History">
+            <div class="arc-card__bar arc-card__bar--history" aria-hidden="true"></div>
+            <div class="arc-card__thumb" aria-label="Archive thumbnail">&#127963;</div>
+            <div class="arc-card__body">
+              <span class="arc-card__category arc-card__category--history">&#11088; Featured &middot; History</span>
+              <h2 class="arc-card__title"
+                  data-cms-key="arc-featured-title" data-cms-type="text">
+                DIAT at 50 &mdash; A Departmental History
+              </h2>
+              <p style="font-size:var(--fs-sm);color:var(--clr-text-secondary);
+                        line-height:var(--lh-relaxed);margin-bottom:var(--sp-sm)"
+                 data-cms-key="arc-featured-body">
+                A comprehensive institutional history of the Department of Indigenous Art
+                &amp; Technology from its founding as IRAI in 1976 through five decades
+                of craft education, community engagement, and academic growth at KNUST.
+              </p>
+              <div class="arc-card__meta">
+                <span class="arc-card__meta-item">&#128197; 2026</span>
+                <span class="arc-card__meta-item">&#128065; DIAT, KNUST</span>
+                <span class="arc-card__type-badge">Institutional</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- ── RESEARCH PAPERS ── -->
+          <article class="arc-card" data-category="research"
+                   data-title="Indigenous Craft Digitalisation TAM Study"
+                   tabindex="0">
+            <div class="arc-card__bar arc-card__bar--research" aria-hidden="true"></div>
+            <div class="arc-card__body">
+              <span class="arc-card__category arc-card__category--research">Research Paper</span>
+              <h3 class="arc-card__title"
+                  data-cms-key="arc-r1-title" data-cms-type="text">
+                Technology Acceptance of Digital Tools in Indigenous Craft Education
+              </h3>
+              <div class="arc-card__meta">
+                <span class="arc-card__meta-item">&#128197; 2025&ndash;2026</span>
+                <span class="arc-card__meta-item">&#128203; MPhil Thesis</span>
+                <span class="arc-card__type-badge">PDF</span>
+              </div>
+            </div>
+          </article>
+
+          <article class="arc-card" data-category="research"
+                   data-title="CAD Integration in Craft Teaching"
+                   tabindex="0">
+            <div class="arc-card__bar arc-card__bar--research" aria-hidden="true"></div>
+            <div class="arc-card__body">
+              <span class="arc-card__category arc-card__category--research">Research Paper</span>
+              <h3 class="arc-card__title"
+                  data-cms-key="arc-r2-title" data-cms-type="text">
+                CAD Integration in Indigenous Craft Teaching — A Case Study
+              </h3>
+              <div class="arc-card__meta">
+                <span class="arc-card__meta-item">&#128197; [Year]</span>
+                <span class="arc-card__meta-item">&#128065; DIAT Faculty</span>
+                <span class="arc-card__type-badge">PDF</span>
+              </div>
+            </div>
+          </article>
+
+          <article class="arc-card" data-category="research"
+                   data-title="Kente Weaving Documentation Study"
+                   tabindex="0">
+            <div class="arc-card__bar arc-card__bar--research" aria-hidden="true"></div>
+            <div class="arc-card__body">
+              <span class="arc-card__category arc-card__category--research">Research Paper</span>
+              <h3 class="arc-card__title"
+                  data-cms-key="arc-r3-title" data-cms-type="text">
+                Formal Attribution of Kente Weaving Knowledge Systems in Ashanti Communities
+              </h3>
+              <div class="arc-card__meta">
+                <span class="arc-card__meta-item">&#128197; [Year]</span>
+                <span class="arc-card__meta-item">&#128203; Journal Article</span>
+                <span class="arc-card__type-badge">PDF</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- ── HISTORY ── -->
+          <article class="arc-card" data-category="history"
+                   data-title="IRAI Founding Documents 1976"
+                   tabindex="0">
+            <div class="arc-card__bar arc-card__bar--history" aria-hidden="true"></div>
+            <div class="arc-card__body">
+              <span class="arc-card__category arc-card__category--history">History</span>
+              <h3 class="arc-card__title"
+                  data-cms-key="arc-h1-title" data-cms-type="text">
+                IRAI Founding Documents &mdash; 1976
+              </h3>
+              <div class="arc-card__meta">
+                <span class="arc-card__meta-item">&#128197; 1976</span>
+                <span class="arc-card__meta-item">&#127963; KNUST Records</span>
+                <span class="arc-card__type-badge">Scan</span>
+              </div>
+            </div>
+          </article>
+
+          <article class="arc-card" data-category="history"
+                   data-title="DIAT Rebranding Records"
+                   tabindex="0">
+            <div class="arc-card__bar arc-card__bar--history" aria-hidden="true"></div>
+            <div class="arc-card__body">
+              <span class="arc-card__category arc-card__category--history">History</span>
+              <h3 class="arc-card__title"
+                  data-cms-key="arc-h2-title" data-cms-type="text">
+                IRAI to DIAT &mdash; Rebranding &amp; Curriculum Reform Records
+              </h3>
+              <div class="arc-card__meta">
+                <span class="arc-card__meta-item">&#128197; [Year]</span>
+                <span class="arc-card__meta-item">&#127963; Admin Records</span>
+                <span class="arc-card__type-badge">Scan</span>
+              </div>
+            </div>
+          </article>
+
+          <article class="arc-card" data-category="history"
+                   data-title="Departmental Photographs 1980s"
+                   tabindex="0">
+            <div class="arc-card__bar arc-card__bar--history" aria-hidden="true"></div>
+            <div class="arc-card__body">
+              <span class="arc-card__category arc-card__category--history">History</span>
+              <h3 class="arc-card__title"
+                  data-cms-key="arc-h3-title" data-cms-type="text">
+                Departmental Photographs &mdash; 1980s Collection
+              </h3>
+              <div class="arc-card__meta">
+                <span class="arc-card__meta-item">&#128197; 1980&ndash;1989</span>
+                <span class="arc-card__meta-item">&#128247; Photo Archive</span>
+                <span class="arc-card__type-badge">Images</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- ── STUDENT WORKS ── -->
+          <article class="arc-card" data-category="student"
+                   data-title="Final Year Projects Clay Earthenware"
+                   tabindex="0">
+            <div class="arc-card__bar arc-card__bar--student" aria-hidden="true"></div>
+            <div class="arc-card__body">
+              <span class="arc-card__category arc-card__category--student">Student Works</span>
+              <h3 class="arc-card__title"
+                  data-cms-key="arc-s1-title" data-cms-type="text">
+                Final Year Project Documentation &mdash; Clay &amp; Earthenware (2024)
+              </h3>
+              <div class="arc-card__meta">
+                <span class="arc-card__meta-item">&#128197; 2024</span>
+                <span class="arc-card__meta-item">&#127994; Clay &amp; Earthenware</span>
+                <span class="arc-card__type-badge">Portfolio</span>
+              </div>
+            </div>
+          </article>
+
+          <article class="arc-card" data-category="student"
+                   data-title="Graduate Thesis Collection Metal Production"
+                   tabindex="0">
+            <div class="arc-card__bar arc-card__bar--student" aria-hidden="true"></div>
+            <div class="arc-card__body">
+              <span class="arc-card__category arc-card__category--student">Student Works</span>
+              <h3 class="arc-card__title"
+                  data-cms-key="arc-s2-title" data-cms-type="text">
+                Graduate Thesis Collection &mdash; Metal Production (2023)
+              </h3>
+              <div class="arc-card__meta">
+                <span class="arc-card__meta-item">&#128197; 2023</span>
+                <span class="arc-card__meta-item">&#9881; Metal Production</span>
+                <span class="arc-card__type-badge">Thesis</span>
+              </div>
+            </div>
+          </article>
+
+          <article class="arc-card" data-category="student"
+                   data-title="Student Exhibition Catalogues"
+                   tabindex="0">
+            <div class="arc-card__bar arc-card__bar--student" aria-hidden="true"></div>
+            <div class="arc-card__body">
+              <span class="arc-card__category arc-card__category--student">Student Works</span>
+              <h3 class="arc-card__title"
+                  data-cms-key="arc-s3-title" data-cms-type="text">
+                Annual Student Exhibition Catalogues &mdash; 2015 to 2025
+              </h3>
+              <div class="arc-card__meta">
+                <span class="arc-card__meta-item">&#128197; 2015&ndash;2025</span>
+                <span class="arc-card__meta-item">&#128444; All Disciplines</span>
+                <span class="arc-card__type-badge">Catalogue</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- ── COMMUNITY ── -->
+          <article class="arc-card" data-category="community"
+                   data-title="Mastercard Foundation Internship Reports"
+                   tabindex="0">
+            <div class="arc-card__bar arc-card__bar--community" aria-hidden="true"></div>
+            <div class="arc-card__body">
+              <span class="arc-card__category arc-card__category--community">Community</span>
+              <h3 class="arc-card__title"
+                  data-cms-key="arc-c1-title" data-cms-type="text">
+                Mastercard Foundation Internship Reports &mdash; Cohorts 2018&ndash;2025
+              </h3>
+              <div class="arc-card__meta">
+                <span class="arc-card__meta-item">&#128197; 2018&ndash;2025</span>
+                <span class="arc-card__meta-item">&#127758; Nationwide</span>
+                <span class="arc-card__type-badge">Report</span>
+              </div>
+            </div>
+          </article>
+
+          <article class="arc-card" data-category="community"
+                   data-title="Indigenous Craft Knowledge Attribution Reports"
+                   tabindex="0">
+            <div class="arc-card__bar arc-card__bar--community" aria-hidden="true"></div>
+            <div class="arc-card__body">
+              <span class="arc-card__category arc-card__category--community">Community</span>
+              <h3 class="arc-card__title"
+                  data-cms-key="arc-c2-title" data-cms-type="text">
+                Indigenous Craft Knowledge Attribution Reports &mdash; Artisan Communities
+              </h3>
+              <div class="arc-card__meta">
+                <span class="arc-card__meta-item">&#128197; Ongoing</span>
+                <span class="arc-card__meta-item">&#127807; Ghana-wide</span>
+                <span class="arc-card__type-badge">Archive</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- ── EXHIBITIONS ── -->
+          <article class="arc-card" data-category="exhibition"
+                   data-title="DIAT at 50 Anniversary Exhibition"
+                   tabindex="0">
+            <div class="arc-card__bar arc-card__bar--exhibition" aria-hidden="true"></div>
+            <div class="arc-card__body">
+              <span class="arc-card__category arc-card__category--exhibition">Exhibition</span>
+              <h3 class="arc-card__title"
+                  data-cms-key="arc-e1-title" data-cms-type="text">
+                DIAT@50 Anniversary Exhibition &mdash; 2026
+              </h3>
+              <div class="arc-card__meta">
+                <span class="arc-card__meta-item">&#128197; 2026</span>
+                <span class="arc-card__meta-item">&#127963; KNUST Campus</span>
+                <span class="arc-card__type-badge">Exhibition</span>
+              </div>
+            </div>
+          </article>
+
+          <article class="arc-card" data-category="exhibition"
+                   data-title="WebAR Indigenous Craft Exhibition"
+                   tabindex="0">
+            <div class="arc-card__bar arc-card__bar--exhibition" aria-hidden="true"></div>
+            <div class="arc-card__body">
+              <span class="arc-card__category arc-card__category--exhibition">Exhibition</span>
+              <h3 class="arc-card__title"
+                  data-cms-key="arc-e2-title" data-cms-type="text">
+                WebAR Indigenous Craft Exhibition &mdash; Digital First
+              </h3>
+              <div class="arc-card__meta">
+                <span class="arc-card__meta-item">&#128197; 2026</span>
+                <span class="arc-card__meta-item">&#127918; Online</span>
+                <span class="arc-card__type-badge">Digital</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Empty state -->
+          <div class="arc-empty" id="arc-empty" aria-live="polite">
+            <p class="arc-empty__icon">&#128269;</p>
+            <p style="font-family:var(--ff-display);font-size:var(--fs-lg);
+                      color:var(--clr-text-secondary);margin-bottom:var(--sp-sm)">
+              No items found
+            </p>
+            <p style="font-size:var(--fs-sm)">
+              Try a different search term or filter category.
+            </p>
+          </div>
+
+        </div><!-- /.arc-grid -->
+
+        <!-- Contribute CTA -->
+        <div class="arc-contribute" role="complementary" aria-label="Contribute to the archive">
+          <div>
+            <h2 style="font-family:var(--ff-display);font-size:var(--fs-xl);
+                       font-weight:700;color:var(--clr-text-primary);
+                       margin-bottom:var(--sp-xs)"
+                data-cms-key="arc-contribute-h2" data-cms-type="text">
+              Contribute to the Archive
+            </h2>
+            <p style="font-size:var(--fs-sm);color:var(--clr-text-secondary);
+                      line-height:var(--lh-relaxed);max-width:52ch"
+               data-cms-key="arc-contribute-body">
+              Are you a DIAT graduate, faculty member, or community artisan partner?
+              Share your thesis, research, photos, or field reports to grow this living
+              archive of Ghana&rsquo;s indigenous craft heritage.
+            </p>
+          </div>
+          <a href="community.html"
+             class="btn btn--primary btn--md"
+             style="white-space:nowrap;flex-shrink:0">
+            Submit a Record &#8594;
+          </a>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    /* ── ARCHIVE SEARCH + FILTER ────────────────────────────────────────────
+     *
+     * All filtering is client-side: reads data-category and data-title
+     * on each .arc-card and shows/hides using .is-hidden.
+     * The empty state is shown when no cards survive both filters.
+     * Keyboard: Enter on a card opens its page (placeholder alert for now).
+     * ─────────────────────────────────────────────────────────────────────── */
+    (function () {
+      var searchInput  = document.getElementById('arc-search-input');
+      var chips        = document.querySelectorAll('.arc-chip');
+      var cards        = document.querySelectorAll('.arc-card');
+      var emptyState   = document.getElementById('arc-empty');
+      var activeFilter = 'all';
+      var searchTerm   = '';
+
+      function applyFilters() {
+        var visibleCount = 0;
+        cards.forEach(function (card) {
+          var cat   = card.getAttribute('data-category') || '';
+          var title = (card.getAttribute('data-title') || '').toLowerCase();
+          var text  = card.textContent.toLowerCase();
+
+          var matchFilter = activeFilter === 'all' || cat === activeFilter;
+          var matchSearch = searchTerm === '' ||
+                            title.indexOf(searchTerm) !== -1 ||
+                            text.indexOf(searchTerm)  !== -1;
+
+          var show = matchFilter && matchSearch;
+          card.classList.toggle('is-hidden', !show);
+          if (show) visibleCount++;
+        });
+        emptyState.classList.toggle('is-visible', visibleCount === 0);
+      }
+
+      /* Chip filter */
+      chips.forEach(function (chip) {
+        chip.addEventListener('click', function () {
+          activeFilter = this.getAttribute('data-filter');
+          chips.forEach(function (c) {
+            c.classList.remove('is-active');
+            c.setAttribute('aria-pressed', 'false');
+          });
+          this.classList.add('is-active');
+          this.setAttribute('aria-pressed', 'true');
+          applyFilters();
+        });
+      });
+
+      /* Live search */
+      searchInput.addEventListener('input', function () {
+        searchTerm = this.value.trim().toLowerCase();
+        applyFilters();
+      });
+
+      /* Keyboard activation on cards */
+      cards.forEach(function (card) {
+        card.addEventListener('keydown', function (e) {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            this.click();
+          }
+        });
+        card.addEventListener('click', function () {
+          var title = this.getAttribute('data-title') || 'Archive Item';
+          /* Placeholder — replace with modal/PDF viewer when items are uploaded */
+          alert('Opening: ' + title + '\n\nUpload the document via Admin Mode to activate this record.');
+        });
+      });
+    })();
+  </script>
+
+  <script src="site.js"></script>
+  <script src="cms.js?v=3"></script>
+</body>
+</html>
