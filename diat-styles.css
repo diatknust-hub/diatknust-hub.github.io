@@ -540,10 +540,15 @@ h1, h2, h3, h4, h5, h6 { font-family: var(--ff-display); line-height: var(--lh-h
    *   appear at the same eye level, creating the balanced two-column
    *   layout seen in the perfect desktop screenshot.
    */
+  /*
+   * justify-content: flex-start — content anchors to the TOP of row 1.
+   * Removes the blank zone above the eyebrow/title in tall hero containers.
+   * padding-top: sp-2xl gives breathing room below the sticky nav bar.
+   */
   padding: var(--sp-2xl) var(--sp-xl) var(--sp-lg) var(--sp-xl);
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   overflow: visible;
 }
 .dept-hero__eyebrow {
@@ -671,11 +676,17 @@ h1, h2, h3, h4, h5, h6 { font-family: var(--ff-display); line-height: var(--lh-h
   background: var(--clr-earth);
   position: relative;
 
-  /* Flex column: sankofa-container stacks above preview cards */
+  /*
+   * justify-content: flex-start — Sankofa rises to match the copy column's
+   * top-anchored content, aligning bird and title at the same visual band.
+   * padding-top inherited from flex-start flow; preview cards remain at
+   * the bottom of the visual area via margin-top: auto on their container.
+   */
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
+  padding-top: var(--sp-2xl);
   gap: var(--sp-lg);
 
   /* Clip the animated Sankofa so it never bleeds outside grid column */
