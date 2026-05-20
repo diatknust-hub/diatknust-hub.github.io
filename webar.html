@@ -285,6 +285,66 @@
       flex-shrink: 0;
     }
 
+    /* ── MOBILE ARTWORK NAVIGATOR ────────────────────────────────
+     * Floating bottom bar — mobile only (≤768px).
+     * Gives users a clear Prev/Next control after viewing an artwork.
+     * Hidden on desktop where the sidebar is always visible.
+     * ──────────────────────────────────────────────────────────── */
+    .webar-mobile-nav {
+      display: none; /* shown only at ≤768px */
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: var(--clr-indigo);
+      border-top: 2px solid var(--clr-gold);
+      padding: var(--sp-sm) var(--sp-md);
+      z-index: 50;
+      align-items: center;
+      gap: var(--sp-sm);
+      box-shadow: 0 -4px 20px rgba(0,0,0,.35);
+    }
+    .webar-mobile-nav__btn {
+      background: rgba(201,149,42,.15);
+      border: 1px solid rgba(201,149,42,.4);
+      border-radius: var(--radius-full);
+      color: var(--clr-gold);
+      font-family: var(--ff-body);
+      font-size: var(--fs-sm);
+      font-weight: 700;
+      padding: var(--sp-xs) var(--sp-md);
+      cursor: pointer;
+      white-space: nowrap;
+      flex-shrink: 0;
+      transition: all var(--dur-fast);
+    }
+    .webar-mobile-nav__btn:hover,
+    .webar-mobile-nav__btn:active {
+      background: var(--clr-gold);
+      color: var(--clr-text-inverse);
+    }
+    .webar-mobile-nav__label {
+      flex: 1;
+      text-align: center;
+      min-width: 0;
+      overflow: hidden;
+    }
+    .webar-mobile-nav__name {
+      display: block;
+      font-size: var(--fs-sm);
+      font-weight: 600;
+      color: var(--clr-text-inverse);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .webar-mobile-nav__count {
+      display: block;
+      font-size: var(--fs-xs);
+      color: rgba(255,255,255,.4);
+      letter-spacing: var(--ls-wide);
+    }
+
     /* ── RESPONSIVE ───────────────────────────────────────────── */
     /* ── FIX 2: Mobile viewer height ────────────────────────────
      *
@@ -302,6 +362,10 @@
      *   horizontal scroll) and minmax for the stage.
      * ──────────────────────────────────────────────────────────── */
     @media (max-width: 768px) {
+      .webar-mobile-nav { display: flex; }
+
+      /* Push instructions up so they don't hide behind fixed bottom nav */
+      .webar-instructions { padding-bottom: calc(var(--sp-md) + 60px); }
       .webar-page {
         grid-template-columns: 1fr;
         grid-template-rows: 180px minmax(55vh, 1fr);
@@ -529,27 +593,6 @@
 
         </model-viewer>
 
-        <!-- Loading overlay — shown during model download -->
-        <div id="webar-loading"
-             style="position:absolute;inset:0;background:rgba(244,240,232,.92);
-                    display:none;flex-direction:column;align-items:center;
-                    justify-content:center;gap:var(--sp-md);z-index:10;
-                    pointer-events:none">
-          <div style="font-size:2rem">&#9654;</div>
-          <p style="font-family:var(--ff-display);font-size:var(--fs-md);
-                    color:var(--clr-text-secondary)" id="loading-label">
-            Loading 3D model&hellip;
-          </p>
-          <div style="width:200px;height:4px;background:var(--clr-border);
-                      border-radius:2px;overflow:hidden">
-            <div id="loading-bar"
-                 style="height:100%;background:var(--clr-gold);
-                        width:0%;transition:width .2s;border-radius:2px"></div>
-          </div>
-          <p id="loading-pct"
-             style="font-size:var(--fs-xs);color:var(--clr-text-tertiary)">0%</p>
-        </div>
-
         <!-- Empty state overlay — hidden once a model loads -->
         <div class="webar-empty" id="webar-empty" aria-hidden="true" style="display:none">
           <span class="webar-empty__icon">&#127918;</span>
@@ -588,6 +631,27 @@
 
       </div><!-- /.webar-stage -->
     </div><!-- /.webar-page -->
+    <!--
+      MOBILE ARTWORK NAVIGATOR — fixed bottom bar (mobile only)
+      Hidden on desktop via CSS. Shows Prev/Next buttons with
+      the current artwork name and position (e.g. "2 / 6").
+      JS below manages the active index and calls loadArtwork().
+    -->
+    <div class="webar-mobile-nav" id="mobile-nav" aria-label="Browse artworks">
+      <button class="webar-mobile-nav__btn"
+              id="nav-prev"
+              onclick="mobileNav(-1)"
+              aria-label="Previous artwork">&#8592; Prev</button>
+      <div class="webar-mobile-nav__label">
+        <span class="webar-mobile-nav__name" id="nav-name">Traditional Drum Stool</span>
+        <span class="webar-mobile-nav__count" id="nav-count">1 / 6</span>
+      </div>
+      <button class="webar-mobile-nav__btn"
+              id="nav-next"
+              onclick="mobileNav(1)"
+              aria-label="Next artwork">Next &#8594;</button>
+    </div>
+
   </main>
 
   <script>
@@ -633,44 +697,47 @@
       document.getElementById('info-artist').textContent = artist + ' · Polycam 2025';
       infoInfo.classList.add('is-visible');
 
-      /* Scroll the selected button into view on mobile */
+      /* Scroll selected button into view in the sidebar strip */
       btn.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
 
-      /* Show loading overlay while new model downloads */
-      var loadingEl = document.getElementById('webar-loading');
-      var loadBar   = document.getElementById('loading-bar');
-      var loadPct   = document.getElementById('loading-pct');
-      if (loadingEl) {
-        loadingEl.style.display = 'flex';
-        loadBar.style.width = '0%';
-        loadPct.textContent = '0%';
+      /* Sync the mobile bottom nav label */
+      syncMobileNav();
+    }
+
+    /* ── MOBILE BOTTOM NAV ──────────────────────────────────────
+     * mobileNav(dir): +1 = next, -1 = prev.
+     * Steps through the artwork buttons in order. Wraps around.
+     * Calls loadArtwork() exactly as tapping a sidebar button does.
+     * ──────────────────────────────────────────────────────────── */
+    var allBtns = Array.prototype.slice.call(
+      document.querySelectorAll('.webar-artwork-btn')
+    );
+
+    function syncMobileNav() {
+      var activeIdx = 0;
+      allBtns.forEach(function(b, i) {
+        if (b.classList.contains('is-active')) activeIdx = i;
+      });
+      var navName  = document.getElementById('nav-name');
+      var navCount = document.getElementById('nav-count');
+      if (navName) {
+        var btn = allBtns[activeIdx];
+        navName.textContent  = btn ? (btn.getAttribute('data-title') || '') : '';
+        navCount.textContent = (activeIdx + 1) + ' / ' + allBtns.length;
       }
     }
 
-    /* model-viewer progress events — update loading bar */
-    viewer.addEventListener('progress', function(e) {
-      var pct = Math.round((e.detail.totalProgress || 0) * 100);
-      var loadBar = document.getElementById('loading-bar');
-      var loadPct = document.getElementById('loading-pct');
-      if (loadBar) loadBar.style.width = pct + '%';
-      if (loadPct) loadPct.textContent = pct + '%';
-    });
+    function mobileNav(dir) {
+      var activeIdx = 0;
+      allBtns.forEach(function(b, i) {
+        if (b.classList.contains('is-active')) activeIdx = i;
+      });
+      var nextIdx = (activeIdx + dir + allBtns.length) % allBtns.length;
+      loadArtwork(allBtns[nextIdx]);
+    }
 
-    /* model-viewer load complete — hide loading overlay */
-    viewer.addEventListener('load', function() {
-      var loadingEl = document.getElementById('webar-loading');
-      if (loadingEl) loadingEl.style.display = 'none';
-    });
-
-    /* model-viewer error — show friendly message */
-    viewer.addEventListener('error', function() {
-      var loadingEl = document.getElementById('webar-loading');
-      var loadLabel = document.getElementById('loading-label');
-      if (loadLabel) loadLabel.textContent = 'Model unavailable — try another artwork';
-      setTimeout(function() {
-        if (loadingEl) loadingEl.style.display = 'none';
-      }, 2500);
-    });
+    /* Sync on page load so nav shows initial artwork name */
+    document.addEventListener('DOMContentLoaded', syncMobileNav);
   </script>
 
   <script src="site.js"></script>
