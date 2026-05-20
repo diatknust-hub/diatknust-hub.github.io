@@ -330,32 +330,39 @@
       line-height: var(--lh-relaxed);
       margin-bottom: var(--sp-md);
     }
+    /*
+     * FIX 1 — Subscribe form: always stack vertically.
+     * Root cause: flex-row at mid widths makes input + button overflow
+     * the card boundary. Column layout is cleaner and never overflows.
+     */
     .siat-subscribe__form {
       display: flex;
-      gap: var(--sp-xs);
+      flex-direction: column;
+      gap: var(--sp-sm);
     }
     .siat-subscribe__input {
-      flex: 1;
+      width: 100%;
+      box-sizing: border-box;
       font-family: var(--ff-body);
       font-size: var(--fs-sm);
       border: var(--border-hairline);
       border-radius: var(--radius-full);
-      padding: var(--sp-xs) var(--sp-md);
+      padding: var(--sp-sm) var(--sp-md);
       outline: none;
       transition: border-color var(--dur-fast);
     }
     .siat-subscribe__input:focus { border-color: var(--clr-gold); }
     .siat-subscribe__btn {
+      width: 100%;
       background: var(--clr-gold);
       color: #fff;
       font-family: var(--ff-body);
-      font-size: var(--fs-xs);
+      font-size: var(--fs-sm);
       font-weight: 700;
       border: none;
       border-radius: var(--radius-full);
-      padding: var(--sp-xs) var(--sp-md);
+      padding: var(--sp-sm) var(--sp-md);
       cursor: pointer;
-      white-space: nowrap;
       transition: background var(--dur-fast);
     }
     .siat-subscribe__btn:hover { background: var(--clr-gold-dark); }

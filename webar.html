@@ -411,11 +411,17 @@
         overflow-x: auto;
         overflow-y: hidden;
       }
+      /*
+       * FIX 2 — Reduce viewer height on mobile so info card is visible
+       * without scrolling. 42vh leaves ~270px below the viewer for the
+       * info card, instructions strip, and fixed Prev/Next nav bar.
+       * 300px min-height ensures the model stays usable on tiny phones.
+       */
       .webar-stage {
-        min-height: 55vh;
+        min-height: 42vh;
       }
       model-viewer {
-        height: 55vh !important;
+        height: 42vh !important;
         min-height: 300px;
       }
       .webar-sidebar__list {
