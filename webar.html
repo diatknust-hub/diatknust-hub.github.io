@@ -286,15 +286,37 @@
     }
 
     /* ── RESPONSIVE ───────────────────────────────────────────── */
+    /* ── FIX 2: Mobile viewer height ────────────────────────────
+     *
+     * ROOT CAUSE: model-viewer uses flex:1 to fill .webar-stage.
+     *   On mobile, .webar-stage has no explicit height — it's in a
+     *   1fr grid row with no concrete pixel anchor. flex:1 inside an
+     *   unconstrained parent resolves to 0px. The 3D model loads
+     *   correctly (visible in landscape/desktop mode) but renders in a
+     *   0px-tall box in portrait mobile, making it invisible.
+     *
+     * FIX: Explicit min-height on both .webar-stage and model-viewer.
+     *   55vh keeps the viewer above the fold on most phones while
+     *   leaving room for the sidebar and instructions strips.
+     *   grid-template-rows uses fixed px for sidebar (180px compact
+     *   horizontal scroll) and minmax for the stage.
+     * ──────────────────────────────────────────────────────────── */
     @media (max-width: 768px) {
       .webar-page {
         grid-template-columns: 1fr;
-        grid-template-rows: auto 1fr;
+        grid-template-rows: 180px minmax(55vh, 1fr);
       }
       .webar-sidebar {
-        max-height: 200px;
+        max-height: 180px;
         overflow-x: auto;
         overflow-y: hidden;
+      }
+      .webar-stage {
+        min-height: 55vh;
+      }
+      model-viewer {
+        height: 55vh !important;
+        min-height: 300px;
       }
       .webar-sidebar__list {
         flex-direction: row;
@@ -398,41 +420,41 @@
 
           <button class="webar-artwork-btn"
                   onclick="loadArtwork(this)"
-                  data-glb="https://cdn.jsdelivr.net/gh/diatknust-hub/diatknust@main/Gold-Colored-Maceame-bag.glb"
-                  data-usdz="https://cdn.jsdelivr.net/gh/diatknust-hub/diatknust@main/Gold-Colored-Maceame-bag.usdz"
-                  data-title="Gold Coloured Macramé Bag"
-                  data-discipline="Fibres &amp; Fabrics"
+                  data-glb="https://cdn.jsdelivr.net/gh/diatknust-hub/diatknust@main/Planter.glb"
+                  data-usdz="https://cdn.jsdelivr.net/gh/diatknust-hub/diatknust@main/Planter.usdz"
+                  data-title="Ceramic Planter"
+                  data-discipline="Clay &amp; Earthenware"
                   data-artist="DIAT, KNUST"
                   aria-pressed="false"
                   role="listitem">
-            <span class="webar-artwork-btn__name">Gold Macramé Bag</span>
-            <span class="webar-artwork-btn__meta">Fibres &amp; Fabrics</span>
+            <span class="webar-artwork-btn__name">Ceramic Planter</span>
+            <span class="webar-artwork-btn__meta">Clay &amp; Earthenware</span>
           </button>
 
           <button class="webar-artwork-btn"
                   onclick="loadArtwork(this)"
-                  data-glb="https://cdn.jsdelivr.net/gh/diatknust-hub/diatknust@main/Cane-Lampshade.glb"
-                  data-usdz="https://cdn.jsdelivr.net/gh/diatknust-hub/diatknust@main/Cane-Lampshade.usdz"
-                  data-title="Cane Lampshade"
-                  data-discipline="Rattan &amp; Bamboo"
+                  data-glb="https://cdn.jsdelivr.net/gh/diatknust-hub/diatknust@main/Star-clock.glb"
+                  data-usdz="https://cdn.jsdelivr.net/gh/diatknust-hub/diatknust@main/Star-clock.usdz"
+                  data-title="Star Clock"
+                  data-discipline="Metal Production"
                   data-artist="DIAT, KNUST"
                   aria-pressed="false"
                   role="listitem">
-            <span class="webar-artwork-btn__name">Cane Lampshade</span>
-            <span class="webar-artwork-btn__meta">Rattan &amp; Bamboo</span>
+            <span class="webar-artwork-btn__name">Star Clock</span>
+            <span class="webar-artwork-btn__meta">Metal Production</span>
           </button>
 
           <button class="webar-artwork-btn"
                   onclick="loadArtwork(this)"
-                  data-glb="https://cdn.jsdelivr.net/gh/diatknust-hub/diatknust@main/Single-Chair.glb"
-                  data-usdz="https://cdn.jsdelivr.net/gh/diatknust-hub/diatknust@main/Single-Chair.usdz"
-                  data-title="Single Chair"
-                  data-discipline="Wood &amp; Furniture"
+                  data-glb="https://cdn.jsdelivr.net/gh/diatknust-hub/diatknust@main/Mini-3-face-pot.glb"
+                  data-usdz="https://cdn.jsdelivr.net/gh/diatknust-hub/diatknust@main/Mini-3-face-pot.usdz"
+                  data-title="Mini 3-Face Pot"
+                  data-discipline="Clay &amp; Earthenware"
                   data-artist="DIAT, KNUST"
                   aria-pressed="false"
                   role="listitem">
-            <span class="webar-artwork-btn__name">Single Chair</span>
-            <span class="webar-artwork-btn__meta">Wood &amp; Furniture</span>
+            <span class="webar-artwork-btn__name">Mini 3-Face Pot</span>
+            <span class="webar-artwork-btn__meta">Clay &amp; Earthenware</span>
           </button>
 
         </div>
@@ -506,6 +528,27 @@
           <div slot="progress-bar"></div>
 
         </model-viewer>
+
+        <!-- Loading overlay — shown during model download -->
+        <div id="webar-loading"
+             style="position:absolute;inset:0;background:rgba(244,240,232,.92);
+                    display:none;flex-direction:column;align-items:center;
+                    justify-content:center;gap:var(--sp-md);z-index:10;
+                    pointer-events:none">
+          <div style="font-size:2rem">&#9654;</div>
+          <p style="font-family:var(--ff-display);font-size:var(--fs-md);
+                    color:var(--clr-text-secondary)" id="loading-label">
+            Loading 3D model&hellip;
+          </p>
+          <div style="width:200px;height:4px;background:var(--clr-border);
+                      border-radius:2px;overflow:hidden">
+            <div id="loading-bar"
+                 style="height:100%;background:var(--clr-gold);
+                        width:0%;transition:width .2s;border-radius:2px"></div>
+          </div>
+          <p id="loading-pct"
+             style="font-size:var(--fs-xs);color:var(--clr-text-tertiary)">0%</p>
+        </div>
 
         <!-- Empty state overlay — hidden once a model loads -->
         <div class="webar-empty" id="webar-empty" aria-hidden="true" style="display:none">
@@ -592,7 +635,42 @@
 
       /* Scroll the selected button into view on mobile */
       btn.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+
+      /* Show loading overlay while new model downloads */
+      var loadingEl = document.getElementById('webar-loading');
+      var loadBar   = document.getElementById('loading-bar');
+      var loadPct   = document.getElementById('loading-pct');
+      if (loadingEl) {
+        loadingEl.style.display = 'flex';
+        loadBar.style.width = '0%';
+        loadPct.textContent = '0%';
+      }
     }
+
+    /* model-viewer progress events — update loading bar */
+    viewer.addEventListener('progress', function(e) {
+      var pct = Math.round((e.detail.totalProgress || 0) * 100);
+      var loadBar = document.getElementById('loading-bar');
+      var loadPct = document.getElementById('loading-pct');
+      if (loadBar) loadBar.style.width = pct + '%';
+      if (loadPct) loadPct.textContent = pct + '%';
+    });
+
+    /* model-viewer load complete — hide loading overlay */
+    viewer.addEventListener('load', function() {
+      var loadingEl = document.getElementById('webar-loading');
+      if (loadingEl) loadingEl.style.display = 'none';
+    });
+
+    /* model-viewer error — show friendly message */
+    viewer.addEventListener('error', function() {
+      var loadingEl = document.getElementById('webar-loading');
+      var loadLabel = document.getElementById('loading-label');
+      if (loadLabel) loadLabel.textContent = 'Model unavailable — try another artwork';
+      setTimeout(function() {
+        if (loadingEl) loadingEl.style.display = 'none';
+      }, 2500);
+    });
   </script>
 
   <script src="site.js"></script>
