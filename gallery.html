@@ -85,35 +85,70 @@
     .gal-tabs {
       display: flex;
       gap: 0;
-      overflow-x: auto;
-      -webkit-overflow-scrolling: touch;
-      scrollbar-width: none;
       border-bottom: 2px solid var(--clr-border);
       background: var(--clr-white);
       position: sticky;
       top: var(--nav-height, 68px);
       z-index: 30;
+      /* No overflow-x on desktop — all 7 tabs fit with flex:1 */
     }
-    .gal-tabs::-webkit-scrollbar { display: none; }
+
+    /*
+     * flex: 1 + text-align: center distributes all 7 tabs equally.
+     * On a 1440px container → 1440/7 ≈ 205px each — fits all labels.
+     * Font 0.72rem + padding 8px 6px keeps each tab compact.
+     * white-space: normal allows 2-line wrap on narrower viewports.
+     */
     .gal-tab {
       font-family: var(--ff-body);
-      font-size: var(--fs-sm);
+      font-size: 0.72rem;
       font-weight: 600;
       color: var(--clr-text-tertiary);
       background: transparent;
       border: none;
       border-bottom: 3px solid transparent;
-      padding: var(--sp-md) var(--sp-lg);
+      padding: 8px 6px;
       cursor: pointer;
-      white-space: nowrap;
+      white-space: normal;
+      line-height: 1.25;
+      text-align: center;
       margin-bottom: -2px;
       transition: all var(--dur-fast) var(--ease-out);
-      flex-shrink: 0;
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
     }
     .gal-tab:hover { color: var(--clr-text-primary); }
     .gal-tab.is-active {
       color: var(--clr-gold-dark);
       border-bottom-color: var(--clr-gold);
+    }
+
+    /* Emoji icon inside each tab — own line above the label */
+    .gal-tab__icon {
+      font-size: 1rem;
+      line-height: 1;
+      display: block;
+    }
+    .gal-tab__label { display: block; }
+
+    /* Mobile: allow horizontal scroll if viewport is narrow */
+    @media (max-width: 768px) {
+      .gal-tabs {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+      }
+      .gal-tabs::-webkit-scrollbar { display: none; }
+      .gal-tab {
+        flex: 0 0 auto;
+        min-width: 72px;
+        font-size: 0.65rem;
+        padding: 6px 8px;
+      }
     }
 
     /* ── DISCIPLINE SECTIONS ──────────────────────────────────── */
@@ -525,27 +560,13 @@
 
         <!-- Tabs -->
         <nav class="gal-tabs" role="tablist" aria-label="Filter gallery by discipline">
-          <button class="gal-tab is-active" role="tab"
-                  data-disc="all" aria-selected="true"
-                  onclick="switchTab(this,'all')">&#128444; All Works</button>
-          <button class="gal-tab" role="tab"
-                  data-disc="clay" aria-selected="false"
-                  onclick="switchTab(this,'clay')">&#127994; Clay &amp; Earthenware</button>
-          <button class="gal-tab" role="tab"
-                  data-disc="fibres" aria-selected="false"
-                  onclick="switchTab(this,'fibres')">&#129525; Fibres &amp; Fabrics</button>
-          <button class="gal-tab" role="tab"
-                  data-disc="leather" aria-selected="false"
-                  onclick="switchTab(this,'leather')">&#128092; Leather Technology</button>
-          <button class="gal-tab" role="tab"
-                  data-disc="metal" aria-selected="false"
-                  onclick="switchTab(this,'metal')">&#9881; Metal Production</button>
-          <button class="gal-tab" role="tab"
-                  data-disc="rattan" aria-selected="false"
-                  onclick="switchTab(this,'rattan')">&#127819; Rattan &amp; Bamboo</button>
-          <button class="gal-tab" role="tab"
-                  data-disc="wood" aria-selected="false"
-                  onclick="switchTab(this,'wood')">&#129683; Wood &amp; Furniture</button>
+          <button class="gal-tab is-active" role="tab" data-disc="all" aria-selected="true" onclick="switchTab(this,'all')"><span class="gal-tab__icon">&#128444;</span><span class="gal-tab__label">All Works</span></button>
+          <button class="gal-tab" role="tab" data-disc="clay" aria-selected="false" onclick="switchTab(this,'clay')"><span class="gal-tab__icon">&#127994;</span><span class="gal-tab__label">Clay &amp; Earthenware</span></button>
+          <button class="gal-tab" role="tab" data-disc="fibres" aria-selected="false" onclick="switchTab(this,'fibres')"><span class="gal-tab__icon">&#129525;</span><span class="gal-tab__label">Fibres &amp; Fabrics</span></button>
+          <button class="gal-tab" role="tab" data-disc="leather" aria-selected="false" onclick="switchTab(this,'leather')"><span class="gal-tab__icon">&#128092;</span><span class="gal-tab__label">Leather Technology</span></button>
+          <button class="gal-tab" role="tab" data-disc="metal" aria-selected="false" onclick="switchTab(this,'metal')"><span class="gal-tab__icon">&#9881;</span><span class="gal-tab__label">Metal Production</span></button>
+          <button class="gal-tab" role="tab" data-disc="rattan" aria-selected="false" onclick="switchTab(this,'rattan')"><span class="gal-tab__icon">&#127819;</span><span class="gal-tab__label">Rattan &amp; Bamboo</span></button>
+          <button class="gal-tab" role="tab" data-disc="wood" aria-selected="false" onclick="switchTab(this,'wood')"><span class="gal-tab__icon">&#129683;</span><span class="gal-tab__label">Wood &amp; Furniture</span></button>
         </nav>
 
         <!-- ════════════════════════════════════════════════════════════════
