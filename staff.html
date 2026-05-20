@@ -4,222 +4,842 @@
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <meta name="theme-color" content="#1A1A4E"/>
+  <meta name="description" content="Staff profiles and student representatives — DIAT, Department of Indigenous Art & Technology, KNUST Ghana."/>
+  <title>Staff & Student Representatives — DIAT | KNUST Ghana</title>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="diat-styles.css"/>
-  <meta name="description" content="Meet the academic and technical team at DIAT, Department of Indigenous Art and Technology, KNUST Ghana."/>
-  <title>Staff Profiles — DIAT | KNUST Ghana</title>
+
+  <style>
+    /* ═══ SIAT STUDENT REPRESENTATIVE SECTION — page-scoped styles ═══
+     *
+     * These supplement the shared .staff-card system in diat-styles.css.
+     * Students are NOT university employees — they get a distinct visual
+     * treatment: gold accent, "Student" badge, lighter card feel.
+     * ════════════════════════════════════════════════════════════════ */
+
+    /* SIAT section header accent */
+    .siat-header-band {
+      background: linear-gradient(135deg, var(--clr-gold) 0%, #A67820 100%);
+      padding: var(--sp-md) 0;
+      margin-bottom: 0;
+    }
+    .siat-header-band__inner {
+      display: flex;
+      align-items: center;
+      gap: var(--sp-md);
+      flex-wrap: wrap;
+    }
+    .siat-header-band__badge {
+      font-size: var(--fs-xs);
+      font-weight: 700;
+      letter-spacing: var(--ls-widest);
+      text-transform: uppercase;
+      color: rgba(255,255,255,.9);
+      background: rgba(0,0,0,.2);
+      padding: var(--sp-xs) var(--sp-md);
+      border-radius: var(--radius-full);
+    }
+    .siat-header-band__title {
+      font-family: var(--ff-display);
+      font-size: var(--fs-lg);
+      font-weight: 700;
+      color: #fff;
+    }
+    .siat-header-band__sub {
+      font-size: var(--fs-sm);
+      color: rgba(255,255,255,.8);
+      margin-left: auto;
+    }
+
+    /* Student card — lighter visual weight than staff */
+    .siat-card {
+      background: var(--clr-white);
+      border: 2px solid var(--clr-earth);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      transition: box-shadow var(--dur-base), transform var(--dur-base) var(--ease-out),
+                  border-color var(--dur-base);
+    }
+    .siat-card:hover {
+      border-color: var(--clr-gold);
+      box-shadow: var(--shadow-md);
+      transform: translateY(-3px);
+    }
+    .siat-card__photo-wrap {
+      width: 100%;
+      aspect-ratio: 1;
+      background: linear-gradient(135deg, var(--clr-earth) 0%, #e8e0d0 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3rem;
+      position: relative;
+    }
+    .siat-card__student-badge {
+      position: absolute;
+      top: var(--sp-sm);
+      right: var(--sp-sm);
+      background: var(--clr-gold);
+      color: #fff;
+      font-size: 0.6rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 2px 8px;
+      border-radius: var(--radius-full);
+    }
+    .siat-card__body { padding: var(--sp-md); }
+    .siat-card__name {
+      font-family: var(--ff-display);
+      font-size: var(--fs-md);
+      font-weight: 700;
+      color: var(--clr-text-primary);
+      margin-bottom: 2px;
+    }
+    .siat-card__role {
+      font-size: var(--fs-sm);
+      color: var(--clr-gold-dark);
+      font-weight: 600;
+      margin-bottom: var(--sp-xs);
+    }
+    .siat-card__year {
+      font-size: var(--fs-xs);
+      color: var(--clr-text-tertiary);
+      margin-bottom: var(--sp-sm);
+    }
+    .siat-card__socials {
+      display: flex;
+      gap: var(--sp-xs);
+      flex-wrap: wrap;
+    }
+    .siat-card__social-link {
+      font-size: var(--fs-xs);
+      font-weight: 600;
+      color: var(--clr-text-secondary);
+      background: var(--clr-earth);
+      padding: 2px 8px;
+      border-radius: var(--radius-full);
+      text-decoration: none;
+      transition: all var(--dur-fast);
+    }
+    .siat-card__social-link:hover {
+      background: var(--clr-gold);
+      color: #fff;
+    }
+
+    /* SIAT Hub — news, posts, streaming */
+    .siat-hub {
+      display: grid;
+      grid-template-columns: 1fr 380px;
+      gap: var(--sp-xl);
+      align-items: start;
+    }
+
+    /* Posts feed */
+    .siat-feed { display: flex; flex-direction: column; gap: var(--sp-md); }
+
+    .siat-post {
+      background: var(--clr-white);
+      border: var(--border-hairline);
+      border-left: 4px solid var(--clr-gold);
+      border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
+      padding: var(--sp-md) var(--sp-lg);
+      transition: box-shadow var(--dur-base), transform var(--dur-base) var(--ease-out);
+    }
+    .siat-post:hover {
+      box-shadow: var(--shadow-sm);
+      transform: translateX(4px);
+    }
+    .siat-post__meta {
+      display: flex;
+      align-items: center;
+      gap: var(--sp-sm);
+      margin-bottom: var(--sp-xs);
+      flex-wrap: wrap;
+    }
+    .siat-post__type {
+      font-size: 0.58rem;
+      font-weight: 700;
+      letter-spacing: var(--ls-wide);
+      text-transform: uppercase;
+      padding: 2px 8px;
+      border-radius: var(--radius-full);
+    }
+    .siat-post__type--news       { background: #EEF2FF; color: var(--clr-indigo); }
+    .siat-post__type--event      { background: #FFF8E7; color: #7A5000; }
+    .siat-post__type--spotlight  { background: #F0FFF0; color: #2A5A2A; }
+    .siat-post__type--stream     { background: #FFE7E7; color: #8B0000; }
+
+    .siat-post__date {
+      font-size: var(--fs-xs);
+      color: var(--clr-text-tertiary);
+      margin-left: auto;
+    }
+    .siat-post__title {
+      font-family: var(--ff-display);
+      font-size: var(--fs-md);
+      font-weight: 700;
+      color: var(--clr-text-primary);
+      margin-bottom: var(--sp-xs);
+    }
+    .siat-post__body {
+      font-size: var(--fs-sm);
+      color: var(--clr-text-secondary);
+      line-height: var(--lh-relaxed);
+    }
+    .siat-post__author {
+      font-size: var(--fs-xs);
+      color: var(--clr-text-tertiary);
+      margin-top: var(--sp-sm);
+      display: flex;
+      align-items: center;
+      gap: var(--sp-xs);
+    }
+    .siat-post__author-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--clr-gold);
+      flex-shrink: 0;
+    }
+
+    /* SIAT sidebar: stream + stats + subscribe */
+    .siat-sidebar { display: flex; flex-direction: column; gap: var(--sp-md); }
+
+    .siat-stream-card {
+      background: var(--clr-indigo);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+    }
+    .siat-stream-card__header {
+      padding: var(--sp-md) var(--sp-lg);
+      border-bottom: 1px solid rgba(255,255,255,.08);
+      display: flex;
+      align-items: center;
+      gap: var(--sp-sm);
+    }
+    .siat-stream-card__live-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: #FF4444;
+      flex-shrink: 0;
+      animation: pulse-live 1.5s ease-in-out infinite;
+    }
+    @keyframes pulse-live {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50%       { opacity: .5; transform: scale(0.8); }
+    }
+    .siat-stream-card__title {
+      font-size: var(--fs-sm);
+      font-weight: 700;
+      color: #fff;
+    }
+    .siat-stream-card__embed {
+      width: 100%;
+      aspect-ratio: 16/9;
+      background: #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: var(--sp-sm);
+      font-size: var(--fs-xs);
+      color: rgba(255,255,255,.4);
+    }
+    .siat-stream-card__play {
+      width: 48px; height: 48px;
+      background: var(--clr-gold);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.2rem;
+      cursor: pointer;
+      transition: transform var(--dur-fast);
+    }
+    .siat-stream-card__play:hover { transform: scale(1.1); }
+    .siat-stream-card__footer {
+      padding: var(--sp-md) var(--sp-lg);
+      display: flex;
+      gap: var(--sp-sm);
+    }
+    .siat-stream-btn {
+      flex: 1;
+      text-align: center;
+      font-family: var(--ff-body);
+      font-size: var(--fs-xs);
+      font-weight: 700;
+      padding: var(--sp-xs) var(--sp-sm);
+      border-radius: var(--radius-full);
+      cursor: pointer;
+      text-decoration: none;
+      transition: all var(--dur-fast);
+    }
+    .siat-stream-btn--yt {
+      background: #FF0000;
+      color: #fff;
+      border: none;
+    }
+    .siat-stream-btn--ig {
+      background: linear-gradient(135deg,#E1306C,#833AB4);
+      color: #fff;
+      border: none;
+    }
+
+    /* Stats mini-card */
+    .siat-stats-card {
+      background: var(--clr-earth);
+      border: var(--border-hairline);
+      border-radius: var(--radius-lg);
+      padding: var(--sp-md) var(--sp-lg);
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--sp-sm);
+      text-align: center;
+    }
+    .siat-stat__num {
+      font-family: var(--ff-display);
+      font-size: var(--fs-xl);
+      font-weight: 700;
+      color: var(--clr-gold);
+      display: block;
+    }
+    .siat-stat__lbl {
+      font-size: 0.6rem;
+      color: var(--clr-text-tertiary);
+      letter-spacing: var(--ls-wide);
+      text-transform: uppercase;
+    }
+
+    /* Subscribe strip */
+    .siat-subscribe {
+      background: var(--clr-white);
+      border: var(--border-hairline);
+      border-radius: var(--radius-lg);
+      padding: var(--sp-lg);
+    }
+    .siat-subscribe__title {
+      font-family: var(--ff-display);
+      font-size: var(--fs-md);
+      font-weight: 700;
+      color: var(--clr-text-primary);
+      margin-bottom: var(--sp-xs);
+    }
+    .siat-subscribe__body {
+      font-size: var(--fs-sm);
+      color: var(--clr-text-secondary);
+      line-height: var(--lh-relaxed);
+      margin-bottom: var(--sp-md);
+    }
+    .siat-subscribe__form {
+      display: flex;
+      gap: var(--sp-xs);
+    }
+    .siat-subscribe__input {
+      flex: 1;
+      font-family: var(--ff-body);
+      font-size: var(--fs-sm);
+      border: var(--border-hairline);
+      border-radius: var(--radius-full);
+      padding: var(--sp-xs) var(--sp-md);
+      outline: none;
+      transition: border-color var(--dur-fast);
+    }
+    .siat-subscribe__input:focus { border-color: var(--clr-gold); }
+    .siat-subscribe__btn {
+      background: var(--clr-gold);
+      color: #fff;
+      font-family: var(--ff-body);
+      font-size: var(--fs-xs);
+      font-weight: 700;
+      border: none;
+      border-radius: var(--radius-full);
+      padding: var(--sp-xs) var(--sp-md);
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background var(--dur-fast);
+    }
+    .siat-subscribe__btn:hover { background: var(--clr-gold-dark); }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .siat-hub { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 640px) {
+      .siat-stats-card { grid-template-columns: repeat(3,1fr); }
+      .siat-subscribe__form { flex-direction: column; }
+    }
+  </style>
 </head>
 <body data-page="staff">
-<a href="#main-content" class="skip-link">Skip to main content</a>
-<main id="main-content">
+  <a href="#main-content" class="skip-link">Skip to main content</a>
 
+  <main id="main-content">
+
+    <!-- ═══ PAGE HERO ═══════════════════════════════════════════════════════ -->
     <section class="page-hero" aria-labelledby="staff-title">
       <div class="container">
         <nav class="page-hero__breadcrumb" aria-label="Breadcrumb">
           <a href="index.html" class="page-hero__breadcrumb-link">Home</a>
           <span class="page-hero__breadcrumb-sep" aria-hidden="true">/</span>
-          <span class="page-hero__breadcrumb-current">Staff</span>
+          <span class="page-hero__breadcrumb-current">Staff &amp; Students</span>
         </nav>
         <span class="page-hero__eyebrow">Our People</span>
         <h1 class="page-hero__title" id="staff-title"
-            data-cms-key="staff-hero-title" data-cms-label="Staff Page Title" data-cms-type="text">
-          Staff Profiles
+            data-cms-key="staff-hero-title" data-cms-type="text">
+          Staff Profiles &amp; Student Representatives
         </h1>
-        <p class="page-hero__body"
-           data-cms-key="staff-hero-body" data-cms-label="Staff Page Body">
-          The academic, technical, and administrative team driving DIAT&rsquo;s mission of
-          indigenous craft excellence at KNUST.
+        <p class="page-hero__body" data-cms-key="staff-hero-body">
+          The academic and technical team driving DIAT&rsquo;s mission, together with
+          SIAT &mdash; the student body representing indigenous art and technology
+          at KNUST.
         </p>
         <div class="page-hero__rule" aria-hidden="true"></div>
       </div>
     </section>
 
-    <!-- HOD -->
-    <section class="dept-section dept-section--white" aria-labelledby="leadership-heading">
+    <!-- ═══ HEAD OF DEPARTMENT ══════════════════════════════════════════════ -->
+    <section class="dept-section dept-section--white" aria-labelledby="hod-heading">
       <div class="container">
         <header class="dept-section__header">
           <span class="dept-section__eyebrow">Departmental Leadership</span>
-          <h2 class="dept-section__title" id="leadership-heading"
-              data-cms-key="staff-leadership-h2" data-cms-label="Leadership Heading" data-cms-type="text">
-            Head of Department
-          </h2>
+          <h2 class="dept-section__title" id="hod-heading"
+              data-cms-key="staff-hod-h2" data-cms-type="text">Head of Department</h2>
           <div class="dept-section__rule" aria-hidden="true"></div>
         </header>
-
         <div class="staff-grid staff-grid--wide" style="margin-top:var(--sp-xl)">
           <article class="staff-card staff-card--hod">
-            <div class="staff-card__photo-placeholder" aria-label="Staff photo placeholder">&#128100;</div>
+            <div class="staff-card__photo-placeholder" aria-label="HOD photo">&#128100;</div>
             <div class="staff-card__body">
-              <p class="staff-card__role" data-cms-key="hod-role" data-cms-label="HOD Role" data-cms-type="text">Head of Department</p>
-              <h3 class="staff-card__name" data-cms-key="hod-name" data-cms-label="HOD Name" data-cms-type="text">[Name &mdash; replace]</h3>
-              <p class="staff-card__quals" data-cms-key="hod-quals" data-cms-label="HOD Qualifications" data-cms-type="text">[Qualifications &mdash; replace]</p>
-              <p class="staff-card__bio" data-cms-key="hod-bio" data-cms-label="HOD Biography">
-                [Biography &mdash; replace via admin mode. Describe the Head of Department&rsquo;s research interests, publications, and academic background.]
+              <p class="staff-card__role" data-cms-key="hod-role" data-cms-type="text">Head of Department</p>
+              <h3 class="staff-card__name" data-cms-key="hod-name" data-cms-type="text">[Name &mdash; update via Admin]</h3>
+              <p class="staff-card__quals" data-cms-key="hod-quals" data-cms-type="text">[Qualifications]</p>
+              <p class="staff-card__bio" data-cms-key="hod-bio">
+                [Biography &mdash; click to edit in Admin Mode. Describe research interests, publications, and academic background.]
               </p>
-              <a data-cms-key="hod-email" data-cms-label="HOD Email" data-cms-type="text"
-                 class="staff-card__email" href="mailto:hod@diat.knust.edu.gh">hod@diat.knust.edu.gh</a>
+              <a class="staff-card__email" data-cms-key="hod-email" data-cms-type="text"
+                 href="mailto:hod@diat.knust.edu.gh">hod@diat.knust.edu.gh</a>
             </div>
           </article>
         </div>
       </div>
     </section>
 
-    <!-- ACADEMIC STAFF -->
+    <!-- ═══ ACADEMIC STAFF ═══════════════════════════════════════════════════ -->
     <section class="dept-section dept-section--surface" aria-labelledby="academic-heading">
       <div class="container">
         <header class="dept-section__header">
           <span class="dept-section__eyebrow">Academic Team</span>
           <h2 class="dept-section__title" id="academic-heading"
-              data-cms-key="staff-academic-h2" data-cms-label="Academic Staff Heading" data-cms-type="text">
-            Academic Staff
-          </h2>
+              data-cms-key="staff-academic-h2" data-cms-type="text">Academic Staff</h2>
           <div class="dept-section__rule" aria-hidden="true"></div>
         </header>
         <div class="staff-grid" style="margin-top:var(--sp-xl)">
-          <article class="staff-card">
-            <div class="staff-card__photo-placeholder" aria-label="Staff photo placeholder">&#128100;</div>
-            <div class="staff-card__body">
-              <p class="staff-card__role" data-cms-key="staff-ac1-role" data-cms-label="Academic Staff 1 Role" data-cms-type="text">[Role &mdash; replace]</p>
-              <h3 class="staff-card__name" data-cms-key="staff-ac1-name" data-cms-label="Academic Staff 1 Name" data-cms-type="text">[Name &mdash; replace]</h3>
-              <p class="staff-card__quals" data-cms-key="staff-ac1-quals" data-cms-label="Academic Staff 1 Quals" data-cms-type="text">[Qualifications]</p>
-              <a data-cms-key="staff-ac1-email" data-cms-label="Academic Staff 1 Email" data-cms-type="text"
-                 class="staff-card__email" href="mailto:staff@knust.edu.gh">staff@knust.edu.gh</a>
-            </div>
-          </article>
-          <article class="staff-card">
-            <div class="staff-card__photo-placeholder" aria-label="Staff photo placeholder">&#128100;</div>
-            <div class="staff-card__body">
-              <p class="staff-card__role" data-cms-key="staff-ac2-role" data-cms-label="Academic Staff 2 Role" data-cms-type="text">[Role &mdash; replace]</p>
-              <h3 class="staff-card__name" data-cms-key="staff-ac2-name" data-cms-label="Academic Staff 2 Name" data-cms-type="text">[Name &mdash; replace]</h3>
-              <p class="staff-card__quals" data-cms-key="staff-ac2-quals" data-cms-label="Academic Staff 2 Quals" data-cms-type="text">[Qualifications]</p>
-              <a data-cms-key="staff-ac2-email" data-cms-label="Academic Staff 2 Email" data-cms-type="text"
-                 class="staff-card__email" href="mailto:staff@knust.edu.gh">staff@knust.edu.gh</a>
-            </div>
-          </article>
-          <article class="staff-card">
-            <div class="staff-card__photo-placeholder" aria-label="Staff photo placeholder">&#128100;</div>
-            <div class="staff-card__body">
-              <p class="staff-card__role" data-cms-key="staff-ac3-role" data-cms-label="Academic Staff 3 Role" data-cms-type="text">[Role &mdash; replace]</p>
-              <h3 class="staff-card__name" data-cms-key="staff-ac3-name" data-cms-label="Academic Staff 3 Name" data-cms-type="text">[Name &mdash; replace]</h3>
-              <p class="staff-card__quals" data-cms-key="staff-ac3-quals" data-cms-label="Academic Staff 3 Quals" data-cms-type="text">[Qualifications]</p>
-              <a data-cms-key="staff-ac3-email" data-cms-label="Academic Staff 3 Email" data-cms-type="text"
-                 class="staff-card__email" href="mailto:staff@knust.edu.gh">staff@knust.edu.gh</a>
-            </div>
-          </article>
-          <article class="staff-card">
-            <div class="staff-card__photo-placeholder" aria-label="Staff photo placeholder">&#128100;</div>
-            <div class="staff-card__body">
-              <p class="staff-card__role" data-cms-key="staff-ac4-role" data-cms-label="Academic Staff 4 Role" data-cms-type="text">[Role &mdash; replace]</p>
-              <h3 class="staff-card__name" data-cms-key="staff-ac4-name" data-cms-label="Academic Staff 4 Name" data-cms-type="text">[Name &mdash; replace]</h3>
-              <p class="staff-card__quals" data-cms-key="staff-ac4-quals" data-cms-label="Academic Staff 4 Quals" data-cms-type="text">[Qualifications]</p>
-              <a data-cms-key="staff-ac4-email" data-cms-label="Academic Staff 4 Email" data-cms-type="text"
-                 class="staff-card__email" href="mailto:staff@knust.edu.gh">staff@knust.edu.gh</a>
-            </div>
-          </article>
-          <article class="staff-card">
-            <div class="staff-card__photo-placeholder" aria-label="Staff photo placeholder">&#128100;</div>
-            <div class="staff-card__body">
-              <p class="staff-card__role" data-cms-key="staff-ac5-role" data-cms-label="Academic Staff 5 Role" data-cms-type="text">[Role &mdash; replace]</p>
-              <h3 class="staff-card__name" data-cms-key="staff-ac5-name" data-cms-label="Academic Staff 5 Name" data-cms-type="text">[Name &mdash; replace]</h3>
-              <p class="staff-card__quals" data-cms-key="staff-ac5-quals" data-cms-label="Academic Staff 5 Quals" data-cms-type="text">[Qualifications]</p>
-              <a data-cms-key="staff-ac5-email" data-cms-label="Academic Staff 5 Email" data-cms-type="text"
-                 class="staff-card__email" href="mailto:staff@knust.edu.gh">staff@knust.edu.gh</a>
-            </div>
-          </article>
-          <article class="staff-card">
-            <div class="staff-card__photo-placeholder" aria-label="Staff photo placeholder">&#128100;</div>
-            <div class="staff-card__body">
-              <p class="staff-card__role" data-cms-key="staff-ac6-role" data-cms-label="Academic Staff 6 Role" data-cms-type="text">[Role &mdash; replace]</p>
-              <h3 class="staff-card__name" data-cms-key="staff-ac6-name" data-cms-label="Academic Staff 6 Name" data-cms-type="text">[Name &mdash; replace]</h3>
-              <p class="staff-card__quals" data-cms-key="staff-ac6-quals" data-cms-label="Academic Staff 6 Quals" data-cms-type="text">[Qualifications]</p>
-              <a data-cms-key="staff-ac6-email" data-cms-label="Academic Staff 6 Email" data-cms-type="text"
-                 class="staff-card__email" href="mailto:staff@knust.edu.gh">staff@knust.edu.gh</a>
-            </div>
-          </article>
-          <article class="staff-card">
-            <div class="staff-card__photo-placeholder" aria-label="Staff photo placeholder">&#128100;</div>
-            <div class="staff-card__body">
-              <p class="staff-card__role" data-cms-key="staff-ac7-role" data-cms-label="Academic Staff 7 Role" data-cms-type="text">[Role &mdash; replace]</p>
-              <h3 class="staff-card__name" data-cms-key="staff-ac7-name" data-cms-label="Academic Staff 7 Name" data-cms-type="text">[Name &mdash; replace]</h3>
-              <p class="staff-card__quals" data-cms-key="staff-ac7-quals" data-cms-label="Academic Staff 7 Quals" data-cms-type="text">[Qualifications]</p>
-              <a data-cms-key="staff-ac7-email" data-cms-label="Academic Staff 7 Email" data-cms-type="text"
-                 class="staff-card__email" href="mailto:staff@knust.edu.gh">staff@knust.edu.gh</a>
-            </div>
-          </article>
-          <article class="staff-card">
-            <div class="staff-card__photo-placeholder" aria-label="Staff photo placeholder">&#128100;</div>
-            <div class="staff-card__body">
-              <p class="staff-card__role" data-cms-key="staff-ac8-role" data-cms-label="Academic Staff 8 Role" data-cms-type="text">[Role &mdash; replace]</p>
-              <h3 class="staff-card__name" data-cms-key="staff-ac8-name" data-cms-label="Academic Staff 8 Name" data-cms-type="text">[Name &mdash; replace]</h3>
-              <p class="staff-card__quals" data-cms-key="staff-ac8-quals" data-cms-label="Academic Staff 8 Quals" data-cms-type="text">[Qualifications]</p>
-              <a data-cms-key="staff-ac8-email" data-cms-label="Academic Staff 8 Email" data-cms-type="text"
-                 class="staff-card__email" href="mailto:staff@knust.edu.gh">staff@knust.edu.gh</a>
-            </div>
-          </article>
+          <!-- 8 academic staff cards — all CMS editable -->
+          <article class="staff-card"><div class="staff-card__photo-placeholder">&#128100;</div><div class="staff-card__body"><p class="staff-card__role" data-cms-key="staff-ac1-role" data-cms-type="text">Senior Lecturer</p><h3 class="staff-card__name" data-cms-key="staff-ac1-name" data-cms-type="text">[Name]</h3><p class="staff-card__quals" data-cms-key="staff-ac1-quals" data-cms-type="text">[Qualifications]</p><a class="staff-card__email" data-cms-key="staff-ac1-email" data-cms-type="text" href="mailto:staff@knust.edu.gh">staff@knust.edu.gh</a></div></article>
+          <article class="staff-card"><div class="staff-card__photo-placeholder">&#128100;</div><div class="staff-card__body"><p class="staff-card__role" data-cms-key="staff-ac2-role" data-cms-type="text">Lecturer</p><h3 class="staff-card__name" data-cms-key="staff-ac2-name" data-cms-type="text">[Name]</h3><p class="staff-card__quals" data-cms-key="staff-ac2-quals" data-cms-type="text">[Qualifications]</p><a class="staff-card__email" data-cms-key="staff-ac2-email" data-cms-type="text" href="mailto:staff@knust.edu.gh">staff@knust.edu.gh</a></div></article>
+          <article class="staff-card"><div class="staff-card__photo-placeholder">&#128100;</div><div class="staff-card__body"><p class="staff-card__role" data-cms-key="staff-ac3-role" data-cms-type="text">Lecturer</p><h3 class="staff-card__name" data-cms-key="staff-ac3-name" data-cms-type="text">[Name]</h3><p class="staff-card__quals" data-cms-key="staff-ac3-quals" data-cms-type="text">[Qualifications]</p><a class="staff-card__email" data-cms-key="staff-ac3-email" data-cms-type="text" href="mailto:staff@knust.edu.gh">staff@knust.edu.gh</a></div></article>
+          <article class="staff-card"><div class="staff-card__photo-placeholder">&#128100;</div><div class="staff-card__body"><p class="staff-card__role" data-cms-key="staff-ac4-role" data-cms-type="text">Lecturer</p><h3 class="staff-card__name" data-cms-key="staff-ac4-name" data-cms-type="text">[Name]</h3><p class="staff-card__quals" data-cms-key="staff-ac4-quals" data-cms-type="text">[Qualifications]</p><a class="staff-card__email" data-cms-key="staff-ac4-email" data-cms-type="text" href="mailto:staff@knust.edu.gh">staff@knust.edu.gh</a></div></article>
+          <article class="staff-card"><div class="staff-card__photo-placeholder">&#128100;</div><div class="staff-card__body"><p class="staff-card__role" data-cms-key="staff-ac5-role" data-cms-type="text">Lecturer</p><h3 class="staff-card__name" data-cms-key="staff-ac5-name" data-cms-type="text">[Name]</h3><p class="staff-card__quals" data-cms-key="staff-ac5-quals" data-cms-type="text">[Qualifications]</p><a class="staff-card__email" data-cms-key="staff-ac5-email" data-cms-type="text" href="mailto:staff@knust.edu.gh">staff@knust.edu.gh</a></div></article>
+          <article class="staff-card"><div class="staff-card__photo-placeholder">&#128100;</div><div class="staff-card__body"><p class="staff-card__role" data-cms-key="staff-ac6-role" data-cms-type="text">Teaching Assistant</p><h3 class="staff-card__name" data-cms-key="staff-ac6-name" data-cms-type="text">[Name]</h3><p class="staff-card__quals" data-cms-key="staff-ac6-quals" data-cms-type="text">[Qualifications]</p><a class="staff-card__email" data-cms-key="staff-ac6-email" data-cms-type="text" href="mailto:staff@knust.edu.gh">staff@knust.edu.gh</a></div></article>
+          <article class="staff-card"><div class="staff-card__photo-placeholder">&#128100;</div><div class="staff-card__body"><p class="staff-card__role" data-cms-key="staff-ac7-role" data-cms-type="text">Teaching Assistant</p><h3 class="staff-card__name" data-cms-key="staff-ac7-name" data-cms-type="text">[Name]</h3><p class="staff-card__quals" data-cms-key="staff-ac7-quals" data-cms-type="text">[Qualifications]</p><a class="staff-card__email" data-cms-key="staff-ac7-email" data-cms-type="text" href="mailto:staff@knust.edu.gh">staff@knust.edu.gh</a></div></article>
+          <article class="staff-card"><div class="staff-card__photo-placeholder">&#128100;</div><div class="staff-card__body"><p class="staff-card__role" data-cms-key="staff-ac8-role" data-cms-type="text">Research Fellow</p><h3 class="staff-card__name" data-cms-key="staff-ac8-name" data-cms-type="text">[Name]</h3><p class="staff-card__quals" data-cms-key="staff-ac8-quals" data-cms-type="text">[Qualifications]</p><a class="staff-card__email" data-cms-key="staff-ac8-email" data-cms-type="text" href="mailto:staff@knust.edu.gh">staff@knust.edu.gh</a></div></article>
         </div>
       </div>
     </section>
 
-    <!-- TECHNICAL STAFF -->
+    <!-- ═══ TECHNICAL STAFF ══════════════════════════════════════════════════ -->
     <section class="dept-section dept-section--white" aria-labelledby="technical-heading">
       <div class="container">
         <header class="dept-section__header">
           <span class="dept-section__eyebrow">Technical Team</span>
           <h2 class="dept-section__title" id="technical-heading"
-              data-cms-key="staff-tech-h2" data-cms-label="Technical Staff Heading" data-cms-type="text">
-            Technical Staff
-          </h2>
+              data-cms-key="staff-tech-h2" data-cms-type="text">Technical Staff</h2>
           <div class="dept-section__rule" aria-hidden="true"></div>
         </header>
         <div class="staff-grid" style="margin-top:var(--sp-xl)">
-          <article class="staff-card">
-            <div class="staff-card__photo-placeholder" aria-label="Staff photo placeholder">&#128100;</div>
-            <div class="staff-card__body">
-              <p class="staff-card__role" data-cms-key="staff-tc1-role" data-cms-label="Technical Staff 1 Role" data-cms-type="text">[Role &mdash; replace]</p>
-              <h3 class="staff-card__name" data-cms-key="staff-tc1-name" data-cms-label="Technical Staff 1 Name" data-cms-type="text">[Name &mdash; replace]</h3>
-              <p class="staff-card__quals" data-cms-key="staff-tc1-quals" data-cms-label="Technical Staff 1 Quals" data-cms-type="text">[Qualifications]</p>
-              <a data-cms-key="staff-tc1-email" data-cms-label="Technical Staff 1 Email" data-cms-type="text"
-                 class="staff-card__email" href="mailto:staff@knust.edu.gh">staff@knust.edu.gh</a>
-            </div>
-          </article>
-          <article class="staff-card">
-            <div class="staff-card__photo-placeholder" aria-label="Staff photo placeholder">&#128100;</div>
-            <div class="staff-card__body">
-              <p class="staff-card__role" data-cms-key="staff-tc2-role" data-cms-label="Technical Staff 2 Role" data-cms-type="text">[Role &mdash; replace]</p>
-              <h3 class="staff-card__name" data-cms-key="staff-tc2-name" data-cms-label="Technical Staff 2 Name" data-cms-type="text">[Name &mdash; replace]</h3>
-              <p class="staff-card__quals" data-cms-key="staff-tc2-quals" data-cms-label="Technical Staff 2 Quals" data-cms-type="text">[Qualifications]</p>
-              <a data-cms-key="staff-tc2-email" data-cms-label="Technical Staff 2 Email" data-cms-type="text"
-                 class="staff-card__email" href="mailto:staff@knust.edu.gh">staff@knust.edu.gh</a>
-            </div>
-          </article>
-          <article class="staff-card">
-            <div class="staff-card__photo-placeholder" aria-label="Staff photo placeholder">&#128100;</div>
-            <div class="staff-card__body">
-              <p class="staff-card__role" data-cms-key="staff-tc3-role" data-cms-label="Technical Staff 3 Role" data-cms-type="text">[Role &mdash; replace]</p>
-              <h3 class="staff-card__name" data-cms-key="staff-tc3-name" data-cms-label="Technical Staff 3 Name" data-cms-type="text">[Name &mdash; replace]</h3>
-              <p class="staff-card__quals" data-cms-key="staff-tc3-quals" data-cms-label="Technical Staff 3 Quals" data-cms-type="text">[Qualifications]</p>
-              <a data-cms-key="staff-tc3-email" data-cms-label="Technical Staff 3 Email" data-cms-type="text"
-                 class="staff-card__email" href="mailto:staff@knust.edu.gh">staff@knust.edu.gh</a>
-            </div>
-          </article>
-          <article class="staff-card">
-            <div class="staff-card__photo-placeholder" aria-label="Staff photo placeholder">&#128100;</div>
-            <div class="staff-card__body">
-              <p class="staff-card__role" data-cms-key="staff-tc4-role" data-cms-label="Technical Staff 4 Role" data-cms-type="text">[Role &mdash; replace]</p>
-              <h3 class="staff-card__name" data-cms-key="staff-tc4-name" data-cms-label="Technical Staff 4 Name" data-cms-type="text">[Name &mdash; replace]</h3>
-              <p class="staff-card__quals" data-cms-key="staff-tc4-quals" data-cms-label="Technical Staff 4 Quals" data-cms-type="text">[Qualifications]</p>
-              <a data-cms-key="staff-tc4-email" data-cms-label="Technical Staff 4 Email" data-cms-type="text"
-                 class="staff-card__email" href="mailto:staff@knust.edu.gh">staff@knust.edu.gh</a>
-            </div>
-          </article>
+          <article class="staff-card"><div class="staff-card__photo-placeholder">&#128100;</div><div class="staff-card__body"><p class="staff-card__role" data-cms-key="staff-tc1-role" data-cms-type="text">Technical Instructor — Clay</p><h3 class="staff-card__name" data-cms-key="staff-tc1-name" data-cms-type="text">[Name]</h3><p class="staff-card__quals" data-cms-key="staff-tc1-quals" data-cms-type="text">[Qualifications]</p><a class="staff-card__email" data-cms-key="staff-tc1-email" data-cms-type="text" href="mailto:staff@knust.edu.gh">staff@knust.edu.gh</a></div></article>
+          <article class="staff-card"><div class="staff-card__photo-placeholder">&#128100;</div><div class="staff-card__body"><p class="staff-card__role" data-cms-key="staff-tc2-role" data-cms-type="text">Technical Instructor — Metal</p><h3 class="staff-card__name" data-cms-key="staff-tc2-name" data-cms-type="text">[Name]</h3><p class="staff-card__quals" data-cms-key="staff-tc2-quals" data-cms-type="text">[Qualifications]</p><a class="staff-card__email" data-cms-key="staff-tc2-email" data-cms-type="text" href="mailto:staff@knust.edu.gh">staff@knust.edu.gh</a></div></article>
+          <article class="staff-card"><div class="staff-card__photo-placeholder">&#128100;</div><div class="staff-card__body"><p class="staff-card__role" data-cms-key="staff-tc3-role" data-cms-type="text">Technical Instructor — Wood</p><h3 class="staff-card__name" data-cms-key="staff-tc3-name" data-cms-type="text">[Name]</h3><p class="staff-card__quals" data-cms-key="staff-tc3-quals" data-cms-type="text">[Qualifications]</p><a class="staff-card__email" data-cms-key="staff-tc3-email" data-cms-type="text" href="mailto:staff@knust.edu.gh">staff@knust.edu.gh</a></div></article>
+          <article class="staff-card"><div class="staff-card__photo-placeholder">&#128100;</div><div class="staff-card__body"><p class="staff-card__role" data-cms-key="staff-tc4-role" data-cms-type="text">Department Administrator</p><h3 class="staff-card__name" data-cms-key="staff-tc4-name" data-cms-type="text">[Name]</h3><p class="staff-card__quals" data-cms-key="staff-tc4-quals" data-cms-type="text">[Qualifications]</p><a class="staff-card__email" data-cms-key="staff-tc4-email" data-cms-type="text" href="mailto:staff@knust.edu.gh">staff@knust.edu.gh</a></div></article>
         </div>
       </div>
     </section>
 
+    <!-- ═══════════════════════════════════════════════════════════════════════
+         SIAT — STUDENTS OF INDIGENOUS ART & TECHNOLOGY
+         ═══════════════════════════════════════════════════════════════════════
+         DESIGN RATIONALE:
+         Students are NOT university employees. They get:
+           • A gold accent header band (distinct from the indigo staff headers)
+           • Lighter "siat-card" style (earth-toned border, gold badge)
+           • Their own "SIAT Hub" below — a live content zone with trending
+             posts, streaming, stats and a newsletter subscribe strip.
+         This creates a dynamic, recurring reason for visitors to return.
+         ═══════════════════════════════════════════════════════════════════ -->
+
+    <!-- Gold header band marking the transition to student territory -->
+    <div class="siat-header-band" role="separator" aria-hidden="true">
+      <div class="container">
+        <div class="siat-header-band__inner">
+          <span class="siat-header-band__badge">Student Body</span>
+          <span class="siat-header-band__title">
+            SIAT &mdash; Students of Indigenous Art &amp; Technology
+          </span>
+          <span class="siat-header-band__sub">Ad Hoc Representatives · 2025 / 2026</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ SIAT REPRESENTATIVES ═════════════════════════════════════════════ -->
+    <section class="dept-section dept-section--surface" aria-labelledby="siat-reps-heading">
+      <div class="container">
+        <header class="dept-section__header">
+          <span class="dept-section__eyebrow">Student Executives</span>
+          <h2 class="dept-section__title" id="siat-reps-heading"
+              data-cms-key="siat-reps-h2" data-cms-type="text">
+            SIAT Student Representatives
+          </h2>
+          <div class="dept-section__rule" aria-hidden="true"></div>
+          <p class="dept-section__body" style="margin-top:var(--sp-md)"
+             data-cms-key="siat-reps-intro">
+            Elected and appointed student representatives who advocate for DIAT students,
+            organise exhibitions, manage community engagement, and give the student
+            voice a formal presence within the department.
+          </p>
+        </header>
+
+        <div class="staff-grid" style="margin-top:var(--sp-xl)">
+
+          <article class="siat-card">
+            <div class="siat-card__photo-wrap" aria-label="Student photo">
+              &#127891;
+              <span class="siat-card__student-badge">President</span>
+            </div>
+            <div class="siat-card__body">
+              <h3 class="siat-card__name" data-cms-key="siat-s1-name" data-cms-type="text">[Name]</h3>
+              <p class="siat-card__role" data-cms-key="siat-s1-role" data-cms-type="text">SIAT President</p>
+              <p class="siat-card__year" data-cms-key="siat-s1-year" data-cms-type="text">Year [4] &middot; [Discipline]</p>
+              <div class="siat-card__socials">
+                <a href="#" class="siat-card__social-link" data-cms-key="siat-s1-ig" data-cms-type="text">&#64; Instagram</a>
+                <a href="mailto:#" class="siat-card__social-link" data-cms-key="siat-s1-email" data-cms-type="text">Email</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="siat-card">
+            <div class="siat-card__photo-wrap">&#127891;<span class="siat-card__student-badge">Vice Pres.</span></div>
+            <div class="siat-card__body">
+              <h3 class="siat-card__name" data-cms-key="siat-s2-name" data-cms-type="text">[Name]</h3>
+              <p class="siat-card__role" data-cms-key="siat-s2-role" data-cms-type="text">Vice President</p>
+              <p class="siat-card__year" data-cms-key="siat-s2-year" data-cms-type="text">Year [3] &middot; [Discipline]</p>
+              <div class="siat-card__socials">
+                <a href="#" class="siat-card__social-link" data-cms-key="siat-s2-ig" data-cms-type="text">&#64; Instagram</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="siat-card">
+            <div class="siat-card__photo-wrap">&#127891;<span class="siat-card__student-badge">Secretary</span></div>
+            <div class="siat-card__body">
+              <h3 class="siat-card__name" data-cms-key="siat-s3-name" data-cms-type="text">[Name]</h3>
+              <p class="siat-card__role" data-cms-key="siat-s3-role" data-cms-type="text">General Secretary</p>
+              <p class="siat-card__year" data-cms-key="siat-s3-year" data-cms-type="text">Year [3] &middot; [Discipline]</p>
+              <div class="siat-card__socials">
+                <a href="#" class="siat-card__social-link" data-cms-key="siat-s3-ig" data-cms-type="text">&#64; Instagram</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="siat-card">
+            <div class="siat-card__photo-wrap">&#127891;<span class="siat-card__student-badge">Social</span></div>
+            <div class="siat-card__body">
+              <h3 class="siat-card__name" data-cms-key="siat-s4-name" data-cms-type="text">[Name]</h3>
+              <p class="siat-card__role" data-cms-key="siat-s4-role" data-cms-type="text">Social Media &amp; Communications</p>
+              <p class="siat-card__year" data-cms-key="siat-s4-year" data-cms-type="text">Year [2] &middot; [Discipline]</p>
+              <div class="siat-card__socials">
+                <a href="#" class="siat-card__social-link" data-cms-key="siat-s4-ig" data-cms-type="text">&#64; Instagram</a>
+                <a href="#" class="siat-card__social-link" data-cms-key="siat-s4-tt" data-cms-type="text">TikTok</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="siat-card">
+            <div class="siat-card__photo-wrap">&#127891;<span class="siat-card__student-badge">Exhibitions</span></div>
+            <div class="siat-card__body">
+              <h3 class="siat-card__name" data-cms-key="siat-s5-name" data-cms-type="text">[Name]</h3>
+              <p class="siat-card__role" data-cms-key="siat-s5-role" data-cms-type="text">Exhibitions &amp; Events Coordinator</p>
+              <p class="siat-card__year" data-cms-key="siat-s5-year" data-cms-type="text">Year [4] &middot; [Discipline]</p>
+              <div class="siat-card__socials">
+                <a href="#" class="siat-card__social-link" data-cms-key="siat-s5-ig" data-cms-type="text">&#64; Instagram</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="siat-card">
+            <div class="siat-card__photo-wrap">&#127891;<span class="siat-card__student-badge">Welfare</span></div>
+            <div class="siat-card__body">
+              <h3 class="siat-card__name" data-cms-key="siat-s6-name" data-cms-type="text">[Name]</h3>
+              <p class="siat-card__role" data-cms-key="siat-s6-role" data-cms-type="text">Welfare &amp; Community Officer</p>
+              <p class="siat-card__year" data-cms-key="siat-s6-year" data-cms-type="text">Year [2] &middot; [Discipline]</p>
+              <div class="siat-card__socials">
+                <a href="#" class="siat-card__social-link" data-cms-key="siat-s6-email" data-cms-type="text">Email</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="siat-card">
+            <div class="siat-card__photo-wrap">&#127891;<span class="siat-card__student-badge">Finance</span></div>
+            <div class="siat-card__body">
+              <h3 class="siat-card__name" data-cms-key="siat-s7-name" data-cms-type="text">[Name]</h3>
+              <p class="siat-card__role" data-cms-key="siat-s7-role" data-cms-type="text">Financial Secretary</p>
+              <p class="siat-card__year" data-cms-key="siat-s7-year" data-cms-type="text">Year [3] &middot; [Discipline]</p>
+              <div class="siat-card__socials">
+                <a href="#" class="siat-card__social-link" data-cms-key="siat-s7-email" data-cms-type="text">Email</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="siat-card">
+            <div class="siat-card__photo-wrap">&#127891;<span class="siat-card__student-badge">Tech</span></div>
+            <div class="siat-card__body">
+              <h3 class="siat-card__name" data-cms-key="siat-s8-name" data-cms-type="text">[Name]</h3>
+              <p class="siat-card__role" data-cms-key="siat-s8-role" data-cms-type="text">Digital &amp; Technology Rep</p>
+              <p class="siat-card__year" data-cms-key="siat-s8-year" data-cms-type="text">Year [3] &middot; [Discipline]</p>
+              <div class="siat-card__socials">
+                <a href="#" class="siat-card__social-link" data-cms-key="siat-s8-ig" data-cms-type="text">&#64; Instagram</a>
+                <a href="#" class="siat-card__social-link" data-cms-key="siat-s8-yt" data-cms-type="text">YouTube</a>
+              </div>
+            </div>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ SIAT HUB — Trending posts, streaming, subscribe ══════════════════ -->
+    <section class="dept-section dept-section--white" aria-labelledby="siat-hub-heading">
+      <div class="container">
+
+        <header class="dept-section__header">
+          <span class="dept-section__eyebrow">Live from SIAT</span>
+          <h2 class="dept-section__title" id="siat-hub-heading"
+              data-cms-key="siat-hub-h2" data-cms-type="text">
+            SIAT Student Hub
+          </h2>
+          <div class="dept-section__rule" aria-hidden="true"></div>
+          <p class="dept-section__body" style="margin-top:var(--sp-md)"
+             data-cms-key="siat-hub-intro">
+            Weekly posts, announcements, exhibition previews, and live streams from
+            DIAT&rsquo;s student body. Updated every Monday.
+          </p>
+        </header>
+
+        <div class="siat-hub" style="margin-top:var(--sp-xl)">
+
+          <!-- Left: rolling posts feed -->
+          <div class="siat-feed" aria-label="SIAT posts and announcements">
+
+            <article class="siat-post">
+              <div class="siat-post__meta">
+                <span class="siat-post__type siat-post__type--event">&#128197; Upcoming Event</span>
+                <span class="siat-post__date" data-cms-key="siat-p1-date" data-cms-type="text">Week 1 · May 2026</span>
+              </div>
+              <h3 class="siat-post__title" data-cms-key="siat-p1-title" data-cms-type="text">
+                DIAT@50 Student Exhibition — Open Call for Works
+              </h3>
+              <p class="siat-post__body" data-cms-key="siat-p1-body">
+                All Year 2&ndash;4 students are invited to submit one finished work for the
+                DIAT@50 anniversary exhibition. Submissions open now via the SIAT secretary.
+                Selected works will be scanned in 3D for the WebAR gallery.
+              </p>
+              <div class="siat-post__author">
+                <span class="siat-post__author-dot"></span>
+                Posted by <strong data-cms-key="siat-p1-author" data-cms-type="text">SIAT President</strong>
+              </div>
+            </article>
+
+            <article class="siat-post">
+              <div class="siat-post__meta">
+                <span class="siat-post__type siat-post__type--spotlight">&#127775; Student Spotlight</span>
+                <span class="siat-post__date" data-cms-key="siat-p2-date" data-cms-type="text">This Week</span>
+              </div>
+              <h3 class="siat-post__title" data-cms-key="siat-p2-title" data-cms-type="text">
+                Spotlight: The Traditional Drum Stool Story
+              </h3>
+              <p class="siat-post__body" data-cms-key="siat-p2-body">
+                This week we feature the student behind the Traditional Drum Stool now live in
+                the DIAT WebAR gallery &mdash; the first student work from KNUST Ghana to be
+                experienced in augmented reality. Tap WebAR in the nav to try it.
+              </p>
+              <div class="siat-post__author">
+                <span class="siat-post__author-dot"></span>
+                Posted by <strong data-cms-key="siat-p2-author" data-cms-type="text">SIAT Social Media Rep</strong>
+              </div>
+            </article>
+
+            <article class="siat-post">
+              <div class="siat-post__meta">
+                <span class="siat-post__type siat-post__type--news">&#128240; News</span>
+                <span class="siat-post__date" data-cms-key="siat-p3-date" data-cms-type="text">May 2026</span>
+              </div>
+              <h3 class="siat-post__title" data-cms-key="siat-p3-title" data-cms-type="text">
+                DIAT Digital Platform Launches at KNUST
+              </h3>
+              <p class="siat-post__body" data-cms-key="siat-p3-body">
+                The DIAT KNUST Hub &mdash; Ghana&rsquo;s first indigenous craft department digital
+                platform &mdash; officially launches as part of the DIAT@50 celebrations.
+                Built to showcase student work to a global audience for the very first time.
+              </p>
+              <div class="siat-post__author">
+                <span class="siat-post__author-dot"></span>
+                Posted by <strong data-cms-key="siat-p3-author" data-cms-type="text">SIAT Communications</strong>
+              </div>
+            </article>
+
+            <article class="siat-post">
+              <div class="siat-post__meta">
+                <span class="siat-post__type siat-post__type--stream">&#128250; Weekly Stream</span>
+                <span class="siat-post__date" data-cms-key="siat-p4-date" data-cms-type="text">Every Friday 4PM GMT</span>
+              </div>
+              <h3 class="siat-post__title" data-cms-key="siat-p4-title" data-cms-type="text">
+                SIAT Live — Workshop Sessions &amp; Studio Tours
+              </h3>
+              <p class="siat-post__body" data-cms-key="siat-p4-body">
+                Every Friday we go live from inside the DIAT workshops &mdash; watch students
+                at the wheel, at the forge, and at the loom. Follow our YouTube and
+                Instagram for real-time notifications.
+              </p>
+              <div class="siat-post__author">
+                <span class="siat-post__author-dot"></span>
+                Posted by <strong data-cms-key="siat-p4-author" data-cms-type="text">SIAT Digital Rep</strong>
+              </div>
+            </article>
+
+          </div><!-- /.siat-feed -->
+
+          <!-- Right: sidebar with stream + stats + subscribe -->
+          <div class="siat-sidebar">
+
+            <!-- Live stream card -->
+            <div class="siat-stream-card">
+              <div class="siat-stream-card__header">
+                <div class="siat-stream-card__live-dot" aria-hidden="true"></div>
+                <span class="siat-stream-card__title">SIAT Live Stream</span>
+              </div>
+              <!-- Stream embed placeholder — replace iframe src with YouTube/Instagram live URL -->
+              <div class="siat-stream-card__embed" id="siat-stream-embed">
+                <div class="siat-stream-card__play"
+                     onclick="launchStream()"
+                     role="button"
+                     aria-label="Launch SIAT live stream"
+                     tabindex="0">&#9654;</div>
+                <span data-cms-key="siat-stream-label" data-cms-type="text">
+                  Next stream: Friday 4PM GMT
+                </span>
+                <span style="color:rgba(255,255,255,.25);font-size:0.55rem">
+                  Add YouTube Live URL via Admin Mode
+                </span>
+              </div>
+              <div class="siat-stream-card__footer">
+                <a href="#"
+                   class="siat-stream-btn siat-stream-btn--yt"
+                   data-cms-key="siat-yt-link" data-cms-type="text"
+                   target="_blank" rel="noopener noreferrer"
+                   aria-label="Open SIAT YouTube channel">
+                  &#9654; YouTube
+                </a>
+                <a href="#"
+                   class="siat-stream-btn siat-stream-btn--ig"
+                   data-cms-key="siat-ig-link" data-cms-type="text"
+                   target="_blank" rel="noopener noreferrer"
+                   aria-label="Open SIAT Instagram">
+                  &#9752; Instagram
+                </a>
+              </div>
+            </div>
+
+            <!-- Engagement stats -->
+            <div class="siat-stats-card" role="list" aria-label="SIAT community figures">
+              <div role="listitem" class="siat-stat">
+                <span class="siat-stat__num" data-cms-key="siat-stat1" data-cms-type="text">150+</span>
+                <span class="siat-stat__lbl">Students</span>
+              </div>
+              <div role="listitem" class="siat-stat">
+                <span class="siat-stat__num" data-cms-key="siat-stat2" data-cms-type="text">6</span>
+                <span class="siat-stat__lbl">Disciplines</span>
+              </div>
+              <div role="listitem" class="siat-stat">
+                <span class="siat-stat__num" data-cms-key="siat-stat3" data-cms-type="text">4+</span>
+                <span class="siat-stat__lbl">Years Active</span>
+              </div>
+            </div>
+
+            <!-- Subscribe strip -->
+            <div class="siat-subscribe">
+              <h3 class="siat-subscribe__title"
+                  data-cms-key="siat-sub-title" data-cms-type="text">
+                Stay in the Loop
+              </h3>
+              <p class="siat-subscribe__body"
+                 data-cms-key="siat-sub-body">
+                Get SIAT weekly posts, exhibition announcements, and stream alerts straight
+                to your inbox. No spam &mdash; just craft.
+              </p>
+              <form class="siat-subscribe__form"
+                    onsubmit="handleSIATSubscribe(event)"
+                    aria-label="Subscribe to SIAT updates">
+                <input class="siat-subscribe__input"
+                       type="email"
+                       placeholder="your@email.com"
+                       required
+                       aria-label="Email address">
+                <button class="siat-subscribe__btn" type="submit">Subscribe</button>
+              </form>
+            </div>
+
+          </div><!-- /.siat-sidebar -->
+        </div><!-- /.siat-hub -->
+      </div>
+    </section>
+
   </main>
-    <script src="site.js"></script>
+
+  <script>
+    /* SIAT stream launcher — replace URL via Admin Mode on siat-yt-link */
+    function launchStream() {
+      var ytLink = document.querySelector('[data-cms-key="siat-yt-link"]');
+      var url = ytLink ? ytLink.getAttribute('href') : '#';
+      if (url && url !== '#') {
+        window.open(url, '_blank', 'noopener,noreferrer');
+      } else {
+        alert('Stream link not set yet. Add the YouTube Live URL via Admin Mode.');
+      }
+    }
+
+    /* SIAT subscribe — posts to the same Google Form as the main signup */
+    function handleSIATSubscribe(e) {
+      e.preventDefault();
+      var email = e.target.querySelector('input[type="email"]').value;
+      if (!email) return;
+      /* Reuse the existing DIAT Google Form */
+      var formUrl = 'https://docs.google.com/forms/d/e/1FAIpQLSfGMkMiAumlmEwiKKcpBr1rBbKmeGCbzt5N2hdsWTjM35PH6A/formResponse';
+      var params  = new URLSearchParams();
+      params.set('entry.2121794060', email);
+      fetch(formUrl, {
+        method: 'POST',
+        mode: 'no-cors',
+        body: params,
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+      });
+      var btn = e.target.querySelector('button');
+      btn.textContent = 'Subscribed ✓';
+      btn.disabled = true;
+      btn.style.background = '#2A7A2A';
+      e.target.querySelector('input').value = '';
+    }
+  </script>
+
+  <script src="site.js"></script>
   <script src="cms.js?v=3"></script>
 </body>
 </html>

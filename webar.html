@@ -22,6 +22,42 @@
   </script>
 
   <style>
+    /* Chrome recommendation banner */
+    .chrome-hint {
+      display: none; /* shown only when NOT Chrome */
+      background: #1A1A4E;
+      color: rgba(255,255,255,.9);
+      font-size: var(--fs-xs);
+      text-align: center;
+      padding: var(--sp-xs) var(--sp-md);
+      gap: var(--sp-sm);
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      border-bottom: 2px solid var(--clr-gold);
+    }
+    .chrome-hint__icon { font-size: 1rem; flex-shrink: 0; }
+    .chrome-hint__link {
+      color: var(--clr-gold);
+      font-weight: 700;
+      text-decoration: underline;
+    }
+    .chrome-hint__close {
+      background: none;
+      border: none;
+      color: rgba(255,255,255,.4);
+      cursor: pointer;
+      font-size: 1rem;
+      padding: 0 var(--sp-xs);
+      margin-left: var(--sp-sm);
+      flex-shrink: 0;
+    }
+  </style>
+
+  <style>
     /* ═══════════════════════════════════════════════════════════════
      * WebAR PAGE STYLES
      * All tokens reference diat-styles.css variables.
@@ -405,13 +441,105 @@
       }
       .webar-instructions { gap: var(--sp-md); padding: var(--sp-xs) var(--sp-md); }
     }
+
+    /* ── CHROME RECOMMENDATION BANNER ───────────────────────────
+     * Shown only when browser is detected as non-Chrome.
+     * Slim, professional — never intrusive.
+     * Hidden by default; JS reveals if needed.
+     * ──────────────────────────────────────────────────────────── */
+    .browser-notice {
+      display: none; /* JS shows this only for non-Chrome */
+      align-items: center;
+      gap: var(--sp-md);
+      background: #1A1A4E;
+      border-left: 4px solid var(--clr-gold);
+      padding: var(--sp-sm) var(--sp-lg);
+      position: relative;
+      z-index: 100;
+      flex-wrap: wrap;
+    }
+    .browser-notice.is-visible { display: flex; }
+    .browser-notice__icon { font-size: 1.2rem; flex-shrink: 0; }
+    .browser-notice__text {
+      flex: 1;
+      min-width: 200px;
+      font-size: var(--fs-xs);
+      color: rgba(255,255,255,.8);
+      line-height: 1.5;
+    }
+    .browser-notice__text strong { color: var(--clr-gold); }
+    .browser-notice__url {
+      font-family: monospace;
+      font-size: var(--fs-xs);
+      color: rgba(255,255,255,.5);
+      background: rgba(255,255,255,.06);
+      padding: 2px 6px;
+      border-radius: 3px;
+      word-break: break-all;
+    }
+    .browser-notice__dismiss {
+      background: none;
+      border: none;
+      color: rgba(255,255,255,.35);
+      font-size: 1.1rem;
+      cursor: pointer;
+      padding: var(--sp-xs);
+      line-height: 1;
+      flex-shrink: 0;
+      transition: color var(--dur-fast);
+      font-family: var(--ff-body);
+    }
+    .browser-notice__dismiss:hover { color: rgba(255,255,255,.8); }
+
   </style>
 </head>
 <body data-page="webar">
   <a href="#main-content" class="skip-link">Skip to main content</a>
 
+  <!--
+    Chrome recommendation banner.
+    JS below detects non-Chrome browsers and shows this strip.
+    Dismissed by clicking ×; remembers via sessionStorage.
+  -->
+  <div class="chrome-hint" id="chrome-hint" role="alert" aria-live="polite">
+    <span class="chrome-hint__icon">&#127760;</span>
+    <span>
+      For the best WebAR &amp; 3D experience, open this page in
+      <strong>Google Chrome</strong>.
+      <a href="https://www.google.com/chrome/" target="_blank"
+         rel="noopener noreferrer" class="chrome-hint__link">
+        Download Chrome &#8599;
+      </a>
+    </span>
+    <button class="chrome-hint__close"
+            onclick="dismissChromeBanner()"
+            aria-label="Dismiss browser recommendation">&#10005;</button>
+  </div>
+
   <main id="main-content">
-    <div class="webar-page" aria-label="WebAR Artwork Viewer">
+    <!--
+      BROWSER RECOMMENDATION BANNER
+      ─────────────────────────────────────────────────────────────
+      Shown only when the visitor's browser is not Google Chrome.
+      Dismissed instantly with the × button.
+      Invisible in Chrome — no impact on the demo experience.
+    -->
+    <div class="browser-notice" id="browser-notice" role="alert" aria-live="polite">
+      <span class="browser-notice__icon" aria-hidden="true">&#128269;</span>
+      <div class="browser-notice__text">
+        <strong>For the best 3D &amp; WebAR experience, open this page in Google Chrome.</strong><br>
+        Copy the address below and paste it into Chrome on this device:
+        <br>
+        <span class="browser-notice__url" id="notice-url">
+          https://diatknust-hub.github.io/webar.html
+        </span>
+      </div>
+      <button class="browser-notice__dismiss"
+              onclick="document.getElementById('browser-notice').classList.remove('is-visible')"
+              aria-label="Dismiss this notice">&#10005;</button>
+    </div>
+
+        <div class="webar-page" aria-label="WebAR Artwork Viewer">
 
       <!-- ═══ SIDEBAR: Artwork selector ═════════════════════════════════ -->
       <aside class="webar-sidebar" aria-label="Select artwork to view">
@@ -740,6 +868,59 @@
     document.addEventListener('DOMContentLoaded', syncMobileNav);
   </script>
 
+  <script>
+    /*
+     * BROWSER DETECTION — show Chrome recommendation for non-Chrome browsers.
+     *
+     * Chrome detection logic:
+     *   navigator.vendor = 'Google Inc.'  (Chrome on all platforms)
+     *   'Chrome' in userAgent             (Chrome identifier)
+     *   'Edg' NOT in userAgent            (exclude Microsoft Edge)
+     *   'OPR' NOT in userAgent            (exclude Opera)
+     *   'SamsungBrowser' NOT in userAgent (exclude Samsung Internet)
+     *
+     * Runs immediately — no flash of notice on Chrome users.
+     */
+    (function() {
+      var ua     = navigator.userAgent;
+      var vendor = navigator.vendor || '';
+
+      var isChrome = (
+        vendor.indexOf('Google Inc') !== -1 &&
+        ua.indexOf('Chrome')          !== -1 &&
+        ua.indexOf('Edg')             === -1 &&
+        ua.indexOf('OPR')             === -1 &&
+        ua.indexOf('SamsungBrowser')  === -1
+      );
+
+      if (!isChrome) {
+        /* Show the recommendation banner */
+        var notice = document.getElementById('browser-notice');
+        if (notice) notice.classList.add('is-visible');
+
+        /* Show the actual current URL in the notice */
+        var urlEl = document.getElementById('notice-url');
+        if (urlEl) urlEl.textContent = window.location.href;
+      }
+    })();
+  </script>
+
+    <script>
+    /* Chrome recommendation — show only for non-Chrome browsers */
+    (function() {
+      var ua = navigator.userAgent || '';
+      var isChrome = /Chrome\//.test(ua) && !/Chromium\/|Edg\/|OPR\//.test(ua);
+      if (!isChrome && !sessionStorage.getItem('chrome-hint-dismissed')) {
+        var el = document.getElementById('chrome-hint');
+        if (el) el.style.display = 'flex';
+      }
+    })();
+    function dismissChromeBanner() {
+      var el = document.getElementById('chrome-hint');
+      if (el) el.style.display = 'none';
+      sessionStorage.setItem('chrome-hint-dismissed', '1');
+    }
+  </script>
   <script src="site.js"></script>
   <script src="cms.js?v=3"></script>
 </body>
