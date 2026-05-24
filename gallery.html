@@ -87,9 +87,13 @@
       gap: 0;
       border-bottom: 2px solid var(--clr-border);
       background: var(--clr-white);
-      position: sticky;
-      top: var(--nav-height, 68px);
-      z-index: 30;
+      /*
+       * FIX 1+2: removed position: sticky.
+       * Desktop — tabs no longer float over artworks while scrolling.
+       * Mobile  — tabs no longer overlap discipline section headers.
+       * The bar stays at the top of the gallery section and scrolls
+       * naturally with the page content.
+       */
       /* No overflow-x on desktop — all 7 tabs fit with flex:1 */
     }
 
