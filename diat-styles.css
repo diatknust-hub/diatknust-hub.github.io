@@ -1319,14 +1319,14 @@ h1, h2, h3, h4, h5, h6 { font-family: var(--ff-display); line-height: var(--lh-h
 /* ── ANNIVERSARY — Photo Background Modifier ─────────────────────────
  *
  * Applied to .dept-anniversary on index.html only.
- * Uses diat-sculptures.jpg (the antelope + ostrich + murals photo)
+ * Uses diat-sculptures.webp (the antelope + ostrich + murals photo)
  * as a full-bleed background with an indigo overlay for legibility.
  *
  * The existing ::before rule (watermark '50' text) continues to
  * render above the overlay and below the content.
  * ─────────────────────────────────────────────────────────────────── */
 .dept-anniversary--photo {
-  background-image: url('diat-sculptures.jpg');
+  background-image: url('diat-sculptures.webp');
   background-size: cover;
   background-position: center 35%;
   background-repeat: no-repeat;
@@ -3754,3 +3754,270 @@ h1, h2, h3, h4, h5, h6 { font-family: var(--ff-display); line-height: var(--lh-h
     min-height: 0;
   }
 }
+
+/* ============================================================
+ * DROPDOWN NAVIGATION SYSTEM
+ * ============================================================
+ *
+ * DESKTOP (≥769px):
+ *   CSS :hover-driven dropdowns — zero JavaScript for the hover.
+ *   opacity + visibility + transform transition gives a smooth
+ *   "slide down and fade in" reveal. focus-within ensures
+ *   keyboard users also see the dropdown.
+ *
+ * MOBILE (≤768px):
+ *   Dropdowns are hidden inside the hamburger drawer.
+ *   .dept-nav__drawer-group uses max-height animation driven
+ *   by toggleDrawerGroup() in site.js — expands/collapses
+ *   accordion-style with a single tap.
+ * ============================================================ */
+
+/* ── NAV ITEM WRAPPER (holds link + dropdown) ─────────────── */
+.dept-nav__item {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+/* Chevron arrow inside dropdown-enabled links */
+.dept-nav__chevron {
+  font-size: 0.55rem;
+  margin-left: 4px;
+  opacity: .5;
+  display: inline-block;
+  transition: transform var(--dur-fast) var(--ease-out);
+}
+.dept-nav__item:hover .dept-nav__chevron,
+.dept-nav__item:focus-within .dept-nav__chevron {
+  transform: rotate(180deg);
+  opacity: 1;
+}
+
+/* ── STANDARD DROPDOWN PANEL ──────────────────────────────── */
+.dept-nav__dropdown {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%) translateY(8px);
+  min-width: 220px;
+  background: var(--clr-white);
+  border: var(--border-hairline);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 12px 40px rgba(0,0,0,.14), 0 2px 8px rgba(0,0,0,.06);
+  padding: var(--sp-xs) 0;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity var(--dur-base) var(--ease-out),
+              transform var(--dur-base) var(--ease-out),
+              visibility var(--dur-base);
+  z-index: 500;
+  pointer-events: none;
+}
+
+/* Trigger: hover OR keyboard focus-within */
+.dept-nav__item:hover .dept-nav__dropdown,
+.dept-nav__item:focus-within .dept-nav__dropdown {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0);
+  pointer-events: auto;
+}
+
+/* Small upward-pointing caret on the panel */
+.dept-nav__dropdown::before {
+  content: '';
+  position: absolute;
+  top: -6px;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 6px solid transparent;
+  border-bottom-color: var(--clr-border);
+  border-top: none;
+}
+.dept-nav__dropdown::after {
+  content: '';
+  position: absolute;
+  top: -5px;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 5px solid transparent;
+  border-bottom-color: var(--clr-white);
+  border-top: none;
+}
+
+/* ── DROPDOWN LINK ITEMS ──────────────────────────────────── */
+.dept-nav__drop-link {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-sm);
+  padding: var(--sp-sm) var(--sp-md);
+  font-size: var(--fs-sm);
+  font-weight: 500;
+  color: var(--clr-text-secondary);
+  text-decoration: none;
+  transition: background var(--dur-fast), color var(--dur-fast),
+              padding-left var(--dur-fast);
+  white-space: nowrap;
+}
+.dept-nav__drop-link:hover,
+.dept-nav__drop-link:focus {
+  background: var(--clr-earth);
+  color: var(--clr-gold-dark);
+  padding-left: calc(var(--sp-md) + 4px);
+  outline: none;
+}
+
+/* Sub-link (used inside mega menu for disciplines) */
+.dept-nav__drop-link--sub {
+  font-size: var(--fs-xs);
+  padding: var(--sp-xs) var(--sp-md);
+}
+.dept-nav__drop-link--sub:hover {
+  padding-left: calc(var(--sp-md) + 4px);
+}
+
+/* Divider line */
+.dept-nav__drop-divider {
+  height: 1px;
+  background: var(--clr-border);
+  margin: var(--sp-xs) var(--sp-sm);
+}
+
+/* ── MEGA MENU (Programmes — 2-column layout) ─────────────── */
+.dept-nav__mega {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%) translateY(8px);
+  width: 560px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  background: var(--clr-white);
+  border: var(--border-hairline);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 12px 40px rgba(0,0,0,.14), 0 2px 8px rgba(0,0,0,.06);
+  padding: var(--sp-sm) 0;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity var(--dur-base) var(--ease-out),
+              transform var(--dur-base) var(--ease-out),
+              visibility var(--dur-base);
+  z-index: 500;
+  pointer-events: none;
+}
+
+.dept-nav__item--mega:hover .dept-nav__mega,
+.dept-nav__item--mega:focus-within .dept-nav__mega {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0);
+  pointer-events: auto;
+}
+
+/* Same caret on mega menu */
+.dept-nav__mega::before {
+  content: '';
+  position: absolute;
+  top: -6px;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 6px solid transparent;
+  border-bottom-color: var(--clr-border);
+  border-top: none;
+}
+.dept-nav__mega::after {
+  content: '';
+  position: absolute;
+  top: -5px;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 5px solid transparent;
+  border-bottom-color: var(--clr-white);
+  border-top: none;
+}
+
+/* Mega menu column */
+.dept-nav__mega-col {
+  padding: var(--sp-sm) 0;
+  border-right: var(--border-hairline);
+  display: flex;
+  flex-direction: column;
+}
+.dept-nav__mega-col:last-child { border-right: none; }
+
+/* Mega menu column heading */
+.dept-nav__mega-heading {
+  display: block;
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  letter-spacing: var(--ls-wide);
+  text-transform: uppercase;
+  color: var(--clr-text-tertiary);
+  padding: var(--sp-xs) var(--sp-md);
+  margin-bottom: var(--sp-2xs);
+}
+
+/* ── MOBILE DRAWER — accordion groups ─────────────────────── */
+.dept-nav__drawer-group {
+  /* Wrapper for toggle button + collapsible sub-list */
+}
+
+/* The toggle button looks identical to a regular drawer link */
+.dept-nav__drawer-toggle {
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: none;
+  font-family: var(--ff-body);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.dept-nav__drawer-toggle .dept-nav__chevron {
+  transition: transform var(--dur-base);
+}
+.dept-nav__drawer-toggle[aria-expanded="true"] .dept-nav__chevron {
+  transform: rotate(180deg);
+}
+
+/* Collapsible sub-link container — animated by JS via max-height */
+.dept-nav__drawer-sub {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height var(--dur-slow) var(--ease-out);
+  background: rgba(26,26,78,.06);
+  border-radius: 0 0 var(--radius-md) var(--radius-md);
+}
+
+/* Sub-links inside the accordion */
+.dept-nav__drawer-sublink {
+  display: block;
+  padding: var(--sp-xs) var(--sp-xl);
+  font-size: var(--fs-sm);
+  font-weight: 500;
+  color: rgba(255,255,255,.65);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(255,255,255,.04);
+  transition: color var(--dur-fast), background var(--dur-fast);
+}
+.dept-nav__drawer-sublink:hover,
+.dept-nav__drawer-sublink:focus {
+  color: var(--clr-gold);
+  background: rgba(201,149,42,.08);
+}
+.dept-nav__drawer-sublink:last-child { border-bottom: none; }
+
+/* Hide desktop dropdowns on mobile */
+@media (max-width: 768px) {
+  .dept-nav__dropdown,
+  .dept-nav__mega { display: none !important; }
+  .dept-nav__chevron { display: none; }
+}
+
+/* Keep dropdowns hidden when sidebar is narrow on desktop */
+@media (min-width: 769px) {
+  .dept-nav__drawer-group { display: none; }
+}
+/* ── END DROPDOWN NAV ─────────────────────────────────────── */
