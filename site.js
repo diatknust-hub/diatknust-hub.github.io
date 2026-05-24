@@ -81,14 +81,127 @@
           </div>
         </a>
         <ul class="dept-nav__links" role="list">
-          <li><a href="index.html"      class="dept-nav__link dept-nav__link--active" aria-current="page">Home</a></li>
-          <li><a href="gallery.html"    class="dept-nav__link">Gallery</a></li>
-          <li><a href="webar.html"      class="dept-nav__link">WebAR</a></li>
-          <li><a href="about.html"      class="dept-nav__link">About</a></li>
-          <li><a href="programmes.html" class="dept-nav__link">Programmes</a></li>
-          <li><a href="community.html"  class="dept-nav__link">Community</a></li>
-          <li><a href="staff.html"      class="dept-nav__link">Staff</a></li>
-          <li><a href="archive.html"    class="dept-nav__link">Archive</a></li>
+
+          <!-- Home — no dropdown -->
+          <li><a href="index.html" class="dept-nav__link dept-nav__link--active" aria-current="page">Home</a></li>
+
+          <!-- Gallery dropdown -->
+          <li class="dept-nav__item" role="none">
+            <a href="gallery.html" class="dept-nav__link dept-nav__link--drop" aria-haspopup="true" aria-expanded="false">
+              Gallery <span class="dept-nav__chevron" aria-hidden="true">&#9660;</span>
+            </a>
+            <div class="dept-nav__dropdown" role="menu" aria-label="Gallery sub-menu">
+              <a href="gallery.html"           class="dept-nav__drop-link" role="menuitem">&#128444; All Works</a>
+              <div class="dept-nav__drop-divider" aria-hidden="true"></div>
+              <a href="gallery.html?disc=clay"    class="dept-nav__drop-link" role="menuitem">&#127994; Clay &amp; Earthenware</a>
+              <a href="gallery.html?disc=fibres"  class="dept-nav__drop-link" role="menuitem">&#129525; Fibres &amp; Fabrics</a>
+              <a href="gallery.html?disc=leather" class="dept-nav__drop-link" role="menuitem">&#128092; Leather Technology</a>
+              <a href="gallery.html?disc=metal"   class="dept-nav__drop-link" role="menuitem">&#9881; Metal Production</a>
+              <a href="gallery.html?disc=rattan"  class="dept-nav__drop-link" role="menuitem">&#127819; Rattan &amp; Bamboo</a>
+              <a href="gallery.html?disc=wood"    class="dept-nav__drop-link" role="menuitem">&#129683; Wood &amp; Furniture</a>
+            </div>
+          </li>
+
+          <!-- WebAR dropdown -->
+          <li class="dept-nav__item" role="none">
+            <a href="webar.html" class="dept-nav__link dept-nav__link--drop" aria-haspopup="true" aria-expanded="false">
+              WebAR <span class="dept-nav__chevron" aria-hidden="true">&#9660;</span>
+            </a>
+            <div class="dept-nav__dropdown" role="menu" aria-label="WebAR sub-menu">
+              <a href="webar.html"          class="dept-nav__drop-link" role="menuitem">&#127918; Launch 3D Viewer</a>
+              <div class="dept-nav__drop-divider" aria-hidden="true"></div>
+              <a href="webar.html?art=Traditional+Drum+Stool" class="dept-nav__drop-link" role="menuitem">&#9656; Traditional Drum Stool</a>
+              <a href="webar.html?art=3-Faced+Pots"           class="dept-nav__drop-link" role="menuitem">&#9656; 3-Faced Pots</a>
+              <a href="webar.html?art=Metal+Sculpture+Parrot" class="dept-nav__drop-link" role="menuitem">&#9656; Metal Sculpture — Parrot</a>
+            </div>
+          </li>
+
+          <!-- About dropdown -->
+          <li class="dept-nav__item" role="none">
+            <a href="about.html" class="dept-nav__link dept-nav__link--drop" aria-haspopup="true" aria-expanded="false">
+              About <span class="dept-nav__chevron" aria-hidden="true">&#9660;</span>
+            </a>
+            <div class="dept-nav__dropdown" role="menu" aria-label="About sub-menu">
+              <a href="about.html"                  class="dept-nav__drop-link" role="menuitem">&#127963; Our Story</a>
+              <a href="about.html#history-heading"  class="dept-nav__drop-link" role="menuitem">&#128205; History &amp; Timeline</a>
+              <a href="about.html#gallery-heading"  class="dept-nav__drop-link" role="menuitem">&#128247; Department Photos</a>
+            </div>
+          </li>
+
+          <!-- Programmes — MEGA MENU -->
+          <li class="dept-nav__item dept-nav__item--mega" role="none">
+            <a href="programmes.html" class="dept-nav__link dept-nav__link--drop" aria-haspopup="true" aria-expanded="false">
+              Programmes <span class="dept-nav__chevron" aria-hidden="true">&#9660;</span>
+            </a>
+            <div class="dept-nav__mega" role="menu" aria-label="Programmes sub-menu">
+              <div class="dept-nav__mega-col">
+                <span class="dept-nav__mega-heading">&#127891; Academic Programmes</span>
+                <a href="programmes.html"          class="dept-nav__drop-link dept-nav__drop-link--sub" role="menuitem">View All Programmes</a>
+                <div class="dept-nav__drop-divider" aria-hidden="true"></div>
+                <a href="product-design.html"      class="dept-nav__drop-link dept-nav__drop-link--sub" role="menuitem">&#128208; Product Design</a>
+                <a href="clay-earthenware.html"    class="dept-nav__drop-link dept-nav__drop-link--sub" role="menuitem">&#127994; Clay &amp; Earthenware</a>
+                <a href="fibres-fabrics.html"      class="dept-nav__drop-link dept-nav__drop-link--sub" role="menuitem">&#129525; Fibres &amp; Fabrics</a>
+                <a href="leather-technology.html"  class="dept-nav__drop-link dept-nav__drop-link--sub" role="menuitem">&#128092; Leather Technology</a>
+                <a href="metal-production.html"    class="dept-nav__drop-link dept-nav__drop-link--sub" role="menuitem">&#9881; Metal Production</a>
+                <a href="rattan-bamboo.html"       class="dept-nav__drop-link dept-nav__drop-link--sub" role="menuitem">&#127819; Rattan &amp; Bamboo</a>
+                <a href="wood-furniture.html"      class="dept-nav__drop-link dept-nav__drop-link--sub" role="menuitem">&#129683; Wood &amp; Furniture</a>
+              </div>
+              <div class="dept-nav__mega-col">
+                <span class="dept-nav__mega-heading">&#127807; Community &amp; Outreach</span>
+                <a href="community.html"  class="dept-nav__drop-link dept-nav__drop-link--sub" role="menuitem">Community Overview</a>
+                <a href="community.html#how-heading" class="dept-nav__drop-link dept-nav__drop-link--sub" role="menuitem">Internship Programme</a>
+                <a href="community.html#comm-cta-heading" class="dept-nav__drop-link dept-nav__drop-link--sub" role="menuitem">Mastercard Partnership</a>
+                <div class="dept-nav__drop-divider" aria-hidden="true"></div>
+                <span class="dept-nav__mega-heading" style="margin-top:var(--sp-sm)">&#128203; Resources</span>
+                <a href="archive.html"    class="dept-nav__drop-link dept-nav__drop-link--sub" role="menuitem">Digital Archive</a>
+                <a href="staff.html"      class="dept-nav__drop-link dept-nav__drop-link--sub" role="menuitem">Staff Directory</a>
+              </div>
+            </div>
+          </li>
+
+          <!-- Community dropdown -->
+          <li class="dept-nav__item" role="none">
+            <a href="community.html" class="dept-nav__link dept-nav__link--drop" aria-haspopup="true" aria-expanded="false">
+              Community <span class="dept-nav__chevron" aria-hidden="true">&#9660;</span>
+            </a>
+            <div class="dept-nav__dropdown" role="menu" aria-label="Community sub-menu">
+              <a href="community.html"                        class="dept-nav__drop-link" role="menuitem">&#127807; Community Overview</a>
+              <a href="community.html#how-heading"            class="dept-nav__drop-link" role="menuitem">&#128205; Internship Programme</a>
+              <a href="community.html#partner-heading"        class="dept-nav__drop-link" role="menuitem">&#127775; Mastercard Partnership</a>
+            </div>
+          </li>
+
+          <!-- Staff dropdown -->
+          <li class="dept-nav__item" role="none">
+            <a href="staff.html" class="dept-nav__link dept-nav__link--drop" aria-haspopup="true" aria-expanded="false">
+              Staff <span class="dept-nav__chevron" aria-hidden="true">&#9660;</span>
+            </a>
+            <div class="dept-nav__dropdown" role="menu" aria-label="Staff sub-menu">
+              <a href="staff.html"                      class="dept-nav__drop-link" role="menuitem">&#128100; All Staff</a>
+              <div class="dept-nav__drop-divider" aria-hidden="true"></div>
+              <a href="staff.html#academic-heading"     class="dept-nav__drop-link" role="menuitem">&#127891; Academic Staff</a>
+              <a href="staff.html#technical-heading"    class="dept-nav__drop-link" role="menuitem">&#9881; Technical Staff</a>
+              <div class="dept-nav__drop-divider" aria-hidden="true"></div>
+              <a href="staff.html#siat-reps-heading"   class="dept-nav__drop-link" role="menuitem">&#127775; SIAT Representatives</a>
+              <a href="staff.html#siat-hub-heading"     class="dept-nav__drop-link" role="menuitem">&#128250; SIAT Student Hub</a>
+            </div>
+          </li>
+
+          <!-- Archive dropdown -->
+          <li class="dept-nav__item" role="none">
+            <a href="archive.html" class="dept-nav__link dept-nav__link--drop" aria-haspopup="true" aria-expanded="false">
+              Archive <span class="dept-nav__chevron" aria-hidden="true">&#9660;</span>
+            </a>
+            <div class="dept-nav__dropdown" role="menu" aria-label="Archive sub-menu">
+              <a href="archive.html"                    class="dept-nav__drop-link" role="menuitem">&#128203; Digital Archive</a>
+              <div class="dept-nav__drop-divider" aria-hidden="true"></div>
+              <a href="archive.html?filter=research"    class="dept-nav__drop-link" role="menuitem">&#128240; Research Papers</a>
+              <a href="archive.html?filter=history"     class="dept-nav__drop-link" role="menuitem">&#127963; Historical Records</a>
+              <a href="archive.html?filter=student"     class="dept-nav__drop-link" role="menuitem">&#127891; Student Works</a>
+              <a href="archive.html?filter=community"   class="dept-nav__drop-link" role="menuitem">&#127807; Community Reports</a>
+            </div>
+          </li>
+
         </ul>
         <a href="gallery.html" class="dept-nav__cta">View Gallery</a>
         <button class="dept-nav__toggle" id="nav-toggle"
@@ -101,13 +214,70 @@
     </nav>
     <nav class="dept-nav__drawer" id="nav-drawer"
          aria-label="Mobile navigation" aria-hidden="true">
-      <a href="index.html"      class="dept-nav__drawer-link" onclick="closeDrawer()">Home</a>
-      <a href="gallery.html"    class="dept-nav__drawer-link" onclick="closeDrawer()">Artwork Gallery</a>
-      <a href="webar.html"      class="dept-nav__drawer-link" onclick="closeDrawer()">WebAR Viewer</a>
-      <a href="about.html"      class="dept-nav__drawer-link" onclick="closeDrawer()">About DIAT</a>
-      <a href="programmes.html" class="dept-nav__drawer-link" onclick="closeDrawer()">Academic Programmes</a>
-      <a href="community.html"  class="dept-nav__drawer-link" onclick="closeDrawer()">Community &amp; Internship</a>
-      <a href="staff.html"      class="dept-nav__drawer-link" onclick="closeDrawer()">Staff Profiles</a>
+      <!-- Home -->
+      <a href="index.html" class="dept-nav__drawer-link" onclick="closeDrawer()">Home</a>
+
+      <!-- Gallery accordion -->
+      <div class="dept-nav__drawer-group">
+        <button class="dept-nav__drawer-link dept-nav__drawer-toggle"
+                onclick="toggleDrawerGroup(this)" aria-expanded="false">
+          Artwork Gallery <span class="dept-nav__chevron" aria-hidden="true">&#9660;</span>
+        </button>
+        <div class="dept-nav__drawer-sub" aria-hidden="true">
+          <a href="gallery.html"              class="dept-nav__drawer-sublink" onclick="closeDrawer()">All Works</a>
+          <a href="gallery.html?disc=clay"    class="dept-nav__drawer-sublink" onclick="closeDrawer()">Clay &amp; Earthenware</a>
+          <a href="gallery.html?disc=fibres"  class="dept-nav__drawer-sublink" onclick="closeDrawer()">Fibres &amp; Fabrics</a>
+          <a href="gallery.html?disc=leather" class="dept-nav__drawer-sublink" onclick="closeDrawer()">Leather Technology</a>
+          <a href="gallery.html?disc=metal"   class="dept-nav__drawer-sublink" onclick="closeDrawer()">Metal Production</a>
+          <a href="gallery.html?disc=rattan"  class="dept-nav__drawer-sublink" onclick="closeDrawer()">Rattan &amp; Bamboo</a>
+          <a href="gallery.html?disc=wood"    class="dept-nav__drawer-sublink" onclick="closeDrawer()">Wood &amp; Furniture</a>
+        </div>
+      </div>
+
+      <!-- WebAR -->
+      <a href="webar.html" class="dept-nav__drawer-link" onclick="closeDrawer()">WebAR Viewer</a>
+
+      <!-- About -->
+      <a href="about.html" class="dept-nav__drawer-link" onclick="closeDrawer()">About DIAT</a>
+
+      <!-- Programmes accordion -->
+      <div class="dept-nav__drawer-group">
+        <button class="dept-nav__drawer-link dept-nav__drawer-toggle"
+                onclick="toggleDrawerGroup(this)" aria-expanded="false">
+          Programmes <span class="dept-nav__chevron" aria-hidden="true">&#9660;</span>
+        </button>
+        <div class="dept-nav__drawer-sub" aria-hidden="true">
+          <a href="programmes.html"         class="dept-nav__drawer-sublink" onclick="closeDrawer()">All Programmes</a>
+          <a href="product-design.html"     class="dept-nav__drawer-sublink" onclick="closeDrawer()">&#128208; Product Design</a>
+          <a href="clay-earthenware.html"   class="dept-nav__drawer-sublink" onclick="closeDrawer()">&#127994; Clay &amp; Earthenware</a>
+          <a href="fibres-fabrics.html"     class="dept-nav__drawer-sublink" onclick="closeDrawer()">&#129525; Fibres &amp; Fabrics</a>
+          <a href="leather-technology.html" class="dept-nav__drawer-sublink" onclick="closeDrawer()">&#128092; Leather Technology</a>
+          <a href="metal-production.html"   class="dept-nav__drawer-sublink" onclick="closeDrawer()">&#9881; Metal Production</a>
+          <a href="rattan-bamboo.html"      class="dept-nav__drawer-sublink" onclick="closeDrawer()">&#127819; Rattan &amp; Bamboo</a>
+          <a href="wood-furniture.html"     class="dept-nav__drawer-sublink" onclick="closeDrawer()">&#129683; Wood &amp; Furniture</a>
+        </div>
+      </div>
+
+      <!-- Community -->
+      <a href="community.html" class="dept-nav__drawer-link" onclick="closeDrawer()">Community &amp; Internship</a>
+
+      <!-- Staff accordion -->
+      <div class="dept-nav__drawer-group">
+        <button class="dept-nav__drawer-link dept-nav__drawer-toggle"
+                onclick="toggleDrawerGroup(this)" aria-expanded="false">
+          Staff &amp; Students <span class="dept-nav__chevron" aria-hidden="true">&#9660;</span>
+        </button>
+        <div class="dept-nav__drawer-sub" aria-hidden="true">
+          <a href="staff.html"                    class="dept-nav__drawer-sublink" onclick="closeDrawer()">All Staff</a>
+          <a href="staff.html#academic-heading"   class="dept-nav__drawer-sublink" onclick="closeDrawer()">Academic Staff</a>
+          <a href="staff.html#technical-heading"  class="dept-nav__drawer-sublink" onclick="closeDrawer()">Technical Staff</a>
+          <a href="staff.html#siat-reps-heading"  class="dept-nav__drawer-sublink" onclick="closeDrawer()">SIAT Representatives</a>
+          <a href="staff.html#siat-hub-heading"   class="dept-nav__drawer-sublink" onclick="closeDrawer()">SIAT Student Hub</a>
+        </div>
+      </div>
+
+      <!-- Archive -->
+      <a href="archive.html" class="dept-nav__drawer-link" onclick="closeDrawer()">Digital Archive</a>
       <a href="contact.html"    class="dept-nav__drawer-link" onclick="closeDrawer()">Contact</a>
       <a href="gallery.html"    class="dept-nav__drawer-cta"  onclick="closeDrawer()">View Gallery &#8594;</a>
     </nav>
@@ -212,6 +382,26 @@
     if (t) t.setAttribute('aria-expanded', 'false');
     if (d) d.setAttribute('aria-hidden', 'true');
     document.body.style.overflow = '';
+  };
+
+  /* Mobile drawer accordion — tap to expand sub-link groups */
+  window.toggleDrawerGroup = function (btn) {
+    var sub  = btn.nextElementSibling;
+    var open = btn.getAttribute('aria-expanded') === 'true';
+    /* Close all other groups */
+    document.querySelectorAll('.dept-nav__drawer-toggle').forEach(function(b) {
+      if (b !== btn) {
+        b.setAttribute('aria-expanded', 'false');
+        var s = b.nextElementSibling;
+        if (s) { s.setAttribute('aria-hidden', 'true'); s.style.maxHeight = '0'; }
+      }
+    });
+    /* Toggle this one */
+    btn.setAttribute('aria-expanded', String(!open));
+    if (sub) {
+      sub.setAttribute('aria-hidden', String(open));
+      sub.style.maxHeight = open ? '0' : sub.scrollHeight + 'px';
+    }
   };
 
   /* ── 4. SCROLL REVEAL ─────────────────────────────────────── */
