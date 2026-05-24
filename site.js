@@ -372,6 +372,65 @@
         document.body.style.overflow = open ? 'hidden' : '';
       });
     }
+
+    /*
+     * DROPDOWN HOVER — JS mouseenter/mouseleave handlers.
+     * More reliable than CSS :hover alone because parent overflow:hidden
+     * can silently block :hover on absolutely-positioned children.
+     * Adds/removes .is-open class; CSS rules above target .is-open.
+     * A 100ms close delay prevents the dropdown from flickering when
+     * the mouse briefly passes through the 6px gap between link and panel.
+     */
+    var closeTimers = {};
+    document.querySelectorAll('.dept-nav__item').forEach(function(item, idx) {
+      var panel = item.querySelector('.dept-nav__dropdown, .dept-nav__mega');
+      if (!panel) return;
+      var id = 'drop-' + idx;
+
+      item.addEventListener('mouseenter', function () {
+        clearTimeout(closeTimers[id]);
+        panel.classList.add('is-open');
+        var link = item.querySelector('.dept-nav__link--drop');
+        if (link) link.setAttribute('aria-expanded', 'true');
+      });
+
+      item.addEventListener('mouseleave', function () {
+        closeTimers[id] = setTimeout(function () {
+          panel.classList.remove('is-open');
+          var link = item.querySelector('.dept-nav__link--drop');
+          if (link) link.setAttribute('aria-expanded', 'false');
+        }, 100);
+      });
+
+      /* Keep open if mouse re-enters the panel itself */
+      panel.addEventListener('mouseenter', function () {
+        clearTimeout(closeTimers[id]);
+      });
+      panel.addEventListener('mouseleave', function () {
+        closeTimers[id] = setTimeout(function () {
+          panel.classList.remove('is-open');
+          var link = item.querySelector('.dept-nav__link--drop');
+          if (link) link.setAttribute('aria-expanded', 'false');
+        }, 100);
+      });
+
+      /* Keyboard: Escape closes open panel */
+      item.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+          panel.classList.remove('is-open');
+          var link = item.querySelector('.dept-nav__link--drop');
+          if (link) { link.setAttribute('aria-expanded', 'false'); link.focus(); }
+        }
+      });
+    });
+
+    /* Close all dropdowns when clicking outside the nav */
+    document.addEventListener('click', function(e) {
+      if (!e.target.closest('.dept-nav__item')) {
+        document.querySelectorAll('.dept-nav__dropdown.is-open, .dept-nav__mega.is-open')
+          .forEach(function(p) { p.classList.remove('is-open'); });
+      }
+    });
   }
 
   /* Global closeDrawer — called by inline onclick on drawer links */

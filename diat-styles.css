@@ -3772,6 +3772,20 @@ h1, h2, h3, h4, h5, h6 { font-family: var(--ff-display); line-height: var(--lh-h
  *   accordion-style with a single tap.
  * ============================================================ */
 
+/* ── NAV OVERFLOW FIX ────────────────────────────────────────
+ * overflow-x:hidden on .dept-nav (from mobile patches) forces
+ * overflow-y:auto, which clips absolutely-positioned dropdowns.
+ * Restore overflow:visible at desktop so dropdowns can overflow
+ * the nav bar boundary downward.
+ * ──────────────────────────────────────────────────────────── */
+@media (min-width: 769px) {
+  .dept-nav,
+  .dept-nav__inner,
+  .dept-nav__links {
+    overflow: visible !important;
+  }
+}
+
 /* ── NAV ITEM WRAPPER (holds link + dropdown) ─────────────── */
 .dept-nav__item {
   position: relative;
@@ -3815,12 +3829,22 @@ h1, h2, h3, h4, h5, h6 { font-family: var(--ff-display); line-height: var(--lh-h
 }
 
 /* Trigger: hover OR keyboard focus-within */
+/* CSS :hover — may be blocked by parent overflow on some browsers */
 .dept-nav__item:hover .dept-nav__dropdown,
 .dept-nav__item:focus-within .dept-nav__dropdown {
   opacity: 1;
   visibility: visible;
   transform: translateX(-50%) translateY(0);
   pointer-events: auto;
+}
+
+/* JS-driven .is-open class — reliable fallback when CSS :hover is blocked */
+.dept-nav__dropdown.is-open,
+.dept-nav__mega.is-open {
+  opacity: 1 !important;
+  visibility: visible !important;
+  transform: translateX(-50%) translateY(0) !important;
+  pointer-events: auto !important;
 }
 
 /* Small upward-pointing caret on the panel */
@@ -3913,6 +3937,13 @@ h1, h2, h3, h4, h5, h6 { font-family: var(--ff-display); line-height: var(--lh-h
   visibility: visible;
   transform: translateX(-50%) translateY(0);
   pointer-events: auto;
+}
+/* JS class trigger for mega menu */
+.dept-nav__item--mega .dept-nav__mega.is-open {
+  opacity: 1 !important;
+  visibility: visible !important;
+  transform: translateX(-50%) translateY(0) !important;
+  pointer-events: auto !important;
 }
 
 /* Same caret on mega menu */
