@@ -151,8 +151,8 @@ tr:hover td{background:#FAFAF8}
     <p>Enter your admin password to manage content</p>
   </div>
   <div id="auth-box">
-    <input id="auth-pass" type="password" placeholder="Admin password" onkeydown="if(event.key==='Enter')doLogin()"/>
-    <button id="auth-btn" onclick="doLogin()">Sign In →</button>
+    <input id="auth-pass" type="password" placeholder="Admin password"/>
+    <button id="auth-btn">Sign In →</button>
     <div id="auth-err">Incorrect password. Try again.</div>
   </div>
   <p style="color:rgba(255,255,255,.25);font-size:.7rem">DIAT KNUST · Content Management System</p>
@@ -204,7 +204,7 @@ tr:hover td{background:#FAFAF8}
     </div>
   </nav>
   <div id="sidebar-bottom">
-    <button id="signout-btn" onclick="signOut()">← Sign Out</button>
+    <button id="signout-btn">← Sign Out</button>
   </div>
 </div>
 
@@ -398,14 +398,20 @@ const SESSION_KEY = 'diat_admin_session';
 
 /* ── AUTH ────────────────────────────────────────────── */
 function doLogin() {
-  const p = document.getElementById('auth-pass').value;
-  if (p === PASS) {
-    localStorage.setItem(SESSION_KEY, 'true');
-    document.getElementById('auth-screen').style.display = 'none';
-    initAdmin();
-  } else {
-    document.getElementById('auth-err').style.display = 'block';
-    document.getElementById('auth-pass').value = '';
+  try {
+    const p = document.getElementById('auth-pass').value;
+    if (p === PASS) {
+      localStorage.setItem(SESSION_KEY, 'true');
+      // Reload so admin initialises cleanly
+      location.reload();
+    } else {
+      const err = document.getElementById('auth-err');
+      if (err) err.style.display = 'block';
+      document.getElementById('auth-pass').value = '';
+      document.getElementById('auth-pass').focus();
+    }
+  } catch(e) {
+    alert('Login error: ' + e.message);
   }
 }
 function signOut() {
@@ -413,6 +419,17 @@ function signOut() {
   localStorage.removeItem(SESSION_KEY);
   location.reload();
 }
+
+// Bind auth button via addEventListener (CSP-safe)
+document.addEventListener('DOMContentLoaded', function() {
+  var btn = document.getElementById('auth-btn');
+  var inp = document.getElementById('auth-pass');
+  if (btn) btn.addEventListener('click', doLogin);
+  if (inp) inp.addEventListener('keydown', function(e){ if(e.key==='Enter') doLogin(); });
+  var so = document.getElementById('signout-btn');
+  if (so) so.addEventListener('click', signOut);
+});
+
 if (localStorage.getItem(SESSION_KEY) === 'true') {
   document.getElementById('auth-screen').style.display = 'none';
 } else {
@@ -1488,8 +1505,18 @@ function updateDashStats() {
 
 /* ── INIT ────────────────────────────────────────────── */
 function initAdmin() {
-  buildAllForms();
-  updateDashStats();
+  try {
+    buildAllForms();
+    updateDashStats();
+  } catch(e) {
+    console.error('Admin init error:', e);
+    document.getElementById('content').innerHTML =
+      '<div style="background:#FEF2F2;border:1px solid #FCA5A5;border-radius:10px;padding:24px;margin:20px;font-family:monospace">' +
+      '<h3 style="color:#991B1B;margin-bottom:8px">⚠ Admin Load Error</h3>' +
+      '<p style="color:#DC2626;font-size:.85rem">' + e.message + '</p>' +
+      '<pre style="margin-top:12px;font-size:.75rem;color:#7F1D1D;overflow:auto">' + (e.stack||'') + '</pre>' +
+      '</div>';
+  }
 }
 if (localStorage.getItem(SESSION_KEY) === 'true') initAdmin();
 </script>
