@@ -200,6 +200,7 @@ tr:hover td{background:#FAFAF8}
       <button class="nav-btn" onclick="showSection('newpage')"><span class="nav-icon">➕</span>Add New Page</button>
     </div>
     <div class="nav-group">
+      <button class="nav-btn" onclick="showSection('publish')" style="color:#4ADE80"><span class="nav-icon">🚀</span>Publish Live</button>
       <button class="nav-btn" onclick="showSection('backup')"><span class="nav-icon">💾</span>Backup &amp; Restore</button>
     </div>
   </nav>
@@ -356,6 +357,13 @@ tr:hover td{background:#FAFAF8}
       <div class="section-title">Add New Page</div>
       <div class="section-sub">Generate a ready-to-use HTML file for a new discipline or general page</div>
       <div id="form-newpage"></div>
+    </div>
+
+    <!-- ══ PUBLISH ══════════════════════════════════════ -->
+    <div id="sec-publish" class="section">
+      <div class="section-title">Publish Live to GitHub</div>
+      <div class="section-sub">Push your saved changes so everyone visiting the website sees them</div>
+      <div id="form-publish"></div>
     </div>
 
     <!-- ══ BACKUP ══════════════════════════════════════ -->
@@ -931,6 +939,9 @@ function buildAllForms() {
   /* NEW PAGE */
   buildNewPageSection();
 
+  /* PUBLISH */
+  buildPublishSection();
+
   /* BACKUP */
   buildBackupSection();
 }
@@ -1487,6 +1498,343 @@ function clearContent() { if (confirm('Clear all text edits?')) { localStorage.r
 function clearGallery() { if (confirm('Delete all artworks?')) { localStorage.removeItem(GALLERY_STORE); toast('Gallery cleared'); } }
 function clearWear() { if (confirm('Delete all WebAR models?')) { localStorage.removeItem(WEBAR_STORE); toast('WebAR models cleared'); } }
 function clearAll() { if (confirm('⚠️ Delete ALL saved content including artworks and WebAR models? This cannot be undone!')) { [STORE, GALLERY_STORE, WEBAR_STORE].forEach(k => localStorage.removeItem(k)); toast('All content cleared'); renderContentOverview(); } }
+
+
+/* ══════════════════════════════════════════════════════
+   PUBLISH TO GITHUB
+   ══════════════════════════════════════════════════════ */
+const GH_TOKEN_KEY  = 'diat_gh_token';
+const GH_REPO_KEY   = 'diat_gh_repo';
+const GH_BRANCH_KEY = 'diat_gh_branch';
+
+function buildPublishSection() {
+  const container = document.getElementById('form-publish');
+  if (!container) return;
+
+  const savedToken  = localStorage.getItem(GH_TOKEN_KEY)  || '';
+  const savedRepo   = localStorage.getItem(GH_REPO_KEY)   || 'diatknust-hub/diatknust-hub.github.io';
+  const savedBranch = localStorage.getItem(GH_BRANCH_KEY) || 'main';
+
+  container.innerHTML = `
+    <!-- STEP 1: TOKEN SETUP -->
+    <div class="card">
+      <div class="card-header"><span class="card-icon">🔑</span><h3>Step 1 — GitHub Access Token (one-time setup)</h3></div>
+      <div class="card-body">
+        <p class="hint">You need a Personal Access Token so the admin can push files to your GitHub repo on your behalf. Your token is stored <strong>only in this browser</strong> and sent only to GitHub's own servers.</p>
+        <div style="background:var(--earth);border-radius:10px;padding:16px;margin-bottom:16px">
+          <div style="font-weight:700;font-size:.85rem;margin-bottom:10px">How to get your token (takes 2 minutes):</div>
+          <ol style="padding-left:18px;font-size:.82rem;color:var(--mid);line-height:2">
+            <li>Go to <a href="https://github.com/settings/tokens/new" target="_blank" style="color:var(--gold);font-weight:700">github.com/settings/tokens/new</a></li>
+            <li>Under <strong>Note</strong>, write: <em>DIAT Admin CMS</em></li>
+            <li>Under <strong>Expiration</strong>, choose <em>No expiration</em></li>
+            <li>Under <strong>Select scopes</strong>, tick <strong>✅ repo</strong> (the first checkbox)</li>
+            <li>Scroll down → click <strong>Generate token</strong></li>
+            <li>Copy the token (starts with <code style="background:#fff;padding:2px 6px;border-radius:4px">ghp_</code>) and paste below</li>
+          </ol>
+        </div>
+        <div class="form-grid cols-1">
+          <div class="field">
+            <label>Your GitHub Personal Access Token</label>
+            <input type="password" id="gh-token" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx" value="${escHtml(savedToken)}" autocomplete="off">
+            <span class="hint">Starts with ghp_ · Stored only in your browser · Never shared</span>
+          </div>
+          <div class="field">
+            <label>Repository (owner/repo-name)</label>
+            <input type="text" id="gh-repo" value="${escHtml(savedRepo)}" placeholder="diatknust-hub/diatknust-hub.github.io">
+          </div>
+          <div class="field">
+            <label>Branch</label>
+            <input type="text" id="gh-branch" value="${escHtml(savedBranch)}" placeholder="main">
+            <span class="hint">Usually <strong>main</strong> or <strong>master</strong> — check your GitHub repo to confirm</span>
+          </div>
+        </div>
+        <div class="save-row">
+          <button class="btn-save" onclick="saveGitHubSettings()">💾 Save Settings</button>
+          <button class="btn-secondary" onclick="testGitHubToken()">🔍 Test Connection</button>
+          <span class="save-msg" id="gh-settings-saved">✓ Saved!</span>
+        </div>
+        <div id="gh-test-result" style="margin-top:12px;display:none"></div>
+      </div>
+    </div>
+
+    <!-- STEP 2: PUBLISH -->
+    <div class="card">
+      <div class="card-header"><span class="card-icon">🚀</span><h3>Step 2 — Publish to GitHub</h3></div>
+      <div class="card-body">
+        <p class="hint">This will push your saved content to GitHub. The site goes live for all visitors within <strong>1–2 minutes</strong> after publishing.</p>
+
+        <!-- What will be published -->
+        <div id="publish-summary" style="background:var(--earth);border-radius:10px;padding:16px;margin-bottom:16px">
+          <div style="font-weight:700;font-size:.85rem;margin-bottom:10px">📦 What will be published:</div>
+          <div id="publish-items" style="font-size:.82rem;color:var(--mid);line-height:2"></div>
+        </div>
+
+        <!-- Progress -->
+        <div id="publish-progress" style="display:none;margin-bottom:16px">
+          <div style="font-size:.82rem;font-weight:600;margin-bottom:8px;color:var(--indigo)" id="publish-status">Publishing…</div>
+          <div style="background:var(--border);border-radius:50px;height:8px;overflow:hidden">
+            <div id="publish-bar" style="background:var(--gold);height:100%;width:0%;transition:width .4s;border-radius:50px"></div>
+          </div>
+          <div id="publish-log" style="margin-top:12px;font-size:.75rem;font-family:monospace;color:var(--mid);max-height:180px;overflow-y:auto"></div>
+        </div>
+
+        <!-- Result -->
+        <div id="publish-result" style="display:none"></div>
+
+        <div class="save-row">
+          <button class="btn-save" id="publish-btn" onclick="publishToGitHub()" style="background:var(--indigo);font-size:.92rem;padding:12px 32px">
+            🚀 Publish Live Now
+          </button>
+          <span style="font-size:.75rem;color:var(--mid)" id="last-published"></span>
+        </div>
+
+        <div style="margin-top:16px;background:#F0FDF4;border:1px solid #86EFAC;border-radius:8px;padding:12px 16px;font-size:.78rem;color:#166534">
+          ℹ️ <strong>Note on images:</strong> Images uploaded via the admin are saved in your browser only. 
+          To publish images for all visitors, upload the image files directly to your GitHub repository 
+          and reference them by filename.
+        </div>
+      </div>
+    </div>
+  `;
+
+  updatePublishSummary();
+  updateLastPublished();
+}
+
+function updatePublishSummary() {
+  const el = document.getElementById('publish-items');
+  if (!el) return;
+  const content = getContent();
+  // Filter out base64 image data
+  const textKeys = Object.keys(content).filter(k => !content[k].startsWith('data:'));
+  const imgKeys  = Object.keys(content).filter(k =>  content[k].startsWith('data:'));
+  const artworks = getArtworks();
+  const models   = getWearModels();
+
+  el.innerHTML = [
+    `<div>📝 <strong>${textKeys.length}</strong> text/content edits  ${imgKeys.length > 0 ? '<span style="color:var(--gold);font-size:.7rem">('+imgKeys.length+' image(s) stored locally — not published to GitHub)</span>' : ''}</div>`,
+    `<div>🎨 <strong>${artworks.length}</strong> artwork record(s) in gallery</div>`,
+    `<div>🥽 <strong>${models.length}</strong> WebAR model record(s)</div>`,
+    `<div>📄 Files to update: <code style="background:#fff;padding:2px 6px;border-radius:4px;font-size:.72rem">diat-content.json</code> <code style="background:#fff;padding:2px 6px;border-radius:4px;font-size:.72rem">diat-gallery.json</code> <code style="background:#fff;padding:2px 6px;border-radius:4px;font-size:.72rem">diat-webar.json</code></div>`,
+  ].join('');
+}
+
+function updateLastPublished() {
+  const el = document.getElementById('last-published');
+  if (!el) return;
+  const ts = localStorage.getItem('diat_last_published');
+  if (ts) el.textContent = 'Last published: ' + new Date(parseInt(ts)).toLocaleString();
+}
+
+function saveGitHubSettings() {
+  const token  = document.getElementById('gh-token').value.trim();
+  const repo   = document.getElementById('gh-repo').value.trim();
+  const branch = document.getElementById('gh-branch').value.trim();
+  if (token)  localStorage.setItem(GH_TOKEN_KEY,  token);
+  if (repo)   localStorage.setItem(GH_REPO_KEY,   repo);
+  if (branch) localStorage.setItem(GH_BRANCH_KEY, branch);
+  const msg = document.getElementById('gh-settings-saved');
+  if (msg) { msg.classList.add('show'); setTimeout(() => msg.classList.remove('show'), 2000); }
+  toast('GitHub settings saved ✓');
+}
+
+async function testGitHubToken() {
+  const token  = document.getElementById('gh-token').value.trim();
+  const repo   = document.getElementById('gh-repo').value.trim();
+  const result = document.getElementById('gh-test-result');
+  if (!token) { toast('Paste your token first', 'error'); return; }
+  if (!repo)  { toast('Enter your repo name first', 'error'); return; }
+  result.style.display = 'block';
+  result.innerHTML = '<span style="color:var(--mid);font-size:.82rem">🔍 Testing connection…</span>';
+  try {
+    const r = await fetch('https://api.github.com/repos/' + repo, {
+      headers: { 'Authorization': 'token ' + token, 'Accept': 'application/vnd.github.v3+json' }
+    });
+    if (r.ok) {
+      const data = await r.json();
+      result.innerHTML = '<div style="background:#F0FDF4;border:1px solid #86EFAC;border-radius:8px;padding:10px 14px;font-size:.82rem;color:#166534">✅ <strong>Connected!</strong> Found repo: <strong>' + data.full_name + '</strong> · Default branch: <strong>' + data.default_branch + '</strong></div>';
+      // Auto-fill branch if empty
+      const branchField = document.getElementById('gh-branch');
+      if (branchField && !branchField.value) branchField.value = data.default_branch;
+    } else if (r.status === 401) {
+      result.innerHTML = '<div style="background:#FEF2F2;border:1px solid #FCA5A5;border-radius:8px;padding:10px 14px;font-size:.82rem;color:#991B1B">❌ <strong>Invalid token.</strong> Check you copied the full token and it has <strong>repo</strong> scope.</div>';
+    } else if (r.status === 404) {
+      result.innerHTML = '<div style="background:#FEF2F2;border:1px solid #FCA5A5;border-radius:8px;padding:10px 14px;font-size:.82rem;color:#991B1B">❌ <strong>Repo not found.</strong> Check the owner/repo-name is correct (e.g. diatknust-hub/diatknust-hub.github.io).</div>';
+    } else {
+      result.innerHTML = '<div style="background:#FEF2F2;border:1px solid #FCA5A5;border-radius:8px;padding:10px 14px;font-size:.82rem;color:#991B1B">❌ Error ' + r.status + '. Try again.</div>';
+    }
+  } catch(e) {
+    result.innerHTML = '<div style="background:#FEF2F2;border:1px solid #FCA5A5;border-radius:8px;padding:10px 14px;font-size:.82rem;color:#991B1B">❌ Network error: ' + e.message + '</div>';
+  }
+}
+
+/* ── Core GitHub file push ─────────────────────────── */
+async function ghPushFile(token, repo, branch, path, jsonData, commitMsg) {
+  const API = 'https://api.github.com';
+  // Get current SHA (needed to update existing files)
+  let sha = null;
+  try {
+    const r = await fetch(API + '/repos/' + repo + '/contents/' + path, {
+      headers: { 'Authorization': 'token ' + token, 'Accept': 'application/vnd.github.v3+json' }
+    });
+    if (r.ok) { const d = await r.json(); sha = d.sha; }
+  } catch(e) {}
+
+  // Encode content as base64 (UTF-8 safe)
+  const str = JSON.stringify(jsonData, null, 2);
+  const bytes = new TextEncoder().encode(str);
+  let binary = '';
+  bytes.forEach(b => binary += String.fromCharCode(b));
+  const b64 = btoa(binary);
+
+  const body = { message: commitMsg, content: b64, branch };
+  if (sha) body.sha = sha;
+
+  const r = await fetch(API + '/repos/' + repo + '/contents/' + path, {
+    method: 'PUT',
+    headers: {
+      'Authorization': 'token ' + token,
+      'Accept': 'application/vnd.github.v3+json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(body)
+  });
+  return r;
+}
+
+function logPublish(msg, ok) {
+  const log = document.getElementById('publish-log');
+  if (!log) return;
+  const line = document.createElement('div');
+  line.style.cssText = 'padding:2px 0;color:' + (ok === false ? '#DC2626' : ok === true ? '#059669' : 'var(--mid)');
+  line.textContent = new Date().toLocaleTimeString() + '  ' + msg;
+  log.appendChild(line);
+  log.scrollTop = log.scrollHeight;
+}
+
+function setProgress(pct, label) {
+  const bar = document.getElementById('publish-bar');
+  const status = document.getElementById('publish-status');
+  if (bar) bar.style.width = pct + '%';
+  if (status) status.textContent = label;
+}
+
+async function publishToGitHub() {
+  const token  = (localStorage.getItem(GH_TOKEN_KEY)  || '').trim();
+  const repo   = (localStorage.getItem(GH_REPO_KEY)   || '').trim();
+  const branch = (localStorage.getItem(GH_BRANCH_KEY) || 'main').trim();
+
+  if (!token) { toast('Set your GitHub token in Step 1 first', 'error'); return; }
+  if (!repo)  { toast('Set your repo name in Step 1 first', 'error'); return; }
+
+  // Also read live field values in case user hasn't saved settings yet
+  const liveToken  = (document.getElementById('gh-token')  || {}).value  || token;
+  const liveRepo   = (document.getElementById('gh-repo')   || {}).value  || repo;
+  const liveBranch = (document.getElementById('gh-branch') || {}).value  || branch;
+
+  const useToken  = liveToken  || token;
+  const useRepo   = liveRepo   || repo;
+  const useBranch = liveBranch || branch;
+
+  if (!confirm('Publish all saved changes to github.com/' + useRepo + '?\n\nThe site will update live within 1-2 minutes.')) return;
+
+  // Show progress
+  const progress = document.getElementById('publish-progress');
+  const result   = document.getElementById('publish-result');
+  const btn      = document.getElementById('publish-btn');
+  if (progress) progress.style.display = 'block';
+  if (result)   result.style.display   = 'none';
+  if (btn)      btn.disabled = true;
+  document.getElementById('publish-log').innerHTML = '';
+
+  const now = new Date().toLocaleString();
+  const commitMsg = 'DIAT Admin: Content update ' + now;
+  let errors = 0;
+
+  try {
+    // ── 1. diat-content.json (text content, no base64 images) ──
+    setProgress(10, 'Publishing text content…');
+    logPublish('Pushing diat-content.json…');
+    const rawContent = getContent();
+    const textContent = {};
+    Object.keys(rawContent).forEach(k => {
+      if (!rawContent[k].startsWith('data:')) textContent[k] = rawContent[k];
+    });
+    const r1 = await ghPushFile(useToken, useRepo, useBranch, 'diat-content.json', textContent, commitMsg);
+    if (r1.ok || r1.status === 201) {
+      logPublish('✓ diat-content.json  (' + Object.keys(textContent).length + ' items)', true);
+    } else {
+      const err = await r1.json().catch(() => ({}));
+      logPublish('✗ diat-content.json failed: ' + (err.message || r1.status), false);
+      if (r1.status === 401) { 
+        setProgress(0, 'Authentication failed');
+        if (result) { result.style.display='block'; result.innerHTML = '<div style="background:#FEF2F2;border:1px solid #FCA5A5;border-radius:8px;padding:14px 16px;font-size:.85rem;color:#991B1B">❌ <strong>Token rejected by GitHub.</strong> Go back to Step 1 and check your token has the <strong>repo</strong> scope.</div>'; }
+        if (btn) btn.disabled = false;
+        return;
+      }
+      errors++;
+    }
+
+    // ── 2. diat-gallery.json (artworks, no base64 images) ──
+    setProgress(45, 'Publishing gallery…');
+    logPublish('Pushing diat-gallery.json…');
+    const artworks = getArtworks().map(a => {
+      const copy = Object.assign({}, a);
+      if (copy.image && copy.image.startsWith('data:')) delete copy.image;
+      return copy;
+    });
+    const r2 = await ghPushFile(useToken, useRepo, useBranch, 'diat-gallery.json', artworks, commitMsg);
+    if (r2.ok || r2.status === 201) {
+      logPublish('✓ diat-gallery.json  (' + artworks.length + ' artworks)', true);
+    } else {
+      logPublish('✗ diat-gallery.json failed: ' + r2.status, false);
+      errors++;
+    }
+
+    // ── 3. diat-webar.json (WebAR models, no base64 posters) ──
+    setProgress(75, 'Publishing WebAR models…');
+    logPublish('Pushing diat-webar.json…');
+    const models = getWearModels().map(m => {
+      const copy = Object.assign({}, m);
+      if (copy.poster && copy.poster.startsWith('data:')) delete copy.poster;
+      return copy;
+    });
+    const r3 = await ghPushFile(useToken, useRepo, useBranch, 'diat-webar.json', models, commitMsg);
+    if (r3.ok || r3.status === 201) {
+      logPublish('✓ diat-webar.json  (' + models.length + ' models)', true);
+    } else {
+      logPublish('✗ diat-webar.json failed: ' + r3.status, false);
+      errors++;
+    }
+
+    setProgress(100, errors === 0 ? 'Done!' : 'Completed with errors');
+
+    // ── Result ──
+    if (errors === 0) {
+      localStorage.setItem('diat_last_published', Date.now());
+      updateLastPublished();
+      logPublish('🎉 All files published successfully!', true);
+      if (result) {
+        result.style.display = 'block';
+        result.innerHTML = `<div style="background:#F0FDF4;border:1px solid #86EFAC;border-radius:10px;padding:16px 20px;font-size:.85rem;color:#166534">
+          <div style="font-size:1.1rem;font-weight:700;margin-bottom:6px">🎉 Published successfully!</div>
+          <div>Your site will be live at <a href="https://${useRepo.split('/')[0]}.github.io" target="_blank" style="color:#166534;font-weight:700">https://${useRepo.split('/')[0]}.github.io</a> within 1–2 minutes.</div>
+          <div style="margin-top:8px;font-size:.78rem;opacity:.8">Committed at ${now}</div>
+        </div>`;
+      }
+      toast('Published to GitHub ✓', 'success');
+    } else {
+      logPublish('⚠ ' + errors + ' error(s). Check log above.', false);
+      toast(errors + ' file(s) failed — check the log', 'error');
+    }
+  } catch(e) {
+    logPublish('✗ Unexpected error: ' + e.message, false);
+    toast('Publish failed: ' + e.message, 'error');
+  } finally {
+    if (btn) btn.disabled = false;
+  }
+}
+/* ─────────────────────────────────────────────────── */
 
 /* ── DASHBOARD STATS ─────────────────────────────────── */
 function updateDashStats() {

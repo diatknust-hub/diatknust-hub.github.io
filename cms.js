@@ -17,10 +17,7 @@
   } catch(e) {}
 
   /* ── 2. Restore saved content on every page load ────────── */
-  function loadContent() {
-    var saved;
-    try { saved = JSON.parse(localStorage.getItem(STORE) || '{}'); }
-    catch(e) { return; }
+  function applyContent(saved) {
     document.querySelectorAll('[data-cms-key]').forEach(function(el) {
       var val = saved[el.dataset.cmsKey];
       if (val !== undefined && val !== '') {
@@ -28,6 +25,24 @@
         else { el.innerHTML = val; }
       }
     });
+  }
+  function loadContent() {
+    var saved;
+    try { saved = JSON.parse(localStorage.getItem(STORE) || '{}'); }
+    catch(e) { return; }
+    applyContent(saved);
+  }
+  /* Fetch published content from diat-content.json for live visitors */
+  function fetchPublished() {
+    fetch('diat-content.json?t=' + Date.now())
+      .then(function(r){ return r.ok ? r.json() : null; })
+      .then(function(json){
+        if (!json) return;
+        /* Apply published content first, then re-apply localStorage on top */
+        applyContent(json);
+        loadContent();
+      })
+      .catch(function(){});
   }
 
   /* ── 3. Check if admin — URL param OR localStorage ─────── */
@@ -363,8 +378,11 @@
       buildTooltip();
       buildModal();
       buildImageModal();
-      /* toast is created inside buildModal() — no separate buildToast needed */
+      /* toast built inside buildModal */
       bindClicks();
+    } else {
+      /* Regular visitor: pull published content from diat-content.json */
+      fetchPublished();
     }
   }
 
