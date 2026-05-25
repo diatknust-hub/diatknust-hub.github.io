@@ -718,30 +718,30 @@ h1, h2, h3, h4, h5, h6 { font-family: var(--ff-display); line-height: var(--lh-h
   position: absolute;
   top: var(--sp-xl);
   right: var(--sp-lg);
-  width: clamp(72px, 9vw, 104px);
-  height: clamp(72px, 9vw, 104px);
+  /* Slightly larger than the old text circle so the logo detail is visible */
+  width: clamp(100px, 12vw, 148px);
+  height: clamp(100px, 12vw, 148px);
   border-radius: 50%;
-  background: var(--clr-gold);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  text-align: center;
+  overflow: hidden;
+  /* Black matches the logo background perfectly */
+  background: #000;
   z-index: 3;
-  box-shadow: var(--shadow-gold);
+  /* Gold glow to tie it into the hero palette */
+  box-shadow: 0 0 0 3px var(--clr-gold), var(--shadow-gold);
+  flex-shrink: 0;
 }
-.dept-hero__badge-title {
-  font-family: var(--ff-display);
-  font-size: var(--fs-lg);
-  font-weight: 700;
-  color: var(--clr-text-inverse);
-  line-height: 1;
+/* The anniversary logo image */
+.dept-hero__badge-logo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;   /* zoom in slightly — removes black corners inside the circle */
+  object-position: center;
+  display: block;
+  border-radius: 50%;
 }
-.dept-hero__badge-sub {
-  font-size: var(--fs-xs);
-  color: rgba(255,255,255,0.75);
-  letter-spacing: 0.05em;
-}
+/* Keep old text helpers silent in case any other page references them */
+.dept-hero__badge-title,
+.dept-hero__badge-sub { display: none; }
 /* Gallery cards on hero visual */
 .dept-hero__preview {
   position: absolute;
