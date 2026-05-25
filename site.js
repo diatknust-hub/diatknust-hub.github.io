@@ -36,9 +36,14 @@
 
   /* ── 1. SHARED HTML BLOCKS ──────────────────────────────── */
 
+  /* Read saved site-wide content from localStorage */
+  var _sc = {};
+  try { _sc = JSON.parse(localStorage.getItem('diat_content') || '{}'); } catch(e) {}
+  function _scv(key, def) { return (_sc[key] !== undefined && _sc[key] !== '') ? _sc[key] : def; }
+
   var ANNOUNCE = `<div class="site-announce" role="region" aria-label="Site announcement">
-    &#127881; DIAT@50 &mdash; Est. 1976 &nbsp;&middot;&nbsp; Ghana&#39;s premier indigenous art department
-    <a href="#signup" class="site-announce__link">Register for Updates &#8594;</a>
+    <span data-cms-key="site-announce-text" data-cms-label="Announcement Bar Text">${_scv('site-announce-text','&#127881; DIAT@50 &mdash; Est. 1976 &nbsp;&middot;&nbsp; Ghana&#39;s premier indigenous art department')}</span>
+    <a href="#signup" class="site-announce__link" data-cms-key="site-announce-link" data-cms-label="Announcement Button Text" data-cms-type="text">${_scv('site-announce-link','Register for Updates &#8594;')}</a>
   </div>`;
 
   var HEADER = `<header class="site-header" role="banner" aria-label="Site brand">
@@ -287,15 +292,15 @@
     <div class="container">
       <div class="site-footer__grid">
         <div>
-          <p class="site-footer__brand-name">Dept. of Indigenous Art &amp; Technology</p>
-          <span class="site-footer__brand-sub">KNUST &middot; College of Art and Built Environment &middot; Kumasi, Ghana</span>
-          <p class="site-footer__description">DIAT is dedicated to the preservation, teaching, and global promotion of Ghana&#39;s indigenous art and craft heritage &mdash; Est. 1976.</p>
+          <p class="site-footer__brand-name" data-cms-key="site-footer-brand" data-cms-label="Footer Brand Name" data-cms-type="text">${_scv('site-footer-brand','Dept. of Indigenous Art &amp; Technology')}</p>
+          <span class="site-footer__brand-sub" data-cms-key="site-footer-sub" data-cms-label="Footer Sub-line" data-cms-type="text">${_scv('site-footer-sub','KNUST &middot; College of Art and Built Environment &middot; Kumasi, Ghana')}</span>
+          <p class="site-footer__description" data-cms-key="site-footer-desc" data-cms-label="Footer Description">${_scv('site-footer-desc','DIAT is dedicated to the preservation, teaching, and global promotion of Ghana&#39;s indigenous art and craft heritage &mdash; Est. 1976.')}</p>
           <nav class="site-footer__social" aria-label="Social media">
-            <a href="#" class="site-footer__social-link" aria-label="Instagram">&#128247;</a>
-            <a href="#" class="site-footer__social-link" aria-label="Facebook">&#127760;</a>
-            <a href="#" class="site-footer__social-link" aria-label="TikTok">&#127925;</a>
-            <a href="#" class="site-footer__social-link" aria-label="WhatsApp">&#128172;</a>
-            <a href="#" class="site-footer__social-link" aria-label="YouTube">&#9654;</a>
+            <a href="${_scv('site-social-ig','#')}" class="site-footer__social-link" aria-label="Instagram">&#128247;</a>
+            <a href="${_scv('site-social-fb','#')}" class="site-footer__social-link" aria-label="Facebook">&#127760;</a>
+            <a href="${_scv('site-social-tt','#')}" class="site-footer__social-link" aria-label="TikTok">&#127925;</a>
+            <a href="${_scv('site-social-wa','#')}" class="site-footer__social-link" aria-label="WhatsApp">&#128172;</a>
+            <a href="${_scv('site-social-yt','#')}" class="site-footer__social-link" aria-label="YouTube">&#9654;</a>
           </nav>
         </div>
         <nav aria-label="Explore"><h3 class="site-footer__col-title">Explore</h3><ul class="site-footer__col-links" role="list"><li><a href="gallery.html" class="site-footer__col-link">Artwork Gallery</a></li><li><a href="webar.html" class="site-footer__col-link">WebAR Viewer</a></li><li><a href="about.html" class="site-footer__col-link">About DIAT</a></li><li><a href="archive.html" class="site-footer__col-link">Digital Archive</a></li></ul></nav>
@@ -303,8 +308,8 @@
         <nav aria-label="Connect"><h3 class="site-footer__col-title">Connect</h3><ul class="site-footer__col-links" role="list"><li><a href="contact.html" class="site-footer__col-link">Contact Us</a></li><li><a href="#signup" class="site-footer__col-link">Newsletter</a></li><li><a href="contact.html" class="site-footer__col-link">Commission Artwork</a></li></ul></nav>
       </div>
       <div class="site-footer__bottom">
-        <p class="site-footer__bottom-text">&copy; 2026 DIAT, <strong>KNUST</strong>. All rights reserved.</p>
-        <p class="site-footer__bottom-text">MPhil research project &mdash; <strong>CABE, KNUST.</strong></p>
+        <p class="site-footer__bottom-text" data-cms-key="site-footer-copy" data-cms-label="Footer Copyright Line 1">${_scv('site-footer-copy','&copy; 2026 DIAT, <strong>KNUST</strong>. All rights reserved.')}</p>
+        <p class="site-footer__bottom-text" data-cms-key="site-footer-copy2" data-cms-label="Footer Copyright Line 2">${_scv('site-footer-copy2','MPhil research project &mdash; <strong>CABE, KNUST.</strong>')}</p>
       </div>
     </div>
   </footer>`;

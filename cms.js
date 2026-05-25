@@ -363,7 +363,7 @@
       buildTooltip();
       buildModal();
       buildImageModal();
-      buildToast();
+      /* toast is created inside buildModal() — no separate buildToast needed */
       bindClicks();
     }
   }
