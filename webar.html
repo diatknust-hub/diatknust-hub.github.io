@@ -692,7 +692,10 @@
           shadow-intensity: realistic ground shadow so the object "sits" in space.
           exposure: slightly boosted for Ghana's bright-light demo environment.
           camera-orbit: slightly elevated default view angle.
-          ar-scale: "auto" lets Scene Viewer/WebXR determine real-world scale.
+          ar-scale: "fixed" prevents WebXR from auto-scaling which causes
+          the AR session to fail and return immediately on most Android devices.
+          ar-placement="floor" tells ARCore to anchor on flat surfaces.
+          xr-environment: enables real-world lighting estimation in WebXR.
         -->
         <model-viewer
           id="main-viewer"
@@ -703,7 +706,9 @@
 
           ar
           ar-modes="scene-viewer webxr quick-look"
-          ar-scale="auto"
+          ar-scale="fixed"
+          ar-placement="floor"
+          xr-environment
 
           camera-controls
           touch-action="pan-y"
@@ -835,6 +840,9 @@
       viewer.setAttribute('src',     glb);
       viewer.setAttribute('ios-src', usdz);
       viewer.setAttribute('alt',     title + ' — a DIAT KNUST artwork scanned in 3D');
+      /* Re-assert AR fix attributes — some browsers drop these on src swap */
+      viewer.setAttribute('ar-scale',     'fixed');
+      viewer.setAttribute('ar-placement', 'floor');
 
       /* Update info card */
       infoDisc.innerHTML  = disc;
@@ -848,6 +856,50 @@
       /* Sync the mobile bottom nav label */
       syncMobileNav();
     }
+
+    /* ── AR STATUS — handle mobile AR failure gracefully ───────
+     * ar-status fires with "session-started", "object-placed", "failed"
+     * "failed" = WebXR/Scene Viewer couldn't establish AR. Show a toast
+     * instead of silently dropping the user back to the 3D view.
+     * ──────────────────────────────────────────────────────────── */
+    viewer.addEventListener('ar-status', function(e) {
+      if (e.detail.status === 'failed') {
+        /* Build a one-time toast */
+        var toast = document.getElementById('ar-fail-toast');
+        if (!toast) {
+          toast = document.createElement('div');
+          toast.id = 'ar-fail-toast';
+          toast.setAttribute('role', 'alert');
+          toast.style.cssText = [
+            'position:fixed', 'bottom:24px', 'left:50%',
+            'transform:translateX(-50%)',
+            'background:#1A1A4E', 'color:#F4F0E8',
+            'padding:12px 20px', 'border-radius:10px',
+            'font-size:0.82rem', 'font-family:var(--font-body,sans-serif)',
+            'box-shadow:0 8px 24px rgba(0,0,0,.35)',
+            'max-width:88vw', 'text-align:center',
+            'border:1px solid rgba(201,149,42,.4)',
+            'z-index:9999', 'pointer-events:none',
+            'animation:fadeInUp .3s ease'
+          ].join(';');
+          toast.innerHTML =
+            '<strong style="color:#C9952A">AR unavailable on this device.</strong><br>' +
+            'Your browser or device may not support WebAR.<br>' +
+            '<span style="opacity:.7;font-size:.75rem">Try Chrome on Android 8+ or Safari on iOS 12+</span>';
+          /* Inject keyframes if not already present */
+          if (!document.getElementById('ar-toast-style')) {
+            var s = document.createElement('style');
+            s.id = 'ar-toast-style';
+            s.textContent = '@keyframes fadeInUp{from{opacity:0;transform:translateX(-50%) translateY(12px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}';
+            document.head.appendChild(s);
+          }
+          document.body.appendChild(toast);
+        }
+        toast.style.display = 'block';
+        clearTimeout(toast._t);
+        toast._t = setTimeout(function() { toast.style.display = 'none'; }, 5000);
+      }
+    });
 
     /* ── MOBILE BOTTOM NAV ──────────────────────────────────────
      * mobileNav(dir): +1 = next, -1 = prev.
