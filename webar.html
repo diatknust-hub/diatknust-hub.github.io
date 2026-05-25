@@ -113,12 +113,13 @@
       width: 100%;
       text-align: left;
       padding: var(--sp-md);
-      background: rgba(255,255,255,.04);
-      border: 1px solid rgba(255,255,255,.06);
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.1);
       border-radius: var(--radius-md);
       cursor: pointer;
       font-family: var(--ff-body);
-      color: rgba(255,255,255,.6);
+      /* Increased from .6 → .85 — readable on dark indigo */
+      color: rgba(255,255,255,.85);
       transition: all var(--dur-fast) var(--ease-out);
       position: relative;
     }
@@ -427,26 +428,65 @@
       }
       .webar-sidebar__list {
         flex-direction: row;
-        padding: var(--sp-sm);
+        /* More padding now header is hidden — list fills full 220px */
+        padding: var(--sp-md) var(--sp-sm);
         gap: var(--sp-sm);
         overflow-x: auto;
+        overflow-y: hidden;
         -webkit-overflow-scrolling: touch;
         scrollbar-width: none;
+        align-items: stretch;
       }
       .webar-sidebar__list::-webkit-scrollbar { display: none; }
+      /* Hide sidebar header on mobile — saves ~80px for artwork cards */
+      .webar-sidebar__header { display: none; }
+
+      /* Artwork buttons: larger, high-contrast text */
       .webar-artwork-btn {
         flex-shrink: 0;
-        width: 200px;
+        width: 180px;
+        min-height: 90px;
         padding: var(--sp-sm) var(--sp-md);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 4px;
       }
+
+      /* Pilot badge: fully visible */
+      .webar-artwork-btn__pilot {
+        font-size: 0.58rem;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        opacity: 1;
+      }
+
+      /* Artwork name: fully white, readable size */
       .webar-artwork-btn__name {
-        font-size: var(--fs-sm);
+        font-size: var(--fs-base);
+        font-weight: 700;
+        color: #ffffff;
         line-height: 1.3;
         white-space: normal;
       }
+
+      /* Discipline label: gold, clearly visible */
       .webar-artwork-btn__meta {
-        font-size: 0.65rem;
+        font-size: 0.7rem;
+        font-weight: 600;
+        color: var(--clr-gold);
         white-space: normal;
+        opacity: 1;
+        letter-spacing: 0.04em;
+      }
+
+      /* Active button: clear gold border highlight */
+      .webar-artwork-btn.is-active {
+        background: rgba(201,149,42,.25);
+        border-color: var(--clr-gold);
+      }
+      .webar-artwork-btn.is-active .webar-artwork-btn__name {
+        color: #ffffff;
       }
       .webar-artwork-btn.is-active::before {
         width: 100%;
