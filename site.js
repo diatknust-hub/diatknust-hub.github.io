@@ -66,15 +66,17 @@
     <nav class="dept-nav" id="dept-nav" aria-label="Primary navigation">
       <div class="container dept-nav__inner">
         <a href="index.html" class="dept-nav__brand" aria-label="DIAT KNUST home">
-          <svg class="dept-nav__logo" aria-hidden="true" focusable="false" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <ellipse cx="28" cy="38" rx="14" ry="9" stroke="#C9952A" stroke-width="2"/>
-      <path d="M28 29 C28 20 40 16 43 22 C46 28 40 33 35 31" stroke="#C9952A" stroke-width="2" stroke-linecap="round" fill="none"/>
-      <circle cx="37" cy="28" r="7" stroke="#C9952A" stroke-width="2" fill="none"/>
-      <circle cx="39" cy="26" r="1.5" fill="#C9952A"/>
-      <path d="M43 30 L49 28 L43 34" stroke="#C9952A" stroke-width="1.8" stroke-linejoin="round" fill="none"/>
-      <ellipse cx="20" cy="32" rx="4.5" ry="5.5" stroke="#C9952A" stroke-width="1.6" fill="none"/>
-      <path d="M14 38 C9 43 7 50 11 54" stroke="#C9952A" stroke-width="2" stroke-linecap="round" fill="none"/>
-    </svg>
+          <!-- 50th Anniversary logo replaces the SVG Sankofa.
+               .nav-badge-wrap provides perspective + float animation
+               identical to the hero badge. Scaled smaller for nav. -->
+          <div class="nav-badge-wrap" aria-hidden="true">
+            <img class="dept-nav__logo nav-badge-logo"
+                 src="50TH%20DIAT%20-%20KNUST_logo_final-03.webp"
+                 alt=""
+                 draggable="false"
+                 loading="eager">
+            <div class="nav-badge-shadow"></div>
+          </div>
           <div class="dept-nav__brand-text">
             <span class="dept-nav__brand-name">DIAT &middot; KNUST</span>
             <span class="dept-nav__brand-sub">Dept. of Indigenous Art &amp; Technology</span>

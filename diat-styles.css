@@ -4233,3 +4233,73 @@ h1, h2, h3, h4, h5, h6 { font-family: var(--ff-display); line-height: var(--lh-h
   }
 }
 /* ── END NAV COMPACT ─────────────────────────────────────────── */
+
+/* ── NAV BRAND — 50th Anniversary Logo (3D float, nav-scale) ───────────
+ *
+ * Reuses the same badgeFloat / badgeShadow keyframes from the hero badge.
+ * The animation duration is slightly faster (4s vs 5s) at nav scale
+ * so the smaller logo feels naturally lively rather than sluggish.
+ * Shadow uses a tighter radial gradient to match the smaller footprint.
+ * ─────────────────────────────────────────────────────────────────────── */
+
+/* Perspective stage — mirrors .badge-3d-wrap but sized for nav */
+.nav-badge-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  flex-shrink: 0;
+  perspective: 600px;
+  perspective-origin: 50% 40%;
+}
+
+/* The logo image inside the nav */
+.nav-badge-logo {
+  width: 42px;
+  height: 42px;
+  object-fit: contain;
+  background: transparent;
+  display: block;
+
+  /* GPU layer — smooth animation */
+  will-change: transform;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transform-origin: 50% 60%;
+
+  /* Ambient glow — same gold drop-shadow as hero badge */
+  filter:
+    drop-shadow(0 6px 14px rgba(201,149,42,.5))
+    drop-shadow(0 2px 4px rgba(0,0,0,.2));
+
+  /* Float animation — same keyframes, slightly faster at nav scale */
+  animation: badgeFloat 4s ease-in-out infinite;
+}
+
+/* Shadow beneath nav logo */
+.nav-badge-shadow {
+  width: 28px;
+  height: 5px;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(201,149,42,.6) 0%,
+    rgba(26,26,78,.2) 45%,
+    transparent 70%
+  );
+  border-radius: 50%;
+  animation: badgeShadow 4s ease-in-out infinite;
+  will-change: transform, opacity;
+}
+
+/* Reduce-motion: freeze nav badge too */
+@media (prefers-reduced-motion: reduce) {
+  .nav-badge-logo   { animation: none; }
+  .nav-badge-shadow { animation: none; opacity: 0.35; }
+}
+
+/* At compact nav range: shrink the logo slightly */
+@media (min-width: 769px) and (max-width: 1200px) {
+  .nav-badge-logo   { width: 32px; height: 32px; }
+  .nav-badge-shadow { width: 22px; }
+}
+/* ── END NAV BADGE ──────────────────────────────────────────────────── */
