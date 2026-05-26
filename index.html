@@ -127,12 +127,21 @@
 
         </div><!-- /.sankofa-container -->
 
-        <img class="dept-hero__badge"
-             src="50TH%20DIAT%20-%20KNUST_logo_final-03.webp"
-             alt="DIAT at 50 — 50th Anniversary Logo, KNUST Ghana"
-             draggable="false"
-             oncontextmenu="return false"
-             loading="eager">
+        <!--
+  DIAT@50 Anniversary Logo — 3D floating badge
+  Perspective container provides depth stage.
+  .dept-hero__badge carries the float animation.
+  .badge-shadow shrinks as badge rises (reinforces 3D illusion).
+-->
+        <div class="badge-3d-wrap">
+          <img class="dept-hero__badge"
+               src="50TH%20DIAT%20-%20KNUST_logo_final-03.webp"
+               alt="DIAT at 50 — 50th Anniversary Logo, KNUST Ghana"
+               draggable="false"
+               oncontextmenu="return false"
+               loading="eager">
+          <div class="badge-shadow" aria-hidden="true"></div>
+        </div>
 
         <div class="dept-hero__preview"
              aria-label="Featured artworks preview">

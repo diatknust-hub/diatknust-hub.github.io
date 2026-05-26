@@ -714,17 +714,51 @@ h1, h2, h3, h4, h5, h6 { font-family: var(--ff-display); line-height: var(--lh-h
   width: 65%;
   height: 65%;
 }
-.dept-hero__badge {
+/* ── DIAT@50 BADGE — 3D FLOATING SYSTEM ────────────────────────
+ *
+ * ARCHITECTURE (mirrors the Sankofa animation system):
+ *   .badge-3d-wrap   → positioning shell + perspective stage
+ *   .dept-hero__badge → the logo img, carries badgeFloat animation
+ *   .badge-shadow    → elliptical shadow, carries badgeShadow animation
+ *
+ * PHYSICS:
+ *   badgeFloat:  translate3d lifts the logo off the plane while
+ *                rotateY adds a gentle left-right tilt (3D rotation).
+ *                scale(1.04) at apex gives a slight zoom as it "rises".
+ *   badgeShadow: shadow shrinks and fades as badge rises — the closer
+ *                the logo is to the ground, the larger and darker the
+ *                shadow. This is physically correct and sells the 3D.
+ *   drop-shadow: CSS filter adds a soft gold ambient glow beneath the
+ *                logo at all times, reinforcing the floating-off-surface
+ *                illusion even at rest.
+ *
+ * GPU: will-change:transform + backface-visibility:hidden on badge
+ *      promotes it to its own compositing layer — smooth 60fps.
+ * ─────────────────────────────────────────────────────────────── */
+
+/* Outer wrapper — position anchor + perspective stage */
+.badge-3d-wrap {
   position: absolute;
   top: var(--sp-xl);
   right: var(--sp-lg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  z-index: 3;
 
   /*
-   * PNG LOGO RULES — do NOT add background, filter, or invert.
-   * The PNG file has its own design and transparency.
-   * object-fit: contain preserves aspect ratio without cropping.
-   * Larger than old circle so logo has breathing room.
+   * perspective: 900px creates the 3D depth stage.
+   * All transform3d on children are interpreted relative to this.
+   * perspective-origin: 50% 40% sets the viewer's eye level slightly
+   * above centre — makes the logo tilt toward the viewer naturally.
    */
+  perspective: 900px;
+  perspective-origin: 50% 40%;
+}
+
+/* The logo image — animated floating asset */
+.dept-hero__badge {
   width: clamp(90px, 11vw, 130px);
   height: auto;
   background: transparent;
@@ -732,7 +766,99 @@ h1, h2, h3, h4, h5, h6 { font-family: var(--ff-display); line-height: var(--lh-h
   box-shadow: none;
   display: block;
   object-fit: contain;
-  z-index: 3;
+
+  /* GPU promotion — dedicated compositing layer for smooth animation */
+  will-change: transform;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+
+  /* transform-origin at 50% 60% so rotation pivots near the logo base */
+  transform-origin: 50% 60%;
+
+  /* Ambient gold glow + depth shadow — always on, reinforces floating */
+  filter:
+    drop-shadow(0 12px 28px rgba(201,149,42,.45))
+    drop-shadow(0 4px 8px rgba(0,0,0,.25));
+
+  /* The floating animation */
+  animation: badgeFloat 5s ease-in-out infinite;
+}
+
+/* Shadow ellipse beneath the logo */
+.badge-shadow {
+  width: 65%;
+  height: 10px;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(201,149,42,.55) 0%,
+    rgba(26,26,78,.2) 40%,
+    transparent 70%
+  );
+  border-radius: 50%;
+  animation: badgeShadow 5s ease-in-out infinite;
+  will-change: transform, opacity;
+}
+
+/* ── KEYFRAMES ────────────────────────────────────────────────── */
+
+/*
+ * badgeFloat — 4-stop float with 3D rotation.
+ * translate3d(x, y, z): z-axis push forward as badge rises.
+ * rotateY: gentle left-right tilt (same technique as Sankofa).
+ * scale: subtle zoom at apex for "rising off the plane" feel.
+ */
+@keyframes badgeFloat {
+  0%, 100% {
+    transform: translate3d(0, 0, 0)
+               rotateY(0deg)
+               rotateX(0deg)
+               scale(1);
+  }
+  25% {
+    transform: translate3d(3px, -12px, 16px)
+               rotateY(3deg)
+               rotateX(1.5deg)
+               scale(1.02);
+  }
+  50% {
+    transform: translate3d(0, -24px, 32px)
+               rotateY(5deg)
+               rotateX(2.5deg)
+               scale(1.05);
+  }
+  75% {
+    transform: translate3d(-3px, -12px, 16px)
+               rotateY(-3deg)
+               rotateX(1.5deg)
+               scale(1.02);
+  }
+}
+
+/*
+ * badgeShadow — shrinks and fades as badge rises.
+ * At 0% (ground): full size, max opacity.
+ * At 50% (apex): 55% scale, min opacity.
+ * Physically: a shadow cast from above shrinks as the object rises.
+ */
+@keyframes badgeShadow {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.55;
+  }
+  25%, 75% {
+    transform: scale(0.72);
+    opacity: 0.32;
+  }
+  50% {
+    transform: scale(0.5);
+    opacity: 0.18;
+  }
+}
+
+/* Respect reduced-motion preference — freeze, never hide */
+@media (prefers-reduced-motion: reduce) {
+  .dept-hero__badge { animation: none; }
+  .badge-shadow     { animation: none; opacity: 0.4; }
 }
 /* .dept-hero__badge-title and .dept-hero__badge-sub removed — replaced by PNG logo */
 /* Gallery cards on hero visual */
