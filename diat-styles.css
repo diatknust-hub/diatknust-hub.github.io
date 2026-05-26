@@ -4045,3 +4045,65 @@ h1, h2, h3, h4, h5, h6 { font-family: var(--ff-display); line-height: var(--lh-h
   .dept-nav__drawer-group { display: none; }
 }
 /* ── END DROPDOWN NAV ─────────────────────────────────────── */
+
+/* ── NAV COMPACT — 769px to 1200px (mobile desktop mode) ──────
+ *
+ * At ~980px viewport (typical mobile desktop mode), the full nav
+ * overflows: items wrap to 2 rows, CTA falls into the link flow,
+ * and the white nav background extends over the hero section.
+ *
+ * This range compresses all nav elements to fit in one clean row.
+ * PC browsers at 1201px+ use the full-size desktop nav unchanged.
+ * ─────────────────────────────────────────────────────────────── */
+@media (min-width: 769px) and (max-width: 1200px) {
+
+  /* Tighten inner container padding and gap */
+  .dept-nav__inner {
+    padding-inline: var(--sp-sm);
+    gap: var(--sp-xs);
+  }
+
+  /* Smaller brand text */
+  .dept-nav__brand-name {
+    font-size: var(--fs-sm);
+    letter-spacing: 0;
+  }
+
+  /* Hide subtitle — saves ~40px of brand column width */
+  .dept-nav__brand-sub {
+    display: none;
+  }
+
+  .dept-nav__logo {
+    width: 30px;
+    height: 30px;
+  }
+
+  /* Compact nav links */
+  .dept-nav__link {
+    font-size: 0.72rem;
+    padding: 4px 6px;
+    white-space: nowrap;
+  }
+
+  /* Compact CTA button */
+  .dept-nav__cta {
+    font-size: 0.72rem;
+    padding: var(--sp-xs) var(--sp-sm);
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  /* Ensure nav never wraps to 2 rows */
+  .dept-nav__links {
+    flex-wrap: nowrap;
+    gap: 0;
+  }
+
+  /* Chevron: smaller at this range */
+  .dept-nav__chevron {
+    font-size: 0.45rem;
+    margin-left: 2px;
+  }
+}
+/* ── END NAV COMPACT ─────────────────────────────────────────── */
