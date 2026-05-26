@@ -215,67 +215,13 @@
     <nav class="dept-nav__drawer" id="nav-drawer"
          aria-label="Mobile navigation" aria-hidden="true">
       <!-- Home -->
-      <a href="index.html" class="dept-nav__drawer-link" onclick="closeDrawer()">Home</a>
-
-      <!-- Gallery accordion -->
-      <div class="dept-nav__drawer-group">
-        <button class="dept-nav__drawer-link dept-nav__drawer-toggle"
-                onclick="toggleDrawerGroup(this)" aria-expanded="false">
-          Artwork Gallery <span class="dept-nav__chevron" aria-hidden="true">&#9660;</span>
-        </button>
-        <div class="dept-nav__drawer-sub" aria-hidden="true">
-          <a href="gallery.html"              class="dept-nav__drawer-sublink" onclick="closeDrawer()">All Works</a>
-          <a href="gallery.html?disc=clay"    class="dept-nav__drawer-sublink" onclick="closeDrawer()">Clay &amp; Earthenware</a>
-          <a href="gallery.html?disc=fibres"  class="dept-nav__drawer-sublink" onclick="closeDrawer()">Fibres &amp; Fabrics</a>
-          <a href="gallery.html?disc=leather" class="dept-nav__drawer-sublink" onclick="closeDrawer()">Leather Technology</a>
-          <a href="gallery.html?disc=metal"   class="dept-nav__drawer-sublink" onclick="closeDrawer()">Metal Production</a>
-          <a href="gallery.html?disc=rattan"  class="dept-nav__drawer-sublink" onclick="closeDrawer()">Rattan &amp; Bamboo</a>
-          <a href="gallery.html?disc=wood"    class="dept-nav__drawer-sublink" onclick="closeDrawer()">Wood &amp; Furniture</a>
-        </div>
-      </div>
-
-      <!-- WebAR -->
-      <a href="webar.html" class="dept-nav__drawer-link" onclick="closeDrawer()">WebAR Viewer</a>
-
-      <!-- About -->
-      <a href="about.html" class="dept-nav__drawer-link" onclick="closeDrawer()">About DIAT</a>
-
-      <!-- Programmes accordion -->
-      <div class="dept-nav__drawer-group">
-        <button class="dept-nav__drawer-link dept-nav__drawer-toggle"
-                onclick="toggleDrawerGroup(this)" aria-expanded="false">
-          Programmes <span class="dept-nav__chevron" aria-hidden="true">&#9660;</span>
-        </button>
-        <div class="dept-nav__drawer-sub" aria-hidden="true">
-          <a href="programmes.html"         class="dept-nav__drawer-sublink" onclick="closeDrawer()">All Programmes</a>
-          <a href="product-design.html"     class="dept-nav__drawer-sublink" onclick="closeDrawer()">&#128208; Product Design</a>
-          <a href="clay-earthenware.html"   class="dept-nav__drawer-sublink" onclick="closeDrawer()">&#127994; Clay &amp; Earthenware</a>
-          <a href="fibres-fabrics.html"     class="dept-nav__drawer-sublink" onclick="closeDrawer()">&#129525; Fibres &amp; Fabrics</a>
-          <a href="leather-technology.html" class="dept-nav__drawer-sublink" onclick="closeDrawer()">&#128092; Leather Technology</a>
-          <a href="metal-production.html"   class="dept-nav__drawer-sublink" onclick="closeDrawer()">&#9881; Metal Production</a>
-          <a href="rattan-bamboo.html"      class="dept-nav__drawer-sublink" onclick="closeDrawer()">&#127819; Rattan &amp; Bamboo</a>
-          <a href="wood-furniture.html"     class="dept-nav__drawer-sublink" onclick="closeDrawer()">&#129683; Wood &amp; Furniture</a>
-        </div>
-      </div>
-
-      <!-- Community -->
-      <a href="community.html" class="dept-nav__drawer-link" onclick="closeDrawer()">Community &amp; Internship</a>
-
-      <!-- Staff accordion -->
-      <div class="dept-nav__drawer-group">
-        <button class="dept-nav__drawer-link dept-nav__drawer-toggle"
-                onclick="toggleDrawerGroup(this)" aria-expanded="false">
-          Staff &amp; Students <span class="dept-nav__chevron" aria-hidden="true">&#9660;</span>
-        </button>
-        <div class="dept-nav__drawer-sub" aria-hidden="true">
-          <a href="staff.html"                    class="dept-nav__drawer-sublink" onclick="closeDrawer()">All Staff</a>
-          <a href="staff.html#academic-heading"   class="dept-nav__drawer-sublink" onclick="closeDrawer()">Academic Staff</a>
-          <a href="staff.html#technical-heading"  class="dept-nav__drawer-sublink" onclick="closeDrawer()">Technical Staff</a>
-          <a href="staff.html#siat-reps-heading"  class="dept-nav__drawer-sublink" onclick="closeDrawer()">SIAT Representatives</a>
-          <a href="staff.html#siat-hub-heading"   class="dept-nav__drawer-sublink" onclick="closeDrawer()">SIAT Student Hub</a>
-        </div>
-      </div>
-
+      <a href="index.html"      class="dept-nav__drawer-link" onclick="closeDrawer()">Home</a>
+      <a href="gallery.html"    class="dept-nav__drawer-link" onclick="closeDrawer()">Artwork Gallery</a>
+      <a href="webar.html"      class="dept-nav__drawer-link" onclick="closeDrawer()">WebAR Viewer</a>
+      <a href="about.html"      class="dept-nav__drawer-link" onclick="closeDrawer()">About DIAT</a>
+      <a href="programmes.html" class="dept-nav__drawer-link" onclick="closeDrawer()">Programmes</a>
+      <a href="community.html"  class="dept-nav__drawer-link" onclick="closeDrawer()">Community &amp; Internship</a>
+      <a href="staff.html"      class="dept-nav__drawer-link" onclick="closeDrawer()">Staff &amp; Students</a>
       <!-- Archive -->
       <a href="archive.html" class="dept-nav__drawer-link" onclick="closeDrawer()">Digital Archive</a>
       <a href="contact.html"    class="dept-nav__drawer-link" onclick="closeDrawer()">Contact</a>
@@ -469,25 +415,7 @@
     document.body.style.overflow = '';
   };
 
-  /* Mobile drawer accordion — tap to expand sub-link groups */
-  window.toggleDrawerGroup = function (btn) {
-    var sub  = btn.nextElementSibling;
-    var open = btn.getAttribute('aria-expanded') === 'true';
-    /* Close all other groups */
-    document.querySelectorAll('.dept-nav__drawer-toggle').forEach(function(b) {
-      if (b !== btn) {
-        b.setAttribute('aria-expanded', 'false');
-        var s = b.nextElementSibling;
-        if (s) { s.setAttribute('aria-hidden', 'true'); s.style.maxHeight = '0'; }
-      }
-    });
-    /* Toggle this one */
-    btn.setAttribute('aria-expanded', String(!open));
-    if (sub) {
-      sub.setAttribute('aria-hidden', String(open));
-      sub.style.maxHeight = open ? '0' : sub.scrollHeight + 'px';
-    }
-  };
+  /* toggleDrawerGroup removed — drawer uses simple links */
 
   /* ── 4. SCROLL REVEAL ─────────────────────────────────────── */
 
