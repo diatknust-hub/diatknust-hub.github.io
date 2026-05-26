@@ -4272,11 +4272,11 @@ h1, h2, h3, h4, h5, h6 { font-family: var(--ff-display); line-height: var(--lh-h
     drop-shadow(0 6px 14px rgba(201,149,42,.5))
     drop-shadow(0 2px 4px rgba(0,0,0,.2));
 
-  /* Float animation — same keyframes, slightly faster at nav scale */
-  animation: badgeFloat 4s ease-in-out infinite;
+  /* Stationary — no float animation, shadow only */
+  animation: none;
 }
 
-/* Shadow beneath nav logo */
+/* Static shadow beneath nav logo */
 .nav-badge-shadow {
   width: 28px;
   height: 5px;
@@ -4287,14 +4287,8 @@ h1, h2, h3, h4, h5, h6 { font-family: var(--ff-display); line-height: var(--lh-h
     transparent 70%
   );
   border-radius: 50%;
-  animation: badgeShadow 4s ease-in-out infinite;
-  will-change: transform, opacity;
-}
-
-/* Reduce-motion: freeze nav badge too */
-@media (prefers-reduced-motion: reduce) {
-  .nav-badge-logo   { animation: none; }
-  .nav-badge-shadow { animation: none; opacity: 0.35; }
+  opacity: 0.45;
+  /* No animation — stable shadow to match stable logo */
 }
 
 /* At compact nav range: shrink the logo slightly */
