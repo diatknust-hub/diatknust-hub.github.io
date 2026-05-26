@@ -69,65 +69,6 @@
       <div class="dept-hero__visual" aria-hidden="true">
 
         <!--
-          .dept-hero__visual → CSS grid-area: "visual" (5fr column)
-          .sankofa-container → 3D perspective stage, DIRECT child
-          No wrapper div — intermediate nodes break grid alignment.
-          All CSS rules: diat-styles.css § SANKOFA 3D FLOAT SYSTEM
-        -->
-        <div class="sankofa-container">
-
-          <div class="sankofa-asset"
-               role="img"
-               aria-label="Sankofa bird — DIAT departmental symbol representing the principle of learning from the past">
-            <!--
-              Inline SVG chosen over <img> for:
-                1. No HTTP request — zero load-time penalty
-                2. Inherits CSS currentColor for theming
-                3. Perfectly crisp at any DPI (true vector)
-              Replace this SVG with a higher-fidelity version
-              or a WebGL canvas if 3D rotation is required.
-            -->
-            <svg viewBox="0 0 120 120" fill="none"
-                 xmlns="http://www.w3.org/2000/svg"
-                 aria-hidden="true" focusable="false">
-              <!-- Primary body mass -->
-              <ellipse cx="60" cy="72" rx="28" ry="20" fill="#C9952A" opacity=".2"/>
-              <circle  cx="60" cy="44" r="20" fill="#C9952A" opacity=".28"/>
-              <circle  cx="60" cy="44" r="13" fill="#C9952A"/>
-              <!-- Eye with specular highlight -->
-              <circle cx="67" cy="38" r="4"   fill="#ffffff"/>
-              <circle cx="68" cy="38" r="1.8" fill="#1A1A4E"/>
-              <circle cx="67.4" cy="37.3" r=".65" fill="#ffffff" opacity=".75"/>
-              <!-- Neck arcing back — Sankofa's defining pose -->
-              <path d="M48 44 Q36 20 52 16 Q60 14 60 24"
-                    stroke="#C9952A" stroke-width="4.5" fill="none"
-                    stroke-linecap="round" stroke-linejoin="round"/>
-              <path d="M60 24 Q64 12 72 16 Q80 20 72 32"
-                    stroke="#C9952A" stroke-width="3.5" fill="none"
-                    stroke-linecap="round" stroke-linejoin="round"/>
-              <!-- Wings -->
-              <path d="M40 60 Q32 80 48 84 Q56 86 60 76"
-                    stroke="#C9952A" stroke-width="3.5" fill="none"
-                    stroke-linecap="round"/>
-              <path d="M80 60 Q88 80 72 84 Q64 86 60 76"
-                    stroke="#C9952A" stroke-width="3.5" fill="none"
-                    stroke-linecap="round"/>
-              <!-- Tail feathers -->
-              <path d="M52 64 L44 88 M60 68 L60 92 M68 64 L76 88"
-                    stroke="#C9952A" stroke-width="3" stroke-linecap="round"/>
-              <!-- Adinkra body detail ring -->
-              <circle cx="60" cy="44" r="6"
-                      stroke="rgba(255,255,255,0.2)"
-                      stroke-width="1.5" fill="none"/>
-            </svg>
-          </div>
-
-          <!-- Synchronized environmental shadow — own keyframe timeline -->
-          <div class="sankofa-shadow" aria-hidden="true"></div>
-
-        </div><!-- /.sankofa-container -->
-
-        <!--
   DIAT@50 Anniversary Logo — 3D floating badge
   Perspective container provides depth stage.
   .dept-hero__badge carries the float animation.
