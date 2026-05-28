@@ -71,18 +71,18 @@
   },
   {
     "title": "Leather Goods Collection",
-    "artist": "DIAT Student · Wood & Furniture",
-    "year": "2025",
+    "artist": "DIAT Student · Leather Technology",
+    "discipline": "Leather Technology",
+    "image_path": "PXL_20260126_150433369.PORTRAIT.webp",
+    "extra_images": [],
+    "year": "2026",
     "level": "Year 3",
-    "discipline": "Wood & Furniture",
     "description": "",
     "tags": [
-      "Wooden Cabinet with a leather picture frame"
+      "Leather Technology"
     ],
     "featured": false,
     "has_ar": false,
-    "image_path": "PXL_20260126_150433369.PORTRAIT.webp",
-    "extra_images": [],
     "glb_file": "",
     "usdz_file": ""
   },
