@@ -1049,6 +1049,10 @@
         String(model.title||'').replace(/</g,'&lt;') + '</span>' +
         '<span class="webar-artwork-btn__meta">' +
         String(model.discipline||'').replace(/</g,'&lt;') + '</span>';
+      /* FIX: attach click event so switching models works */
+      btn.addEventListener('click', function() {
+        if (typeof loadArtwork === 'function') loadArtwork(btn);
+      });
       return btn;
     }
 
@@ -1062,22 +1066,29 @@
         var list = document.getElementById('artwork-list');
         if (!list) return;
 
-        /* Replace ONLY the content of #artwork-list — no other DOM changes */
+        /* Replace ONLY the content of #artwork-list */
         list.innerHTML = '';
         active.forEach(function(model, i) {
           list.appendChild(makeBtn(model, i === 0));
         });
 
-        /* Re-wire the mobile nav which counts allBtns — wait one tick */
+        /* FIX: update allBtns so mobile nav arrows work with new buttons */
+        if (typeof allBtns !== 'undefined') {
+          allBtns.length = 0;
+          Array.prototype.push.apply(allBtns,
+            Array.prototype.slice.call(list.querySelectorAll('.webar-artwork-btn'))
+          );
+        }
+
+        /* Load the first model */
         setTimeout(function() {
-          /* Load the first model via the existing loadArtwork function */
           var firstBtn = list.querySelector('.webar-artwork-btn');
           if (firstBtn && typeof loadArtwork === 'function') {
             loadArtwork(firstBtn);
           }
         }, 100);
       })
-      .catch(function() { /* silently keep hardcoded fallback */ });
+      .catch(function() { /* keep hardcoded fallback on error */ });
   })();
   </script>
 </body>

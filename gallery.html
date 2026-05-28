@@ -1201,6 +1201,7 @@
       'Rattan & Bamboo':'rattan', 'Wood & Furniture':'wood',
       'Product Design':'pd'
     };
+    var ALL_DISCS = ['clay','fibres','leather','metal','rattan','wood'];
 
     function esc(s) {
       return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;');
@@ -1212,55 +1213,58 @@
       var mainImg = imgs[0]||'';
       var angles  = imgs.length;
       var imgHtml = mainImg
-        ? '<img class="gal-card__img" src="'+esc(mainImg)+'" alt="'+esc(art.title)+
+        ? '<img class="gal-card__img" src="' + mainImg + '" alt="' + esc(art.title) +
           ' — DIAT KNUST" loading="lazy" draggable="false" oncontextmenu="return false">'
-          + (angles>1 ? '<span class="gal-card__angles">'+angles+' views</span>' : '')
+          + (angles>1 ? '<span class="gal-card__angles">' + angles + ' views</span>' : '')
         : '<div class="gal-card__placeholder"><span class="gal-card__placeholder-label">No image yet</span></div>';
       var arBadge = art.has_ar
         ? '<span class="gal-card__ar-badge" aria-label="AR available">&#127918; AR</span>' : '';
       return '<article class="gal-card" onclick="openLightbox(event)" tabindex="0" role="button"'
-        +' aria-label="'+esc(art.title)+'"'
-        +' data-disc="'+esc(dk)+'"'
-        +' data-title="'+esc(art.title)+'"'
-        +' data-artist="'+esc(art.artist||'')+'"'
-        +' data-images="'+esc(imgs.join('|'))+'"'
-        +' data-angles="'+angles+'">'
-        +'<div class="gal-card__img-wrap">'+imgHtml+arBadge+'</div>'
-        +'<div class="gal-card__body">'
-        +'<p class="gal-card__title">'+esc(art.title||'Untitled')+'</p>'
-        +'<p class="gal-card__sub">'+esc(art.artist||art.discipline||'')+'</p>'
-        +'</div></article>';
+        + ' aria-label="' + esc(art.title) + '"'
+        + ' data-disc="' + esc(dk) + '"'
+        + ' data-title="' + esc(art.title) + '"'
+        + ' data-artist="' + esc(art.artist||'') + '"'
+        + ' data-images="' + imgs.join('|') + '"'
+        + ' data-angles="' + angles + '">'
+        + '<div class="gal-card__img-wrap">' + imgHtml + arBadge + '</div>'
+        + '<div class="gal-card__body">'
+        + '<p class="gal-card__title">' + esc(art.title||'Untitled') + '</p>'
+        + '<p class="gal-card__sub">' + esc(art.artist||art.discipline||'') + '</p>'
+        + '</div></article>';
     }
 
-    fetch('diat-gallery.json?v='+Date.now(), {cache:'no-store'})
-      .then(function(r){ return r.ok ? r.json() : null; })
-      .then(function(artworks){
+    fetch('diat-gallery.json?v=' + Date.now(), { cache: 'no-store' })
+      .then(function(r) { return r.ok ? r.json() : null; })
+      .then(function(artworks) {
         if (!artworks || !artworks.length) return;
 
         /* Group artworks by disc key */
         var groups = {};
-        artworks.forEach(function(art){
-          var k = DISC_KEY[art.discipline]||'pd';
-          if (!groups[k]) groups[k]=[];
+        artworks.forEach(function(art) {
+          var k = DISC_KEY[art.discipline] || 'pd';
+          if (!groups[k]) groups[k] = [];
           groups[k].push(art);
         });
 
-        /* Replace ONLY the card content inside each gal-grid in #sec-all.
-           We do NOT touch section headers, structure, or any IDs.        */
-        Object.keys(groups).forEach(function(dk){
-          var grid = document.querySelector('#sec-all [data-disc-grid="'+dk+'"]');
+        /* Replace EVERY discipline grid in #sec-all.
+           FIX: grids with no JSON entries are cleared so old hardcoded
+           cards don't persist when artworks are moved between disciplines. */
+        ALL_DISCS.forEach(function(dk) {
+          var grid = document.querySelector('#sec-all [data-disc-grid="' + dk + '"]');
           if (!grid) return;
-          grid.innerHTML = groups[dk].map(buildCard).join('');
+          grid.innerHTML = (groups[dk] && groups[dk].length)
+            ? groups[dk].map(buildCard).join('')
+            : '';  /* empty — no artworks in this discipline */
         });
 
         /* Reset individual disc sections so populateDiscSection re-clones
-           the fresh content next time a tab is clicked.                  */
-        ['clay','fibres','leather','metal','rattan','wood'].forEach(function(dk){
-          var el = document.getElementById('sec-'+dk);
+           fresh content on next tab click.                               */
+        ALL_DISCS.forEach(function(dk) {
+          var el = document.getElementById('sec-' + dk);
           if (el) el.innerHTML = '';
         });
       })
-      .catch(function(){/* silently keep hardcoded fallback */});
+      .catch(function() { /* keep hardcoded fallback on network error */ });
   })();
   </script>
 </body>
