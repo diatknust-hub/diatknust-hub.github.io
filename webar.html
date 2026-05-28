@@ -569,7 +569,7 @@
       </a>
     </span>
     <button class="chrome-hint__close"
-            onclick="dismissChromeBanner()"
+            data-webar-action="dismiss-chrome"
             aria-label="Dismiss browser recommendation">&#10005;</button>
   </div>
 
@@ -592,7 +592,7 @@
         </span>
       </div>
       <button class="browser-notice__dismiss"
-              onclick="document.getElementById('browser-notice').classList.remove('is-visible')"
+              data-webar-action="dismiss-browser-notice"
               aria-label="Dismiss this notice">&#10005;</button>
     </div>
 
@@ -624,7 +624,6 @@
             URL pattern: cdn.jsdelivr.net/gh/[user]/[repo]@[branch]/[file]
           -->
           <button class="webar-artwork-btn is-active"
-                  onclick="loadArtwork(this)"
                   data-glb="https://cdn.jsdelivr.net/gh/diatknust-hub/diatknust@main/Traditional-Drum-Stool.glb"
                   data-usdz="https://cdn.jsdelivr.net/gh/diatknust-hub/diatknust@main/Traditional-Drum-Stool.usdz"
                   data-title="Traditional Drum Stool"
@@ -642,7 +641,6 @@
             These are listed to show stakeholders the scope of the collection.
           -->
           <button class="webar-artwork-btn"
-                  onclick="loadArtwork(this)"
                   data-glb="https://cdn.jsdelivr.net/gh/diatknust-hub/diatknust@main/3-faced-pots.glb"
                   data-usdz="https://cdn.jsdelivr.net/gh/diatknust-hub/diatknust@main/3-faced-pots.usdz"
                   data-title="3-Faced Pots"
@@ -655,7 +653,6 @@
           </button>
 
           <button class="webar-artwork-btn"
-                  onclick="loadArtwork(this)"
                   data-glb="https://cdn.jsdelivr.net/gh/diatknust-hub/diatknust@main/Metal-sculpture-parrot.glb"
                   data-usdz="https://cdn.jsdelivr.net/gh/diatknust-hub/diatknust@main/Metal-sculpture-parrot.usdz"
                   data-title="Metal Sculpture — Parrot"
@@ -668,7 +665,6 @@
           </button>
 
           <button class="webar-artwork-btn"
-                  onclick="loadArtwork(this)"
                   data-glb="https://cdn.jsdelivr.net/gh/diatknust-hub/diatknust@main/Planter.glb"
                   data-usdz="https://cdn.jsdelivr.net/gh/diatknust-hub/diatknust@main/Planter.usdz"
                   data-title="Ceramic Planter"
@@ -681,7 +677,6 @@
           </button>
 
           <button class="webar-artwork-btn"
-                  onclick="loadArtwork(this)"
                   data-glb="https://cdn.jsdelivr.net/gh/diatknust-hub/diatknust@main/Star-clock.glb"
                   data-usdz="https://cdn.jsdelivr.net/gh/diatknust-hub/diatknust@main/Star-clock.usdz"
                   data-title="Star Clock"
@@ -694,7 +689,6 @@
           </button>
 
           <button class="webar-artwork-btn"
-                  onclick="loadArtwork(this)"
                   data-glb="https://cdn.jsdelivr.net/gh/diatknust-hub/diatknust@main/Mini-3-face-pot.glb"
                   data-usdz="https://cdn.jsdelivr.net/gh/diatknust-hub/diatknust@main/Mini-3-face-pot.usdz"
                   data-title="Mini 3-Face Pot"
@@ -825,7 +819,7 @@
     <div class="webar-mobile-nav" id="mobile-nav" aria-label="Browse artworks">
       <button class="webar-mobile-nav__btn"
               id="nav-prev"
-              onclick="mobileNav(-1)"
+              data-webar-nav="-1"
               aria-label="Previous artwork">&#8592; Prev</button>
       <div class="webar-mobile-nav__label">
         <span class="webar-mobile-nav__name" id="nav-name">Traditional Drum Stool</span>
@@ -833,7 +827,7 @@
       </div>
       <button class="webar-mobile-nav__btn"
               id="nav-next"
-              onclick="mobileNav(1)"
+              data-webar-nav="1"
               aria-label="Next artwork">Next &#8594;</button>
     </div>
 
@@ -881,7 +875,7 @@
       setTimeout(function() { viewer.setAttribute('ar', ''); }, 50);
 
       /* Update info card */
-      infoDisc.innerHTML  = disc;
+      infoDisc.textContent = disc;
       infoTitle.textContent = title;
       document.getElementById('info-artist').textContent = artist + ' · Polycam 2025';
       infoInfo.classList.add('is-visible');
@@ -924,6 +918,54 @@
       var nextIdx = (activeIdx + dir + allBtns.length) % allBtns.length;
       loadArtwork(allBtns[nextIdx]);
     }
+
+    allBtns.forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        loadArtwork(btn);
+      });
+    });
+
+    document.querySelectorAll('[data-webar-nav]').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        mobileNav(Number(btn.getAttribute('data-webar-nav')) || 0);
+      });
+    });
+
+    document.querySelectorAll('[data-webar-action]').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var action = btn.getAttribute('data-webar-action');
+        if (action === 'dismiss-chrome') {
+          dismissChromeBanner();
+        }
+        if (action === 'dismiss-browser-notice') {
+          var notice = document.getElementById('browser-notice');
+          if (notice) notice.classList.remove('is-visible');
+        }
+      });
+    });
+
+    function showViewerFallback() {
+      if (window.customElements && window.customElements.get('model-viewer')) return;
+      var empty = document.getElementById('webar-empty');
+      if (!empty) return;
+      empty.style.display = 'flex';
+      empty.setAttribute('aria-hidden', 'false');
+      var title = empty.querySelector('.webar-empty__title');
+      var body = empty.querySelector('.webar-empty__body');
+      if (title) title.textContent = '3D viewer could not load';
+      if (body) body.textContent = 'Check your connection and reload this page. The AR viewer depends on the model-viewer library.';
+    }
+
+    if (window.customElements && window.customElements.whenDefined) {
+      window.customElements.whenDefined('model-viewer').then(function() {
+        var empty = document.getElementById('webar-empty');
+        if (empty) {
+          empty.style.display = 'none';
+          empty.setAttribute('aria-hidden', 'true');
+        }
+      }).catch(function() {});
+    }
+    setTimeout(showViewerFallback, 4000);
 
     /* Sync on page load so nav shows initial artwork name */
     document.addEventListener('DOMContentLoaded', syncMobileNav);
@@ -982,7 +1024,7 @@
       sessionStorage.setItem('chrome-hint-dismissed', '1');
     }
   </script>
-  <script src="site.js"></script>
-  <script src="cms.js?v=3"></script>
+  <script src="site.js?v=4"></script>
+  <script src="cms.js?v=4"></script>
 </body>
 </html>

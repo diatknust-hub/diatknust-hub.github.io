@@ -9,7 +9,7 @@
  *
  *   Every HTML page loads only:
  *     <script src="site.js"></script>
- *     <script src="cms.js?v=3"></script>
+ *     <script src="cms.js?v=4"></script>
  *
  *   To update the nav, footer, or announcement for the entire
  *   site: edit THIS file, push once, done.
@@ -85,7 +85,7 @@
         <ul class="dept-nav__links" role="list">
 
           <!-- Home — no dropdown -->
-          <li><a href="index.html" class="dept-nav__link dept-nav__link--active" aria-current="page">Home</a></li>
+          <li><a href="index.html" class="dept-nav__link">Home</a></li>
 
           <!-- Gallery dropdown -->
           <li class="dept-nav__item" role="none">
@@ -217,17 +217,17 @@
     <nav class="dept-nav__drawer" id="nav-drawer"
          aria-label="Mobile navigation" aria-hidden="true">
       <!-- Home -->
-      <a href="index.html"      class="dept-nav__drawer-link" onclick="closeDrawer()">Home</a>
-      <a href="gallery.html"    class="dept-nav__drawer-link" onclick="closeDrawer()">Artwork Gallery</a>
-      <a href="webar.html"      class="dept-nav__drawer-link" onclick="closeDrawer()">WebAR Viewer</a>
-      <a href="about.html"      class="dept-nav__drawer-link" onclick="closeDrawer()">About DIAT</a>
-      <a href="programmes.html" class="dept-nav__drawer-link" onclick="closeDrawer()">Programmes</a>
-      <a href="community.html"  class="dept-nav__drawer-link" onclick="closeDrawer()">Community &amp; Internship</a>
-      <a href="staff.html"      class="dept-nav__drawer-link" onclick="closeDrawer()">Staff &amp; Students</a>
+      <a href="index.html"      class="dept-nav__drawer-link">Home</a>
+      <a href="gallery.html"    class="dept-nav__drawer-link">Artwork Gallery</a>
+      <a href="webar.html"      class="dept-nav__drawer-link">WebAR Viewer</a>
+      <a href="about.html"      class="dept-nav__drawer-link">About DIAT</a>
+      <a href="programmes.html" class="dept-nav__drawer-link">Programmes</a>
+      <a href="community.html"  class="dept-nav__drawer-link">Community &amp; Internship</a>
+      <a href="staff.html"      class="dept-nav__drawer-link">Staff &amp; Students</a>
       <!-- Archive -->
-      <a href="archive.html" class="dept-nav__drawer-link" onclick="closeDrawer()">Digital Archive</a>
-      <a href="contact.html"    class="dept-nav__drawer-link" onclick="closeDrawer()">Contact</a>
-      <a href="gallery.html"    class="dept-nav__drawer-cta"  onclick="closeDrawer()">View Gallery &#8594;</a>
+      <a href="archive.html" class="dept-nav__drawer-link">Digital Archive</a>
+      <a href="contact.html"    class="dept-nav__drawer-link">Contact</a>
+      <a href="gallery.html"    class="dept-nav__drawer-cta">View Gallery &#8594;</a>
     </nav>
   </header>`;
 
@@ -272,8 +272,12 @@
     navStyle.textContent = [
       /* Force the nav inner to never wrap */
       '.dept-nav__inner{flex-wrap:nowrap!important;gap:4px!important;}',
-      /* At ≤1200px: compress everything to fit in one row */
-      '@media(min-width:769px)and(max-width:1200px){',
+      /* Hide optional CTA before it can collide with the last nav item */
+      '@media (min-width: 1201px) and (max-width: 1360px){',
+        '.dept-nav__cta{display:none!important;}',
+      '}',
+      /* At narrower desktop/tablet widths: compress everything to fit in one row */
+      '@media (min-width: 769px) and (max-width: 1200px){',
         '.dept-nav__inner{padding-inline:8px!important;gap:2px!important;}',
         '.dept-nav__brand-name{font-size:.78rem!important;letter-spacing:0!important;}',
         '.dept-nav__brand-sub{display:none!important;}',
@@ -281,7 +285,7 @@
         '.dept-nav__links{gap:0!important;flex-wrap:nowrap!important;}',
         '.dept-nav__link{font-size:.68rem!important;padding:4px 5px!important;white-space:nowrap!important;}',
         '.dept-nav__chevron{font-size:.4rem!important;margin-left:1px!important;}',
-        '.dept-nav__cta{font-size:.68rem!important;padding:6px 10px!important;white-space:nowrap!important;flex-shrink:0!important;}',
+        '.dept-nav__cta{display:none!important;}',
       '}'
     ].join('');
     if (!document.getElementById('diat-nav-compact')) {
@@ -347,6 +351,11 @@
       });
     }
 
+    document.querySelectorAll('.dept-nav__drawer-link, .dept-nav__drawer-cta')
+      .forEach(function (link) {
+        link.addEventListener('click', closeDrawer);
+      });
+
     /*
      * DROPDOWN HOVER — JS mouseenter/mouseleave handlers.
      * More reliable than CSS :hover alone because parent overflow:hidden
@@ -407,15 +416,16 @@
     });
   }
 
-  /* Global closeDrawer — called by inline onclick on drawer links */
-  window.closeDrawer = function () {
+  function closeDrawer() {
     var d = document.getElementById('nav-drawer');
     var t = document.getElementById('nav-toggle');
     if (d) d.classList.remove('is-open');
     if (t) t.setAttribute('aria-expanded', 'false');
     if (d) d.setAttribute('aria-hidden', 'true');
     document.body.style.overflow = '';
-  };
+  }
+
+  window.closeDrawer = closeDrawer;
 
   /* toggleDrawerGroup removed — drawer uses simple links */
 
