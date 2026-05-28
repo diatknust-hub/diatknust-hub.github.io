@@ -1,0 +1,165 @@
+[
+  {
+    "title": "Leather footrests",
+    "artist": "DIAT Student · Wood & leather and beads integration",
+    "year": "2025",
+    "level": "Year 3",
+    "discipline": "Leather Technology",
+    "description": "50cm diameter  x 330cm height of leather footrests displayed along with other souvenirs for sale.",
+    "tags": [
+      "Open Sale Exhibition - Knust commecial Area"
+    ],
+    "featured": true,
+    "has_ar": false,
+    "image_path": "PXL_20260126_150050930.PORTRAIT.ORIGINAL.webp",
+    "extra_images": [],
+    "glb_file": "",
+    "usdz_file": ""
+  },
+  {
+    "title": "Set of carved wooden Akuaba Dolls",
+    "artist": "DIAT Student · Leather Technology",
+    "year": "2024",
+    "level": "Year 3",
+    "discipline": "Wood & Furniture",
+    "description": "Asante Akuaba Dolls",
+    "tags": [
+      "Carved wooden Akuaba Dolls integrated with leather and beads."
+    ],
+    "featured": false,
+    "has_ar": false,
+    "image_path": "PXL_20260126_151122297.PORTRAIT.webp",
+    "extra_images": [],
+    "glb_file": "",
+    "usdz_file": ""
+  },
+  {
+    "title": "Batik and Kanto Wax Print Display",
+    "artist": "DIAT Student · Fibres & Fabrics",
+    "year": "2022",
+    "level": "Year 3",
+    "discipline": "Fibres & Fabrics",
+    "description": "",
+    "tags": [
+      "Fibres & Fabrics"
+    ],
+    "featured": false,
+    "has_ar": false,
+    "image_path": "PXL_20260126_150250895.PORTRAIT.webp",
+    "extra_images": [],
+    "glb_file": "",
+    "usdz_file": ""
+  },
+  {
+    "title": "Contemporary Fibre Art",
+    "artist": "DIAT Student · Rattan & Bamboo",
+    "year": "2015",
+    "level": "Year 4",
+    "discipline": "Rattan & Bamboo",
+    "description": "",
+    "tags": [
+      "Fibres & Fabrics"
+    ],
+    "featured": false,
+    "has_ar": false,
+    "image_path": "PXL_20260126_151708869.webp",
+    "extra_images": [
+      "PXL_20260126_151715645.webp"
+    ],
+    "glb_file": "",
+    "usdz_file": ""
+  },
+  {
+    "title": "Leather Goods Collection",
+    "artist": "DIAT Student · Wood & Furniture",
+    "year": "2025",
+    "level": "Year 3",
+    "discipline": "Wood & Furniture",
+    "description": "",
+    "tags": [
+      "Wooden Cabinet with a leather picture frame"
+    ],
+    "featured": false,
+    "has_ar": false,
+    "image_path": "PXL_20260126_150433369.PORTRAIT.webp",
+    "extra_images": [],
+    "glb_file": "",
+    "usdz_file": ""
+  },
+  {
+    "title": "Leather Flower Vase",
+    "artist": "DIAT Student · Leather Technology",
+    "year": "2021",
+    "level": "Year 4",
+    "discipline": "Leather Technology",
+    "description": "",
+    "tags": [
+      "Contemporary Leather Vases"
+    ],
+    "featured": false,
+    "has_ar": false,
+    "image_path": "PXL_20260126_150808467.PORTRAIT.webp",
+    "extra_images": [
+      "PXL_20260126_150821538.PORTRAIT.webp"
+    ],
+    "glb_file": "",
+    "usdz_file": ""
+  },
+  {
+    "title": "Metal Craft Installation",
+    "artist": "DIAT Student · Metal Production",
+    "discipline": "Metal Production",
+    "image_path": "PXL_20260126_151807035.webp",
+    "extra_images": [
+      "PXL_20260126_151812555.webp",
+      "PXL_20260126_151816958.webp",
+      "PXL_20260126_151822887.webp"
+    ],
+    "year": "2026",
+    "level": "Year 3",
+    "description": "",
+    "tags": [
+      "Metal Production"
+    ],
+    "featured": false,
+    "has_ar": false,
+    "glb_file": "",
+    "usdz_file": ""
+  },
+  {
+    "title": "Set of carved wooden Akuaba Dolls",
+    "artist": "DIAT Student · Wood & Furniture · 2025",
+    "year": "2026",
+    "level": "Year 3",
+    "discipline": "Wood & Furniture",
+    "description": "Set of carved wooden Akuaba Dolls",
+    "tags": [
+      "Wood & Furniture"
+    ],
+    "featured": false,
+    "has_ar": false,
+    "image_path": "PXL_20260126_150929548.PORTRAIT.webp",
+    "extra_images": [],
+    "glb_file": "",
+    "usdz_file": ""
+  },
+  {
+    "title": "Leather guitar",
+    "artist": "DIAT Student · Leather Technology",
+    "year": "2017",
+    "level": "Year 4",
+    "discipline": "Leather Technology",
+    "description": "",
+    "tags": [
+      "Leather guitar"
+    ],
+    "featured": true,
+    "has_ar": false,
+    "image_path": "PXL_20260126_151023444.PORTRAIT.webp",
+    "extra_images": [
+      "PXL_20260126_151053688.PORTRAIT.webp"
+    ],
+    "glb_file": "",
+    "usdz_file": ""
+  }
+]
