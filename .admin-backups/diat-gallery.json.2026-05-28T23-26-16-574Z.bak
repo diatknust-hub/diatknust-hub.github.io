@@ -34,19 +34,19 @@
     "usdz_file": ""
   },
   {
-    "title": "Batik and Kanto Wax Print Display",
+    "title": "Woven Textile Display",
     "artist": "DIAT Student · Fibres & Fabrics",
-    "year": "2022",
-    "level": "Year 3",
     "discipline": "Fibres & Fabrics",
+    "image_path": "PXL_20260126_150250895.PORTRAIT.webp",
+    "extra_images": [],
+    "year": "2026",
+    "level": "Year 3",
     "description": "",
     "tags": [
       "Fibres & Fabrics"
     ],
     "featured": false,
     "has_ar": false,
-    "image_path": "PXL_20260126_150250895.PORTRAIT.webp",
-    "extra_images": [],
     "glb_file": "",
     "usdz_file": ""
   },
@@ -127,19 +127,19 @@
     "usdz_file": ""
   },
   {
-    "title": "Set of carved wooden Akuaba Dolls",
-    "artist": "DIAT Student · Wood & Furniture · 2025",
+    "title": "Rattan Craft Work",
+    "artist": "DIAT Student · Rattan & Bamboo",
+    "discipline": "Rattan & Bamboo",
+    "image_path": "PXL_20260126_150929548.PORTRAIT.webp",
+    "extra_images": [],
     "year": "2026",
     "level": "Year 3",
-    "discipline": "Wood & Furniture",
-    "description": "Set of carved wooden Akuaba Dolls",
+    "description": "",
     "tags": [
-      "Wood & Furniture"
+      "Rattan & Bamboo"
     ],
     "featured": false,
     "has_ar": false,
-    "image_path": "PXL_20260126_150929548.PORTRAIT.webp",
-    "extra_images": [],
     "glb_file": "",
     "usdz_file": ""
   },

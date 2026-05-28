@@ -53,27 +53,5 @@
     "usdzUrl": "https://cdn.jsdelivr.net/gh/diatknust-hub/diatknust@main/Mini-3-face-pot.usdz",
     "scale": "1 1 1",
     "is_active": true
-  },
-  {
-    "title": "A-SET-OF-cHAIRS",
-    "discipline": "Wood & Furniture",
-    "description": "",
-    "glb_file": "A-SET-OF-cHAIRS.glb",
-    "usdz_file": "A-SET-OF-CHAIRS.usdz",
-    "glbUrl": "https://cdn.jsdelivr.net/gh/diatknust-hub/diatknust@main/A-SET-OF-cHAIRS.glb",
-    "usdzUrl": "https://cdn.jsdelivr.net/gh/diatknust-hub/diatknust@main/A-SET-OF-CHAIRS.usdz",
-    "scale": "1 1 1",
-    "is_active": true
-  },
-  {
-    "title": "2in1-Table",
-    "discipline": "Product Design",
-    "description": "",
-    "glb_file": "2in1-Table.glb",
-    "usdz_file": "2in1-Table.usdz",
-    "glbUrl": "https://cdn.jsdelivr.net/gh/diatknust-hub/diatknust@main/2in1-Table.glb",
-    "usdzUrl": "https://cdn.jsdelivr.net/gh/diatknust-hub/diatknust@main/2in1-Table.usdz",
-    "scale": "1 1 1",
-    "is_active": true
   }
 ]
