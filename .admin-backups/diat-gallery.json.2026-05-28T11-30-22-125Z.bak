@@ -1,35 +1,40 @@
 [
   {
-    "title": "Leather footrests",
-    "artist": "DIAT Student · Wood & leather and beads integration",
-    "year": "2025",
-    "level": "Year 3",
-    "discipline": "Leather Technology",
-    "description": "50cm diameter  x 330cm height of leather footrests displayed along with other souvenirs for sale.",
-    "tags": [
-      "Open Sale Exhibition - Knust commecial Area"
-    ],
-    "featured": true,
-    "has_ar": false,
+    "title": "Figurative Ceramic Vessels",
+    "artist": "DIAT Student · Clay & Earthenware",
+    "discipline": "Clay & Earthenware",
     "image_path": "PXL_20260126_150050930.PORTRAIT.ORIGINAL.webp",
-    "extra_images": [],
+    "extra_images": [
+      "PXL_20260126_150117098.PORTRAIT.webp",
+      "PXL_20260126_150125736.PORTRAIT.webp"
+    ],
+    "year": "2026",
+    "level": "Year 3",
+    "description": "",
+    "tags": [
+      "Clay & Earthenware"
+    ],
+    "featured": false,
+    "has_ar": false,
     "glb_file": "",
     "usdz_file": ""
   },
   {
-    "title": "Set of carved wooden Akuaba Dolls",
-    "artist": "DIAT Student · Leather Technology",
-    "year": "2024",
+    "title": "Decorative Earthenware Set",
+    "artist": "DIAT Student · Clay & Earthenware",
+    "discipline": "Clay & Earthenware",
+    "image_path": "PXL_20260126_151122297.PORTRAIT.webp",
+    "extra_images": [
+      "PXL_20260126_151141696.PORTRAIT.webp"
+    ],
+    "year": "2026",
     "level": "Year 3",
-    "discipline": "Wood & Furniture",
-    "description": "Asante Akuaba Dolls",
+    "description": "",
     "tags": [
-      "Carved wooden Akuaba Dolls integrated with leather and beads."
+      "Clay & Earthenware"
     ],
     "featured": false,
     "has_ar": false,
-    "image_path": "PXL_20260126_151122297.PORTRAIT.webp",
-    "extra_images": [],
     "glb_file": "",
     "usdz_file": ""
   },
