@@ -146,19 +146,19 @@
   {
     "title": "Wooden Furniture Piece",
     "artist": "DIAT Student · Wood & Furniture",
-    "year": "2026",
-    "level": "Year 3",
-    "discipline": "Leather Technology",
-    "description": "",
-    "tags": [
-      "Leather guitar"
-    ],
-    "featured": false,
-    "has_ar": false,
+    "discipline": "Wood & Furniture",
     "image_path": "PXL_20260126_151023444.PORTRAIT.webp",
     "extra_images": [
       "PXL_20260126_151053688.PORTRAIT.webp"
     ],
+    "year": "2026",
+    "level": "Year 3",
+    "description": "",
+    "tags": [
+      "Wood & Furniture"
+    ],
+    "featured": false,
+    "has_ar": false,
     "glb_file": "",
     "usdz_file": ""
   }
