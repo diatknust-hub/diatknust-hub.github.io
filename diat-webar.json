@@ -1,1 +1,68 @@
-[]
+[
+  {
+    "title": "Traditional Drum Stool",
+    "discipline": "Wood & Furniture",
+    "description": "",
+    "glb_file": "Traditional-Drum-Stool.glb",
+    "usdz_file": "Traditional-Drum-Stool.usdz",
+    "glbUrl": "https://cdn.jsdelivr.net/gh/diatknust-hub/diatknust@main/Traditional-Drum-Stool.glb",
+    "usdzUrl": "https://cdn.jsdelivr.net/gh/diatknust-hub/diatknust@main/Traditional-Drum-Stool.usdz",
+    "scale": "1 1 1",
+    "is_active": true
+  },
+  {
+    "title": "3-Faced Pots",
+    "discipline": "Clay & Earthenware",
+    "description": "",
+    "glb_file": "3-faced-pots.glb",
+    "usdz_file": "3-faced-pots.usdz",
+    "glbUrl": "https://cdn.jsdelivr.net/gh/diatknust-hub/diatknust@main/3-faced-pots.glb",
+    "usdzUrl": "https://cdn.jsdelivr.net/gh/diatknust-hub/diatknust@main/3-faced-pots.usdz",
+    "scale": "1 1 1",
+    "is_active": true
+  },
+  {
+    "title": "Metal Sculpture \u2014 Parrot",
+    "discipline": "Metal Production",
+    "description": "",
+    "glb_file": "Metal-sculpture-parrot.glb",
+    "usdz_file": "Metal-sculpture-parrot.usdz",
+    "glbUrl": "https://cdn.jsdelivr.net/gh/diatknust-hub/diatknust@main/Metal-sculpture-parrot.glb",
+    "usdzUrl": "https://cdn.jsdelivr.net/gh/diatknust-hub/diatknust@main/Metal-sculpture-parrot.usdz",
+    "scale": "1 1 1",
+    "is_active": true
+  },
+  {
+    "title": "Ceramic Planter",
+    "discipline": "Clay & Earthenware",
+    "description": "",
+    "glb_file": "Planter.glb",
+    "usdz_file": "Planter.usdz",
+    "glbUrl": "https://cdn.jsdelivr.net/gh/diatknust-hub/diatknust@main/Planter.glb",
+    "usdzUrl": "https://cdn.jsdelivr.net/gh/diatknust-hub/diatknust@main/Planter.usdz",
+    "scale": "1 1 1",
+    "is_active": true
+  },
+  {
+    "title": "Star Clock",
+    "discipline": "Metal Production",
+    "description": "",
+    "glb_file": "Star-clock.glb",
+    "usdz_file": "Star-clock.usdz",
+    "glbUrl": "https://cdn.jsdelivr.net/gh/diatknust-hub/diatknust@main/Star-clock.glb",
+    "usdzUrl": "https://cdn.jsdelivr.net/gh/diatknust-hub/diatknust@main/Star-clock.usdz",
+    "scale": "1 1 1",
+    "is_active": true
+  },
+  {
+    "title": "Mini 3-Face Pot",
+    "discipline": "Clay & Earthenware",
+    "description": "",
+    "glb_file": "Mini-3-face-pot.glb",
+    "usdz_file": "Mini-3-face-pot.usdz",
+    "glbUrl": "https://cdn.jsdelivr.net/gh/diatknust-hub/diatknust@main/Mini-3-face-pot.glb",
+    "usdzUrl": "https://cdn.jsdelivr.net/gh/diatknust-hub/diatknust@main/Mini-3-face-pot.usdz",
+    "scale": "1 1 1",
+    "is_active": true
+  }
+]

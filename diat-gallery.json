@@ -1,1 +1,170 @@
-[]
+[
+  {
+    "title": "Figurative Ceramic Vessels",
+    "artist": "DIAT Student \u00b7 Clay & Earthenware",
+    "discipline": "Clay & Earthenware",
+    "image_path": "PXL_20260126_150050930.PORTRAIT.ORIGINAL.webp",
+    "extra_images": [
+      "PXL_20260126_150117098.PORTRAIT.webp",
+      "PXL_20260126_150125736.PORTRAIT.webp"
+    ],
+    "year": "2026",
+    "level": "Year 3",
+    "description": "",
+    "tags": [
+      "Clay & Earthenware"
+    ],
+    "featured": false,
+    "has_ar": false,
+    "glb_file": "",
+    "usdz_file": ""
+  },
+  {
+    "title": "Decorative Earthenware Set",
+    "artist": "DIAT Student \u00b7 Clay & Earthenware",
+    "discipline": "Clay & Earthenware",
+    "image_path": "PXL_20260126_151122297.PORTRAIT.webp",
+    "extra_images": [
+      "PXL_20260126_151141696.PORTRAIT.webp"
+    ],
+    "year": "2026",
+    "level": "Year 3",
+    "description": "",
+    "tags": [
+      "Clay & Earthenware"
+    ],
+    "featured": false,
+    "has_ar": false,
+    "glb_file": "",
+    "usdz_file": ""
+  },
+  {
+    "title": "Woven Textile Display",
+    "artist": "DIAT Student \u00b7 Fibres & Fabrics",
+    "discipline": "Fibres & Fabrics",
+    "image_path": "PXL_20260126_150250895.PORTRAIT.webp",
+    "extra_images": [],
+    "year": "2026",
+    "level": "Year 3",
+    "description": "",
+    "tags": [
+      "Fibres & Fabrics"
+    ],
+    "featured": false,
+    "has_ar": false,
+    "glb_file": "",
+    "usdz_file": ""
+  },
+  {
+    "title": "Contemporary Fibre Art",
+    "artist": "DIAT Student \u00b7 Fibres & Fabrics",
+    "discipline": "Fibres & Fabrics",
+    "image_path": "PXL_20260126_151708869.webp",
+    "extra_images": [
+      "PXL_20260126_151715645.webp"
+    ],
+    "year": "2026",
+    "level": "Year 3",
+    "description": "",
+    "tags": [
+      "Fibres & Fabrics"
+    ],
+    "featured": false,
+    "has_ar": false,
+    "glb_file": "",
+    "usdz_file": ""
+  },
+  {
+    "title": "Leather Goods Collection",
+    "artist": "DIAT Student \u00b7 Leather Technology",
+    "discipline": "Leather Technology",
+    "image_path": "PXL_20260126_150433369.PORTRAIT.webp",
+    "extra_images": [],
+    "year": "2026",
+    "level": "Year 3",
+    "description": "",
+    "tags": [
+      "Leather Technology"
+    ],
+    "featured": false,
+    "has_ar": false,
+    "glb_file": "",
+    "usdz_file": ""
+  },
+  {
+    "title": "Metal Sculpture",
+    "artist": "DIAT Student \u00b7 Metal Production",
+    "discipline": "Metal Production",
+    "image_path": "PXL_20260126_150808467.PORTRAIT.webp",
+    "extra_images": [
+      "PXL_20260126_150821538.PORTRAIT.webp"
+    ],
+    "year": "2026",
+    "level": "Year 3",
+    "description": "",
+    "tags": [
+      "Metal Production"
+    ],
+    "featured": false,
+    "has_ar": false,
+    "glb_file": "",
+    "usdz_file": ""
+  },
+  {
+    "title": "Metal Craft Installation",
+    "artist": "DIAT Student \u00b7 Metal Production",
+    "discipline": "Metal Production",
+    "image_path": "PXL_20260126_151807035.webp",
+    "extra_images": [
+      "PXL_20260126_151812555.webp",
+      "PXL_20260126_151816958.webp",
+      "PXL_20260126_151822887.webp"
+    ],
+    "year": "2026",
+    "level": "Year 3",
+    "description": "",
+    "tags": [
+      "Metal Production"
+    ],
+    "featured": false,
+    "has_ar": false,
+    "glb_file": "",
+    "usdz_file": ""
+  },
+  {
+    "title": "Rattan Craft Work",
+    "artist": "DIAT Student \u00b7 Rattan & Bamboo",
+    "discipline": "Rattan & Bamboo",
+    "image_path": "PXL_20260126_150929548.PORTRAIT.webp",
+    "extra_images": [],
+    "year": "2026",
+    "level": "Year 3",
+    "description": "",
+    "tags": [
+      "Rattan & Bamboo"
+    ],
+    "featured": false,
+    "has_ar": false,
+    "glb_file": "",
+    "usdz_file": ""
+  },
+  {
+    "title": "Wooden Furniture Piece",
+    "artist": "DIAT Student \u00b7 Wood & Furniture",
+    "discipline": "Wood & Furniture",
+    "image_path": "PXL_20260126_151023444.PORTRAIT.webp",
+    "extra_images": [
+      "PXL_20260126_151053688.PORTRAIT.webp"
+    ],
+    "year": "2026",
+    "level": "Year 3",
+    "description": "",
+    "tags": [
+      "Wood & Furniture"
+    ],
+    "featured": false,
+    "has_ar": false,
+    "glb_file": "",
+    "usdz_file": ""
+  }
+]
