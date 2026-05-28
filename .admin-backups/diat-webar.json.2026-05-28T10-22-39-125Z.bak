@@ -22,13 +22,24 @@
     "is_active": true
   },
   {
-    "title": "Metal Sculpture — Parrot",
+    "title": "Metal Sculpture \u2014 Parrot",
     "discipline": "Metal Production",
     "description": "",
     "glb_file": "Metal-sculpture-parrot.glb",
     "usdz_file": "Metal-sculpture-parrot.usdz",
     "glbUrl": "https://cdn.jsdelivr.net/gh/diatknust-hub/diatknust@main/Metal-sculpture-parrot.glb",
     "usdzUrl": "https://cdn.jsdelivr.net/gh/diatknust-hub/diatknust@main/Metal-sculpture-parrot.usdz",
+    "scale": "1 1 1",
+    "is_active": true
+  },
+  {
+    "title": "Ceramic Planter",
+    "discipline": "Clay & Earthenware",
+    "description": "",
+    "glb_file": "Planter.glb",
+    "usdz_file": "Planter.usdz",
+    "glbUrl": "https://cdn.jsdelivr.net/gh/diatknust-hub/diatknust@main/Planter.glb",
+    "usdzUrl": "https://cdn.jsdelivr.net/gh/diatknust-hub/diatknust@main/Planter.usdz",
     "scale": "1 1 1",
     "is_active": true
   },

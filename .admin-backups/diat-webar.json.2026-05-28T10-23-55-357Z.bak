@@ -33,6 +33,17 @@
     "is_active": true
   },
   {
+    "title": "Ceramic Planter",
+    "discipline": "Clay & Earthenware",
+    "description": "",
+    "glb_file": "Planter.glb",
+    "usdz_file": "Planter.usdz",
+    "glbUrl": "https://cdn.jsdelivr.net/gh/diatknust-hub/diatknust@main/Planter.glb",
+    "usdzUrl": "https://cdn.jsdelivr.net/gh/diatknust-hub/diatknust@main/Planter.usdz",
+    "scale": "1 1 1",
+    "is_active": true
+  },
+  {
     "title": "Star Clock",
     "discipline": "Metal Production",
     "description": "",
