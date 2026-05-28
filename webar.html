@@ -609,97 +609,7 @@
         </div>
 
         <div class="webar-sidebar__list" role="list" id="artwork-list">
-
-          <!--
-            PILOT MODEL — Traditional Drum Stool
-            ─────────────────────────────────────────────────────────────
-            Selected for the pilot because:
-            • Traditional Drum Stool is an iconic DIAT/Ashanti cultural object
-            • Both .glb (Android/web) and .usdz (iOS) formats available
-            • Compact standalone geometry — ideal AR object
-            • Discipline: Wood & Furniture / Metal Production crossover
-
-            Files served via jsDelivr CDN — mirrors the diatknust-hub/diatknust
-            GitHub repo with proper CORS headers and fast global edge delivery.
-            URL pattern: cdn.jsdelivr.net/gh/[user]/[repo]@[branch]/[file]
-          -->
-          <button class="webar-artwork-btn is-active"
-                  data-glb="https://cdn.jsdelivr.net/gh/diatknust-hub/diatknust@main/Traditional-Drum-Stool.glb"
-                  data-usdz="https://cdn.jsdelivr.net/gh/diatknust-hub/diatknust@main/Traditional-Drum-Stool.usdz"
-                  data-title="Traditional Drum Stool"
-                  data-discipline="Wood &amp; Furniture"
-                  data-artist="DIAT, KNUST"
-                  aria-pressed="true"
-                  role="listitem">
-            <span class="webar-artwork-btn__pilot">&#9733; Pilot Model</span>
-            <span class="webar-artwork-btn__name">Traditional Drum Stool</span>
-            <span class="webar-artwork-btn__meta">Wood &amp; Furniture</span>
-          </button>
-
-          <!--
-            COMING SOON cards — full catalogue loads after pilot confirmation.
-            These are listed to show stakeholders the scope of the collection.
-          -->
-          <button class="webar-artwork-btn"
-                  data-glb="https://cdn.jsdelivr.net/gh/diatknust-hub/diatknust@main/3-faced-pots.glb"
-                  data-usdz="https://cdn.jsdelivr.net/gh/diatknust-hub/diatknust@main/3-faced-pots.usdz"
-                  data-title="3-Faced Pots"
-                  data-discipline="Clay &amp; Earthenware"
-                  data-artist="DIAT, KNUST"
-                  aria-pressed="false"
-                  role="listitem">
-            <span class="webar-artwork-btn__name">3-Faced Pots</span>
-            <span class="webar-artwork-btn__meta">Clay &amp; Earthenware</span>
-          </button>
-
-          <button class="webar-artwork-btn"
-                  data-glb="https://cdn.jsdelivr.net/gh/diatknust-hub/diatknust@main/Metal-sculpture-parrot.glb"
-                  data-usdz="https://cdn.jsdelivr.net/gh/diatknust-hub/diatknust@main/Metal-sculpture-parrot.usdz"
-                  data-title="Metal Sculpture — Parrot"
-                  data-discipline="Metal Production"
-                  data-artist="DIAT, KNUST"
-                  aria-pressed="false"
-                  role="listitem">
-            <span class="webar-artwork-btn__name">Metal Sculpture — Parrot</span>
-            <span class="webar-artwork-btn__meta">Metal Production</span>
-          </button>
-
-          <button class="webar-artwork-btn"
-                  data-glb="https://cdn.jsdelivr.net/gh/diatknust-hub/diatknust@main/Planter.glb"
-                  data-usdz="https://cdn.jsdelivr.net/gh/diatknust-hub/diatknust@main/Planter.usdz"
-                  data-title="Ceramic Planter"
-                  data-discipline="Clay &amp; Earthenware"
-                  data-artist="DIAT, KNUST"
-                  aria-pressed="false"
-                  role="listitem">
-            <span class="webar-artwork-btn__name">Ceramic Planter</span>
-            <span class="webar-artwork-btn__meta">Clay &amp; Earthenware</span>
-          </button>
-
-          <button class="webar-artwork-btn"
-                  data-glb="https://cdn.jsdelivr.net/gh/diatknust-hub/diatknust@main/Star-clock.glb"
-                  data-usdz="https://cdn.jsdelivr.net/gh/diatknust-hub/diatknust@main/Star-clock.usdz"
-                  data-title="Star Clock"
-                  data-discipline="Metal Production"
-                  data-artist="DIAT, KNUST"
-                  aria-pressed="false"
-                  role="listitem">
-            <span class="webar-artwork-btn__name">Star Clock</span>
-            <span class="webar-artwork-btn__meta">Metal Production</span>
-          </button>
-
-          <button class="webar-artwork-btn"
-                  data-glb="https://cdn.jsdelivr.net/gh/diatknust-hub/diatknust@main/Mini-3-face-pot.glb"
-                  data-usdz="https://cdn.jsdelivr.net/gh/diatknust-hub/diatknust@main/Mini-3-face-pot.usdz"
-                  data-title="Mini 3-Face Pot"
-                  data-discipline="Clay &amp; Earthenware"
-                  data-artist="DIAT, KNUST"
-                  aria-pressed="false"
-                  role="listitem">
-            <span class="webar-artwork-btn__name">Mini 3-Face Pot</span>
-            <span class="webar-artwork-btn__meta">Clay &amp; Earthenware</span>
-          </button>
-
+          <p id="webar-loading" style="padding:16px;color:rgba(255,255,255,.5);font-size:.82rem">Loading models…</p>
         </div>
 
         <div class="webar-sidebar__footer">
@@ -832,6 +742,59 @@
     </div>
 
   </main>
+
+
+  <!-- ── Dynamic model list from diat-webar.json ────────────────────── -->
+  <script>
+  (function () {
+    var list = document.getElementById('artwork-list');
+    var CDN  = 'https://cdn.jsdelivr.net/gh/diatknust-hub/diatknust@main/';
+
+    function buildBtn(model, isFirst) {
+      var btn = document.createElement('button');
+      btn.className = 'webar-artwork-btn' + (isFirst ? ' is-active' : '');
+      btn.setAttribute('data-glb',        model.glbUrl  || (CDN + model.glb_file));
+      btn.setAttribute('data-usdz',       model.usdzUrl || (CDN + (model.usdz_file || model.glb_file.replace('.glb','.usdz'))));
+      btn.setAttribute('data-title',      model.title);
+      btn.setAttribute('data-discipline', model.discipline || '');
+      btn.setAttribute('data-artist',     'DIAT, KNUST');
+      btn.setAttribute('aria-pressed',    isFirst ? 'true' : 'false');
+      btn.setAttribute('role', 'listitem');
+      if (isFirst) {
+        btn.innerHTML = '<span class="webar-artwork-btn__pilot">&#9733; Pilot Model</span>';
+      }
+      btn.innerHTML += '<span class="webar-artwork-btn__name">' +
+        (model.title || '').replace(/</g,'&lt;') + '</span>' +
+        '<span class="webar-artwork-btn__meta">' +
+        (model.discipline || '').replace(/</g,'&lt;') + '</span>';
+      return btn;
+    }
+
+    fetch('diat-webar.json?t=' + Date.now(), { cache: 'no-store' })
+      .then(function (r) { return r.ok ? r.json() : []; })
+      .then(function (models) {
+        list.innerHTML = '';
+        var active = models.filter(function (m) { return m.is_active !== false; });
+        if (!active.length) {
+          list.innerHTML = '<p style="padding:16px;color:rgba(255,255,255,.5);font-size:.82rem">No models available.</p>';
+          return;
+        }
+        active.forEach(function (model, i) {
+          var btn = buildBtn(model, i === 0);
+          list.appendChild(btn);
+          if (i === 0) {
+            /* Defer so model-viewer is ready */
+            setTimeout(function () {
+              if (typeof loadArtwork === 'function') loadArtwork(btn);
+            }, 300);
+          }
+        });
+      })
+      .catch(function () {
+        list.innerHTML = '<p style="padding:16px;color:rgba(255,255,255,.5);font-size:.82rem">Could not load models.</p>';
+      });
+  })();
+  </script>
 
   <script>
     /*
