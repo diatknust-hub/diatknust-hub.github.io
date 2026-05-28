@@ -52,20 +52,20 @@
   },
   {
     "title": "Contemporary Fibre Art",
-    "artist": "DIAT Student · Rattan & Bamboo",
-    "year": "2015",
-    "level": "Year 4",
-    "discipline": "Rattan & Bamboo",
+    "artist": "DIAT Student · Fibres & Fabrics",
+    "discipline": "Fibres & Fabrics",
+    "image_path": "PXL_20260126_151708869.webp",
+    "extra_images": [
+      "PXL_20260126_151715645.webp"
+    ],
+    "year": "2026",
+    "level": "Year 3",
     "description": "",
     "tags": [
       "Fibres & Fabrics"
     ],
     "featured": false,
     "has_ar": false,
-    "image_path": "PXL_20260126_151708869.webp",
-    "extra_images": [
-      "PXL_20260126_151715645.webp"
-    ],
     "glb_file": "",
     "usdz_file": ""
   },
