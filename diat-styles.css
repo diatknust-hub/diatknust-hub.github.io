@@ -474,7 +474,7 @@ h1, h2, h3, h4, h5, h6 { font-family: var(--ff-display); line-height: var(--lh-h
    *   clamp() caps the section firmly; min-height: 600px
    *   is the absolute floor for short viewports.
    */
-  height: clamp(600px, calc(100svh - var(--nav-height)), 100svh);
+  height: clamp(480px, 72vh, 760px);  /* REDUCED — was ~100svh */
   min-height: 600px;
 
   display: grid;
@@ -1711,7 +1711,7 @@ h1, h2, h3, h4, h5, h6 { font-family: var(--ff-display); line-height: var(--lh-h
 @media (min-width: 1025px) {
   .dept-hero {
     /* Guarantee clean parallel columns — no height inheritance issue */
-    height: clamp(600px, calc(100svh - var(--nav-height)), 100svh);
+    height: clamp(480px, 72vh, 760px);  /* REDUCED — was ~100svh */
   }
   .dept-hero__copy {
     /*
@@ -3358,20 +3358,19 @@ h1, h2, h3, h4, h5, h6 { font-family: var(--ff-display); line-height: var(--lh-h
 
 /* ── BUG-M1: Horizontal overflow → white strip ─────────────────
  *
- * html/body rules are GLOBAL (no media query) so they fire at
- * all viewport widths including mobile desktop mode (~980px+).
- * The @media block previously wrapping them only fired at ≤768px
- * which is why desktop-mode-on-phone still showed the white strip.
+ * overflow-x: hidden clips children wider than the viewport.
+ * max-width: 100vw / 100% prevents the layout engine from
+ * calculating a wider containing block from overflowing children.
  * ──────────────────────────────────────────────────────────── */
-html {
-  overflow-x: hidden;
-  max-width: 100vw;
-}
-body {
-  overflow-x: hidden;
-  max-width: 100%;
-}
 @media (max-width: 768px) {
+  html {
+    overflow-x: hidden;
+    max-width: 100vw;
+  }
+  body {
+    overflow-x: hidden;
+    max-width: 100%;
+  }
   .dept-nav,
   .dept-hero,
   .dept-stats,
@@ -4298,3 +4297,318 @@ body {
   .nav-badge-shadow { width: 22px; }
 }
 /* ── END NAV BADGE ──────────────────────────────────────────────────── */
+
+
+/* ══════════════════════════════════════════════════════════════
+   HERO SLIDER — .hero-slider / .hero-slide
+   Replaces the single .dept-hero section.
+   All brand tokens, fonts, and colours from the design system
+   are reused. Only layout and transition behaviour is new.
+══════════════════════════════════════════════════════════════ */
+
+/* ── Container ─────────────────────────────────────────────── */
+.hero-slider {
+  position: relative;
+  width: 100%;
+  height: clamp(480px, 72vh, 760px);   /* reduced from full-viewport */
+  overflow: hidden;
+  background: var(--clr-indigo);
+}
+
+/* ── Individual slides — stack on top of each other ────────── */
+.hero-slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--dur-slow, 1s) ease;
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  grid-template-rows: 1fr auto;
+  grid-template-areas: "content persistent";
+  align-items: center;
+  padding-inline: clamp(var(--sp-md), 4vw, var(--sp-2xl));
+  max-width: 1440px;
+  margin-inline: auto;
+}
+
+.hero-slide.hero-slide--active {
+  opacity: 1;
+  pointer-events: auto;
+  z-index: 2;
+}
+
+/* ── Background media layer ─────────────────────────────────── */
+.slide-media {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.slide-cover {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center top;
+  transition: opacity 1s ease;
+  z-index: 1;
+}
+
+.slide-cover.slide-cover--faded {
+  opacity: 0;
+}
+
+.slide-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 1s ease;
+  z-index: 2;
+}
+
+.slide-video.slide-video--playing {
+  opacity: 1;
+}
+
+.slide-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    120deg,
+    rgba(26, 26, 78, 0.82) 0%,
+    rgba(26, 26, 78, 0.55) 55%,
+    rgba(0, 0, 0, 0.15) 100%
+  );
+  z-index: 3;
+}
+
+/* ── Slide content (text + buttons) ────────────────────────── */
+.slide-content {
+  position: relative;
+  z-index: 4;
+  grid-area: content;
+  padding-block: var(--sp-2xl);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-md);
+  max-width: 640px;
+}
+
+.slide-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-sm);
+  font-size: var(--fs-xs, .75rem);
+  font-weight: 700;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--clr-gold);
+}
+
+.slide-eyebrow__line {
+  display: block;
+  width: 32px;
+  height: 2px;
+  background: var(--clr-gold);
+  flex-shrink: 0;
+}
+
+.slide-title {
+  font-family: var(--ff-display, 'Playfair Display', Georgia, serif);
+  font-size: clamp(2rem, 4.5vw, 3.6rem);
+  font-weight: 700;
+  line-height: 1.1;
+  color: #fff;
+  margin: 0;
+}
+
+.slide-accent {
+  color: var(--clr-gold);
+  font-style: italic;
+}
+
+.slide-subtitle {
+  font-size: clamp(var(--fs-sm, .875rem), 1.4vw, var(--fs-md, 1rem));
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.82);
+  max-width: 520px;
+  margin: 0;
+}
+
+.slide-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-sm);
+  margin-top: var(--sp-sm);
+}
+
+/* ── Persistent overlay — badge (right column) ──────────────── */
+.hero-persistent {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-inline: clamp(var(--sp-md), 4vw, var(--sp-2xl));
+  max-width: 1440px;
+  margin-inline: auto;
+  left: 0;
+  right: 0;
+}
+
+.hero-persistent .badge-3d-wrap {
+  pointer-events: auto;
+}
+
+/* ── Trust bar — persistent bottom strip ───────────────────── */
+.hero-trust {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 6;
+  background: rgba(26, 26, 78, 0.55);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  padding: var(--sp-sm) clamp(var(--sp-md), 4vw, var(--sp-2xl));
+  display: flex;
+  align-items: center;
+  gap: var(--sp-md);
+  flex-wrap: wrap;
+}
+
+.hero-trust__label {
+  font-size: var(--fs-xs, .72rem);
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.5);
+  white-space: nowrap;
+  margin: 0;
+}
+
+.hero-trust__logos {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-md);
+  flex-wrap: wrap;
+}
+
+.hero-trust__logo {
+  opacity: 0.65;
+  filter: brightness(1.2);
+  transition: opacity .2s;
+  border-radius: 3px;
+}
+
+.hero-trust__logo:hover { opacity: 1; }
+
+/* ── Slider dot controls ────────────────────────────────────── */
+.slider-controls {
+  position: absolute;
+  bottom: 56px;   /* sits above the trust bar */
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 7;
+  display: flex;
+  gap: 8px;
+}
+
+.slider-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  background: transparent;
+  cursor: pointer;
+  padding: 0;
+  transition: background .3s, border-color .3s, transform .2s;
+}
+
+.slider-dot.slider-dot--active {
+  background: var(--clr-gold);
+  border-color: var(--clr-gold);
+  transform: scale(1.3);
+}
+
+.slider-dot:hover {
+  border-color: #fff;
+}
+
+/* ── Scroll indicator ───────────────────────────────────────── */
+.hero-scroll-indicator {
+  position: absolute;
+  bottom: 56px;
+  right: clamp(var(--sp-md), 4vw, var(--sp-2xl));
+  z-index: 7;
+  color: rgba(255, 255, 255, 0.55);
+  text-decoration: none;
+  animation: hero-bounce 2s ease-in-out infinite;
+  transition: color .2s;
+}
+
+.hero-scroll-indicator:hover { color: var(--clr-gold); }
+
+@keyframes hero-bounce {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(8px); }
+}
+
+
+/* ── Mobile — single-column layout ─────────────────────────── */
+@media (max-width: 768px) {
+  .hero-slider {
+    height: clamp(560px, 85svh, 720px);
+  }
+
+  .hero-slide {
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
+    grid-template-areas: "content";
+    align-items: flex-end;
+    padding-block-end: 80px;   /* clear above trust bar */
+  }
+
+  .hero-persistent {
+    display: none;   /* badge hidden on mobile — no space */
+  }
+
+  .slide-content {
+    padding-block: var(--sp-xl) var(--sp-md);
+    max-width: 100%;
+  }
+
+  .slide-title {
+    font-size: clamp(1.75rem, 8vw, 2.4rem);
+  }
+
+  .slider-controls {
+    bottom: 48px;
+  }
+
+  .hero-scroll-indicator {
+    display: none;
+  }
+}
+
+/* ── Tablet ─────────────────────────────────────────────────── */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .hero-slide {
+    grid-template-columns: 1fr 0.6fr;
+  }
+}
+
+/* ── Reduced motion ─────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .hero-slide,
+  .slide-cover,
+  .slide-video {
+    transition: none;
+  }
+  @keyframes hero-bounce { 0%, 100% { transform: none; } }
+}

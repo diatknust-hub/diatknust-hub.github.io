@@ -25,99 +25,265 @@
 <main id="main-content">
 
     <!-- HERO -->
-    <section class="dept-hero" aria-labelledby="hero-title">
-      <div class="dept-hero__copy js-reveal">
-        <div class="dept-hero__eyebrow">
-          <span class="dept-hero__eyebrow-line" aria-hidden="true"></span>
-          <span class="dept-hero__eyebrow-text">Est. 1976 &middot; KNUST &middot; Kumasi, Ghana</span>
-        </div>
-        <h1 class="dept-hero__title" id="hero-title"
-            data-cms-key="home-hero-h1" data-cms-label="Hero Heading" data-cms-type="html">
-          Ghana&#39;s<br>
-          <em class="dept-hero__title-accent">Indigenous Art</em><br>
-          Shown to the World
-        </h1>
-        <p class="dept-hero__subtitle"
-           data-cms-key="home-hero-sub" data-cms-label="Hero Subtitle">
-          The Department of Indigenous Art and Technology (DIAT) at KNUST
-          preserves, teaches, and celebrates Ghana&#39;s indigenous craft heritage
-          &mdash; now visible to a global audience for the very first time.
-        </p>
-        <div class="dept-hero__actions">
-          <a href="gallery.html" class="btn btn--primary btn--lg">
-            Explore Artworks <span class="btn__arrow" aria-hidden="true">&#8594;</span>
-          </a>
-          <a href="webar.html" class="btn btn--secondary btn--lg">Experience in AR &#8599;</a>
-        </div>
+    <section class="hero-slider" id="hero-slider" aria-label="DIAT highlights slider">
+
+  <!-- ═══════════════════════════════════════════════════════════
+       SLIDE 1 — Primary hero (current brand content)
+       Cover image shows immediately; video plays after 5 s.
+       To add a video: set data-src="your-video.mp4" on the <video>.
+  ═══════════════════════════════════════════════════════════════ -->
+  <div class="hero-slide hero-slide--active" role="group" aria-roledescription="slide" aria-label="Slide 1 of 2">
+
+    <!-- Background: cover image + optional video -->
+    <div class="slide-media" aria-hidden="true">
+      <video class="slide-video" muted loop playsinline preload="none"
+             data-src=""
+             aria-hidden="true"></video>
+      <div class="slide-overlay"></div>
+      <div class="slide-cover"
+           style="background-image:url('PXL_20260126_151422788.PANO.webp')"></div>
+    </div>
+
+    <!-- Content — left column -->
+    <div class="slide-content">
+      <div class="slide-eyebrow js-reveal">
+        <span class="slide-eyebrow__line" aria-hidden="true"></span>
+        <span>Est. 1976 &middot; KNUST &middot; Kumasi, Ghana</span>
       </div>
-
-      <div class="dept-hero__trust js-reveal js-reveal--delay-2">
-        <p class="dept-hero__trust-label">Recognised &amp; Supported By</p>
-        <div class="dept-hero__partners">
-          <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='32'%3E%3Crect width='100' height='32' rx='3' fill='%23E4DDD0'/%3E%3Ctext x='50' y='21' font-family='serif' font-size='11' fill='%239A9690' text-anchor='middle'%3EKNUST%3C/text%3E%3C/svg%3E"
-               alt="Kwame Nkrumah University of Science and Technology"
-               class="dept-hero__partner-logo" width="100" height="32" loading="lazy">
-          <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='32'%3E%3Crect width='120' height='32' rx='3' fill='%23E4DDD0'/%3E%3Ctext x='60' y='21' font-family='serif' font-size='10' fill='%239A9690' text-anchor='middle'%3EMastercard Fdn%3C/text%3E%3C/svg%3E"
-               alt="Mastercard Foundation" class="dept-hero__partner-logo"
-               width="120" height="32" loading="lazy">
-          <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='32'%3E%3Crect width='80' height='32' rx='3' fill='%23E4DDD0'/%3E%3Ctext x='40' y='21' font-family='serif' font-size='11' fill='%239A9690' text-anchor='middle'%3ECABE%3C/text%3E%3C/svg%3E"
-               alt="College of Art and Built Environment, KNUST"
-               class="dept-hero__partner-logo" width="80" height="32" loading="lazy">
-        </div>
+      <h1 class="slide-title js-reveal"
+          data-cms-key="home-hero-h1" data-cms-label="Hero Heading" data-cms-type="html">
+        Ghana&#39;s<br>
+        <em class="slide-accent">Indigenous Art</em><br>
+        Shown to the World
+      </h1>
+      <p class="slide-subtitle js-reveal js-reveal--delay-1"
+         data-cms-key="home-hero-sub" data-cms-label="Hero Subtitle">
+        The Department of Indigenous Art and Technology (DIAT) at KNUST
+        preserves, teaches, and celebrates Ghana&#39;s indigenous craft heritage
+        &mdash; now visible to a global audience for the very first time.
+      </p>
+      <div class="slide-actions js-reveal js-reveal--delay-2">
+        <a href="gallery.html" class="btn btn--primary btn--lg">
+          Explore Artworks <span class="btn__arrow" aria-hidden="true">&#8594;</span>
+        </a>
+        <a href="webar.html" class="btn btn--secondary btn--lg">Experience in AR &#8599;</a>
       </div>
+    </div><!-- /.slide-content -->
 
-      <div class="dept-hero__visual" aria-hidden="true">
+  </div><!-- /.hero-slide 1 -->
 
-        <!--
-  DIAT@50 Anniversary Logo — 3D floating badge
-  Perspective container provides depth stage.
-  .dept-hero__badge carries the float animation.
-  .badge-shadow shrinks as badge rises (reinforces 3D illusion).
--->
-        <div class="badge-3d-wrap">
-          <img class="dept-hero__badge"
-               src="50TH%20DIAT%20-%20KNUST_logo_final-03.webp"
-               alt="DIAT at 50 — 50th Anniversary Logo, KNUST Ghana"
-               draggable="false"
-               oncontextmenu="return false"
-               loading="eager">
-          <div class="badge-shadow" aria-hidden="true"></div>
-        </div>
 
-        <div class="dept-hero__preview"
-             aria-label="Featured artworks preview">
-          <article class="dept-hero__preview-card">
-            <div class="dept-artwork-card__placeholder">
-              <span class="dept-artwork-card__placeholder-icon" aria-hidden="true">&#128444;</span>
-            </div>
-            <div class="dept-hero__preview-label">
-              <span class="dept-hero__preview-disc">Rattan &amp; Bamboo</span>
-              <span class="dept-hero__preview-name">[Artwork &mdash; replace]</span>
-            </div>
-          </article>
-          <article class="dept-hero__preview-card">
-            <div class="dept-artwork-card__placeholder">
-              <span class="dept-artwork-card__placeholder-icon" aria-hidden="true">&#128444;</span>
-            </div>
-            <div class="dept-hero__preview-label">
-              <span class="dept-hero__preview-disc">Wood &amp; Furniture</span>
-              <span class="dept-hero__preview-name">[Artwork &mdash; replace]</span>
-            </div>
-          </article>
-          <article class="dept-hero__preview-card">
-            <span class="dept-hero__preview-ar" aria-label="AR Ready">AR</span>
-            <div class="dept-artwork-card__placeholder">
-              <span class="dept-artwork-card__placeholder-icon" aria-hidden="true">&#128444;</span>
-            </div>
-            <div class="dept-hero__preview-label">
-              <span class="dept-hero__preview-disc">Metal Production</span>
-              <span class="dept-hero__preview-name">[Artwork &mdash; replace]</span>
-            </div>
-          </article>
-        </div><!-- /.dept-hero__preview -->
+  <!-- ═══════════════════════════════════════════════════════════
+       SLIDE 2 — Ready for future expansion
+       Replace cover image, add video src, and edit text below.
+  ═══════════════════════════════════════════════════════════════ -->
+  <div class="hero-slide" role="group" aria-roledescription="slide" aria-label="Slide 2 of 2">
 
-      </div><!-- /.dept-hero__visual -->
-    </section>
+    <div class="slide-media" aria-hidden="true">
+      <video class="slide-video" muted loop playsinline preload="none"
+             data-src=""
+             aria-hidden="true"></video>
+      <div class="slide-overlay"></div>
+      <div class="slide-cover"
+           style="background-image:url('PXL_20260126_150050930.PORTRAIT.ORIGINAL.webp')"></div>
+    </div>
+
+    <div class="slide-content">
+      <div class="slide-eyebrow">
+        <span class="slide-eyebrow__line" aria-hidden="true"></span>
+        <span>DIAT@50 &mdash; Est. 1976</span>
+      </div>
+      <h1 class="slide-title">
+        50 Years of<br>
+        <em class="slide-accent">Heritage</em><br>
+        Reimagined
+      </h1>
+      <p class="slide-subtitle">
+        Celebrating half a century of preserving, teaching, and promoting
+        Ghana&#39;s indigenous craft traditions within Africa&#39;s foremost technical university.
+      </p>
+      <div class="slide-actions">
+        <a href="about.html" class="btn btn--primary btn--lg">
+          Our Story <span class="btn__arrow" aria-hidden="true">&#8594;</span>
+        </a>
+        <a href="gallery.html" class="btn btn--secondary btn--lg">View Gallery &#8599;</a>
+      </div>
+    </div>
+
+  </div><!-- /.hero-slide 2 -->
+
+
+  <!-- ═══════════════════════════════════════════════════════════
+       PERSISTENT OVERLAY — Badge + Trust bar (sits above all slides)
+       These elements never change between slides.
+  ═══════════════════════════════════════════════════════════════ -->
+  <div class="hero-persistent" aria-hidden="true">
+
+    <!-- DIAT@50 Anniversary Badge -->
+    <div class="badge-3d-wrap">
+      <img class="dept-hero__badge"
+           src="50TH%20DIAT%20-%20KNUST_logo_final-03.webp"
+           alt="DIAT at 50 — 50th Anniversary Logo, KNUST Ghana"
+           draggable="false"
+           oncontextmenu="return false"
+           loading="eager">
+      <div class="badge-shadow"></div>
+    </div>
+
+  </div><!-- /.hero-persistent -->
+
+
+  <!-- ═══════════════════════════════════════════════════════════
+       SLIDER CONTROLS — Dots + Prev/Next
+  ═══════════════════════════════════════════════════════════════ -->
+  <div class="slider-controls" aria-label="Slider controls">
+    <button class="slider-dot slider-dot--active" data-slide="0"
+            role="tab" aria-selected="true" aria-label="Go to slide 1"></button>
+    <button class="slider-dot" data-slide="1"
+            role="tab" aria-selected="false" aria-label="Go to slide 2"></button>
+  </div>
+
+
+  <!-- ═══════════════════════════════════════════════════════════
+       TRUST BAR — Partner logos (persistent bottom strip)
+  ═══════════════════════════════════════════════════════════════ -->
+  <div class="hero-trust js-reveal js-reveal--delay-2">
+    <p class="hero-trust__label"
+       data-cms-key="home-trust-label" data-cms-label="Trust Bar Label" data-cms-type="text">
+      Recognised &amp; Supported By
+    </p>
+    <div class="hero-trust__logos">
+      <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='32'%3E%3Crect width='100' height='32' rx='3' fill='%23E4DDD0'/%3E%3Ctext x='50' y='21' font-family='serif' font-size='11' fill='%239A9690' text-anchor='middle'%3EKNUST%3C/text%3E%3C/svg%3E"
+           alt="Kwame Nkrumah University of Science and Technology"
+           class="hero-trust__logo" width="100" height="32" loading="lazy">
+      <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='32'%3E%3Crect width='120' height='32' rx='3' fill='%23E4DDD0'/%3E%3Ctext x='60' y='21' font-family='serif' font-size='10' fill='%239A9690' text-anchor='middle'%3EMastercard Fdn%3C/text%3E%3C/svg%3E"
+           alt="Mastercard Foundation"
+           class="hero-trust__logo" width="120" height="32" loading="lazy">
+      <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='32'%3E%3Crect width='80' height='32' rx='3' fill='%23E4DDD0'/%3E%3Ctext x='40' y='21' font-family='serif' font-size='11' fill='%239A9690' text-anchor='middle'%3ECABE%3C/text%3E%3C/svg%3E"
+           alt="College of Art and Built Environment, KNUST"
+           class="hero-trust__logo" width="80" height="32" loading="lazy">
+    </div>
+  </div><!-- /.hero-trust -->
+
+
+  <!-- ═══════════════════════════════════════════════════════════
+       SCROLL INDICATOR — Bouncing arrow at bottom-centre
+  ═══════════════════════════════════════════════════════════════ -->
+  <a href="#dept-stats" class="hero-scroll-indicator" aria-label="Scroll to content">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+         xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path d="M12 5v14M5 12l7 7 7-7" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </a>
+
+
+  <!-- ═══════════════════════════════════════════════════════════
+       SLIDER JAVASCRIPT
+       - Each slide shows cover image immediately on becoming active
+       - After 5 000 ms the video plays (if a src is set) and cover fades
+       - Total slide duration: 13 000 ms, then crossfade to next (1 s)
+       To add a video: set data-src="filename.mp4" on the <video> element
+  ═══════════════════════════════════════════════════════════════ -->
+  <script>
+  (function () {
+    'use strict';
+
+    var SLIDE_DURATION  = 13000;  // total time on each slide (ms)
+    var VIDEO_DELAY     = 5000;   // delay before video plays (ms)
+    var FADE_DURATION   = 1000;   // crossfade between slides (ms)
+
+    var slider    = document.getElementById('hero-slider');
+    var slides    = Array.prototype.slice.call(slider.querySelectorAll('.hero-slide'));
+    var dots      = Array.prototype.slice.call(slider.querySelectorAll('.slider-dot'));
+    var current   = 0;
+    var timer     = null;
+    var videoTimer = null;
+
+    /* ── Activate a slide ──────────────────────────────────────── */
+    function goTo(idx) {
+      var prev = current;
+      current  = (idx + slides.length) % slides.length;
+
+      /* Deactivate old slide */
+      slides[prev].classList.remove('hero-slide--active');
+      dots[prev].classList.remove('slider-dot--active');
+      dots[prev].setAttribute('aria-selected', 'false');
+
+      /* Pause and reset old video */
+      var oldVideo = slides[prev].querySelector('.slide-video');
+      if (oldVideo) { oldVideo.pause(); oldVideo.currentTime = 0; }
+      var oldCover = slides[prev].querySelector('.slide-cover');
+      if (oldCover) { oldCover.classList.remove('slide-cover--faded'); }
+      oldVideo && oldVideo.classList.remove('slide-video--playing');
+
+      /* Activate new slide */
+      slides[current].classList.add('hero-slide--active');
+      dots[current].classList.add('slider-dot--active');
+      dots[current].setAttribute('aria-selected', 'true');
+
+      /* Schedule video play for new slide */
+      clearTimeout(videoTimer);
+      videoTimer = setTimeout(function () { playVideo(current); }, VIDEO_DELAY);
+
+      /* Schedule next auto-advance */
+      clearTimeout(timer);
+      timer = setTimeout(function () { goTo(current + 1); }, SLIDE_DURATION);
+    }
+
+    /* ── Play video and fade cover ─────────────────────────────── */
+    function playVideo(idx) {
+      var video = slides[idx].querySelector('.slide-video');
+      var cover = slides[idx].querySelector('.slide-cover');
+      if (!video) return;
+
+      /* Only load + play if a real src was set via data-src */
+      var src = video.getAttribute('data-src') || '';
+      if (!src) return;                 /* no video configured — keep cover */
+
+      if (!video.getAttribute('src')) {
+        video.setAttribute('src', src); /* lazy-load on first activation */
+      }
+      video.play().then(function () {
+        video.classList.add('slide-video--playing');
+        if (cover) cover.classList.add('slide-cover--faded');
+      }).catch(function () {
+        /* Autoplay blocked — cover stays visible, no error shown */
+      });
+    }
+
+    /* ── Dot click handlers ────────────────────────────────────── */
+    dots.forEach(function (dot, i) {
+      dot.addEventListener('click', function () { goTo(i); });
+    });
+
+    /* ── Pause on tab hidden, resume on visible ────────────────── */
+    document.addEventListener('visibilitychange', function () {
+      if (document.hidden) {
+        clearTimeout(timer);
+        clearTimeout(videoTimer);
+      } else {
+        timer = setTimeout(function () { goTo(current + 1); }, SLIDE_DURATION);
+      }
+    });
+
+    /* ── Keyboard arrow navigation ─────────────────────────────── */
+    slider.addEventListener('keydown', function (e) {
+      if (e.key === 'ArrowRight') goTo(current + 1);
+      if (e.key === 'ArrowLeft')  goTo(current - 1);
+    });
+
+    /* ── Start the first cycle ─────────────────────────────────── */
+    clearTimeout(timer);
+    timer = setTimeout(function () { goTo(1); }, SLIDE_DURATION);
+
+    /* Try to play video on first slide after delay */
+    videoTimer = setTimeout(function () { playVideo(0); }, VIDEO_DELAY);
+
+  })();
+  </script>
+
+</section>
 
     <!-- STATS RIBBON -->
     <section class="dept-stats" aria-label="Department statistics">
