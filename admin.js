@@ -262,7 +262,7 @@
       var body=mk('div','page-sec__body');
       hd.addEventListener('click',function(){ body.classList.toggle('closed'); arr.classList.toggle('open'); });
       grps[page].forEach(function(k){
-        var val=S.content[k.key]!==undefined?S.content[k.key]:'';
+        var val=S.content[k.key]!==undefined?S.content[k.key]:(k.defaultText||'');
         var wrap=mk('div','cf'); var lbl=mk('label'); lbl.textContent=k.label; wrap.appendChild(lbl);
         var inp;
         if(k.type==='html'||val.length>100){ inp=mk('textarea'); inp.rows=3; inp.value=val; }
