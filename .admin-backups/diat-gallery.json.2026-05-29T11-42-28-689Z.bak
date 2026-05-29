@@ -17,6 +17,23 @@
     "usdz_file": ""
   },
   {
+    "title": "Set of carved wooden Akuaba Dolls",
+    "artist": "DIAT Student · Leather Technology",
+    "year": "2024",
+    "level": "Year 3",
+    "discipline": "Wood & Furniture",
+    "description": "Asante Akuaba Dolls",
+    "tags": [
+      "Carved wooden Akuaba Dolls integrated with leather and beads."
+    ],
+    "featured": false,
+    "has_ar": false,
+    "image_path": "PXL_20260126_151122297.PORTRAIT.webp",
+    "extra_images": [],
+    "glb_file": "",
+    "usdz_file": ""
+  },
+  {
     "title": "Batik and Kanto Wax Print Display",
     "artist": "DIAT Student · Fibres & Fabrics",
     "year": "2022",
@@ -141,28 +158,6 @@
     "image_path": "PXL_20260126_151023444.PORTRAIT.webp",
     "extra_images": [
       "PXL_20260126_151053688.PORTRAIT.webp"
-    ],
-    "glb_file": "",
-    "usdz_file": ""
-  },
-  {
-    "title": "Set of carved wooden Akuaba Dolls",
-    "artist": "DIAT Student",
-    "year": "2024",
-    "level": "Year 4",
-    "discipline": "Leather Technology",
-    "description": "Carved wooden Akuaba Dolls Integrated with leather and beads",
-    "tags": [
-      "Akuaba Dolls-Open Sale Exhibition January",
-      "2026"
-    ],
-    "featured": true,
-    "has_ar": false,
-    "image_path": "PXL_20260126_151011987.PORTRAIT.webp",
-    "extra_images": [
-      "PXL_20260126_150956514.PORTRAIT.webp",
-      "PXL_20260126_151053688.PORTRAIT.webp",
-      "PXL_20260126_150929548.PORTRAIT.webp"
     ],
     "glb_file": "",
     "usdz_file": ""

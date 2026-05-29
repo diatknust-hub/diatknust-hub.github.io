@@ -378,11 +378,10 @@ var lbIdx = 0;
 
 /* Smart card click: opens lightbox for visitors, ignored in admin mode */
 function diatCardClick(e, i) {
-  /* In admin mode NEVER open lightbox — CMS handles everything */
-  var adminActive = localStorage.getItem('diat_admin_session') === 'true'
-    || (window.location.search && window.location.search.indexOf('cms=on') !== -1);
-  if (adminActive) return;
-  /* For regular visitors: open lightbox */
+  /* The old localStorage admin guard has been removed — the admin
+     is now local-only (127.0.0.1) and never runs on the public site,
+     so the check is obsolete and was blocking clicks on PC browsers
+     that still had the old diat_admin_session value in localStorage. */
   openLightbox(i);
 }
 
