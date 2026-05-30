@@ -90,7 +90,7 @@
           <!-- Gallery dropdown -->
           <li class="dept-nav__item" role="none">
             <a href="gallery.html" class="dept-nav__link dept-nav__link--drop" aria-haspopup="true" aria-expanded="false">
-              Gallery <span class="dept-nav__chevron" aria-hidden="true">&#9660;</span>
+              Gallery
             </a>
             <div class="dept-nav__dropdown" role="menu" aria-label="Gallery sub-menu">
               <a href="gallery.html"           class="dept-nav__drop-link" role="menuitem">&#128444; All Works</a>
@@ -107,7 +107,7 @@
           <!-- WebAR dropdown -->
           <li class="dept-nav__item" role="none">
             <a href="webar.html" class="dept-nav__link dept-nav__link--drop" aria-haspopup="true" aria-expanded="false">
-              WebAR <span class="dept-nav__chevron" aria-hidden="true">&#9660;</span>
+              WebAR
             </a>
             <div class="dept-nav__dropdown" role="menu" aria-label="WebAR sub-menu">
               <a href="webar.html"          class="dept-nav__drop-link" role="menuitem">&#127918; Launch 3D Viewer</a>
@@ -121,7 +121,7 @@
           <!-- About dropdown -->
           <li class="dept-nav__item" role="none">
             <a href="about.html" class="dept-nav__link dept-nav__link--drop" aria-haspopup="true" aria-expanded="false">
-              About <span class="dept-nav__chevron" aria-hidden="true">&#9660;</span>
+              About
             </a>
             <div class="dept-nav__dropdown" role="menu" aria-label="About sub-menu">
               <a href="about.html"                  class="dept-nav__drop-link" role="menuitem">&#127963; Our Story</a>
@@ -133,7 +133,7 @@
           <!-- Programmes — MEGA MENU -->
           <li class="dept-nav__item dept-nav__item--mega" role="none">
             <a href="programmes.html" class="dept-nav__link dept-nav__link--drop" aria-haspopup="true" aria-expanded="false">
-              Programmes <span class="dept-nav__chevron" aria-hidden="true">&#9660;</span>
+              Programmes
             </a>
             <div class="dept-nav__mega" role="menu" aria-label="Programmes sub-menu">
               <div class="dept-nav__mega-col">
@@ -164,7 +164,7 @@
           <!-- Community dropdown -->
           <li class="dept-nav__item" role="none">
             <a href="community.html" class="dept-nav__link dept-nav__link--drop" aria-haspopup="true" aria-expanded="false">
-              Community <span class="dept-nav__chevron" aria-hidden="true">&#9660;</span>
+              Community
             </a>
             <div class="dept-nav__dropdown" role="menu" aria-label="Community sub-menu">
               <a href="community.html"                        class="dept-nav__drop-link" role="menuitem">&#127807; Community Overview</a>
@@ -176,7 +176,7 @@
           <!-- Staff dropdown -->
           <li class="dept-nav__item" role="none">
             <a href="staff.html" class="dept-nav__link dept-nav__link--drop" aria-haspopup="true" aria-expanded="false">
-              Staff <span class="dept-nav__chevron" aria-hidden="true">&#9660;</span>
+              Staff
             </a>
             <div class="dept-nav__dropdown" role="menu" aria-label="Staff sub-menu">
               <a href="staff.html"                      class="dept-nav__drop-link" role="menuitem">&#128100; All Staff</a>
@@ -192,7 +192,7 @@
           <!-- Archive dropdown -->
           <li class="dept-nav__item" role="none">
             <a href="archive.html" class="dept-nav__link dept-nav__link--drop" aria-haspopup="true" aria-expanded="false">
-              Archive <span class="dept-nav__chevron" aria-hidden="true">&#9660;</span>
+              Archive
             </a>
             <div class="dept-nav__dropdown" role="menu" aria-label="Archive sub-menu">
               <a href="archive.html"                    class="dept-nav__drop-link" role="menuitem">&#128203; Digital Archive</a>
@@ -284,7 +284,7 @@
         '.dept-nav__logo{width:26px!important;height:26px!important;}',
         '.dept-nav__links{gap:0!important;flex-wrap:nowrap!important;}',
         '.dept-nav__link{font-size:.68rem!important;padding:4px 5px!important;white-space:nowrap!important;}',
-        '.dept-nav__chevron{font-size:.4rem!important;margin-left:1px!important;}',
+        '/* chevron removed */',
         '.dept-nav__cta{display:none!important;}',
       '}'
     ].join('');

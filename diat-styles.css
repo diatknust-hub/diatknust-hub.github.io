@@ -1,3 +1,12 @@
+/* Franklin Gothic Heavy — loaded from repo font file */
+@font-face {
+  font-family: 'FranklinGothicHeavy';
+  src: url('FranklinGothicHeavy.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
 /*
  * ============================================================
  * DIAT KNUST HUB — Production Design System
@@ -1038,7 +1047,7 @@ h1, h2, h3, h4, h5, h6 { font-family: var(--ff-display); line-height: var(--lh-h
    * The section should be just tall enough for one line of content.
    * padding-block: var(--sp-md) gives ~1rem top and bottom.
    */
-  padding-block: var(--sp-md);
+  padding-block: 6px;   /* tightened: was var(--sp-md) ~1rem */
   overflow: hidden;
   position: relative;
 }
@@ -1080,11 +1089,11 @@ h1, h2, h3, h4, h5, h6 { font-family: var(--ff-display); line-height: var(--lh-h
   align-items: baseline;
   justify-content: center;
   gap: var(--sp-xs);
-  padding: var(--sp-md) var(--sp-md);
+  padding: 10px var(--sp-md);  /* tightened vertical padding */
   text-align: left;
 }
 .dept-stats__number {
-  font-family: var(--ff-display);
+  font-family: 'FranklinGothicHeavy', var(--ff-display);
 
   /*
    * FIX 1d — smaller font + no bottom margin.
@@ -1099,15 +1108,12 @@ h1, h2, h3, h4, h5, h6 { font-family: var(--ff-display); line-height: var(--lh-h
   flex-shrink: 0;
 }
 .dept-stats__label {
-  /*
-   * FIX 1e — label sits inline beside number.
-   * Smaller font size so it reads as a label not a heading.
-   * No letter-spacing: the tight inline context reads better plain.
-   */
+  font-family: 'FranklinGothicHeavy', var(--ff-display);
   font-size: var(--fs-sm);
   color: rgba(255,255,255,0.55);
   font-weight: 500;
   line-height: 1.2;
+  letter-spacing: .03em;
 }
 
 /* ── 10. ABOUT TEASER ─────────────────────────────────────── */
@@ -4406,6 +4412,19 @@ h1, h2, h3, h4, h5, h6 { font-family: var(--ff-display); line-height: var(--lh-h
   z-index: 2;
 }
 
+
+/* ── Hero slider: secondary button must be white (sits on dark photo) ── */
+.hero-slider .slide-actions .btn--secondary {
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.65);
+  background: transparent;
+}
+.hero-slider .slide-actions .btn--secondary:hover {
+  background: rgba(255, 255, 255, 0.18);
+  border-color: #fff;
+  color: #fff;
+}
+
 /* ── Slide content: anchored bottom-left, minimal ────────────── */
 .slide-content {
   position: relative;
@@ -4428,7 +4447,7 @@ h1, h2, h3, h4, h5, h6 { font-family: var(--ff-display); line-height: var(--lh-h
 }
 
 .slide-title {
-  font-family: var(--ff-display, 'Playfair Display', Georgia, serif);
+  font-family: 'FranklinGothicHeavy', var(--ff-display, 'Playfair Display', Georgia, serif);
   font-size: clamp(2rem, 4.8vw, 3.8rem);
   font-weight: 700;
   line-height: 1.1;
@@ -4440,6 +4459,7 @@ h1, h2, h3, h4, h5, h6 { font-family: var(--ff-display); line-height: var(--lh-h
 .slide-accent {
   color: var(--clr-gold);
   font-style: italic;
+  font-family: 'FranklinGothicHeavy', var(--ff-display, Georgia, serif);
 }
 
 .slide-actions {
