@@ -376,12 +376,12 @@ var LB_PHOTOS_MASTER = [
 var LB_PHOTOS = [];
 var lbIdx = 0;
 
-/* Smart card click: opens lightbox for visitors, ignored in admin mode */
+/* Card click: opens lightbox.
+ * localStorage check removed — the admin is now local-only (127.0.0.1)
+ * and never runs on the public site. The old check caused a silent
+ * SecurityError in Firefox (Enhanced Tracking Protection) that killed
+ * the function before openLightbox() was ever called. */
 function diatCardClick(e, i) {
-  /* The old localStorage admin guard has been removed — the admin
-     is now local-only (127.0.0.1) and never runs on the public site,
-     so the check is obsolete and was blocking clicks on PC browsers
-     that still had the old diat_admin_session value in localStorage. */
   openLightbox(i);
 }
 

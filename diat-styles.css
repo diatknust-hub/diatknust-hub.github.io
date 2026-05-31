@@ -4322,7 +4322,7 @@ h1, h2, h3, h4, h5, h6 { font-family: var(--ff-display); line-height: var(--lh-h
   margin-left: calc(50% - 50vw);
   margin-right: calc(50% - 50vw);
   width: 100vw;
-  height: clamp(460px, 68vh, 720px);
+  height: clamp(580px, 84vh, 960px);  /* extended — was 68vh/720px */
   overflow: hidden;
   background: #111;
 }
