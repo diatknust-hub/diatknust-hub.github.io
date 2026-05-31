@@ -1483,6 +1483,7 @@ h1, h2, h3, h4, h5, h6 { font-family: var(--ff-display); line-height: var(--lh-h
   display: block;
 }
 .dept-anniversary__title {
+  font-family: 'FranklinGothicHeavy', var(--ff-display, Georgia, serif);
   font-size: var(--fs-3xl);
   font-weight: 700;
   color: var(--clr-text-inverse);
@@ -3229,6 +3230,7 @@ h1, h2, h3, h4, h5, h6 { font-family: var(--ff-display); line-height: var(--lh-h
   border: 2px solid var(--clr-surface);
 }
 .timeline-item__year {
+  font-family: 'FranklinGothicHeavy', var(--ff-display, Georgia, serif);
   font-family: var(--ff-display);
   font-size: var(--fs-lg);
   font-weight: 700;
@@ -4564,4 +4566,55 @@ h1, h2, h3, h4, h5, h6 { font-family: var(--ff-display); line-height: var(--lh-h
   .hero-slide { transition: none; }
   .hero-slide--active .slide-cover { animation: none; }
   @keyframes hero-bounce { 0%, 100% { transform: translateX(-50%); } }
+}
+
+/* ══════════════════════════════════════════════════════════════
+   BACK-TO-TOP BUTTON — injected by site.js into every page
+   Appears bottom-right after scrolling 500px past the hero.
+   Uses DIAT gold + indigo brand colours.
+══════════════════════════════════════════════════════════════ */
+.scroll-top-btn {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: var(--clr-gold, #C9952A);
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  z-index: 9998;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(12px);
+  transition: opacity 0.3s ease, transform 0.3s ease, background 0.2s ease;
+}
+
+.scroll-top-btn--visible {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+.scroll-top-btn:hover {
+  background: var(--clr-indigo, #1A1A4E);
+}
+
+.scroll-top-btn:focus-visible {
+  outline: 3px solid var(--clr-gold, #C9952A);
+  outline-offset: 3px;
+}
+
+@media (max-width: 768px) {
+  .scroll-top-btn {
+    bottom: 20px;
+    right: 16px;
+    width: 40px;
+    height: 40px;
+  }
 }
