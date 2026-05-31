@@ -748,9 +748,10 @@
           shadow-softness="0.8"
           exposure="1.1"
 
-          camera-orbit="30deg 75deg 120%"
-          min-camera-orbit="auto auto 50%"
-          max-camera-orbit="auto auto 200%"
+          camera-orbit="30deg 70deg auto"
+          camera-target="auto"
+          min-camera-orbit="auto auto 25%"
+          max-camera-orbit="auto auto 250%"
 
           loading="eager"
           reveal="auto"
@@ -769,16 +770,6 @@
 
           <!-- Loading progress poster -->
           <div slot="progress-bar"></div>
-
-          <!-- AR not supported notice — shown when device lacks ARCore -->
-          <div slot="ar-button" id="ar-no-support-notice" hidden
-               style="position:absolute;bottom:20px;left:50%;transform:translateX(-50%);
-                      background:rgba(0,0,0,.8);color:#fff;padding:10px 18px;
-                      border-radius:8px;font-size:.82rem;text-align:center;
-                      pointer-events:none;white-space:nowrap;z-index:10">
-            AR is not available on this device.<br>
-            <span style="color:#C9952A">You can still rotate &amp; zoom the 3D model.</span>
-          </div>
 
         </model-viewer>
 
@@ -882,7 +873,12 @@
       viewer.setAttribute('ios-src', usdz);
       viewer.setAttribute('alt',     title + ' — a DIAT KNUST artwork scanned in 3D');
       /* Re-add ar after a tick so model-viewer re-registers AR capability */
-      setTimeout(function() { viewer.setAttribute('ar', ''); }, 50);
+      setTimeout(function() {
+        viewer.setAttribute('ar', '');
+        /* Reset camera to auto-fit the new model's bounding box */
+        viewer.setAttribute('camera-orbit', '30deg 70deg auto');
+        viewer.setAttribute('camera-target', 'auto');
+      }, 50);
 
       /* Update info card */
       infoDisc.textContent = disc;
@@ -906,47 +902,7 @@
       document.querySelectorAll('.webar-artwork-btn')
     );
 
-    /* ── AR capability detection ──────────────────────────────────
-     * Some devices (e.g. Tecno Camon) cannot install Google Play
-     * Services for AR (ARCore) due to hardware limits. Clicking the
-     * AR button on those devices would silently redirect to Play Store
-     * showing "incompatible" — confusing and unhelpful.
-     *
-     * Fix: after the model loads, check canActivateAR. If false, swap
-     * the AR button text to "3D View Only" and prevent the AR launch.
-     * Also listen to ar-status events to catch runtime failures.
-     * ─────────────────────────────────────────────────────────────── */
     var viewer = document.getElementById('main-viewer');
-
-    viewer.addEventListener('load', function () {
-      var arBtn = viewer.querySelector('[slot="ar-button"]');
-      if (!viewer.canActivateAR) {
-        /* Device cannot do AR — update button text and prevent launch */
-        if (arBtn) {
-          arBtn.innerHTML = '<span class="ar-launch-btn__icon">&#127918;</span> 3D View Only';
-          arBtn.title = 'AR is not available on this device. You can still rotate and zoom the 3D model.';
-          arBtn.addEventListener('click', function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-            var notice = document.getElementById('ar-no-support-notice');
-            if (notice) {
-              notice.removeAttribute('hidden');
-              setTimeout(function () { notice.setAttribute('hidden', ''); }, 4000);
-            }
-          }, true);
-        }
-      }
-    });
-
-    viewer.addEventListener('ar-status', function (e) {
-      if (e.detail.status === 'failed') {
-        var notice = document.getElementById('ar-no-support-notice');
-        if (notice) {
-          notice.removeAttribute('hidden');
-          setTimeout(function () { notice.setAttribute('hidden', ''); }, 5000);
-        }
-      }
-    });
 
     function syncMobileNav() {
       var activeIdx = 0;
