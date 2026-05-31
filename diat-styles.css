@@ -1503,6 +1503,20 @@ h1, h2, h3, h4, h5, h6 { font-family: var(--ff-display); line-height: var(--lh-h
   margin: 0 auto var(--sp-xl);
   text-align: center;
 }
+
+/* .ann-fifty — the large "50" in the anniversary heading
+   Displayed significantly larger than the surrounding h2 text,
+   in gold, Franklin Gothic Heavy */
+.ann-fifty {
+  font-family: 'FranklinGothicHeavy', var(--ff-display, Georgia, serif);
+  color: var(--clr-gold);
+  font-size: 1.55em;   /* larger than the h2 base size */
+  line-height: 0.95;
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 0.06em;
+}
+
 .dept-anniversary__milestones {
   display: flex;
   justify-content: center;
@@ -1514,7 +1528,7 @@ h1, h2, h3, h4, h5, h6 { font-family: var(--ff-display); line-height: var(--lh-h
   text-align: center;
 }
 .dept-milestone__year {
-  font-family: var(--ff-display);
+  font-family: 'FranklinGothicHeavy', var(--ff-display);
   font-size: var(--fs-xl);
   font-weight: 700;
   color: var(--clr-gold);
