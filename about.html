@@ -16,36 +16,49 @@
 <main id="main-content">
 
     <!-- PAGE HERO -->
-    <section class="page-hero" aria-labelledby="about-title">
-      <div class="container">
-        <nav class="page-hero__breadcrumb" aria-label="Breadcrumb">
-          <a href="index.html" class="page-hero__breadcrumb-link">Home</a>
-          <span class="page-hero__breadcrumb-sep" aria-hidden="true">/</span>
-          <span class="page-hero__breadcrumb-current">About</span>
+    <!-- ═══ ABOUT HERO — full-bleed, Ken Burns zoom, Franklin Gothic ═══════ -->
+    <section class="about-hero" aria-labelledby="about-title">
+
+      <!-- Background image with Ken Burns zoom -->
+      <div class="about-hero__bg" aria-hidden="true">
+        <img class="about-hero__bg-img"
+             src="PXL_20260530_134703378.webp"
+             alt=""
+             draggable="false" oncontextmenu="return false"
+             loading="eager">
+        <div class="about-hero__overlay"></div>
+      </div>
+
+      <!-- Content -->
+      <div class="about-hero__content">
+        <nav class="about-hero__breadcrumb" aria-label="Breadcrumb">
+          <a href="index.html">Home</a>
+          <span aria-hidden="true"> / </span>
+          <span>About</span>
         </nav>
-        <span class="page-hero__eyebrow">Est. 1976 &middot; KNUST, Kumasi, Ghana</span>
-        <h1 class="page-hero__title" id="about-title"
+        <span class="about-hero__eyebrow">Est. 1976 &middot; KNUST, Kumasi, Ghana</span>
+        <h1 class="about-hero__title" id="about-title"
             data-cms-key="about-hero-dept-name" data-cms-label="About Hero Title" data-cms-type="text">
-          Department of Indigenous Art &amp; Technology
+          Department of<br>
+          <em class="about-hero__accent">Indigenous Art</em><br>
+          &amp; Technology
         </h1>
-        <p class="page-hero__body"
+        <p class="about-hero__body"
            data-cms-key="about-hero-intro" data-cms-label="About Hero Body">
           DIAT is the only university department in Ghana dedicated entirely to
           indigenous art and craft disciplines — taught not as cultural history
           but as living, professionally viable creative practices.
         </p>
-        <div class="page-hero__rule" aria-hidden="true"></div>
+        <div class="about-hero__actions">
+          <a href="#who-heading" class="btn btn--primary btn--lg">Our Story &#8594;</a>
+          <a href="programmes.html" class="btn btn--secondary btn--lg">Programmes &#8599;</a>
+        </div>
       </div>
-    </section>
 
-    <!-- ENTRANCE PHOTO BANNER -->
-    <div data-cms-key="about-hero-banner-img" data-cms-label="Hero Banner Photo" data-cms-type="image"
-         style="width:100%;height:440px;overflow:hidden;position:relative;border-bottom:3px solid var(--clr-gold)">
-      <img src="diat-entrance.jpg"
-           alt="DIAT Department entrance — official KNUST signboard and gate, Kumasi, Ghana"
-           style="width:100%;height:100%;object-fit:cover;object-position:center 40%"
-           loading="eager" draggable="false" oncontextmenu="return false">
-    </div>
+      <!-- Gold bottom rule -->
+      <div class="about-hero__rule" aria-hidden="true"></div>
+
+    </section>
 
     <!-- WHO WE ARE -->
     <section class="dept-section dept-section--white" aria-labelledby="who-heading">
