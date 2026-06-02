@@ -453,52 +453,6 @@
     }
 
     /* ── UPLOAD BANNER ────────────────────────────────────────── */
-    .gal-upload-banner {
-      background: linear-gradient(135deg, var(--clr-indigo) 0%, #2A2A6E 100%);
-      border: 2px dashed rgba(201,149,42,.4);
-      border-radius: var(--radius-lg);
-      padding: var(--sp-xl);
-      text-align: center;
-      margin-top: var(--sp-xl);
-    }
-    .gal-upload-banner__icon { font-size: 2.5rem; margin-bottom: var(--sp-sm); }
-    .gal-upload-banner__title {
-      font-family: var(--ff-display);
-      font-size: var(--fs-lg);
-      font-weight: 700;
-      color: #fff;
-      margin-bottom: var(--sp-xs);
-    }
-    .gal-upload-banner__body {
-      font-size: var(--fs-sm);
-      color: rgba(255,255,255,.6);
-      line-height: var(--lh-relaxed);
-      max-width: 50ch;
-      margin: 0 auto var(--sp-lg);
-    }
-    .gal-upload-steps {
-      display: flex;
-      gap: var(--sp-md);
-      justify-content: center;
-      flex-wrap: wrap;
-      font-size: var(--fs-sm);
-      color: rgba(255,255,255,.7);
-    }
-    .gal-upload-step {
-      display: flex;
-      align-items: center;
-      gap: var(--sp-xs);
-    }
-    .gal-upload-step__num {
-      width: 22px; height: 22px;
-      border-radius: 50%;
-      background: rgba(201,149,42,.3);
-      color: var(--clr-gold);
-      font-size: 0.65rem;
-      font-weight: 700;
-      display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0;
-    }
 
     /* ── RESPONSIVE ───────────────────────────────────────────── */
     @media (max-width: 900px) {
@@ -510,6 +464,12 @@
       .gal-tab { padding: var(--sp-sm) var(--sp-md); font-size: var(--fs-xs); }
       .gal-lb__nav { width: 38px; height: 38px; font-size: 1rem; }
     }
+
+    /* Collapse section headers when the grid below is empty */
+    .gal-grid:empty + * { display: none; }
+    .gal-section__header:has(+ .gal-grid:empty) { display: none; }
+    /* Fallback for browsers without :has() — handled by JS below */
+
   </style>
   <script>
   /* setTabsTop — measures every sticky/fixed bar actually visible at the
@@ -941,21 +901,7 @@
           </div>
           <div style="height:var(--sp-2xl)"></div>
 
-          <!-- Upload guide banner -->
-          <div class="gal-upload-banner" role="complementary">
-            <div class="gal-upload-banner__icon">&#128247;</div>
-            <h2 class="gal-upload-banner__title">Add Your 20 Artwork Photos</h2>
-            <p class="gal-upload-banner__body">
-              Upload all photos to GitHub in one step, then paste the filenames
-              into Admin Mode. Each card accepts one or more images for multi-angle viewing.
-            </p>
-            <div class="gal-upload-steps">
-              <div class="gal-upload-step"><span class="gal-upload-step__num">1</span>Go to github.com/diatknust-hub/diatknust-hub.github.io</div>
-              <div class="gal-upload-step"><span class="gal-upload-step__num">2</span>Click Add file &rarr; Upload files</div>
-              <div class="gal-upload-step"><span class="gal-upload-step__num">3</span>Drag all 20 photos + panoramic image at once</div>
-              <div class="gal-upload-step"><span class="gal-upload-step__num">4</span>Commit. Then open Admin Mode on this page and paste filenames</div>
-            </div>
-          </div>
+
 
         </div><!-- /#sec-all -->
 
@@ -1279,6 +1225,20 @@
           grid.innerHTML = (groups[dk] && groups[dk].length)
             ? groups[dk].map(buildCard).join('')
             : '';  /* empty — no artworks in this discipline */
+        });
+
+        /* Hide section headers whose grids are empty (no artworks) */
+        ALL_DISCS.forEach(function(dk) {
+          var grid = document.querySelector('#sec-all [data-disc-grid="' + dk + '"]');
+          if (!grid) return;
+          var sib = grid.previousElementSibling;
+          while (sib) {
+            if (sib.classList.contains('gal-section__header')) {
+              sib.style.display = (!groups[dk] || !groups[dk].length) ? 'none' : '';
+              break;
+            }
+            sib = sib.previousElementSibling;
+          }
         });
 
         /* Reset individual disc sections so populateDiscSection re-clones
