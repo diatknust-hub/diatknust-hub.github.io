@@ -198,6 +198,7 @@
 
     /* ── ARTWORK GRID ─────────────────────────────────────────── */
     .gal-grid {
+      margin-bottom: var(--sp-2xl);   /* replaces the removed inline spacer divs */
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: var(--sp-md);
@@ -465,11 +466,8 @@
       .gal-lb__nav { width: 38px; height: 38px; font-size: 1rem; }
     }
 
-    /* Hide ALL section headers by default.
-       The dynamic gallery script reveals only those with artworks. */
-    #sec-all .gal-section__header { display: none; }
-    /* Collapse empty grids so they don't leave whitespace */
-    .gal-grid:empty { display: none; margin: 0; padding: 0; }
+    /* Collapse empty grids — no whitespace when discipline has no artworks */
+    .gal-grid:empty { display: none; margin: 0; padding: 0; height: 0; }
 
   </style>
   <script>
@@ -639,7 +637,6 @@
               </div>
             </article>
           </div>
-          <div style="height:var(--sp-2xl)"></div>
           <!-- ── FIBRES & FABRICS ── -->
           <div class="gal-section__header">
             <span class="gal-section__icon">&#129525;</span>
@@ -708,7 +705,6 @@
               </div>
             </article>
           </div>
-          <div style="height:var(--sp-2xl)"></div>
           <!-- ── LEATHER TECHNOLOGY ── -->
           <div class="gal-section__header">
             <span class="gal-section__icon">&#128092;</span>
@@ -749,7 +745,6 @@
               </div>
             </article>
           </div>
-          <div style="height:var(--sp-2xl)"></div>
           <!-- ── METAL PRODUCTION ── -->
           <div class="gal-section__header">
             <span class="gal-section__icon">&#9881;</span>
@@ -818,7 +813,6 @@
               </div>
             </article>
           </div>
-          <div style="height:var(--sp-2xl)"></div>
           <!-- ── RATTAN & BAMBOO ── -->
           <div class="gal-section__header">
             <span class="gal-section__icon">&#127819;</span>
@@ -859,7 +853,6 @@
               </div>
             </article>
           </div>
-          <div style="height:var(--sp-2xl)"></div>
           <!-- ── WOOD & FURNITURE ── -->
           <div class="gal-section__header">
             <span class="gal-section__icon">&#129683;</span>
@@ -900,7 +893,6 @@
               </div>
             </article>
           </div>
-          <div style="height:var(--sp-2xl)"></div>
 
 
 
@@ -1228,22 +1220,25 @@
             : '';  /* empty — no artworks in this discipline */
         });
 
-        /* Reveal section headers ONLY for disciplines that have artworks */
+        /* Hide section headers for disciplines with zero artworks.
+           Headers for disciplines WITH artworks stay as-is (naturally visible). */
         ALL_DISCS.forEach(function(dk) {
           var grid = document.querySelector('#sec-all [data-disc-grid="' + dk + '"]');
           if (!grid) return;
           var hasArtworks = groups[dk] && groups[dk].length > 0;
-          /* Walk backwards to find the matching header */
-          var sib = grid.previousElementSibling;
-          while (sib) {
-            if (sib.classList.contains('gal-section__header')) {
-              sib.style.display = hasArtworks ? '' : 'none';
-              break;
+          if (!hasArtworks) {
+            /* Collapse the grid */
+            grid.style.display = 'none';
+            /* Walk backwards to find and hide the matching header */
+            var sib = grid.previousElementSibling;
+            while (sib) {
+              if (sib.classList.contains('gal-section__header')) {
+                sib.style.display = 'none';
+                break;
+              }
+              sib = sib.previousElementSibling;
             }
-            sib = sib.previousElementSibling;
           }
-          /* Also collapse empty grids explicitly */
-          grid.style.display = hasArtworks ? '' : 'none';
         });
 
         /* Reset individual disc sections so populateDiscSection re-clones
