@@ -31,9 +31,24 @@
       object-fit: cover;
       object-position: center 45%;
       display: block;
-      transition: transform 12s ease-in-out;
+      /* Ken Burns: infinite alternate so zoom is ALWAYS in motion —
+         zooms in, then back out, repeating so the effect never stops */
+      animation: gal-hero-kb 14s ease-in-out infinite alternate;
     }
-    .gal-hero:hover .gal-hero__img { transform: scale(1.04); }
+    @keyframes gal-hero-kb {
+      0%   { transform: scale(1.0)  translate(0,    0);    }
+      100% { transform: scale(1.10) translate(-1%,  -1.5%); }
+    }
+    /* Mobile: faster (5 s) + bigger zoom (1.22) so it is clearly visible */
+    @media (max-width: 768px) {
+      .gal-hero__img {
+        animation: gal-hero-kb-mobile 5s ease-in-out infinite alternate;
+      }
+      @keyframes gal-hero-kb-mobile {
+        0%   { transform: scale(1.0)  translate(0,     0);    }
+        100% { transform: scale(1.22) translate(-2%,  -2.5%); }
+      }
+    }
     .gal-hero__overlay {
       position: absolute;
       inset: 0;
@@ -477,15 +492,11 @@
   function setTabsTop() {
     var tabs = document.querySelector('.gal-tabs');
     if (!tabs) return;
-    var offset = 0;
-    ['.site-announce', '.site-header', '.dept-nav'].forEach(function(sel) {
-      var el = document.querySelector(sel);
-      if (!el) return;
-      var pos = getComputedStyle(el).position;
-      if (pos === 'sticky' || pos === 'fixed') {
-        offset += el.getBoundingClientRect().height;
-      }
-    });
+    /* Only measure the main sticky nav — the announce bar is NOT sticky
+       so including it inflated the offset on mobile (it wraps to 2 lines)
+       and pushed the tab bar down, creating the white gap above it.     */
+    var nav = document.querySelector('.dept-nav');
+    var offset = nav ? Math.round(nav.getBoundingClientRect().height) : 64;
     tabs.style.top = offset + 'px';
   }
   /* Run once DOM is ready, then on resize (announce bar line-wraps on mobile) */
@@ -543,6 +554,13 @@
 
     <!-- ═══ DISCIPLINE TABS + GALLERY ═══════════════════════════════════ -->
     <div class="dept-section dept-section--surface" style="padding-top:0">
+      <style>
+        /* Breathing room between sticky tab bar and first section header */
+        #sec-all { padding-top: var(--sp-lg, 1.5rem); }
+        @media (max-width: 768px) {
+          #sec-all { padding-top: var(--sp-xl, 2rem); }
+        }
+      </style>
       <div class="container">
 
         <!-- Tabs -->
