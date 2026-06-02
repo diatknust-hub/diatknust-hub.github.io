@@ -465,10 +465,11 @@
       .gal-lb__nav { width: 38px; height: 38px; font-size: 1rem; }
     }
 
-    /* Collapse section headers when the grid below is empty */
-    .gal-grid:empty + * { display: none; }
-    .gal-section__header:has(+ .gal-grid:empty) { display: none; }
-    /* Fallback for browsers without :has() — handled by JS below */
+    /* Hide ALL section headers by default.
+       The dynamic gallery script reveals only those with artworks. */
+    #sec-all .gal-section__header { display: none; }
+    /* Collapse empty grids so they don't leave whitespace */
+    .gal-grid:empty { display: none; margin: 0; padding: 0; }
 
   </style>
   <script>
@@ -1227,18 +1228,22 @@
             : '';  /* empty — no artworks in this discipline */
         });
 
-        /* Hide section headers whose grids are empty (no artworks) */
+        /* Reveal section headers ONLY for disciplines that have artworks */
         ALL_DISCS.forEach(function(dk) {
           var grid = document.querySelector('#sec-all [data-disc-grid="' + dk + '"]');
           if (!grid) return;
+          var hasArtworks = groups[dk] && groups[dk].length > 0;
+          /* Walk backwards to find the matching header */
           var sib = grid.previousElementSibling;
           while (sib) {
             if (sib.classList.contains('gal-section__header')) {
-              sib.style.display = (!groups[dk] || !groups[dk].length) ? 'none' : '';
+              sib.style.display = hasArtworks ? '' : 'none';
               break;
             }
             sib = sib.previousElementSibling;
           }
+          /* Also collapse empty grids explicitly */
+          grid.style.display = hasArtworks ? '' : 'none';
         });
 
         /* Reset individual disc sections so populateDiscSection re-clones
