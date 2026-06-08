@@ -118,7 +118,25 @@
   var S = { content:{}, gallery:[], webar:[], keys:[], pages:[], assets:[], dirty:false };
   var DISCS = ['Product Design','Clay & Earthenware','Fibres & Fabrics','Leather Technology','Metal Production','Rattan & Bamboo','Wood & Furniture'];
   var LVLS  = ['Year 1','Year 2','Year 3','Year 4','MPhil','Staff/Faculty'];
-  var PAGE_NAMES = {'index.html':'🏠 Home','about.html':'ℹ About','gallery.html':'🖼 Gallery','webar.html':'🥽 WebAR','staff.html':'👥 Staff','archive.html':'🗄 Archive','community.html':'🤝 Community','programmes.html':'📚 Programmes','product-design.html':'📐 Product Design','clay-earthenware.html':'🪴 Clay & Earthenware','fibres-fabrics.html':'🧵 Fibres & Fabrics','leather-technology.html':'👜 Leather Technology','metal-production.html':'⚙ Metal Production','rattan-bamboo.html':'🌿 Rattan & Bamboo','wood-furniture.html':'🪵 Wood & Furniture'};
+  var PAGE_NAMES = {
+    'index.html': 'Home',
+    'about.html': 'About',
+    'gallery.html': 'Gallery',
+    'webar.html': 'WebAR',
+    'staff.html': 'Staff',
+    'archive.html': 'Archive',
+    'community.html': 'Community',
+    'programmes.html': 'Programmes',
+    'product-design.html': 'Product Design',
+    'clay-earthenware.html': 'Clay & Earthenware',
+    'fibres-fabrics.html': 'Fibres & Fabrics',
+    'leather-technology.html': 'Leather Technology',
+    'metal-production.html': 'Metal Production',
+    'rattan-bamboo.html': 'Rattan & Bamboo',
+    'wood-furniture.html': 'Wood & Furniture',
+    'contact.html': 'Contact',
+    'admin.html': 'Admin'
+  };
 
   /* ── Utils ─────────────────────────────────────────────────────────────── */
   function $(id){ return document.getElementById(id); }
@@ -135,7 +153,14 @@
   }
 
   /* ── Nav ───────────────────────────────────────────────────────────────── */
-  var NAV={'content':'📝  Content','gallery':'🎨  Gallery','webar':'🥽  WebAR Models','assets':'📁  Assets','preview':'👁  Preview','backup':'💾  Backup'};
+  var NAV = {
+    content: 'Content',
+    gallery: 'Gallery',
+    webar: 'WebAR Models',
+    assets: 'Assets',
+    preview: 'Preview',
+    backup: 'Backup'
+  };
   document.querySelectorAll('[data-panel]').forEach(function(btn){
     if(NAV[btn.dataset.panel]) btn.textContent=NAV[btn.dataset.panel];
     btn.addEventListener('click',function(){ switchPanel(btn.dataset.panel); });
@@ -178,6 +203,26 @@
       .then(function(r){ return r.json(); })
       .then(function(d){ if(d.ok){ status('"'+filename+'" deleted.','good'); onDone(); } else status('Delete failed: '+d.error,'bad'); })
       .catch(function(e){ status('Error: '+e.message,'bad'); });
+  }
+
+  function renameAssetFile(filename, onDone) {
+    var next = prompt('Rename this media file:', filename);
+    if (!next || next === filename) return;
+    fetch('/api/rename-asset', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ from: filename, to: next })
+    })
+      .then(function(r){ return r.json(); })
+      .then(function(d){
+        if (!d.ok) {
+          status('Rename failed: '+d.error, 'bad');
+          return;
+        }
+        status('Renamed to "'+d.to+'". Updated references in '+(d.updatedJson || []).length+' JSON file(s).', 'good');
+        onDone(d.to);
+      })
+      .catch(function(e){ status('Rename error: '+e.message, 'bad'); });
   }
 
   /* ── Image zone component ──────────────────────────────────────────────── */
@@ -578,6 +623,14 @@
       var cb=mk('button','asset-copy','📋 Copy filename');
       cb.addEventListener('click',function(){ navigator.clipboard.writeText(name).then(function(){ cb.textContent='✓ Copied!'; setTimeout(function(){ cb.textContent='📋 Copy filename'; },1500); }); });
       item.appendChild(cb);
+      var rb=mk('button','asset-copy','Rename file');
+      rb.addEventListener('click',function(){
+        renameAssetFile(name,function(newName){
+          S.assets=S.assets.map(function(a){ return a===name ? newName : a; });
+          load();
+        });
+      });
+      item.appendChild(rb);
       if(imgX.test(name)){
         var db=mk('button','asset-del','🗑 Delete from site');
         db.addEventListener('click',function(){

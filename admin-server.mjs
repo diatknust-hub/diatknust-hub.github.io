@@ -1,5 +1,5 @@
 import { createServer } from 'node:http';
-import { readFile, writeFile, readdir, mkdir, stat } from 'node:fs/promises';
+import { readFile, writeFile, readdir, mkdir, stat, rename } from 'node:fs/promises';
 import { createReadStream } from 'node:fs';
 import { extname, join, normalize, relative, resolve } from 'node:path';
 
@@ -73,8 +73,63 @@ async function listHtmlFiles() {
 async function listAssets() {
   const names = await readdir(root);
   return names
-    .filter((name) => /\.(?:jpg|jpeg|png|webp|glb|usdz)$/i.test(name))
+    .filter((name) => /\.(?:jpg|jpeg|png|webp|gif|glb|usdz)$/i.test(name))
     .sort();
+}
+
+function sanitizeAssetName(name) {
+  return String(name || 'upload.webp')
+    .replace(/[/\\]/g, '_')
+    .replace(/[^a-zA-Z0-9._\- ()]/g, '_')
+    .replace(/_+/g, '_')
+    .trim();
+}
+
+async function makeUniqueAssetName(name) {
+  const safe = sanitizeAssetName(name);
+  const dot = safe.lastIndexOf('.');
+  const base = dot === -1 ? safe : safe.slice(0, dot);
+  const ext = dot === -1 ? '' : safe.slice(dot);
+  let candidate = safe;
+  let count = 2;
+
+  while (true) {
+    try {
+      await stat(join(root, candidate));
+      candidate = `${base}-${count}${ext}`;
+      count += 1;
+    } catch {
+      return candidate;
+    }
+  }
+}
+
+function replaceDeep(value, from, to) {
+  if (typeof value === 'string') return value.split(from).join(to);
+  if (Array.isArray(value)) return value.map((item) => replaceDeep(item, from, to));
+  if (value && typeof value === 'object') {
+    return Object.fromEntries(
+      Object.entries(value).map(([key, item]) => [key, replaceDeep(item, from, to)])
+    );
+  }
+  return value;
+}
+
+async function updateJsonReferences(from, to) {
+  const updated = [];
+
+  for (const file of Object.values(jsonFiles)) {
+    const before = await readJson(file, null);
+    if (before === null) continue;
+    const after = replaceDeep(before, from, to);
+    if (JSON.stringify(before) !== JSON.stringify(after)) {
+      await backupFile(file);
+      await writeFile(join(root, file), JSON.stringify(after, null, 2) + '\n', 'utf8');
+      updated.push(file);
+    }
+  }
+
+  return updated;
 }
 
 async function extractContentKeys() {
@@ -178,8 +233,8 @@ async function handleApi(req, res, url) {
       const filePart = parts.find(p => p.name === 'file');
       if (!filePart) return sendJson(res, 400, { ok: false, error: 'No file field in upload.' });
 
-      // Sanitise filename: only allow safe characters
-      const originalName = (filePart.filename || 'upload.webp').replace(/[^a-zA-Z0-9._\- ()]/g, '_');
+      // Sanitise filename and avoid overwriting an existing media file.
+      const originalName = await makeUniqueAssetName(filePart.filename || 'upload.webp');
       const target = join(root, originalName);
       if (!isInsideRoot(target)) return sendJson(res, 403, { ok: false, error: 'Forbidden path.' });
 
@@ -197,13 +252,45 @@ async function handleApi(req, res, url) {
       if (!filename) return sendJson(res, 400, { ok: false, error: 'No filename.' });
       const target = join(root, filename);
       if (!isInsideRoot(target)) return sendJson(res, 403, { ok: false, error: 'Forbidden.' });
-      // Only allow deleting images and media — not HTML/JS/CSS
-      if (!/\.(jpg|jpeg|png|webp|gif)$/i.test(filename)) {
-        return sendJson(res, 400, { ok: false, error: 'Only image files can be deleted here.' });
+      // Only allow deleting media assets, never HTML/JS/CSS/content files.
+      if (!/\.(jpg|jpeg|png|webp|gif|glb|usdz)$/i.test(filename)) {
+        return sendJson(res, 400, { ok: false, error: 'Only media files can be deleted here.' });
       }
       const { unlink } = await import('node:fs/promises');
       await unlink(target);
       return sendJson(res, 200, { ok: true, deleted: filename });
+    } catch (err) {
+      return sendJson(res, 500, { ok: false, error: err.message });
+    }
+  }
+
+  if (url.pathname === '/api/rename-asset' && req.method === 'POST') {
+    try {
+      const { from, to } = JSON.parse(await readBody(req));
+      if (!from || !to) return sendJson(res, 400, { ok: false, error: 'Missing filename.' });
+      if (!/\.(jpg|jpeg|png|webp|gif|glb|usdz)$/i.test(from)) {
+        return sendJson(res, 400, { ok: false, error: 'Only media files can be renamed here.' });
+      }
+
+      const safeTo = sanitizeAssetName(to);
+      if (!/\.(jpg|jpeg|png|webp|gif|glb|usdz)$/i.test(safeTo)) {
+        return sendJson(res, 400, { ok: false, error: 'New filename must keep a media extension.' });
+      }
+
+      const source = join(root, from);
+      const target = join(root, safeTo);
+      if (!isInsideRoot(source) || !isInsideRoot(target)) {
+        return sendJson(res, 403, { ok: false, error: 'Forbidden path.' });
+      }
+
+      try {
+        await stat(target);
+        return sendJson(res, 409, { ok: false, error: 'A file with that name already exists.' });
+      } catch {}
+
+      await rename(source, target);
+      const updatedJson = await updateJsonReferences(from, safeTo);
+      return sendJson(res, 200, { ok: true, from, to: safeTo, updatedJson });
     } catch (err) {
       return sendJson(res, 500, { ok: false, error: err.message });
     }
