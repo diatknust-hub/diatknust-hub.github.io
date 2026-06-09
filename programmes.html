@@ -15,25 +15,46 @@
 <a href="#main-content" class="skip-link">Skip to main content</a>
 <main id="main-content">
 
-    <section class="page-hero" aria-labelledby="prog-title">
-      <div class="container">
-        <nav class="page-hero__breadcrumb" aria-label="Breadcrumb">
-          <a href="index.html" class="page-hero__breadcrumb-link">Home</a>
-          <span class="page-hero__breadcrumb-sep" aria-hidden="true">/</span>
-          <span class="page-hero__breadcrumb-current">Programmes</span>
+    <section class="prog-hero" aria-labelledby="prog-title">
+
+      <!-- Background image with Ken Burns zoom -->
+      <div class="prog-hero__bg" aria-hidden="true">
+        <img class="prog-hero__bg-img"
+             src="PXL_20260112_153426600.PORTRAIT.webp"
+             alt=""
+             draggable="false" oncontextmenu="return false"
+             loading="eager">
+        <div class="prog-hero__overlay"></div>
+      </div>
+
+      <!-- Content -->
+      <div class="prog-hero__content">
+        <nav class="prog-hero__breadcrumb" aria-label="Breadcrumb">
+          <a href="index.html">Home</a>
+          <span aria-hidden="true"> / </span>
+          <span>Programmes</span>
         </nav>
-        <span class="page-hero__eyebrow">Academic Programmes</span>
-        <h1 class="page-hero__title" id="prog-title"
+        <span class="prog-hero__eyebrow">Academic Programmes</span>
+        <h1 class="prog-hero__title" id="prog-title"
             data-cms-key="prog-hero-title" data-cms-label="Programmes Title" data-cms-type="text">
-          Six Craft Disciplines. One Design Spine.
+          Six Craft Disciplines.<br>
+          <em class="prog-hero__accent">One Design</em><br>
+          Spine.
         </h1>
-        <p class="page-hero__body"
+        <p class="prog-hero__body"
            data-cms-key="prog-hero-body" data-cms-label="Programmes Body">
           DIAT offers the B.A. (IRAI) degree across six indigenous craft disciplines,
           all underpinned by Product Design and computer-aided design thinking.
         </p>
-        <div class="page-hero__rule" aria-hidden="true"></div>
+        <div class="prog-hero__actions">
+          <a href="#overview-heading" class="btn btn--primary btn--lg">View Disciplines &#8594;</a>
+          <a href="about.html" class="btn btn--secondary btn--lg">Our Story &#8599;</a>
+        </div>
       </div>
+
+      <!-- Gold bottom rule -->
+      <div class="prog-hero__rule" aria-hidden="true"></div>
+
     </section>
 
     <!-- ACADEMIC OVERVIEW -->
