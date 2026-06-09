@@ -127,6 +127,7 @@
               <a href="about.html"                  class="dept-nav__drop-link" role="menuitem">&#127963; Our Story</a>
               <a href="about.html#history-heading"  class="dept-nav__drop-link" role="menuitem">&#128205; History &amp; Timeline</a>
               <a href="about.html#gallery-heading"  class="dept-nav__drop-link" role="menuitem">&#128247; Department Photos</a>
+              <a href="contact.html"                     class="dept-nav__drop-link" role="menuitem">&#128222; Contact</a>
             </div>
           </li>
 
