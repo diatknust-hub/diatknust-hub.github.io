@@ -15,7 +15,18 @@
 <a href="#main-content" class="skip-link">Skip to main content</a>
 <main id="main-content">
 
-    <section class="disc-hero disc-hero--metal" aria-labelledby="disc-title">
+    <section class="disc-hero disc-hero--metal disc-hero--with-img" aria-labelledby="disc-title">
+
+      <!-- Portrait image fitted to landscape hero — no Ken Burns, static -->
+      <div class="disc-hero__bg" aria-hidden="true">
+        <img class="disc-hero__bg-img"
+             src="PXL_20260215_182642896.PORTRAIT.webp"
+             alt=""
+             draggable="false" oncontextmenu="return false"
+             loading="eager">
+        <div class="disc-hero__bg-overlay"></div>
+      </div>
+
       <div class="container">
         <nav class="page-hero__breadcrumb" aria-label="Breadcrumb">
           <a href="index.html" class="page-hero__breadcrumb-link" style="color:rgba(255,255,255,.4)">Home</a>

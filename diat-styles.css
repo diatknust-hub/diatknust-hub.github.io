@@ -4790,146 +4790,66 @@ h1, h2, h3, h4, h5, h6 { font-family: var(--ff-display); line-height: var(--lh-h
 
 
 /* ══════════════════════════════════════════════════════════════
-   PROGRAMMES PAGE HERO — full-bleed, Ken Burns zoom
-   Mirrors .about-hero exactly. Uses prog-kb-zoom keyframe
-   so the two animations are independent of each other.
+   DISC-HERO WITH BACKGROUND IMAGE — metal-production.html
+   .disc-hero--with-img activates the image layer.
+   The gradient background is replaced by the photo + overlay.
+   Portrait image fitted to landscape space via object-position.
 ══════════════════════════════════════════════════════════════ */
 
-.prog-hero {
-  position: relative;
-  width: 100%;
-  height: clamp(520px, 78vh, 880px);
-  overflow: hidden;
+/* Remove gradient when the image modifier is active */
+.disc-hero--metal.disc-hero--with-img {
+  background: var(--clr-indigo);   /* fallback colour while image loads */
+  min-height: clamp(420px, 60vh, 640px);
   display: flex;
-  align-items: flex-end;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding-bottom: var(--sp-2xl);
 }
 
-.prog-hero__bg {
+/* ── Background image layer ─────────────────────────────────── */
+.disc-hero__bg {
   position: absolute;
   inset: 0;
   z-index: 0;
 }
 
-.prog-hero__bg-img {
+/* Portrait image in landscape frame:
+   object-fit:cover crops to fill the frame.
+   object-position: center 20% anchors to the upper-centre of the
+   portrait so the main subject (metalwork / craftsperson) stays
+   visible rather than cropping to mid-body. Adjust if needed. */
+.disc-hero__bg-img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center 30%;
+  object-position: center 20%;
   display: block;
-  animation: prog-kb-zoom 18s ease-in-out forwards;
 }
 
-@keyframes prog-kb-zoom {
-  0%   { transform: scale(1.0) translate(0, 0); }
-  100% { transform: scale(1.08) translate(1.5%, -1%); }
-}
-
-.prog-hero__overlay {
+/* Gradient overlay — mirrors about-hero: strong left, fades right */
+.disc-hero__bg-overlay {
   position: absolute;
   inset: 0;
   background: linear-gradient(
     120deg,
-    rgba(26, 26, 78, 0.84) 0%,
-    rgba(26, 26, 78, 0.52) 50%,
-    rgba(0, 0, 0, 0.12) 100%
+    rgba(13, 26, 46, 0.88) 0%,
+    rgba(13, 26, 46, 0.58) 50%,
+    rgba(0, 0, 0, 0.18) 100%
   );
+}
+
+/* Lift container and all content above the image */
+.disc-hero--with-img .container {
+  position: relative;
   z-index: 1;
 }
 
-.prog-hero__content {
-  position: relative;
-  z-index: 2;
-  max-width: 700px;
-  padding: 0 clamp(24px, 5vw, 80px) clamp(40px, 7vh, 72px);
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.prog-hero__breadcrumb {
-  font-size: .72rem;
-  font-weight: 500;
-  color: rgba(255,255,255,.5);
-  letter-spacing: .06em;
-  text-transform: uppercase;
-}
-.prog-hero__breadcrumb a {
-  color: rgba(255,255,255,.5);
-  text-decoration: none;
-}
-.prog-hero__breadcrumb a:hover { color: var(--clr-gold); }
-
-.prog-hero__eyebrow {
-  font-family: 'FranklinGothicHeavy', var(--ff-body);
-  font-size: .72rem;
-  font-weight: 700;
-  letter-spacing: .14em;
-  text-transform: uppercase;
-  color: var(--clr-gold);
-}
-
-.prog-hero__title {
-  font-family: 'FranklinGothicHeavy', var(--ff-display, Georgia, serif);
-  font-size: clamp(2rem, 4.8vw, 3.8rem);
-  font-weight: 700;
-  line-height: 1.1;
-  color: #fff;
-  margin: 0;
-  text-shadow: 0 2px 12px rgba(0,0,0,.35);
-}
-
-.prog-hero__accent {
-  color: var(--clr-gold);
-  font-style: italic;
-  font-family: 'FranklinGothicHeavy', var(--ff-display, Georgia, serif);
-}
-
-.prog-hero__body {
-  font-size: clamp(.875rem, 1.4vw, 1rem);
-  line-height: 1.7;
-  color: rgba(255,255,255,.82);
-  max-width: 520px;
-  margin: 0;
-}
-
-.prog-hero__actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 6px;
-}
-
-.prog-hero__actions .btn--secondary {
-  color: #fff;
-  border-color: rgba(255,255,255,.65);
-  background: transparent;
-}
-.prog-hero__actions .btn--secondary:hover {
-  background: rgba(255,255,255,.15);
-  border-color: #fff;
-}
-
-.prog-hero__rule {
+/* Gold bottom rule (matches about-hero and prog-hero) */
+.disc-hero--with-img::after {
+  content: '';
   position: absolute;
   bottom: 0; left: 0; right: 0;
   height: 3px;
   background: linear-gradient(to right, var(--clr-gold), var(--clr-terra), var(--clr-gold));
-  z-index: 3;
-}
-
-@media (max-width: 768px) {
-  .prog-hero {
-    height: clamp(480px, 82svh, 640px);
-  }
-  .prog-hero__content {
-    max-width: 100%;
-    padding-bottom: 48px;
-  }
-  .prog-hero__title {
-    font-size: clamp(1.75rem, 8vw, 2.4rem);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .prog-hero__bg-img { animation: none; }
+  z-index: 2;
 }
