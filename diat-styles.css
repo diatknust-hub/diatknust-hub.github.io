@@ -4895,3 +4895,27 @@ h1, h2, h3, h4, h5, h6 { font-family: var(--ff-display); line-height: var(--lh-h
     padding-bottom: var(--sp-xl);
   }
 }
+
+
+/* ── All discipline pages: Franklin Gothic on title and stat number ──
+   Each rule is scoped to its own modifier class so changes are
+   isolated — touching one discipline cannot affect another.        */
+.disc-hero--clay .disc-hero__title,
+.disc-hero--fibres .disc-hero__title,
+.disc-hero--leather .disc-hero__title,
+.disc-hero--rattan .disc-hero__title,
+.disc-hero--wood .disc-hero__title,
+.disc-hero--pd .disc-hero__title,
+.disc-hero--metal .disc-hero__title {
+  font-family: 'FranklinGothicHeavy', var(--ff-display, Georgia, serif);
+}
+
+.disc-hero--clay .disc-hero__stat-num,
+.disc-hero--fibres .disc-hero__stat-num,
+.disc-hero--leather .disc-hero__stat-num,
+.disc-hero--rattan .disc-hero__stat-num,
+.disc-hero--wood .disc-hero__stat-num,
+.disc-hero--pd .disc-hero__stat-num,
+.disc-hero--metal .disc-hero__stat-num {
+  font-family: 'FranklinGothicHeavy', var(--ff-display, Georgia, serif);
+}
