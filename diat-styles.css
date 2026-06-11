@@ -6,6 +6,29 @@
   font-style: normal;
   font-display: swap;
 }
+/* ── Franklin Gothic family — Regular, Italic, Condensed ─────── */
+@font-face {
+  font-family: 'FranklinGothic';
+  src: url('FranklinGothic.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'FranklinGothicItalic';
+  src: url('FranklinGothicITALIC.ttf') format('truetype');
+  font-weight: normal;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'FranklinGothicCondensed';
+  src: url('FranklinGothicCondensed.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
 
 /*
  * ============================================================
@@ -64,10 +87,7 @@ img, svg, video { display: block; max-width: 100%; }
 a { color: inherit; text-decoration: none; }
 ul, ol { list-style: none; }
 button { font-family: inherit; cursor: pointer; border: none; background: none; }
-h1, h2 {
-  font-family: 'FranklinGothicHeavy', 'Playfair Display', Georgia, serif;
-}
-h3, h4, h5, h6 { font-family: var(--ff-display); line-height: var(--lh-heading); }
+h1, h2, h3, h4, h5, h6 { font-family: var(--ff-display); line-height: var(--lh-heading); }
 
 /* ── 1. DESIGN TOKENS ─────────────────────────────────────── */
 :root {
@@ -1096,7 +1116,7 @@ h3, h4, h5, h6 { font-family: var(--ff-display); line-height: var(--lh-heading);
   text-align: left;
 }
 .dept-stats__number {
-  --ff-display: 'Playfair Display', 'Georgia', serif;
+  font-family: 'FranklinGothicHeavy', var(--ff-display);
 
   /*
    * FIX 1d — smaller font + no bottom margin.
@@ -4897,4 +4917,27 @@ h3, h4, h5, h6 { font-family: var(--ff-display); line-height: var(--lh-heading);
     min-height: clamp(340px, 50vh, 500px);
     padding-bottom: var(--sp-xl);
   }
+}
+
+
+/* ══════════════════════════════════════════════════════════════
+   HEADING FONT HIERARCHY — Franklin Gothic family
+   h1          FranklinGothicHeavy   — hero titles, max impact
+   h2          FranklinGothic        — section titles, strong & clean
+   h3, h4      FranklinGothicCondensed — sub-headings, card titles
+   h5, h6      FranklinGothic        — small labels, readable
+   These rules come last so they override any earlier font-family
+   set on individual heading elements.
+══════════════════════════════════════════════════════════════ */
+h1 {
+  font-family: 'FranklinGothicHeavy', sans-serif !important;
+}
+h2 {
+  font-family: 'FranklinGothic', sans-serif !important;
+}
+h3, h4 {
+  font-family: 'FranklinGothicCondensed', sans-serif !important;
+}
+h5, h6 {
+  font-family: 'FranklinGothic', sans-serif !important;
 }
