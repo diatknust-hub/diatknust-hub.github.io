@@ -1,3 +1,26 @@
+
+/* ── Lato font family — Regular, Black, Light ────────────────── */
+@font-face {
+  font-family: 'LatoRegular';
+  src: url('Lato-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'LatoBlack';
+  src: url('Lato-Black.ttf') format('truetype');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'LatoLight';
+  src: url('Lato-Light.ttf') format('truetype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
 /* Franklin Gothic Heavy — loaded from repo font file */
 @font-face {
   font-family: 'FranklinGothicHeavy';
@@ -6,29 +29,6 @@
   font-style: normal;
   font-display: swap;
 }
-/* ── Franklin Gothic family — Regular, Italic, Condensed ─────── */
-@font-face {
-  font-family: 'FranklinGothic';
-  src: url('FranklinGothic.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: 'FranklinGothicItalic';
-  src: url('FranklinGothicITALIC.ttf') format('truetype');
-  font-weight: normal;
-  font-style: italic;
-  font-display: swap;
-}
-@font-face {
-  font-family: 'FranklinGothicCondensed';
-  src: url('FranklinGothicCondensed.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
-  font-display: swap;
-}
-
 
 /*
  * ============================================================
@@ -4921,23 +4921,23 @@ h1, h2, h3, h4, h5, h6 { font-family: var(--ff-display); line-height: var(--lh-h
 
 
 /* ══════════════════════════════════════════════════════════════
-   HEADING FONT HIERARCHY — Franklin Gothic family
-   h1          FranklinGothicHeavy   — hero titles, max impact
-   h2          FranklinGothic        — section titles, strong & clean
-   h3, h4      FranklinGothicCondensed — sub-headings, card titles
-   h5, h6      FranklinGothic        — small labels, readable
-   These rules come last so they override any earlier font-family
-   set on individual heading elements.
+   HEADING FONT HIERARCHY — h2–h6 use Lato family
+   h1        FranklinGothicHeavy  (unchanged — hero impact)
+   h2        LatoRegular          — section titles, clean & readable
+   h3, h4    LatoBlack            — sub-headings & card titles, strong
+   h5, h6    LatoLight            — small labels, airy and readable
 ══════════════════════════════════════════════════════════════ */
-h1 {
-  font-family: 'FranklinGothicHeavy', sans-serif !important;
-}
 h2 {
-  font-family: 'FranklinGothic', sans-serif !important;
+  font-family: 'LatoRegular', 'Lato', sans-serif !important;
 }
 h3, h4 {
-  font-family: 'FranklinGothicCondensed', sans-serif !important;
+  font-family: 'LatoBlack', 'Lato', sans-serif !important;
 }
 h5, h6 {
-  font-family: 'FranklinGothic', sans-serif !important;
+  font-family: 'LatoLight', 'Lato', sans-serif !important;
+}
+
+/* h1 stays FranklinGothicHeavy — hero titles, maximum impact */
+h1 {
+  font-family: 'FranklinGothicHeavy', sans-serif !important;
 }
