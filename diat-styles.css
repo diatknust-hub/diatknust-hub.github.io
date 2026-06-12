@@ -468,7 +468,7 @@ h1, h2, h3, h4, h5, h6 { font-family: var(--ff-display); line-height: var(--lh-h
   position: fixed;
   inset: 0;
   top: var(--nav-height);
-  z-index: 199;
+  z-index: 300;
   background: var(--clr-white);
   padding: var(--sp-lg) var(--sp-xl);
   flex-direction: column;
