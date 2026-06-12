@@ -2898,11 +2898,12 @@ h1, h2, h3, h4, h5, h6 { font-family: var(--ff-display); line-height: var(--lh-h
   display: block;
 }
 .disc-hero__title {
+  font-family: 'FranklinGothicRegular', var(--ff-body) !important;
   font-size: var(--fs-3xl);
-  font-weight: 700;
+  font-weight: 400;
   color: var(--clr-text-inverse);
-  letter-spacing: var(--ls-tight);
-  line-height: var(--lh-heading);
+  letter-spacing: 0;
+  line-height: 1.15;
   margin-bottom: var(--sp-md);
 }
 .disc-hero__body {
@@ -4932,15 +4933,6 @@ h1, h2, h3, h4, h5, h6 { font-family: var(--ff-display); line-height: var(--lh-h
   .disc-hero.disc-hero--with-img {
     min-height: clamp(340px, 50vh, 500px);
     padding-bottom: var(--sp-xl);
-  }
-  /* Desktop keeps Franklin Gothic Heavy for impact.
-     Mobile switches to Regular — Heavy at --fs-3xl is
-     too dense and tight on a narrow screen. */
-  .disc-hero__title {
-    font-family: 'FranklinGothicRegular', var(--ff-body);
-    font-weight: 400;
-    letter-spacing: 0;
-    line-height: 1.15;
   }
 }
 
