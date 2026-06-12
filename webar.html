@@ -1086,11 +1086,26 @@
           );
         }
 
-        /* Load the first model */
+        /* Load selected or first model */
         setTimeout(function() {
-          var firstBtn = list.querySelector('.webar-artwork-btn');
-          if (firstBtn && typeof loadArtwork === 'function') {
-            loadArtwork(firstBtn);
+          var params = new URLSearchParams(window.location.search);
+          var artParam = params.get('art');
+          var targetBtn = null;
+          if (artParam) {
+            var btns = list.querySelectorAll('.webar-artwork-btn');
+            for (var idx = 0; idx < btns.length; idx++) {
+              var title = btns[idx].getAttribute('data-title');
+              if (title && title.toLowerCase() === artParam.toLowerCase()) {
+                targetBtn = btns[idx];
+                break;
+              }
+            }
+          }
+          if (!targetBtn) {
+            targetBtn = list.querySelector('.webar-artwork-btn');
+          }
+          if (targetBtn && typeof loadArtwork === 'function') {
+            loadArtwork(targetBtn);
           }
         }, 100);
       })

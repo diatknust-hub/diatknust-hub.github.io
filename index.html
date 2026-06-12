@@ -605,37 +605,6 @@
 
   </main>
 <script>
-    /* Navigation */
-    var nav    = document.getElementById('dept-nav');
-    var toggle = document.getElementById('nav-toggle');
-    var drawer = document.getElementById('nav-drawer');
-    window.addEventListener('scroll', function() {
-      nav.classList.toggle('is-scrolled', window.scrollY > 8);
-    }, { passive: true });
-    toggle.addEventListener('click', function() {
-      var open = drawer.classList.toggle('is-open');
-      toggle.setAttribute('aria-expanded', String(open));
-      drawer.setAttribute('aria-hidden', String(!open));
-      document.body.style.overflow = open ? 'hidden' : '';
-    });
-    function closeDrawer() {
-      drawer.classList.remove('is-open');
-      toggle.setAttribute('aria-expanded', 'false');
-      drawer.setAttribute('aria-hidden', 'true');
-      document.body.style.overflow = '';
-    }
-    /* Scroll reveal */
-    var revEls = document.querySelectorAll('.js-reveal');
-    if ('IntersectionObserver' in window) {
-      var revObs = new IntersectionObserver(function(entries) {
-        entries.forEach(function(e) {
-          if (e.isIntersecting) { e.target.classList.add('is-visible'); revObs.unobserve(e.target); }
-        });
-      }, { threshold: 0.08 });
-      revEls.forEach(function(el) { revObs.observe(el); });
-    } else {
-      revEls.forEach(function(el) { el.classList.add('is-visible'); });
-    }
     /* Newsletter */
     var form = document.getElementById('signup-form');
     var fb   = document.getElementById('signup-feedback');

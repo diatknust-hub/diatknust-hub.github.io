@@ -725,6 +725,16 @@
           alert('Opening: ' + title + '\n\nUpload the document via Admin Mode to activate this record.');
         });
       });
+
+      /* Pre-select filter chip from query parameter if present */
+      var params = new URLSearchParams(window.location.search);
+      var filterParam = params.get('filter');
+      if (filterParam) {
+        var targetChip = document.querySelector('.arc-chip[data-filter="' + filterParam + '"]');
+        if (targetChip) {
+          targetChip.click();
+        }
+      }
     })();
   </script>
 

@@ -1337,6 +1337,16 @@
             if (btn) tabsEl.appendChild(btn);
           });
         }
+
+        /* Pre-select filter tab from query parameter if present */
+        var params = new URLSearchParams(window.location.search);
+        var discParam = params.get('disc');
+        if (discParam && ALL_DISCS.indexOf(discParam) !== -1) {
+          var targetTab = tabsEl ? tabsEl.querySelector('.gal-tab[data-disc="' + discParam + '"]') : null;
+          if (targetTab) {
+            switchTab(targetTab, discParam);
+          }
+        }
       })
       .catch(function() { /* keep hardcoded fallback on network error */ });
   })();
