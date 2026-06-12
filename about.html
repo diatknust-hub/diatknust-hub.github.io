@@ -204,8 +204,7 @@
         </header>
 
         <!-- 4-col shuffled grid — built by JS on every load -->
-        <div id="diat-photo-grid"
-             style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;grid-template-rows:auto auto">
+        <div id="diat-photo-grid">
         </div>
       </div>
     </section>
@@ -344,6 +343,73 @@
 </div>
 
 <!-- Gallery CSS -->
+<style>
+  /* ── "Where Heritage Lives" photo grid ─────────────────────────────
+     This block was lost at some point: cards had no layout styles, the
+     watermark and "View" overlay rendered as loose stacked text, and
+     captions inherited the dark body colour against the navy section.
+     Restored here, with mobile breakpoints. */
+
+  /* Responsive grid: 4 cols desktop → 2 cols tablet → 1 col phone */
+  #diat-photo-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+  }
+  @media (max-width: 900px) {
+    #diat-photo-grid { grid-template-columns: repeat(2, 1fr); gap: 14px; }
+  }
+  @media (max-width: 480px) {
+    #diat-photo-grid { grid-template-columns: 1fr; gap: 18px; }
+  }
+
+  /* Card + image frame */
+  .diat-photo-card { cursor: pointer; }
+  .diat-photo-wrap {
+    position: relative;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    border-radius: var(--radius-md, 10px);
+    background: rgba(255,255,255,.04);
+  }
+  .diat-photo-card:hover .diat-photo-wrap img { transform: scale(1.05); }
+
+  /* Watermark — pinned to the photo's bottom-left corner */
+  .diat-wm {
+    position: absolute;
+    left: 8px;
+    bottom: 8px;
+    z-index: 2;
+    font-size: var(--fs-xs);
+    color: rgba(255,255,255,.85);
+    background: rgba(0,0,0,.45);
+    padding: 2px 10px;
+    border-radius: var(--radius-full, 9999px);
+    pointer-events: none;
+  }
+
+  /* "🔍 View" — full-photo hover overlay (desktop only; tap opens
+     the lightbox directly on touch screens) */
+  .diat-hover-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0,0,0,.45);
+    color: #ffffff;
+    opacity: 0;
+    transition: opacity .3s ease;
+    pointer-events: none;
+  }
+  .diat-photo-card:hover .diat-hover-overlay { opacity: 1; }
+
+  /* Captions — white against the dark section; fonts unchanged */
+  .diat-caption          { margin-top: 8px; color: #ffffff; }
+  .diat-caption strong   { color: #ffffff; display: block; font-size: var(--fs-sm); }
+  .diat-caption span     { color: rgba(255,255,255,.75); font-size: var(--fs-xs); }
+</style>
 
 <!-- Lightbox JS -->
 <script>

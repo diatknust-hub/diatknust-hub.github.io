@@ -23,6 +23,13 @@
 }
 /* Franklin Gothic Heavy — loaded from repo font file */
 @font-face {
+  font-family: 'FranklinGothicRegular';
+  src: url('FranklinGothic.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
   font-family: 'FranklinGothicHeavy';
   src: url('FranklinGothicHeavy.ttf') format('truetype');
   font-weight: normal;
@@ -1551,9 +1558,9 @@ h1, h2, h3, h4, h5, h6 { font-family: var(--ff-display); line-height: var(--lh-h
   text-align: center;
 }
 .dept-milestone__year {
-  font-family: 'FranklinGothicHeavy', var(--ff-display);
+  font-family: 'LatoRegular', 'Lato', sans-serif;
   font-size: var(--fs-xl);
-  font-weight: 700;
+  font-weight: 400;
   color: var(--clr-gold);
   display: block;
 }
@@ -1665,9 +1672,9 @@ h1, h2, h3, h4, h5, h6 { font-family: var(--ff-display); line-height: var(--lh-h
   padding-bottom: var(--sp-2xl);
 }
 .site-footer__brand-name {
-  font-family: var(--ff-display);
+  font-family: 'FranklinGothicRegular', var(--ff-body);
   font-size: var(--fs-lg);
-  font-weight: 700;
+  font-weight: 400;
   color: var(--clr-text-inverse);
   margin-bottom: var(--sp-2xs);
 }
@@ -3267,10 +3274,9 @@ h1, h2, h3, h4, h5, h6 { font-family: var(--ff-display); line-height: var(--lh-h
   border: 2px solid var(--clr-surface);
 }
 .timeline-item__year {
-  font-family: 'FranklinGothicHeavy', var(--ff-display, Georgia, serif);
-  font-family: var(--ff-display);
+  font-family: 'LatoRegular', 'Lato', sans-serif;
   font-size: var(--fs-lg);
-  font-weight: 700;
+  font-weight: 400;
   color: var(--clr-gold);
   margin-bottom: var(--sp-xs);
 }
