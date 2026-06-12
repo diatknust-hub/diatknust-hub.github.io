@@ -4487,8 +4487,9 @@ h1, h2, h3, h4, h5, h6 { font-family: var(--ff-display); line-height: var(--lh-h
   font-weight: 700;
   letter-spacing: .14em;
   text-transform: uppercase;
-  color: var(--clr-gold);
-  opacity: .9;
+  color: #ffffff;
+  opacity: 1;
+  text-shadow: 0 1px 8px rgba(0,0,0,.7);
 }
 
 .slide-title {
@@ -4593,6 +4594,10 @@ h1, h2, h3, h4, h5, h6 { font-family: var(--ff-display); line-height: var(--lh-h
   }
   .slide-title {
     font-size: clamp(1.7rem, 7.5vw, 2.4rem);
+  }
+  .slide-eyebrow {
+    font-size: .8rem;
+    letter-spacing: .1em;
   }
   .slide-actions {
     flex-direction: column;
