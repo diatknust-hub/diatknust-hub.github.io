@@ -707,12 +707,15 @@
     }
 
     function buildCard(art) {
-      var imgs    = [art.image_path].concat(art.extra_images || []).filter(Boolean);
-      var mainImg = imgs[0] || '';
-      var angles  = imgs.length;
+      /* New JSON uses url_thumb / url_full; fallback to legacy image_path */
+      var thumbSrc = art.url_thumb || art.image_path || '';
+      var fullSrc  = art.url_full  || art.image_path || '';
+      var extras   = art.extra_images || [];
+      var imgs     = [fullSrc].concat(extras).filter(Boolean);
+      var angles   = imgs.length;
 
-      var imgHtml = mainImg
-        ? '<img class="gal-card__img" src="' + mainImg + '" alt="' + esc(art.title) +
+      var imgHtml = thumbSrc
+        ? '<img class="gal-card__img" src="' + thumbSrc + '" alt="' + esc(art.title) +
           ' — DIAT KNUST" loading="lazy" draggable="false" oncontextmenu="return false">'
           + (angles > 1 ? '<span class="gal-card__angles">' + angles + ' views</span>' : '')
         : '<div class="gal-card__placeholder"><span class="gal-card__placeholder-label">No image yet</span></div>';
@@ -724,7 +727,7 @@
         + ' onclick="openLightbox(event)"'
         + ' tabindex="0" role="button"'
         + ' aria-label="' + esc(art.title) + '"'
-        + ' data-disc="'   + esc(art.discipline || '') + '"'
+        + ' data-disc="'   + esc(art.category || art.discipline || '') + '"'
         + ' data-year="'   + esc(art.year || '') + '"'
         + ' data-title="'  + esc(art.title) + '"'
         + ' data-artist="' + esc(art.artist || '') + '"'
@@ -734,7 +737,7 @@
         + '<div class="gal-card__body">'
         + '<p class="gal-card__title">' + esc(art.title || 'Untitled') + '</p>'
         + '<p class="gal-card__sub">'   + esc(art.artist || '') + '</p>'
-        + '<span class="gal-card__disc-tag">' + esc(art.discipline || '') + '</span>'
+        + '<span class="gal-card__disc-tag">' + esc(art.category || art.discipline || '') + '</span>'
         + '</div></article>';
     }
 
