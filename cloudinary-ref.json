@@ -1,0 +1,171 @@
+{
+  "site": {
+    "diat-murals_fxdnah": {
+      "public_id": "diat-murals_fxdnah",
+      "format": "webp",
+      "url_full": "https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto/diat-murals_fxdnah.webp",
+      "url_hero": "https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_1920/diat-murals_fxdnah.webp",
+      "url_thumb": "https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_800/diat-murals_fxdnah.webp"
+    },
+    "diat-garden_dbqxox": {
+      "public_id": "diat-garden_dbqxox",
+      "format": "webp",
+      "url_full": "https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto/diat-garden_dbqxox.webp",
+      "url_hero": "https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_1920/diat-garden_dbqxox.webp",
+      "url_thumb": "https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_800/diat-garden_dbqxox.webp"
+    },
+    "diat-panorama_pzzrmo": {
+      "public_id": "diat-panorama_pzzrmo",
+      "format": "webp",
+      "url_full": "https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto/diat-panorama_pzzrmo.webp",
+      "url_hero": "https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_1920/diat-panorama_pzzrmo.webp",
+      "url_thumb": "https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_800/diat-panorama_pzzrmo.webp"
+    },
+    "diat-sculptures_mthwge": {
+      "public_id": "diat-sculptures_mthwge",
+      "format": "webp",
+      "url_full": "https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto/diat-sculptures_mthwge.webp",
+      "url_hero": "https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_1920/diat-sculptures_mthwge.webp",
+      "url_thumb": "https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_800/diat-sculptures_mthwge.webp"
+    },
+    "dial-wall-murals_l3x7e3": {
+      "public_id": "dial-wall-murals_l3x7e3",
+      "format": "webp",
+      "url_full": "https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto/dial-wall-murals_l3x7e3.webp",
+      "url_hero": "https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_1920/dial-wall-murals_l3x7e3.webp",
+      "url_thumb": "https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_800/dial-wall-murals_l3x7e3.webp"
+    },
+    "diat-integrated-fencing_ptt0rj": {
+      "public_id": "diat-integrated-fencing_ptt0rj",
+      "format": "webp",
+      "url_full": "https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto/diat-integrated-fencing_ptt0rj.webp",
+      "url_hero": "https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_1920/diat-integrated-fencing_ptt0rj.webp",
+      "url_thumb": "https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_800/diat-integrated-fencing_ptt0rj.webp"
+    },
+    "diat-main-entrance_vzi1wt": {
+      "public_id": "diat-main-entrance_vzi1wt",
+      "format": "webp",
+      "url_full": "https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto/diat-main-entrance_vzi1wt.webp",
+      "url_hero": "https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_1920/diat-main-entrance_vzi1wt.webp",
+      "url_thumb": "https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_800/diat-main-entrance_vzi1wt.webp"
+    },
+    "diat-gallery_lqbkdt": {
+      "public_id": "diat-gallery_lqbkdt",
+      "format": "webp",
+      "url_full": "https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto/diat-gallery_lqbkdt.webp",
+      "url_hero": "https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_1920/diat-gallery_lqbkdt.webp",
+      "url_thumb": "https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_800/diat-gallery_lqbkdt.webp"
+    },
+    "diat-courtyard_okefm3": {
+      "public_id": "diat-courtyard_okefm3",
+      "format": "webp",
+      "url_full": "https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto/diat-courtyard_okefm3.webp",
+      "url_hero": "https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_1920/diat-courtyard_okefm3.webp",
+      "url_thumb": "https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_800/diat-courtyard_okefm3.webp"
+    },
+    "diat-welcome_yzzznu": {
+      "public_id": "diat-welcome_yzzznu",
+      "format": "webp",
+      "url_full": "https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto/diat-welcome_yzzznu.webp",
+      "url_hero": "https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_1920/diat-welcome_yzzznu.webp",
+      "url_thumb": "https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_800/diat-welcome_yzzznu.webp"
+    },
+    "diat-back-entrance_prh81p": {
+      "public_id": "diat-back-entrance_prh81p",
+      "format": "webp",
+      "url_full": "https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto/diat-back-entrance_prh81p.webp",
+      "url_hero": "https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_1920/diat-back-entrance_prh81p.webp",
+      "url_thumb": "https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_800/diat-back-entrance_prh81p.webp"
+    },
+    "diat-antelope_ctnuqe": {
+      "public_id": "diat-antelope_ctnuqe",
+      "format": "webp",
+      "url_full": "https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto/diat-antelope_ctnuqe.webp",
+      "url_hero": "https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_1920/diat-antelope_ctnuqe.webp",
+      "url_thumb": "https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_800/diat-antelope_ctnuqe.webp"
+    },
+    "diat-fullview_spxmjk": {
+      "public_id": "diat-fullview_spxmjk",
+      "format": "webp",
+      "url_full": "https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto/diat-fullview_spxmjk.webp",
+      "url_hero": "https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_1920/diat-fullview_spxmjk.webp",
+      "url_thumb": "https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_800/diat-fullview_spxmjk.webp"
+    }
+  },
+  "staff": {
+    "diat-B-Esuman_oc3mm9": {
+      "public_id": "diat-B-Esuman_oc3mm9",
+      "format": "webp",
+      "url_full": "https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto/diat-B-Esuman_oc3mm9.webp",
+      "url_thumb": "https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_400/diat-B-Esuman_oc3mm9.webp"
+    },
+    "diat-Dr-Milliscent_n3cf4y": {
+      "public_id": "diat-Dr-Milliscent_n3cf4y",
+      "format": "webp",
+      "url_full": "https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto/diat-Dr-Milliscent_n3cf4y.webp",
+      "url_thumb": "https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_400/diat-Dr-Milliscent_n3cf4y.webp"
+    },
+    "diat-FA-Clement_nynhgd": {
+      "public_id": "diat-FA-Clement_nynhgd",
+      "format": "webp",
+      "url_full": "https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto/diat-FA-Clement_nynhgd.webp",
+      "url_thumb": "https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_400/diat-FA-Clement_nynhgd.webp"
+    },
+    "diat-S-Lamoh_mkgej9": {
+      "public_id": "diat-S-Lamoh_mkgej9",
+      "format": "webp",
+      "url_full": "https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto/diat-S-Lamoh_mkgej9.webp",
+      "url_thumb": "https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_400/diat-S-Lamoh_mkgej9.webp"
+    },
+    "diat-Dr-Ansah_yxiibf": {
+      "public_id": "diat-Dr-Ansah_yxiibf",
+      "format": "webp",
+      "url_full": "https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto/diat-Dr-Ansah_yxiibf.webp",
+      "url_thumb": "https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_400/diat-Dr-Ansah_yxiibf.webp"
+    },
+    "diat-Dr-K-Agyeman_hhekog": {
+      "public_id": "diat-Dr-K-Agyeman_hhekog",
+      "format": "webp",
+      "url_full": "https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto/diat-Dr-K-Agyeman_hhekog.webp",
+      "url_thumb": "https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_400/diat-Dr-K-Agyeman_hhekog.webp"
+    },
+    "diat-HA-Quaye_w7xmws": {
+      "public_id": "diat-HA-Quaye_w7xmws",
+      "format": "webp",
+      "url_full": "https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto/diat-HA-Quaye_w7xmws.webp",
+      "url_thumb": "https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_400/diat-HA-Quaye_w7xmws.webp"
+    },
+    "diat-Dr-EE-Asmah_q01xa9": {
+      "public_id": "diat-Dr-EE-Asmah_q01xa9",
+      "format": "webp",
+      "url_full": "https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto/diat-Dr-EE-Asmah_q01xa9.webp",
+      "url_thumb": "https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_400/diat-Dr-EE-Asmah_q01xa9.webp"
+    }
+  },
+  "event posters": {
+    "diat-opensale-exhibition_chkcpt": {
+      "public_id": "diat-opensale-exhibition_chkcpt",
+      "format": "webp",
+      "url_hero": "https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_1920/diat-opensale-exhibition_chkcpt.webp",
+      "url_thumb": "https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_800/diat-opensale-exhibition_chkcpt.webp"
+    },
+    "diat-academics_urp0lb": {
+      "public_id": "diat-academics_urp0lb",
+      "format": "webp",
+      "url_hero": "https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_1920/diat-academics_urp0lb.webp",
+      "url_thumb": "https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_800/diat-academics_urp0lb.webp"
+    },
+    "diat-disciplines_upvmi4": {
+      "public_id": "diat-disciplines_upvmi4",
+      "format": "webp",
+      "url_hero": "https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_1920/diat-disciplines_upvmi4.webp",
+      "url_thumb": "https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_800/diat-disciplines_upvmi4.webp"
+    },
+    "diat-metal-production_k05cbr": {
+      "public_id": "diat-metal-production_k05cbr",
+      "format": "webp",
+      "url_hero": "https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_1920/diat-metal-production_k05cbr.webp",
+      "url_thumb": "https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_800/diat-metal-production_k05cbr.webp"
+    }
+  }
+}

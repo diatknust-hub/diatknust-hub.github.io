@@ -1474,14 +1474,14 @@ h1, h2, h3, h4, h5, h6 { font-family: var(--ff-display); line-height: var(--lh-h
 /* ── ANNIVERSARY — Photo Background Modifier ─────────────────────────
  *
  * Applied to .dept-anniversary on index.html only.
- * Uses diat-sculptures.webp (the antelope + ostrich + murals photo)
+ * Uses https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_1200/diat-sculptures_mthwge.webp (the antelope + ostrich + murals photo)
  * as a full-bleed background with an indigo overlay for legibility.
  *
  * The existing ::before rule (watermark '50' text) continues to
  * render above the overlay and below the content.
  * ─────────────────────────────────────────────────────────────────── */
 .dept-anniversary--photo {
-  background-image: url('diat-sculptures.webp');
+  background-image: url('https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_1200/diat-sculptures_mthwge.webp');
   background-size: cover;
   background-position: center 35%;
   background-repeat: no-repeat;
@@ -3799,7 +3799,7 @@ h1, h2, h3, h4, h5, h6 { font-family: var(--ff-display); line-height: var(--lh-h
  * MOBILE: content-split__aside image card
  * ============================================================
  *
- * Target: the off-white card containing diat-courtyard.jpg
+ * Target: the off-white card containing https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_800/diat-courtyard_okefm3.webp
  *   on the About page (and wherever content-split__aside
  *   is used). Desktop presentation is unchanged.
  *

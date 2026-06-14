@@ -4,7 +4,7 @@
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <meta name="theme-color" content="#1A1A4E"/>
-  <meta name="description" content="DIAT Artwork Gallery — indigenous craft works across Clay, Fibres, Leather, Metal, Rattan and Wood disciplines at KNUST Ghana."/>
+  <meta name="description" content="DIAT Artwork Gallery — indigenous craft works by students and staff at KNUST Ghana, spanning Clay, Fibres, Leather, Metal, Rattan and Wood disciplines."/>
   <title>Artwork Gallery — DIAT | KNUST Ghana</title>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
@@ -14,56 +14,68 @@
   <style>
     /* ═══════════════════════════════════════════════════════════════
      * GALLERY PAGE — scoped styles
-     * All tokens from diat-styles.css. No new values.
+     * Phase 1 rebuild: masonry grid + year tabs + hero slideshow
+     * All design tokens from diat-styles.css.
      * ═══════════════════════════════════════════════════════════════ */
 
-    /* ── HERO BANNER ──────────────────────────────────────────── */
-    .gal-hero {
+    /* ── HERO SLIDER ──────────────────────────────────────────── */
+    .gal-hero-slider {
       position: relative;
       width: 100%;
-      height: clamp(260px, 42vw, 520px);
+      height: clamp(300px, 45vw, 560px);
       overflow: hidden;
       background: var(--clr-indigo);
     }
-    .gal-hero__img {
+    .gal-hero-slide {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transition: opacity 1.2s ease;
+      z-index: 0;
+    }
+    .gal-hero-slide.is-active {
+      opacity: 1;
+      z-index: 1;
+    }
+    .gal-hero-slide__img {
       width: 100%;
       height: 100%;
       object-fit: cover;
-      object-position: center 45%;
+      object-position: center;
       display: block;
-      /* Ken Burns: infinite alternate so zoom is ALWAYS in motion —
-         zooms in, then back out, repeating so the effect never stops */
-      animation: gal-hero-kb 14s ease-in-out infinite alternate;
+      animation: gal-kb 14s ease-in-out infinite alternate;
+      user-select: none;
+      -webkit-user-drag: none;
     }
-    @keyframes gal-hero-kb {
+    @keyframes gal-kb {
       0%   { transform: scale(1.0)  translate(0,    0);    }
-      100% { transform: scale(1.10) translate(-1%,  -1.5%); }
+      100% { transform: scale(1.08) translate(-1%, -1.5%); }
     }
-    /* Mobile: faster (5 s) + bigger zoom (1.22) so it is clearly visible */
     @media (max-width: 768px) {
-      .gal-hero__img {
-        animation: gal-hero-kb-mobile 5s ease-in-out infinite alternate;
+      .gal-hero-slide__img {
+        animation: gal-kb-mobile 5s ease-in-out infinite alternate;
       }
-      @keyframes gal-hero-kb-mobile {
-        0%   { transform: scale(1.0)  translate(0,     0);    }
-        100% { transform: scale(1.22) translate(-2%,  -2.5%); }
+      @keyframes gal-kb-mobile {
+        0%   { transform: scale(1.0)  translate(0,    0);    }
+        100% { transform: scale(1.18) translate(-2%, -2.5%); }
       }
     }
-    .gal-hero__overlay {
+    .gal-hero-slide__overlay {
       position: absolute;
       inset: 0;
       background: linear-gradient(
         to top,
         rgba(26,26,78,.82) 0%,
-        rgba(26,26,78,.3) 50%,
+        rgba(26,26,78,.28) 55%,
         transparent 100%
       );
     }
-    .gal-hero__content {
+    .gal-hero-slide__content {
       position: absolute;
       bottom: var(--sp-2xl);
       left: 0; right: 0;
       padding: 0 var(--sp-xl);
+      z-index: 2;
     }
     .gal-hero__eyebrow {
       font-size: var(--fs-xs);
@@ -73,53 +85,68 @@
       color: var(--clr-gold);
       display: block;
       margin-bottom: var(--sp-xs);
+      text-shadow: 0 1px 8px rgba(0,0,0,.7);
     }
     .gal-hero__title {
-      font-family: var(--ff-display);
-      font-size: clamp(1.4rem, 3.5vw, 2.8rem);
+      font-family: 'FranklinGothicHeavy', var(--ff-display);
+      font-size: clamp(1.5rem, 4vw, 3rem);
       font-weight: 700;
       color: #fff;
       line-height: var(--lh-heading);
       margin-bottom: var(--sp-sm);
+      text-shadow: 0 2px 12px rgba(0,0,0,.35);
     }
     .gal-hero__meta {
       font-size: var(--fs-sm);
-      color: rgba(255,255,255,.6);
+      color: rgba(255,255,255,.65);
       display: flex;
       gap: var(--sp-md);
       flex-wrap: wrap;
       align-items: center;
     }
-    .gal-hero__meta-item {
+    /* Dot navigation */
+    .gal-hero-dots {
+      position: absolute;
+      bottom: var(--sp-lg);
+      right: var(--sp-xl);
       display: flex;
-      align-items: center;
-      gap: var(--sp-xs);
+      gap: 8px;
+      z-index: 3;
+    }
+    .gal-hero-dot {
+      width: 9px; height: 9px;
+      border-radius: 50%;
+      border: 2px solid rgba(255,255,255,.55);
+      background: transparent;
+      cursor: pointer;
+      padding: 0;
+      transition: background .3s, border-color .3s, transform .3s;
+    }
+    .gal-hero-dot.is-active {
+      background: #fff;
+      border-color: #fff;
+      transform: scale(1.2);
+    }
+    @media (max-width: 640px) {
+      .gal-hero-slide__content { padding: 0 var(--sp-md); bottom: var(--sp-xl); }
+      .gal-hero-dots { right: var(--sp-md); bottom: var(--sp-sm); }
     }
 
-    /* ── DISCIPLINE TABS ──────────────────────────────────────── */
-    /* Wrapper carries the sticky positioning so the ::after swipe hint
-       can sit outside the overflow-x scroll area of the tabs nav */
+    /* ── YEAR FILTER TABS ─────────────────────────────────────── */
+    /* Sticky wrapper — setTabsTop() sets correct top at runtime   */
     .gal-tabs-wrap {
       position: sticky;
-      top: 0;           /* setTabsTop() overrides this at runtime on both breakpoints */
+      top: 0;
       z-index: 200;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.08);
-      overflow: hidden; /* clips ::after to the exact tab bar height — prevents vertical bleed */
+      box-shadow: 0 2px 10px rgba(0,0,0,.08);
+      overflow: hidden;
     }
     .gal-tabs {
       display: flex;
       gap: 0;
       border-bottom: 2px solid var(--clr-border);
-      background: var(--clr-white, #fff);
-      /* No overflow-x on desktop — all 7 tabs fit with flex:1 */
+      background: #fff;
     }
-
-    /*
-     * flex: 1 + text-align: center distributes all 7 tabs equally.
-     * On a 1440px container → 1440/7 ≈ 205px each — fits all labels.
-     * Font 0.72rem + padding 8px 6px keeps each tab compact.
-     * white-space: normal allows 2-line wrap on narrower viewports.
-     */
     .gal-tab {
       font-family: var(--ff-body);
       font-size: 0.72rem;
@@ -140,27 +167,23 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 3px;
+      gap: 2px;
     }
     .gal-tab:hover { color: var(--clr-text-primary); }
     .gal-tab.is-active {
       color: var(--clr-gold-dark);
       border-bottom-color: var(--clr-gold);
     }
-
-    /* Emoji icon inside each tab — own line above the label */
-    .gal-tab__icon {
-      font-size: 1rem;
-      line-height: 1;
+    .gal-tab__icon { font-size: 1rem; line-height: 1; display: block; }
+    .gal-tab__label { display: block; }
+    .gal-tab__count {
+      font-size: 0.6rem;
+      font-weight: 400;
+      color: var(--clr-text-tertiary);
       display: block;
     }
-    .gal-tab__label { display: block; }
-
-    /* Mobile: allow horizontal scroll if viewport is narrow */
+    .gal-tab.is-active .gal-tab__count { color: var(--clr-gold-dark); }
     @media (max-width: 768px) {
-      /* Keep position:sticky — do NOT override with relative (breaks sticking) */
-      /* setTabsTop() runs on mobile too, sets correct top below the nav */
-
       .gal-tabs {
         overflow-x: auto;
         -webkit-overflow-scrolling: touch;
@@ -169,142 +192,115 @@
       .gal-tabs::-webkit-scrollbar { display: none; }
       .gal-tab {
         flex: 0 0 auto;
-        min-width: 72px;
+        min-width: 68px;
         font-size: 0.65rem;
         padding: 6px 8px;
       }
     }
 
-    /* ── DISCIPLINE SECTIONS ──────────────────────────────────── */
-    .gal-section { display: none; }
-    .gal-section.is-visible { display: block; }
+    /* ── MASONRY GRID — white background ──────────────────────── */
+    .gal-masonry-section {
+      background: #fff;
+      padding-top: 0;
+    }
+    .gal-masonry {
+      column-count: 4;
+      column-gap: 14px;
+      padding: var(--sp-xl) 0 var(--sp-3xl);
+    }
+    @media (max-width: 1100px) { .gal-masonry { column-count: 3; } }
+    @media (max-width: 768px)  { .gal-masonry { column-count: 2; column-gap: 10px; } }
 
-    .gal-section__header {
-      display: flex;
-      align-items: flex-start;
-      gap: var(--sp-xl);
-      padding: var(--sp-xl) 0 var(--sp-lg);
-      border-bottom: var(--border-hairline);
-      margin-bottom: var(--sp-xl);
-      flex-wrap: wrap;
-    }
-    .gal-section__icon { font-size: 3rem; flex-shrink: 0; }
-    .gal-section__info { flex: 1; min-width: 200px; }
-    .gal-section__disc {
-      font-size: var(--fs-xs);
-      font-weight: 700;
-      letter-spacing: var(--ls-widest);
-      text-transform: uppercase;
-      color: var(--clr-gold);
-      margin-bottom: var(--sp-xs);
-      display: block;
-    }
-    .gal-section__title {
-      font-family: var(--ff-display);
-      font-size: var(--fs-xl);
-      font-weight: 700;
-      color: var(--clr-text-primary);
-      margin-bottom: var(--sp-sm);
-    }
-    .gal-section__body {
-      font-size: var(--fs-sm);
-      color: var(--clr-text-secondary);
-      line-height: var(--lh-relaxed);
-      max-width: 60ch;
-    }
-    .gal-section__count {
-      font-size: var(--fs-xs);
+    /* Loading state */
+    .gal-loading {
+      padding: var(--sp-3xl);
+      text-align: center;
       color: var(--clr-text-tertiary);
-      margin-top: var(--sp-xs);
+      font-size: var(--fs-sm);
     }
-
-    /* ── ARTWORK GRID ─────────────────────────────────────────── */
-    .gal-grid {
-      margin-bottom: var(--sp-2xl);   /* replaces the removed inline spacer divs */
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: var(--sp-md);
+    .gal-loading__spinner {
+      width: 36px; height: 36px;
+      border: 3px solid rgba(0,0,0,.08);
+      border-top-color: var(--clr-gold);
+      border-radius: 50%;
+      animation: spin .8s linear infinite;
+      margin: 0 auto var(--sp-md);
     }
+    @keyframes spin { to { transform: rotate(360deg); } }
 
-    /* ── ARTWORK CARD ─────────────────────────────────────────── */
+    /* ── ARTWORK CARD — natural height for masonry ────────────── */
     .gal-card {
+      break-inside: avoid;
+      display: inline-block; /* required for CSS column masonry */
+      width: 100%;
+      margin-bottom: 14px;
       border-radius: var(--radius-lg);
       overflow: hidden;
-      background: var(--clr-white);
-      border: var(--border-hairline);
+      background: #fff;
+      border: 1px solid rgba(0,0,0,.07);
       cursor: pointer;
-      transition: box-shadow var(--dur-base), transform var(--dur-base) var(--ease-out),
+      transition: box-shadow var(--dur-base), transform var(--dur-base),
                   border-color var(--dur-base);
       position: relative;
     }
+    @media (max-width: 768px) { .gal-card { margin-bottom: 10px; } }
     .gal-card:hover {
-      box-shadow: var(--shadow-md);
+      box-shadow: 0 8px 28px rgba(0,0,0,.13);
       transform: translateY(-3px);
       border-color: var(--clr-gold);
     }
+    /* Image wrapper — no fixed aspect-ratio so images keep natural height */
     .gal-card__img-wrap {
       width: 100%;
-      aspect-ratio: 1;
       overflow: hidden;
-      background: var(--clr-earth);
       position: relative;
+      background: var(--clr-surface, #f5f5f0);
     }
     .gal-card__img {
       width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transition: transform var(--dur-slow) var(--ease-out);
+      height: auto;   /* natural height — this is what makes masonry work */
       display: block;
+      transition: transform var(--dur-slow) var(--ease-out);
+      user-select: none;
+      -webkit-user-drag: none;
     }
-    .gal-card:hover .gal-card__img { transform: scale(1.06); }
-    .gal-card__placeholder {
-      width: 100%;
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: var(--sp-xs);
-      font-size: 2rem;
-      color: var(--clr-text-tertiary);
-    }
-    .gal-card__placeholder-label {
-      font-size: var(--fs-xs);
-      color: var(--clr-text-tertiary);
-      text-align: center;
-      padding: 0 var(--sp-sm);
-    }
-
-    /* Multi-angle badge */
+    .gal-card:hover .gal-card__img { transform: scale(1.04); }
+    /* Badges */
     .gal-card__angles {
       position: absolute;
-      top: var(--sp-sm);
-      right: var(--sp-sm);
+      top: var(--sp-sm); right: var(--sp-sm);
       background: rgba(26,26,78,.85);
       color: #fff;
-      font-size: 0.6rem;
-      font-weight: 700;
+      font-size: 0.6rem; font-weight: 700;
       padding: 3px 8px;
       border-radius: var(--radius-full);
       backdrop-filter: blur(4px);
     }
-
-    /* AR badge */
     .gal-card__ar-badge {
       position: absolute;
-      top: var(--sp-sm);
-      left: var(--sp-sm);
+      top: var(--sp-sm); left: var(--sp-sm);
       background: var(--clr-gold);
       color: #fff;
-      font-size: 0.6rem;
-      font-weight: 700;
+      font-size: 0.6rem; font-weight: 700;
       padding: 3px 8px;
       border-radius: var(--radius-full);
     }
-
-    .gal-card__body {
-      padding: var(--sp-sm) var(--sp-md);
+    /* Placeholder when no image */
+    .gal-card__placeholder {
+      width: 100%; height: 160px;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: var(--sp-xs);
+      font-size: 2rem;
+      color: var(--clr-text-tertiary);
+      background: var(--clr-surface, #f5f5f0);
     }
+    .gal-card__placeholder-label {
+      font-size: var(--fs-xs);
+      color: var(--clr-text-tertiary);
+    }
+    /* Card body */
+    .gal-card__body { padding: var(--sp-sm) var(--sp-md) var(--sp-md); }
     .gal-card__title {
       font-family: 'FranklinGothicRegular', var(--ff-body);
       font-size: var(--fs-sm);
@@ -318,12 +314,25 @@
     .gal-card__sub {
       font-size: var(--fs-xs);
       color: var(--clr-text-tertiary);
+      margin-bottom: var(--sp-xs);
+    }
+    /* Discipline tag — informational, not a gatekeeper */
+    .gal-card__disc-tag {
+      display: inline-block;
+      font-size: 0.58rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+      color: var(--clr-gold-dark, #a07000);
+      background: rgba(201,148,10,.1);
+      padding: 2px 7px;
+      border-radius: var(--radius-full);
     }
 
     /* ── LIGHTBOX ─────────────────────────────────────────────── */
+    /* Unchanged from previous version */
     .gal-lb {
-      position: fixed;
-      inset: 0;
+      position: fixed; inset: 0;
       background: rgba(0,0,0,.92);
       z-index: 9000;
       display: none;
@@ -332,190 +341,101 @@
       justify-content: center;
     }
     .gal-lb.is-open { display: flex; }
-
     .gal-lb__close {
-      position: absolute;
-      top: var(--sp-lg);
-      right: var(--sp-lg);
-      background: rgba(255,255,255,.12);
-      border: none;
-      color: #fff;
-      width: 44px; height: 44px;
-      border-radius: 50%;
-      font-size: 1.2rem;
-      cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
-      transition: background var(--dur-fast);
-      z-index: 10;
+      position: absolute; top: var(--sp-lg); right: var(--sp-lg);
+      background: rgba(255,255,255,.12); border: none; color: #fff;
+      width: 44px; height: 44px; border-radius: 50%; font-size: 1.2rem;
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+      transition: background var(--dur-fast); z-index: 10;
     }
     .gal-lb__close:hover { background: rgba(255,255,255,.25); }
-
-    /* Counter */
     .gal-lb__counter {
-      position: absolute;
-      top: var(--sp-lg);
-      left: 50%;
-      transform: translateX(-50%);
-      font-size: var(--fs-xs);
-      color: rgba(255,255,255,.5);
-      letter-spacing: var(--ls-wide);
+      position: absolute; top: var(--sp-lg); left: 50%; transform: translateX(-50%);
+      font-size: var(--fs-xs); color: rgba(255,255,255,.5); letter-spacing: var(--ls-wide);
     }
-
-    /* Main image stage */
     .gal-lb__stage {
-      width: 100%;
-      max-width: 900px;
-      flex: 1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 60px var(--sp-xl) var(--sp-lg);
-      position: relative;
+      width: 100%; max-width: 900px; flex: 1;
+      display: flex; align-items: center; justify-content: center;
+      padding: 60px var(--sp-xl) var(--sp-lg); position: relative;
     }
     .gal-lb__img {
-      max-width: 100%;
-      max-height: calc(100vh - 220px);
-      object-fit: contain;
-      border-radius: var(--radius-md);
-      display: block;
-      user-select: none;
-      -webkit-user-drag: none;
+      max-width: 100%; max-height: calc(100vh - 220px);
+      object-fit: contain; border-radius: var(--radius-md); display: block;
+      user-select: none; -webkit-user-drag: none;
     }
     .gal-lb__placeholder-stage {
-      width: 280px;
-      height: 280px;
-      background: rgba(255,255,255,.05);
-      border: 1px solid rgba(255,255,255,.1);
+      width: 280px; height: 280px;
+      background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.1);
       border-radius: var(--radius-lg);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: var(--sp-md);
-      font-size: 4rem;
-      color: rgba(255,255,255,.2);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: var(--sp-md); font-size: 4rem; color: rgba(255,255,255,.2);
     }
-
-    /* Prev / Next arrows */
     .gal-lb__nav {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      background: rgba(255,255,255,.1);
-      border: 1px solid rgba(255,255,255,.2);
-      color: #fff;
-      width: 48px; height: 48px;
-      border-radius: 50%;
-      font-size: 1.2rem;
-      cursor: pointer;
+      position: absolute; top: 50%; transform: translateY(-50%);
+      background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.2);
+      color: #fff; width: 48px; height: 48px; border-radius: 50%;
+      font-size: 1.2rem; cursor: pointer;
       display: flex; align-items: center; justify-content: center;
-      transition: background var(--dur-fast);
-      z-index: 5;
+      transition: background var(--dur-fast); z-index: 5;
     }
     .gal-lb__nav:hover { background: rgba(255,255,255,.25); }
     .gal-lb__nav--prev { left: var(--sp-sm); }
     .gal-lb__nav--next { right: var(--sp-sm); }
     .gal-lb__nav:disabled { opacity: .2; cursor: default; }
-
-    /* Thumbnail strip */
     .gal-lb__thumbs {
-      width: 100%;
-      max-width: 900px;
-      display: flex;
-      gap: var(--sp-xs);
+      width: 100%; max-width: 900px;
+      display: flex; gap: var(--sp-xs);
       padding: 0 var(--sp-xl) var(--sp-lg);
-      overflow-x: auto;
-      scrollbar-width: none;
-      justify-content: center;
-      flex-shrink: 0;
+      overflow-x: auto; scrollbar-width: none;
+      justify-content: center; flex-shrink: 0;
     }
     .gal-lb__thumbs::-webkit-scrollbar { display: none; }
     .gal-lb__thumb {
-      width: 64px; height: 64px;
-      border-radius: var(--radius-sm);
-      overflow: hidden;
-      flex-shrink: 0;
-      cursor: pointer;
-      border: 2px solid transparent;
+      width: 64px; height: 64px; border-radius: var(--radius-sm);
+      overflow: hidden; flex-shrink: 0; cursor: pointer;
+      border: 2px solid transparent; opacity: .55;
       transition: border-color var(--dur-fast), transform var(--dur-fast);
-      opacity: .55;
     }
     .gal-lb__thumb.is-active { border-color: var(--clr-gold); opacity: 1; }
     .gal-lb__thumb:hover { opacity: .9; transform: scale(1.05); }
-    .gal-lb__thumb img {
-      width: 100%; height: 100%;
-      object-fit: cover;
-      display: block;
-      pointer-events: none;
-    }
+    .gal-lb__thumb img { width: 100%; height: 100%; object-fit: cover; display: block; pointer-events: none; }
     .gal-lb__thumb-placeholder {
       width: 100%; height: 100%;
       background: rgba(255,255,255,.08);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1.4rem;
+      display: flex; align-items: center; justify-content: center; font-size: 1.4rem;
     }
-
-    /* Caption bar */
     .gal-lb__caption {
-      width: 100%;
-      max-width: 900px;
-      padding: 0 var(--sp-xl) var(--sp-xl);
-      flex-shrink: 0;
-      text-align: center;
+      width: 100%; max-width: 900px;
+      padding: 0 var(--sp-xl) var(--sp-xl); flex-shrink: 0; text-align: center;
     }
     .gal-lb__caption-title {
-      font-family: var(--ff-display);
-      font-size: var(--fs-md);
-      font-weight: 700;
-      color: #fff;
-      margin-bottom: 4px;
+      font-family: var(--ff-display); font-size: var(--fs-md); font-weight: 700;
+      color: #fff; margin-bottom: 4px;
     }
-    .gal-lb__caption-sub {
-      font-size: var(--fs-xs);
-      color: rgba(255,255,255,.5);
-    }
-
-    /* ── UPLOAD BANNER ────────────────────────────────────────── */
-
-    /* ── RESPONSIVE ───────────────────────────────────────────── */
-    @media (max-width: 900px) {
-      .gal-grid { grid-template-columns: repeat(3, 1fr); }
-    }
+    .gal-lb__caption-sub { font-size: var(--fs-xs); color: rgba(255,255,255,.5); }
     @media (max-width: 640px) {
-      .gal-grid { grid-template-columns: repeat(2, 1fr); }
-      .gal-hero__content { padding: 0 var(--sp-md); bottom: var(--sp-lg); }
-      .gal-tab { padding: var(--sp-sm) var(--sp-md); font-size: var(--fs-xs); }
       .gal-lb__nav { width: 38px; height: 38px; font-size: 1rem; }
     }
-
-    /* Collapse empty grids — no whitespace when discipline has no artworks */
-    .gal-grid:empty { display: none; margin: 0; padding: 0; height: 0; }
-
   </style>
+
   <script>
-  /* setTabsTop — measures every sticky/fixed bar actually visible at the
-     top of the viewport (announce, site-header, dept-nav) and sets the
-     .gal-tabs sticky top to the exact combined height so no gap shows. */
+  /* setTabsTop — measures every sticky/fixed bar visible at the top of
+     the viewport and sets .gal-tabs-wrap sticky top exactly below them. */
   function setTabsTop() {
     var wrap = document.querySelector('.gal-tabs-wrap');
     if (!wrap) return;
-    /* Runs on BOTH mobile and desktop — measures every sticky/fixed bar */
     var offset = 0;
     ['.site-announce', '.site-header', '.dept-nav'].forEach(function(sel) {
       var el = document.querySelector(sel);
       if (!el) return;
       var pos = getComputedStyle(el).position;
-      if (pos === 'sticky' || pos === 'fixed') {
-        offset += el.getBoundingClientRect().height;
-      }
+      if (pos === 'sticky' || pos === 'fixed') offset += el.getBoundingClientRect().height;
     });
     wrap.style.top = offset + 'px';
   }
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', setTabsTop);
-  } else {
-    setTabsTop();
-  }
+  } else { setTabsTop(); }
   window.addEventListener('resize', setTabsTop, { passive: true });
   </script>
 </head>
@@ -524,630 +444,210 @@
 
   <main id="main-content">
 
-    <!-- ═══ HERO BANNER — DIAT Open Sale Panoramic ═══════════════════════ -->
-    <!--
-      Image file: PXL_20260126_151422788.PANO.webp
-      Upload this file to: github.com/diatknust-hub/diatknust-hub.github.io
-      via Add file → Upload files. It will then be accessible at the URL below.
-    -->
-    <figure class="gal-hero" aria-label="DIAT Open Sale exhibition banner">
-      <img class="gal-hero__img"
-           src="PXL_20260126_151422788.PANO.webp"
-           alt="DIAT Open Sale — a panoramic view of student and staff artworks displayed outdoors at the KNUST Commercial Area, Kumasi Ghana, January 2026"
-           loading="eager"
-           draggable="false"
-           oncontextmenu="return false"
-           data-cms-key="gal-hero-img" data-cms-type="image"
-           onerror="this.style.opacity='0'">
-      <div class="gal-hero__overlay" aria-hidden="true"></div>
-      <figcaption class="gal-hero__content">
-        <span class="gal-hero__eyebrow"
-              data-cms-key="gal-hero-eyebrow" data-cms-type="text">
-          Outdoor Exhibition &middot; KNUST Commercial Area
-        </span>
-        <h1 class="gal-hero__title"
-            data-cms-key="gal-hero-title" data-cms-type="text">
-          DIAT Open Sale
-        </h1>
-        <div class="gal-hero__meta">
-          <span class="gal-hero__meta-item">
-            &#127963; KNUST Commercial Area, Kumasi, Ghana
-          </span>
-          <span class="gal-hero__meta-item">
-            &#128197; January 2026
-          </span>
-          <span class="gal-hero__meta-item">
-            &#127775; Student &amp; Staff Artworks
-          </span>
-        </div>
-      </figcaption>
-    </figure>
+    <!-- ═══ HERO SLIDESHOW ══════════════════════════════════════════════ -->
+    <!--  Add/swap images here. Keep the same class structure per slide.  -->
+    <div class="gal-hero-slider" aria-label="DIAT gallery highlights">
 
-    <!-- ═══ DISCIPLINE TABS + GALLERY ═══════════════════════════════════ -->
-    <div class="dept-section dept-section--surface" style="padding-top:0">
-      <style>
-        /* Breathing room between sticky tab bar and first section header */
-        #sec-all { padding-top: var(--sp-lg, 1.5rem); }
-        @media (max-width: 768px) {
-          #sec-all { padding-top: var(--sp-xl, 2rem); }
-        }
-      </style>
+      <!-- Slide 1 — Open Sale panoramic -->
+      <div class="gal-hero-slide is-active">
+        <img class="gal-hero-slide__img"
+             src="https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_1920/diat-opensale-exhibition_chkcpt.webp"
+             alt="DIAT Open Sale — student and staff artworks displayed outdoors at KNUST Commercial Area, January 2026"
+             loading="eager" draggable="false" oncontextmenu="return false">
+        <div class="gal-hero-slide__overlay" aria-hidden="true"></div>
+        <div class="gal-hero-slide__content">
+          <span class="gal-hero__eyebrow">Outdoor Exhibition &middot; KNUST Commercial Area</span>
+          <h1 class="gal-hero__title">DIAT Open Sale</h1>
+          <div class="gal-hero__meta">
+            <span>&#127963; KNUST, Kumasi, Ghana</span>
+            <span>&#128197; January 2026</span>
+            <span>&#127775; Student &amp; Staff Artworks</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 2 — Craft murals on DIAT building facade -->
+      <div class="gal-hero-slide">
+        <img class="gal-hero-slide__img"
+             src="https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_1920/diat-murals_fxdnah.webp"
+             alt="Craft heritage relief murals on the DIAT building facade, KNUST"
+             loading="lazy" draggable="false" oncontextmenu="return false">
+        <div class="gal-hero-slide__overlay" aria-hidden="true"></div>
+        <div class="gal-hero-slide__content">
+          <span class="gal-hero__eyebrow">Permanent Collection &middot; DIAT Building</span>
+          <h1 class="gal-hero__title">Heritage Carved in Stone</h1>
+          <div class="gal-hero__meta">
+            <span>&#127963; DIAT Building Facade</span>
+            <span>&#127912; Relief Panels</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 3 — Campus panorama -->
+      <div class="gal-hero-slide">
+        <img class="gal-hero-slide__img"
+             src="https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_1920/diat-panorama_pzzrmo.webp"
+             alt="DIAT KNUST campus panoramic view, Kumasi Ghana"
+             loading="lazy" draggable="false" oncontextmenu="return false">
+        <div class="gal-hero-slide__overlay" aria-hidden="true"></div>
+        <div class="gal-hero-slide__content">
+          <span class="gal-hero__eyebrow">DIAT Campus &middot; KNUST &middot; Kumasi, Ghana</span>
+          <h1 class="gal-hero__title">Where Heritage Lives</h1>
+          <div class="gal-hero__meta">
+            <span>&#127963; Kumasi, Ghana</span>
+            <span>&#127891; Est. 1976</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dot navigation -->
+      <div class="gal-hero-dots" role="tablist" aria-label="Slideshow navigation">
+        <button class="gal-hero-dot is-active" role="tab" aria-label="Slide 1" aria-selected="true"></button>
+        <button class="gal-hero-dot" role="tab" aria-label="Slide 2" aria-selected="false"></button>
+        <button class="gal-hero-dot" role="tab" aria-label="Slide 3" aria-selected="false"></button>
+      </div>
+
+    </div><!-- /.gal-hero-slider -->
+
+
+    <!-- ═══ YEAR TABS + MASONRY GRID ════════════════════════════════════ -->
+    <div class="gal-masonry-section">
       <div class="container">
 
-        <!-- Tabs -->
+        <!-- Year filter tabs — populated by JS from JSON year fields -->
         <div class="gal-tabs-wrap">
-    <nav class="gal-tabs" role="tablist" aria-label="Filter gallery by discipline">
-          <button class="gal-tab is-active" role="tab" data-disc="all" aria-selected="true" onclick="switchTab(this,'all')"><span class="gal-tab__icon">&#128444;</span><span class="gal-tab__label">All Works</span></button>
-          <button class="gal-tab" role="tab" data-disc="clay" aria-selected="false" onclick="switchTab(this,'clay')"><span class="gal-tab__icon">&#127994;</span><span class="gal-tab__label">Clay &amp; Earthenware</span></button>
-          <button class="gal-tab" role="tab" data-disc="fibres" aria-selected="false" onclick="switchTab(this,'fibres')"><span class="gal-tab__icon">&#129525;</span><span class="gal-tab__label">Fibres &amp; Fabrics</span></button>
-          <button class="gal-tab" role="tab" data-disc="leather" aria-selected="false" onclick="switchTab(this,'leather')"><span class="gal-tab__icon">&#128092;</span><span class="gal-tab__label">Leather Technology</span></button>
-          <button class="gal-tab" role="tab" data-disc="metal" aria-selected="false" onclick="switchTab(this,'metal')"><span class="gal-tab__icon">&#9881;</span><span class="gal-tab__label">Metal Production</span></button>
-          <button class="gal-tab" role="tab" data-disc="rattan" aria-selected="false" onclick="switchTab(this,'rattan')"><span class="gal-tab__icon">&#127819;</span><span class="gal-tab__label">Rattan &amp; Bamboo</span></button>
-          <button class="gal-tab" role="tab" data-disc="wood" aria-selected="false" onclick="switchTab(this,'wood')"><span class="gal-tab__icon">&#129683;</span><span class="gal-tab__label">Wood &amp; Furniture</span></button>
-        </nav>
+          <nav class="gal-tabs" id="year-tabs" role="tablist" aria-label="Filter artworks by year">
+            <!-- JS renders tabs here after JSON loads -->
+            <button class="gal-tab is-active" role="tab" aria-selected="true">
+              <span class="gal-tab__icon">&#128444;</span>
+              <span class="gal-tab__label">All Works</span>
+            </button>
+          </nav>
+        </div>
 
-        <!-- ════════════════════════════════════════════════════════════════
-             DISCIPLINE SECTIONS
-             Each section has placeholder cards ready for real photos.
-             Photos go in via Admin Mode (data-cms-type="image")
-             OR by editing the src="" attributes after uploading to GitHub.
+        <!-- Loading spinner -->
+        <div id="gal-loading" class="gal-loading">
+          <div class="gal-loading__spinner"></div>
+          Loading artworks…
+        </div>
 
-             Multi-angle artworks: cards with data-angles="3" open a
-             lightbox carousel. List all angles in data-images="img1.jpg|img2.jpg|img3.jpg"
-             ════════════════════════════════════════════════════════════════ -->
+        <!-- Masonry grid — JS populates from diat-gallery.json -->
+        <div id="masonry-grid" class="gal-masonry" style="display:none" aria-live="polite"></div>
 
-        <!-- ── ALL WORKS (shows all sections) ── -->
-        <div id="sec-all" class="gal-section is-visible">
+        <!-- Empty / error state -->
+        <p id="gal-empty" style="display:none; padding:var(--sp-3xl); text-align:center; color:var(--clr-text-tertiary)">
+          No artworks found. Check back soon.
+        </p>
 
-          <!-- ── CLAY & EARTHENWARE ── -->
-          <div class="gal-section__header">
-            <span class="gal-section__icon">&#127994;</span>
-            <div class="gal-section__info">
-              <span class="gal-section__disc">Discipline 1 of 6</span>
-              <h2 class="gal-section__title">Clay & Earthenware</h2>
-              <p class="gal-section__body">Hand-built, wheel-thrown and kiln-fired ceramic works. Relief decoration, figurative sculpture and functional vessels rooted in Ghanaian pottery traditions.</p>
-              <p class="gal-section__count">2 artworks · DIAT Open Sale, January 2026</p>
-            </div>
-          </div>
-          <div class="gal-grid" data-disc-grid="clay">
-            <article class="gal-card"
-                     onclick="openLightbox(event)"
-                     tabindex="0"
-                     role="button"
-                     aria-label="Figurative Ceramic Vessels"
-                     data-disc="clay"
-                     data-title="Figurative Ceramic Vessels"
-                     data-artist="DIAT Student · Clay & Earthenware"
-                     data-images="PXL_20260126_150050930.PORTRAIT.ORIGINAL.webp|PXL_20260126_150117098.PORTRAIT.webp|PXL_20260126_150125736.PORTRAIT.webp"
-                     data-angles="3">
-              <div class="gal-card__img-wrap">
-                <img class="gal-card__img"
-                     src="PXL_20260126_150050930.PORTRAIT.ORIGINAL.webp"
-                     alt="Figurative Ceramic Vessels — DIAT KNUST, January 2026"
-                     loading="lazy"
-                     draggable="false"
-                     oncontextmenu="return false">
-                <span class="gal-card__angles">3 views</span>
-              </div>
-              <div class="gal-card__body">
-                <p class="gal-card__title"
-                   data-cms-key="gal-clay1-title"
-                   data-cms-type="text">Figurative Ceramic Vessels</p>
-                <p class="gal-card__sub"
-                   data-cms-key="gal-clay1-artist"
-                   data-cms-type="text">DIAT Student · Clay & Earthenware</p>
-              </div>
-            </article>
-            <article class="gal-card"
-                     onclick="openLightbox(event)"
-                     tabindex="0"
-                     role="button"
-                     aria-label="Decorative Earthenware Set"
-                     data-disc="clay"
-                     data-title="Decorative Earthenware Set"
-                     data-artist="DIAT Student · Clay & Earthenware"
-                     data-images="PXL_20260126_151122297.PORTRAIT.webp|PXL_20260126_151141696.PORTRAIT.webp"
-                     data-angles="2">
-              <div class="gal-card__img-wrap">
-                <img class="gal-card__img"
-                     src="PXL_20260126_151122297.PORTRAIT.webp"
-                     alt="Decorative Earthenware Set — DIAT KNUST, January 2026"
-                     loading="lazy"
-                     draggable="false"
-                     oncontextmenu="return false">
-                <span class="gal-card__angles">2 views</span>
-              </div>
-              <div class="gal-card__body">
-                <p class="gal-card__title"
-                   data-cms-key="gal-clay2-title"
-                   data-cms-type="text">Decorative Earthenware Set</p>
-                <p class="gal-card__sub"
-                   data-cms-key="gal-clay2-artist"
-                   data-cms-type="text">DIAT Student · Clay & Earthenware</p>
-              </div>
-            </article>
-          </div>
-          <!-- ── FIBRES & FABRICS ── -->
-          <div class="gal-section__header">
-            <span class="gal-section__icon">&#129525;</span>
-            <div class="gal-section__info">
-              <span class="gal-section__disc">Discipline 2 of 6</span>
-              <h2 class="gal-section__title">Fibres & Fabrics</h2>
-              <p class="gal-section__body">Kente weaving, adinkra printing, batik, macramé and contemporary fibre art. Textile works connecting Ghanaian heritage to modern design.</p>
-              <p class="gal-section__count">2 artworks · DIAT Open Sale, January 2026</p>
-            </div>
-          </div>
-          <div class="gal-grid" data-disc-grid="fibres">
-            <article class="gal-card"
-                     onclick="openLightbox(event)"
-                     tabindex="0"
-                     role="button"
-                     aria-label="Woven Textile Display"
-                     data-disc="fibres"
-                     data-title="Woven Textile Display"
-                     data-artist="DIAT Student · Fibres & Fabrics"
-                     data-images="PXL_20260126_150250895.PORTRAIT.webp"
-                     data-angles="1">
-              <div class="gal-card__img-wrap">
-                <img class="gal-card__img"
-                     src="PXL_20260126_150250895.PORTRAIT.webp"
-                     alt="Woven Textile Display — DIAT KNUST, January 2026"
-                     loading="lazy"
-                     draggable="false"
-                     oncontextmenu="return false">
-                
-              </div>
-              <div class="gal-card__body">
-                <p class="gal-card__title"
-                   data-cms-key="gal-fibres1-title"
-                   data-cms-type="text">Woven Textile Display</p>
-                <p class="gal-card__sub"
-                   data-cms-key="gal-fibres1-artist"
-                   data-cms-type="text">DIAT Student · Fibres & Fabrics</p>
-              </div>
-            </article>
-            <article class="gal-card"
-                     onclick="openLightbox(event)"
-                     tabindex="0"
-                     role="button"
-                     aria-label="Contemporary Fibre Art"
-                     data-disc="fibres"
-                     data-title="Contemporary Fibre Art"
-                     data-artist="DIAT Student · Fibres & Fabrics"
-                     data-images="PXL_20260126_151708869.webp|PXL_20260126_151715645.webp"
-                     data-angles="2">
-              <div class="gal-card__img-wrap">
-                <img class="gal-card__img"
-                     src="PXL_20260126_151708869.webp"
-                     alt="Contemporary Fibre Art — DIAT KNUST, January 2026"
-                     loading="lazy"
-                     draggable="false"
-                     oncontextmenu="return false">
-                <span class="gal-card__angles">2 views</span>
-              </div>
-              <div class="gal-card__body">
-                <p class="gal-card__title"
-                   data-cms-key="gal-fibres2-title"
-                   data-cms-type="text">Contemporary Fibre Art</p>
-                <p class="gal-card__sub"
-                   data-cms-key="gal-fibres2-artist"
-                   data-cms-type="text">DIAT Student · Fibres & Fabrics</p>
-              </div>
-            </article>
-          </div>
-          <!-- ── LEATHER TECHNOLOGY ── -->
-          <div class="gal-section__header">
-            <span class="gal-section__icon">&#128092;</span>
-            <div class="gal-section__info">
-              <span class="gal-section__disc">Discipline 3 of 6</span>
-              <h2 class="gal-section__title">Leather Technology</h2>
-              <p class="gal-section__body">Tanned, stitched and finished leather goods — bags, sandals, belts and accessories combining West African craft traditions with contemporary design.</p>
-              <p class="gal-section__count">1 artwork · DIAT Open Sale, January 2026</p>
-            </div>
-          </div>
-          <div class="gal-grid" data-disc-grid="leather">
-            <article class="gal-card"
-                     onclick="openLightbox(event)"
-                     tabindex="0"
-                     role="button"
-                     aria-label="Leather Goods Collection"
-                     data-disc="leather"
-                     data-title="Leather Goods Collection"
-                     data-artist="DIAT Student · Leather Technology"
-                     data-images="PXL_20260126_150433369.PORTRAIT.webp"
-                     data-angles="1">
-              <div class="gal-card__img-wrap">
-                <img class="gal-card__img"
-                     src="PXL_20260126_150433369.PORTRAIT.webp"
-                     alt="Leather Goods Collection — DIAT KNUST, January 2026"
-                     loading="lazy"
-                     draggable="false"
-                     oncontextmenu="return false">
-                
-              </div>
-              <div class="gal-card__body">
-                <p class="gal-card__title"
-                   data-cms-key="gal-leather1-title"
-                   data-cms-type="text">Leather Goods Collection</p>
-                <p class="gal-card__sub"
-                   data-cms-key="gal-leather1-artist"
-                   data-cms-type="text">DIAT Student · Leather Technology</p>
-              </div>
-            </article>
-          </div>
-          <!-- ── METAL PRODUCTION ── -->
-          <div class="gal-section__header">
-            <span class="gal-section__icon">&#9881;</span>
-            <div class="gal-section__info">
-              <span class="gal-section__disc">Discipline 4 of 6</span>
-              <h2 class="gal-section__title">Metal Production</h2>
-              <p class="gal-section__body">Lost-wax casting, forging, welding and fabrication. Sculptural and functional metalwork connected to the Ashanti goldsmithing tradition.</p>
-              <p class="gal-section__count">2 artworks · DIAT Open Sale, January 2026</p>
-            </div>
-          </div>
-          <div class="gal-grid" data-disc-grid="metal">
-            <article class="gal-card"
-                     onclick="openLightbox(event)"
-                     tabindex="0"
-                     role="button"
-                     aria-label="Metal Sculpture"
-                     data-disc="metal"
-                     data-title="Metal Sculpture"
-                     data-artist="DIAT Student · Metal Production"
-                     data-images="PXL_20260126_150808467.PORTRAIT.webp|PXL_20260126_150821538.PORTRAIT.webp"
-                     data-angles="2">
-              <div class="gal-card__img-wrap">
-                <img class="gal-card__img"
-                     src="PXL_20260126_150808467.PORTRAIT.webp"
-                     alt="Metal Sculpture — DIAT KNUST, January 2026"
-                     loading="lazy"
-                     draggable="false"
-                     oncontextmenu="return false">
-                <span class="gal-card__angles">2 views</span>
-              </div>
-              <div class="gal-card__body">
-                <p class="gal-card__title"
-                   data-cms-key="gal-metal1-title"
-                   data-cms-type="text">Metal Sculpture</p>
-                <p class="gal-card__sub"
-                   data-cms-key="gal-metal1-artist"
-                   data-cms-type="text">DIAT Student · Metal Production</p>
-              </div>
-            </article>
-            <article class="gal-card"
-                     onclick="openLightbox(event)"
-                     tabindex="0"
-                     role="button"
-                     aria-label="Metal Craft Installation"
-                     data-disc="metal"
-                     data-title="Metal Craft Installation"
-                     data-artist="DIAT Student · Metal Production"
-                     data-images="PXL_20260126_151807035.webp|PXL_20260126_151812555.webp|PXL_20260126_151816958.webp|PXL_20260126_151822887.webp"
-                     data-angles="4">
-              <div class="gal-card__img-wrap">
-                <img class="gal-card__img"
-                     src="PXL_20260126_151807035.webp"
-                     alt="Metal Craft Installation — DIAT KNUST, January 2026"
-                     loading="lazy"
-                     draggable="false"
-                     oncontextmenu="return false">
-                <span class="gal-card__angles">4 views</span>
-              </div>
-              <div class="gal-card__body">
-                <p class="gal-card__title"
-                   data-cms-key="gal-metal2-title"
-                   data-cms-type="text">Metal Craft Installation</p>
-                <p class="gal-card__sub"
-                   data-cms-key="gal-metal2-artist"
-                   data-cms-type="text">DIAT Student · Metal Production</p>
-              </div>
-            </article>
-          </div>
-          <!-- ── RATTAN & BAMBOO ── -->
-          <div class="gal-section__header">
-            <span class="gal-section__icon">&#127819;</span>
-            <div class="gal-section__info">
-              <span class="gal-section__disc">Discipline 5 of 6</span>
-              <h2 class="gal-section__title">Rattan & Bamboo</h2>
-              <p class="gal-section__body">Sustainable natural materials woven, bent and constructed into furniture, lampshades, baskets and architectural installations.</p>
-              <p class="gal-section__count">1 artwork · DIAT Open Sale, January 2026</p>
-            </div>
-          </div>
-          <div class="gal-grid" data-disc-grid="rattan">
-            <article class="gal-card"
-                     onclick="openLightbox(event)"
-                     tabindex="0"
-                     role="button"
-                     aria-label="Rattan Craft Work"
-                     data-disc="rattan"
-                     data-title="Rattan Craft Work"
-                     data-artist="DIAT Student · Rattan & Bamboo"
-                     data-images="PXL_20260126_150929548.PORTRAIT.webp"
-                     data-angles="1">
-              <div class="gal-card__img-wrap">
-                <img class="gal-card__img"
-                     src="PXL_20260126_150929548.PORTRAIT.webp"
-                     alt="Rattan Craft Work — DIAT KNUST, January 2026"
-                     loading="lazy"
-                     draggable="false"
-                     oncontextmenu="return false">
-                
-              </div>
-              <div class="gal-card__body">
-                <p class="gal-card__title"
-                   data-cms-key="gal-rattan1-title"
-                   data-cms-type="text">Rattan Craft Work</p>
-                <p class="gal-card__sub"
-                   data-cms-key="gal-rattan1-artist"
-                   data-cms-type="text">DIAT Student · Rattan & Bamboo</p>
-              </div>
-            </article>
-          </div>
-          <!-- ── WOOD & FURNITURE ── -->
-          <div class="gal-section__header">
-            <span class="gal-section__icon">&#129683;</span>
-            <div class="gal-section__info">
-              <span class="gal-section__disc">Discipline 6 of 6</span>
-              <h2 class="gal-section__title">Wood & Furniture</h2>
-              <p class="gal-section__body">Joinery, carving, turning and furniture-making. From carved stools to contemporary shelving, rooted in Ghana's tradition of royal woodcraft.</p>
-              <p class="gal-section__count">1 artwork · DIAT Open Sale, January 2026</p>
-            </div>
-          </div>
-          <div class="gal-grid" data-disc-grid="wood">
-            <article class="gal-card"
-                     onclick="openLightbox(event)"
-                     tabindex="0"
-                     role="button"
-                     aria-label="Wooden Furniture Piece"
-                     data-disc="wood"
-                     data-title="Wooden Furniture Piece"
-                     data-artist="DIAT Student · Wood & Furniture"
-                     data-images="PXL_20260126_151023444.PORTRAIT.webp|PXL_20260126_151053688.PORTRAIT.webp"
-                     data-angles="2">
-              <div class="gal-card__img-wrap">
-                <img class="gal-card__img"
-                     src="PXL_20260126_151023444.PORTRAIT.webp"
-                     alt="Wooden Furniture Piece — DIAT KNUST, January 2026"
-                     loading="lazy"
-                     draggable="false"
-                     oncontextmenu="return false">
-                <span class="gal-card__angles">2 views</span>
-              </div>
-              <div class="gal-card__body">
-                <p class="gal-card__title"
-                   data-cms-key="gal-wood1-title"
-                   data-cms-type="text">Wooden Furniture Piece</p>
-                <p class="gal-card__sub"
-                   data-cms-key="gal-wood1-artist"
-                   data-cms-type="text">DIAT Student · Wood & Furniture</p>
-              </div>
-            </article>
-          </div>
+      </div>
+    </div><!-- /.gal-masonry-section -->
 
 
-
-        </div><!-- /#sec-all -->
-
-        <!-- Single-discipline sections (same cards, filtered view) -->
-        <div id="sec-clay"    class="gal-section"></div>
-        <div id="sec-fibres"  class="gal-section"></div>
-        <div id="sec-leather" class="gal-section"></div>
-        <div id="sec-metal"   class="gal-section"></div>
-        <div id="sec-rattan"  class="gal-section"></div>
-        <div id="sec-wood"    class="gal-section"></div>
-
+    <!-- ═══ LIGHTBOX ════════════════════════════════════════════════════ -->
+    <!-- Unchanged from previous version -->
+    <div id="gal-lb" class="gal-lb" onclick="closeLightboxOnOverlay(event)" role="dialog" aria-modal="true" aria-label="Artwork viewer">
+      <button class="gal-lb__close" onclick="closeLightbox()" aria-label="Close viewer">&#10005;</button>
+      <span class="gal-lb__counter" id="lb-counter" aria-live="polite"></span>
+      <div class="gal-lb__stage">
+        <button class="gal-lb__nav gal-lb__nav--prev" id="lb-prev" onclick="lbStep(-1)" aria-label="Previous image">&#8592;</button>
+        <img class="gal-lb__img" id="lb-img" src="" alt="" draggable="false" oncontextmenu="return false" style="display:none">
+        <div class="gal-lb__placeholder-stage" id="lb-placeholder" style="display:none">&#128247;</div>
+        <button class="gal-lb__nav gal-lb__nav--next" id="lb-next" onclick="lbStep(1)"  aria-label="Next image">&#8594;</button>
+      </div>
+      <div class="gal-lb__thumbs" id="lb-thumbs"></div>
+      <div class="gal-lb__caption">
+        <p class="gal-lb__caption-title" id="lb-title"></p>
+        <p class="gal-lb__caption-sub"   id="lb-sub"></p>
       </div>
     </div>
 
-    <!-- ═══ LIGHTBOX ═══════════════════════════════════════════════════════ -->
-    <div class="gal-lb" id="gal-lb"
-         role="dialog" aria-modal="true" aria-label="Artwork viewer"
-         onclick="closeLightboxOnOverlay(event)">
-
-      <span class="gal-lb__counter" id="lb-counter" aria-live="polite">1 / 1</span>
-
-      <button class="gal-lb__close"
-              onclick="closeLightbox()"
-              aria-label="Close viewer">&#10005;</button>
-
-      <div class="gal-lb__stage">
-        <!-- Prev -->
-        <button class="gal-lb__nav gal-lb__nav--prev"
-                id="lb-prev"
-                onclick="lbStep(-1)"
-                aria-label="Previous view">&#8592;</button>
-
-        <!-- Main image -->
-        <img id="lb-img" class="gal-lb__img"
-             src="" alt=""
-             draggable="false"
-             oncontextmenu="return false"
-             style="display:none">
-        <div id="lb-placeholder" class="gal-lb__placeholder-stage">
-          <span style="font-size:3rem">&#128247;</span>
-          <span style="font-size:var(--fs-sm);color:rgba(255,255,255,.4)">
-            Upload photo to view
-          </span>
-        </div>
-
-        <!-- Next -->
-        <button class="gal-lb__nav gal-lb__nav--next"
-                id="lb-next"
-                onclick="lbStep(1)"
-                aria-label="Next view">&#8594;</button>
-      </div>
-
-      <!-- Thumbnail strip -->
-      <div class="gal-lb__thumbs" id="lb-thumbs"></div>
-
-      <!-- Caption -->
-      <div class="gal-lb__caption">
-        <p class="gal-lb__caption-title" id="lb-title"></p>
-        <p class="gal-lb__caption-sub" id="lb-sub"></p>
-      </div>
-
-    </div><!-- /#gal-lb -->
-
   </main>
 
+  <!-- ═══ SCRIPTS ══════════════════════════════════════════════════════ -->
   <script>
-    /* ══════════════════════════════════════════════════════════════
-     * GALLERY — Tab switching + Lightbox
-     * ══════════════════════════════════════════════════════════════
-     *
-     * TAB SWITCHING:
-     *   switchTab(btn, disc) hides all sections and shows only the
-     *   matching one. 'all' shows all disciplines in scroll order.
-     *
-     * LIGHTBOX:
-     *   openLightbox(disc, index) finds the clicked card, reads its
-     *   data-images (pipe-separated filenames) and data-angles count,
-     *   and opens the viewer. If data-images is empty, shows placeholder.
-     *   lbStep(dir) moves prev/next through the angles.
-     *   Thumbnail strip syncs to current image.
-     *   Keyboard: ArrowLeft/ArrowRight to navigate, Escape to close.
-     * ══════════════════════════════════════════════════════════════ */
+    /* ══════════════════════════════════════════════════════════════════
+     * HERO SLIDER
+     * ══════════════════════════════════════════════════════════════════ */
+    (function () {
+      var slides = document.querySelectorAll('.gal-hero-slide');
+      var dots   = document.querySelectorAll('.gal-hero-dot');
+      if (!slides.length) return;
+      var current = 0;
+      var timer;
 
-    /* ── TAB SWITCHING ──────────────────────────────────────────── */
-    function switchTab(btn, disc) {
-      /* Update tab states */
-      document.querySelectorAll('.gal-tab').forEach(function(t) {
-        t.classList.remove('is-active');
-        t.setAttribute('aria-selected', 'false');
+      function goTo(n) {
+        slides[current].classList.remove('is-active');
+        if (dots[current]) { dots[current].classList.remove('is-active'); dots[current].setAttribute('aria-selected','false'); }
+        current = ((n % slides.length) + slides.length) % slides.length;
+        slides[current].classList.add('is-active');
+        if (dots[current]) { dots[current].classList.add('is-active'); dots[current].setAttribute('aria-selected','true'); }
+      }
+
+      dots.forEach(function (dot, i) {
+        dot.onclick = function () {
+          clearInterval(timer);
+          goTo(i);
+          timer = setInterval(function () { goTo(current + 1); }, 6000);
+        };
       });
-      btn.classList.add('is-active');
-      btn.setAttribute('aria-selected', 'true');
 
-      /* Show/hide sections */
-      var allSec = document.getElementById('sec-all');
-      var singles = ['clay','fibres','leather','metal','rattan','wood'];
+      timer = setInterval(function () { goTo(current + 1); }, 6000);
+    })();
 
-      if (disc === 'all') {
-        allSec.classList.add('is-visible');
-        singles.forEach(function(d) {
-          document.getElementById('sec-' + d).classList.remove('is-visible');
-        });
-      } else {
-        allSec.classList.remove('is-visible');
-        singles.forEach(function(d) {
-          var el = document.getElementById('sec-' + d);
-          el.classList.toggle('is-visible', d === disc);
-          /* Populate single-disc sections lazily from the all-view cards */
-          if (d === disc && el.children.length === 0) {
-            populateDiscSection(d, el);
-          }
-        });
-      }
-      /* Scroll to gallery start */
-      document.querySelector('.gal-tabs-wrap').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-    }
 
-    /* Populate individual discipline tabs by cloning discipline block from #sec-all */
-    function populateDiscSection(disc, container) {
-      var srcGrid = document.querySelector('#sec-all [data-disc-grid="' + disc + '"]');
-      if (!srcGrid || !srcGrid.children.length) {
-        container.innerHTML = '<p style="padding:var(--sp-2xl);text-align:center;color:var(--clr-text-tertiary)">No artworks for this discipline yet.</p>';
-        return;
-      }
-      /* Clone the header + grid */
-      var hdr  = srcGrid.previousElementSibling;
-      var meta = DISC_META[disc];
-      if (hdr && hdr.classList.contains('gal-section__header')) {
-        container.appendChild(hdr.cloneNode(true));
-      }
-      var grid = srcGrid.cloneNode(true);
-      /* Re-attach onclick to cloned cards */
-      grid.querySelectorAll('.gal-card').forEach(function(c) {
-        c.onclick = openLightbox.bind(null, {currentTarget: c});
-      });
-      container.appendChild(grid);
-    }
-    var DISC_META = {
-      clay:    {label:'Clay & Earthenware'},
-      fibres:  {label:'Fibres & Fabrics'},
-      leather: {label:'Leather Technology'},
-      metal:   {label:'Metal Production'},
-      rattan:  {label:'Rattan & Bamboo'},
-      wood:    {label:'Wood & Furniture'}
-    };
-
-    /* ── LIGHTBOX STATE ─────────────────────────────────────────── */
-    var LB = {
-      title:  '',
-      sub:    '',
-      images: [], /* array of src strings; empty string = placeholder */
-      idx:    0
-    };
+    /* ══════════════════════════════════════════════════════════════════
+     * LIGHTBOX — unchanged logic from previous version
+     * ══════════════════════════════════════════════════════════════════ */
+    var LB = { title: '', sub: '', images: [], idx: 0 };
 
     function openLightbox(e) {
-      /* Works for cards in any section — reads data from the clicked card */
       var card = e ? e.currentTarget : null;
       if (!card) return;
-      var disc = card.getAttribute('data-disc') || '';
-
       var rawImages = (card.getAttribute('data-images') || '').trim();
       var angles    = parseInt(card.getAttribute('data-angles') || '1', 10);
       var title     = card.getAttribute('data-title') || '';
       var titleEl   = card.querySelector('.gal-card__title');
       if (!title && titleEl) title = titleEl.textContent;
-      var subEl     = card.querySelector('.gal-card__sub');
-      var sub       = subEl ? subEl.textContent : 'DIAT, KNUST · January 2026';
+      var subEl = card.querySelector('.gal-card__sub');
+      var sub   = subEl ? subEl.textContent : 'DIAT, KNUST';
 
-      /* Build images array — empty strings become placeholders */
-      var imgs = rawImages ? rawImages.split('|').map(function(s) { return s.trim(); }) : [];
+      var imgs = rawImages ? rawImages.split('|').map(function (s) { return s.trim(); }) : [];
       while (imgs.length < angles) imgs.push('');
 
-      LB.title  = title;
-      LB.sub    = sub;
-      LB.images = imgs;
-      LB.idx    = 0;
-
+      LB.title = title; LB.sub = sub; LB.images = imgs; LB.idx = 0;
       buildLightbox();
       document.getElementById('gal-lb').classList.add('is-open');
       document.body.style.overflow = 'hidden';
     }
 
     function buildLightbox() {
-      var img   = document.getElementById('lb-img');
-      var ph    = document.getElementById('lb-placeholder');
-      var src   = LB.images[LB.idx];
+      var img = document.getElementById('lb-img');
+      var ph  = document.getElementById('lb-placeholder');
+      var src = LB.images[LB.idx];
 
       document.getElementById('lb-title').textContent = LB.title;
       document.getElementById('lb-sub').textContent   = LB.sub;
-      document.getElementById('lb-counter').textContent =
-        (LB.idx + 1) + ' / ' + LB.images.length;
+      document.getElementById('lb-counter').textContent = (LB.idx + 1) + ' / ' + LB.images.length;
 
-      if (src) {
-        img.src = src;
-        img.alt = LB.title;
-        img.style.display = 'block';
-        ph.style.display  = 'none';
-      } else {
-        img.style.display = 'none';
-        ph.style.display  = 'flex';
-      }
+      if (src) { img.src = src; img.alt = LB.title; img.style.display = 'block'; ph.style.display = 'none'; }
+      else      { img.style.display = 'none'; ph.style.display = 'flex'; }
 
-      /* Prev/Next buttons */
       document.getElementById('lb-prev').disabled = (LB.idx === 0);
       document.getElementById('lb-next').disabled = (LB.idx === LB.images.length - 1);
 
-      /* Thumbnail strip */
       var thumbs = document.getElementById('lb-thumbs');
       thumbs.innerHTML = '';
       if (LB.images.length > 1) {
-        LB.images.forEach(function(imgSrc, i) {
+        LB.images.forEach(function (imgSrc, i) {
           var t = document.createElement('div');
           t.className = 'gal-lb__thumb' + (i === LB.idx ? ' is-active' : '');
           t.setAttribute('role', 'button');
           t.setAttribute('aria-label', 'View angle ' + (i + 1));
           t.setAttribute('tabindex', '0');
-          t.onclick = function() { LB.idx = i; buildLightbox(); };
-
+          t.onclick = function () { LB.idx = i; buildLightbox(); };
           if (imgSrc) {
             var ti = document.createElement('img');
-            ti.src = imgSrc;
-            ti.alt = '';
-            ti.loading = 'lazy';
+            ti.src = imgSrc; ti.alt = ''; ti.loading = 'lazy';
             t.appendChild(ti);
           } else {
             t.innerHTML = '<div class="gal-lb__thumb-placeholder">&#128247;</div>';
@@ -1160,8 +660,7 @@
     function lbStep(dir) {
       var next = LB.idx + dir;
       if (next < 0 || next >= LB.images.length) return;
-      LB.idx = next;
-      buildLightbox();
+      LB.idx = next; buildLightbox();
     }
 
     function closeLightbox() {
@@ -1173,183 +672,128 @@
       if (e.target === document.getElementById('gal-lb')) closeLightbox();
     }
 
-    /* Keyboard navigation */
-    document.addEventListener('keydown', function(e) {
+    document.addEventListener('keydown', function (e) {
       if (!document.getElementById('gal-lb').classList.contains('is-open')) return;
       if (e.key === 'ArrowLeft')  lbStep(-1);
       if (e.key === 'ArrowRight') lbStep(1);
       if (e.key === 'Escape')     closeLightbox();
     });
+
+
+    /* ══════════════════════════════════════════════════════════════════
+     * YEAR FILTER
+     * ══════════════════════════════════════════════════════════════════ */
+    function filterYear(year, btn) {
+      document.querySelectorAll('#year-tabs .gal-tab').forEach(function (t) {
+        t.classList.remove('is-active');
+        t.setAttribute('aria-selected', 'false');
+      });
+      btn.classList.add('is-active');
+      btn.setAttribute('aria-selected', 'true');
+
+      document.querySelectorAll('#masonry-grid .gal-card').forEach(function (card) {
+        card.style.display = (year === 'all' || card.getAttribute('data-year') === year) ? '' : 'none';
+      });
+
+      document.querySelector('.gal-tabs-wrap').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+
+    /* ══════════════════════════════════════════════════════════════════
+     * JSON FETCH — load artworks from diat-gallery.json
+     * ══════════════════════════════════════════════════════════════════ */
+    function esc(s) {
+      return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;');
+    }
+
+    function buildCard(art) {
+      var imgs    = [art.image_path].concat(art.extra_images || []).filter(Boolean);
+      var mainImg = imgs[0] || '';
+      var angles  = imgs.length;
+
+      var imgHtml = mainImg
+        ? '<img class="gal-card__img" src="' + mainImg + '" alt="' + esc(art.title) +
+          ' — DIAT KNUST" loading="lazy" draggable="false" oncontextmenu="return false">'
+          + (angles > 1 ? '<span class="gal-card__angles">' + angles + ' views</span>' : '')
+        : '<div class="gal-card__placeholder"><span class="gal-card__placeholder-label">No image yet</span></div>';
+
+      var arBadge = art.has_ar
+        ? '<span class="gal-card__ar-badge" aria-label="AR available">&#127918; AR</span>' : '';
+
+      return '<article class="gal-card"'
+        + ' onclick="openLightbox(event)"'
+        + ' tabindex="0" role="button"'
+        + ' aria-label="' + esc(art.title) + '"'
+        + ' data-disc="'   + esc(art.discipline || '') + '"'
+        + ' data-year="'   + esc(art.year || '') + '"'
+        + ' data-title="'  + esc(art.title) + '"'
+        + ' data-artist="' + esc(art.artist || '') + '"'
+        + ' data-images="' + imgs.join('|') + '"'
+        + ' data-angles="' + angles + '">'
+        + '<div class="gal-card__img-wrap">' + imgHtml + arBadge + '</div>'
+        + '<div class="gal-card__body">'
+        + '<p class="gal-card__title">' + esc(art.title || 'Untitled') + '</p>'
+        + '<p class="gal-card__sub">'   + esc(art.artist || '') + '</p>'
+        + '<span class="gal-card__disc-tag">' + esc(art.discipline || '') + '</span>'
+        + '</div></article>';
+    }
+
+    function buildYearTabs(artworks, total) {
+      /* Collect unique years, sort descending */
+      var yearSet = {};
+      artworks.forEach(function (a) {
+        if (a.year) yearSet[a.year] = (yearSet[a.year] || 0) + 1;
+      });
+      var years = Object.keys(yearSet).sort(function (a, b) { return b - a; });
+
+      var nav = document.getElementById('year-tabs');
+      var html = '<button class="gal-tab is-active" role="tab" aria-selected="true" onclick="filterYear(\'all\',this)">'
+        + '<span class="gal-tab__icon">&#128444;</span>'
+        + '<span class="gal-tab__label">All Works<span class="gal-tab__count">' + total + ' works</span></span>'
+        + '</button>';
+
+      years.forEach(function (yr) {
+        html += '<button class="gal-tab" role="tab" aria-selected="false" onclick="filterYear(\'' + yr + '\',this)">'
+          + '<span class="gal-tab__icon">&#128197;</span>'
+          + '<span class="gal-tab__label">' + yr + '<span class="gal-tab__count">' + yearSet[yr] + ' work' + (yearSet[yr] > 1 ? 's' : '') + '</span></span>'
+          + '</button>';
+      });
+
+      nav.innerHTML = html;
+    }
+
+    fetch('diat-gallery.json?v=' + Date.now(), { cache: 'no-store' })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (artworks) {
+        var loading = document.getElementById('gal-loading');
+        var grid    = document.getElementById('masonry-grid');
+        var empty   = document.getElementById('gal-empty');
+
+        if (loading) loading.style.display = 'none';
+
+        if (!artworks || !artworks.length) {
+          if (empty) empty.style.display = 'block';
+          return;
+        }
+
+        /* Sort newest year first, then by original order */
+        artworks.sort(function (a, b) { return (b.year || 0) - (a.year || 0); });
+
+        /* Build year tabs */
+        buildYearTabs(artworks, artworks.length);
+
+        /* Render all cards into masonry grid */
+        grid.innerHTML = artworks.map(buildCard).join('');
+        grid.style.display = '';
+      })
+      .catch(function () {
+        var loading = document.getElementById('gal-loading');
+        if (loading) loading.innerHTML = '<p style="color:var(--clr-text-tertiary)">Could not load gallery. Please refresh.</p>';
+      });
   </script>
 
   <script src="site.js?v=4"></script>
   <script src="cms.js?v=4"></script>
 
-  <!-- ── Dynamic gallery from diat-gallery.json (admin-managed) ──────── -->
-  <script>
-  (function () {
-    var DISC_KEY = {
-      'Clay & Earthenware':'clay', 'Fibres & Fabrics':'fibres',
-      'Leather Technology':'leather', 'Metal Production':'metal',
-      'Rattan & Bamboo':'rattan', 'Wood & Furniture':'wood',
-      'Product Design':'pd'
-    };
-    var ALL_DISCS = ['clay','fibres','leather','metal','rattan','wood'];
-
-    function esc(s) {
-      return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;');
-    }
-
-    function buildCard(art) {
-      var dk = DISC_KEY[art.discipline] || 'pd';
-      var imgs = [art.image_path].concat(art.extra_images||[]).filter(Boolean);
-      var mainImg = imgs[0]||'';
-      var angles  = imgs.length;
-      var imgHtml = mainImg
-        ? '<img class="gal-card__img" src="' + mainImg + '" alt="' + esc(art.title) +
-          ' — DIAT KNUST" loading="lazy" draggable="false" oncontextmenu="return false">'
-          + (angles>1 ? '<span class="gal-card__angles">' + angles + ' views</span>' : '')
-        : '<div class="gal-card__placeholder"><span class="gal-card__placeholder-label">No image yet</span></div>';
-      var arBadge = art.has_ar
-        ? '<span class="gal-card__ar-badge" aria-label="AR available">&#127918; AR</span>' : '';
-      return '<article class="gal-card" onclick="openLightbox(event)" tabindex="0" role="button"'
-        + ' aria-label="' + esc(art.title) + '"'
-        + ' data-disc="' + esc(dk) + '"'
-        + ' data-title="' + esc(art.title) + '"'
-        + ' data-artist="' + esc(art.artist||'') + '"'
-        + ' data-images="' + imgs.join('|') + '"'
-        + ' data-angles="' + angles + '">'
-        + '<div class="gal-card__img-wrap">' + imgHtml + arBadge + '</div>'
-        + '<div class="gal-card__body">'
-        + '<p class="gal-card__title">' + esc(art.title||'Untitled') + '</p>'
-        + '<p class="gal-card__sub">' + esc(art.artist||art.discipline||'') + '</p>'
-        + '</div></article>';
-    }
-
-    fetch('diat-gallery.json?v=' + Date.now(), { cache: 'no-store' })
-      .then(function(r) { return r.ok ? r.json() : null; })
-      .then(function(artworks) {
-        if (!artworks || !artworks.length) return;
-
-        /* Group artworks by disc key */
-        var groups = {};
-        artworks.forEach(function(art) {
-          var k = DISC_KEY[art.discipline] || 'pd';
-          if (!groups[k]) groups[k] = [];
-          groups[k].push(art);
-        });
-
-        /* Replace EVERY discipline grid in #sec-all.
-           FIX: grids with no JSON entries are cleared so old hardcoded
-           cards don't persist when artworks are moved between disciplines. */
-        ALL_DISCS.forEach(function(dk) {
-          var grid = document.querySelector('#sec-all [data-disc-grid="' + dk + '"]');
-          if (!grid) return;
-          grid.innerHTML = (groups[dk] && groups[dk].length)
-            ? groups[dk].map(buildCard).join('')
-            : '';  /* empty — no artworks in this discipline */
-        });
-
-        /* Hide section headers for disciplines with zero artworks.
-           Headers for disciplines WITH artworks stay as-is (naturally visible). */
-        ALL_DISCS.forEach(function(dk) {
-          var grid = document.querySelector('#sec-all [data-disc-grid="' + dk + '"]');
-          if (!grid) return;
-          var hasArtworks = groups[dk] && groups[dk].length > 0;
-          if (!hasArtworks) {
-            /* Collapse the grid */
-            grid.style.display = 'none';
-            /* Walk backwards to find and hide the matching header */
-            var sib = grid.previousElementSibling;
-            while (sib) {
-              if (sib.classList.contains('gal-section__header')) {
-                sib.style.display = 'none';
-                break;
-              }
-              sib = sib.previousElementSibling;
-            }
-          }
-        });
-
-        /* Reset individual disc sections so populateDiscSection re-clones
-           fresh content on next tab click.                               */
-        ALL_DISCS.forEach(function(dk) {
-          var el = document.getElementById('sec-' + dk);
-          if (el) el.innerHTML = '';
-        });
-
-        /* ── Sort sections and tabs by artwork count (most first) ─────────
-         * Primary sort:  count descending (discipline with most images first)
-         * Tiebreaker:    order by natural occurrence in ALL_DISCS array
-         * Disciplines with 0 artworks fall to the end automatically.        */
-
-        /* 1. Build sorted array */
-        var sortedDiscs = ALL_DISCS.slice().sort(function(a, b) {
-          var ca = (groups[a] && groups[a].length) || 0;
-          var cb = (groups[b] && groups[b].length) || 0;
-          return cb - ca; /* descending — highest count first */
-        });
-
-        /* 2. Reorder sections inside #sec-all robustly:
-              Collect every child element of sec-all that is either a
-              gal-section__header or a gal-grid, tag it with its disc key,
-              then reinsert in sorted order.                               */
-        var secAll = document.getElementById('sec-all');
-
-        /* Build a lookup: discKey → {header element, grid element} */
-        var secPairs = {};
-        ALL_DISCS.forEach(function(dk) {
-          var grid = secAll.querySelector('[data-disc-grid="' + dk + '"]');
-          if (!grid) return;
-          /* Walk backwards to find the matching gal-section__header */
-          var header = null;
-          var sib = grid.previousElementSibling;
-          while (sib) {
-            if (sib.classList.contains('gal-section__header')) {
-              header = sib;
-              break;
-            }
-            sib = sib.previousElementSibling;
-          }
-          secPairs[dk] = { header: header, grid: grid };
-        });
-
-        /* Detach all header+grid pairs from the DOM */
-        ALL_DISCS.forEach(function(dk) {
-          if (!secPairs[dk]) return;
-          if (secPairs[dk].header) secAll.removeChild(secPairs[dk].header);
-          if (secPairs[dk].grid)   secAll.removeChild(secPairs[dk].grid);
-        });
-
-        /* Reattach in sorted order */
-        sortedDiscs.forEach(function(dk) {
-          if (!secPairs[dk]) return;
-          if (secPairs[dk].header) secAll.appendChild(secPairs[dk].header);
-          if (secPairs[dk].grid)   secAll.appendChild(secPairs[dk].grid);
-        });
-
-        /* 3. Reorder tab buttons to match sorted discipline order
-              "All Works" always stays first — all other tabs follow in order */
-        var tabsEl = document.querySelector('.gal-tabs');
-        if (tabsEl) {
-          sortedDiscs.forEach(function(dk) {
-            var btn = tabsEl.querySelector('.gal-tab[data-disc="' + dk + '"]');
-            if (btn) tabsEl.appendChild(btn);
-          });
-        }
-
-        /* Pre-select filter tab from query parameter if present */
-        var params = new URLSearchParams(window.location.search);
-        var discParam = params.get('disc');
-        if (discParam && ALL_DISCS.indexOf(discParam) !== -1) {
-          var targetTab = tabsEl ? tabsEl.querySelector('.gal-tab[data-disc="' + discParam + '"]') : null;
-          if (targetTab) {
-            switchTab(targetTab, discParam);
-          }
-        }
-      })
-      .catch(function() { /* keep hardcoded fallback on network error */ });
-  })();
-  </script>
 </body>
 </html>
