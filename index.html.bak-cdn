@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="The Department of Indigenous Art and Technology (DIAT) at KNUST Ghana — preserving, teaching, and globally promoting Ghana's indigenous craft heritage since 1976."/>
+  <meta name="theme-color" content="#1A1A4E"/>
+  <title>DIAT — Department of Indigenous Art &amp; Technology | KNUST Ghana</title>
+  <link rel="canonical" href="https://diatknust-hub.github.io/"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="diat-styles.css"/>
+
+  <!-- ── Social media bar CSS (inline for self-containment) ── -->
+  <style>
+  .dept-social-bar {
+    background: var(--clr-white, #fff);
+    border-bottom: 1px solid var(--clr-border, #e8e4dc);
+  }
+  .dept-social-bar__container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-block: 18px;
+    flex-wrap: wrap;
+  }
+  .dept-social-bar__label {
+    font-size: .72rem;
+    font-weight: 700;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--clr-text-muted, #9a9690);
+    margin: 0;
+  }
+  .dept-social-bar__links {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .dept-social-bar__link {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    text-decoration: none;
+    padding: 8px 12px;
+    border-radius: 10px;
+    transition: transform .2s, background .2s;
+    min-width: 56px;
+  }
+  .dept-social-bar__link svg {
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+    fill: currentColor;
+  }
+  .dept-social-bar__link span {
+    font-size: .6rem;
+    font-weight: 700;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+  }
+  .dept-social-bar__link:hover { transform: translateY(-3px); }
+  .dept-social-bar__link--youtube  { color: #FF0000; background: rgba(255,0,0,.07); }
+  .dept-social-bar__link--youtube:hover  { background: rgba(255,0,0,.14); }
+  .dept-social-bar__link--tiktok   { color: #010101; background: rgba(0,0,0,.06); }
+  .dept-social-bar__link--tiktok:hover   { background: rgba(0,0,0,.12); }
+  .dept-social-bar__link--instagram{ color: #E1306C; background: rgba(225,48,108,.07); }
+  .dept-social-bar__link--instagram:hover{ background: rgba(225,48,108,.14); }
+  .dept-social-bar__link--facebook { color: #1877F2; background: rgba(24,119,242,.07); }
+  .dept-social-bar__link--facebook:hover { background: rgba(24,119,242,.14); }
+  .dept-social-bar__link--x        { color: #000; background: rgba(0,0,0,.06); }
+  .dept-social-bar__link--x:hover        { background: rgba(0,0,0,.12); }
+  @media (max-width: 768px) {
+    .dept-social-bar__container { justify-content: center; padding-block: 14px; }
+    .dept-social-bar__label { width: 100%; text-align: center; margin-bottom: 4px; }
+    .dept-social-bar__link { min-width: 48px; padding: 6px 8px; }
+    .dept-social-bar__link svg { width: 22px; height: 22px; }
+  }
+  </style>
+
+</head>
+<body data-page="home">
+
+  <!-- ─────────────────────────────────────────────────────────────
+       SITE HEADER — Logo pinned absolute top-left.
+       Lives ABOVE all hero stacking contexts via z-index: 100.
+       Kept semantically separate from <nav> so screen readers
+       encounter the brand mark before navigation links.
+  ───────────────────────────────────────────────────────────── -->
+<a href="#main-content" class="skip-link">Skip to main content</a>
+<main id="main-content">
+
+    <!-- HERO -->
+    <section class="hero-slider" id="hero-slider" aria-label="DIAT highlights">
+
+
+  <!-- SLIDE 1 of 7 -->
+  <div class="hero-slide hero-slide--active" role="group" aria-roledescription="slide" aria-label="Slide 1 of 7">
+        <div class="slide-media" aria-hidden="true">
+      <!-- Video: set data-src="your-video.mp4" when ready. Loads lazily on first activation. -->
+      <video class="slide-video" muted loop playsinline preload="none"
+             data-src="" aria-hidden="true"></video>
+      <div class="slide-cover" style="background-image:url('https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_1920/diat-antelope_ctnuqe.webp')"></div>
+      <div class="slide-overlay"></div>
+    </div>
+    <div class="slide-content js-reveal">
+      <span class="slide-eyebrow">Est. 1976 &middot; KNUST &middot; Kumasi, Ghana</span>
+      <h1 class="slide-title js-reveal" data-cms-key="home-hero-h1" data-cms-label="Hero Heading" data-cms-type="html">
+        Ghana&#39;s<br><em class="slide-accent">Indigenous Art</em><br>Shown to the World
+      </h1>
+      <div class="slide-actions js-reveal--delay-2">
+        <a href="gallery.html" class="btn btn--primary btn--lg">Explore Artworks &#8594;</a>
+        <a href="webar.html" class="btn btn--secondary btn--lg">Experience in AR &#8599;</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 2 of 7 -->
+  <div class="hero-slide" role="group" aria-roledescription="slide" aria-label="Slide 2 of 7">
+        <div class="slide-media" aria-hidden="true">
+      <!-- Video: set data-src="your-video.mp4" when ready. Loads lazily on first activation. -->
+      <video class="slide-video" muted loop playsinline preload="none"
+             data-src="" aria-hidden="true"></video>
+      <div class="slide-cover" style="background-image:url('https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_1920/diat-welcome_yzzznu.webp')"></div>
+      <div class="slide-overlay"></div>
+    </div>
+    <div class="slide-content ">
+      <span class="slide-eyebrow">DIAT@50 &mdash; Est. 1976</span>
+      <h1 class="slide-title ">
+        The Department of<br><em class="slide-accent">Indigenous Art</em><br>&amp; Technology
+      </h1>
+      <div class="slide-actions ">
+        <a href="about.html" class="btn btn--primary btn--lg">Our Story &#8594;</a>
+        <a href="programmes.html" class="btn btn--secondary btn--lg">Programmes &#8599;</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 3 of 7 -->
+  <div class="hero-slide" role="group" aria-roledescription="slide" aria-label="Slide 3 of 7">
+        <div class="slide-media" aria-hidden="true">
+      <!-- Video: set data-src="your-video.mp4" when ready. Loads lazily on first activation. -->
+      <video class="slide-video" muted loop playsinline preload="none"
+             data-src="" aria-hidden="true"></video>
+      <div class="slide-cover" style="background-image:url('https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_1920/diat-garden_dbqxox.webp')"></div>
+      <div class="slide-overlay"></div>
+    </div>
+    <div class="slide-content ">
+      <span class="slide-eyebrow">KNUST Campus &middot; Kumasi, Ghana</span>
+      <h1 class="slide-title ">
+        50 Years of<br><em class="slide-accent">Creative</em><br>Excellence
+      </h1>
+      <div class="slide-actions ">
+        <a href="about.html" class="btn btn--primary btn--lg">Our History &#8594;</a>
+        <a href="gallery.html" class="btn btn--secondary btn--lg">View Gallery &#8599;</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 4 of 7 -->
+  <div class="hero-slide" role="group" aria-roledescription="slide" aria-label="Slide 4 of 7">
+        <div class="slide-media" aria-hidden="true">
+      <!-- Video: set data-src="your-video.mp4" when ready. Loads lazily on first activation. -->
+      <video class="slide-video" muted loop playsinline preload="none"
+             data-src="" aria-hidden="true"></video>
+      <div class="slide-cover" style="background-image:url('https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_1920/dial-wall-murals_l3x7e3.webp')"></div>
+      <div class="slide-overlay"></div>
+    </div>
+    <div class="slide-content ">
+      <span class="slide-eyebrow">Craft Murals &middot; DIAT Building</span>
+      <h1 class="slide-title ">
+        <em class="slide-accent">Heritage</em><br>Carved in Stone
+      </h1>
+      <div class="slide-actions ">
+        <a href="gallery.html" class="btn btn--primary btn--lg">View Gallery &#8594;</a>
+        <a href="webar.html" class="btn btn--secondary btn--lg">View in 3D &#8599;</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 5 of 7 -->
+  <div class="hero-slide" role="group" aria-roledescription="slide" aria-label="Slide 5 of 7">
+        <div class="slide-media" aria-hidden="true">
+      <!-- Video: set data-src="your-video.mp4" when ready. Loads lazily on first activation. -->
+      <video class="slide-video" muted loop playsinline preload="none"
+             data-src="" aria-hidden="true"></video>
+      <div class="slide-cover" style="background-image:url('https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_1920/diat-sculptures_mthwge.webp')"></div>
+      <div class="slide-overlay"></div>
+    </div>
+    <div class="slide-content ">
+      <span class="slide-eyebrow">Sculpture Garden &middot; DIAT KNUST</span>
+      <h1 class="slide-title ">
+        Craftsmanship<br><em class="slide-accent">Reimagined</em>
+      </h1>
+      <div class="slide-actions ">
+        <a href="gallery.html" class="btn btn--primary btn--lg">Explore Works &#8594;</a>
+        <a href="webar.html" class="btn btn--secondary btn--lg">View in AR &#8599;</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 6 of 7 -->
+  <div class="hero-slide" role="group" aria-roledescription="slide" aria-label="Slide 6 of 7">
+        <div class="slide-media" aria-hidden="true">
+      <!-- Video: set data-src="your-video.mp4" when ready. Loads lazily on first activation. -->
+      <video class="slide-video" muted loop playsinline preload="none"
+             data-src="" aria-hidden="true"></video>
+      <div class="slide-cover" style="background-image:url('https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_1920/diat-panorama_pzzrmo.webp')"></div>
+      <div class="slide-overlay"></div>
+    </div>
+    <div class="slide-content ">
+      <span class="slide-eyebrow">DIAT Campus &middot; KNUST</span>
+      <h1 class="slide-title ">
+        Where<br><em class="slide-accent">Indigenous Art</em><br>Lives
+      </h1>
+      <div class="slide-actions ">
+        <a href="about.html" class="btn btn--primary btn--lg">About DIAT &#8594;</a>
+        <a href="community.html" class="btn btn--secondary btn--lg">Community &#8599;</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 7 of 7 -->
+  <div class="hero-slide" role="group" aria-roledescription="slide" aria-label="Slide 7 of 7">
+        <div class="slide-media" aria-hidden="true">
+      <!-- Video: set data-src="your-video.mp4" when ready. Loads lazily on first activation. -->
+      <video class="slide-video" muted loop playsinline preload="none"
+             data-src="" aria-hidden="true"></video>
+      <div class="slide-cover" style="background-image:url('https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_1920/diat-integrated-fencing_ptt0rj.webp')"></div>
+      <div class="slide-overlay"></div>
+    </div>
+    <div class="slide-content ">
+      <span class="slide-eyebrow">Rattan &amp; Bamboo &middot; Indigenous Materials</span>
+      <h1 class="slide-title ">
+        Indigenous Materials,<br><em class="slide-accent">Modern Vision</em>
+      </h1>
+      <div class="slide-actions ">
+        <a href="programmes.html" class="btn btn--primary btn--lg">Programmes &#8594;</a>
+        <a href="gallery.html" class="btn btn--secondary btn--lg">View Gallery &#8599;</a>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- SLIDE 8 of 8 — DIAT Entrance (alternate angle) -->
+  <div class="hero-slide" role="group" aria-roledescription="slide" aria-label="Slide 8 of 8">
+    <div class="slide-media" aria-hidden="true">
+      <video class="slide-video" muted loop playsinline preload="none"
+             data-src="" aria-hidden="true"></video>
+      <div class="slide-cover" style="background-image:url('https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_1920/diat-main-entrance_vzi1wt.webp')"></div>
+      <div class="slide-overlay"></div>
+    </div>
+    <div class="slide-content">
+      <span class="slide-eyebrow">DIAT Campus &middot; Main Entrance</span>
+      <h1 class="slide-title">
+        The Home of<br>
+        <em class="slide-accent">Indigenous Art</em><br>
+        at KNUST
+      </h1>
+      <div class="slide-actions">
+        <a href="about.html" class="btn btn--primary btn--lg">About DIAT &#8594;</a>
+        <a href="gallery.html" class="btn btn--secondary btn--lg">View Gallery &#8599;</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Persistent Badge -->
+  <div class="hero-persistent" aria-hidden="true">
+    <div class="badge-3d-wrap">
+      <img class="dept-hero__badge"
+           src="50TH%20DIAT%20-%20KNUST_logo_final-03.webp"
+           alt="DIAT at 50 — 50th Anniversary Logo"
+           draggable="false" oncontextmenu="return false" loading="eager">
+      <div class="badge-shadow"></div>
+    </div>
+  </div>
+
+  <!-- Dot controls -->
+  <div class="slider-controls" aria-label="Slider navigation" role="tablist">
+    <button class="slider-dot slider-dot--active" data-slide="0" role="tab" aria-selected="true" aria-label="Slide 1"></button>
+    <button class="slider-dot" data-slide="1" role="tab" aria-selected="false" aria-label="Slide 2"></button>
+    <button class="slider-dot" data-slide="2" role="tab" aria-selected="false" aria-label="Slide 3"></button>
+    <button class="slider-dot" data-slide="3" role="tab" aria-selected="false" aria-label="Slide 4"></button>
+    <button class="slider-dot" data-slide="4" role="tab" aria-selected="false" aria-label="Slide 5"></button>
+    <button class="slider-dot" data-slide="5" role="tab" aria-selected="false" aria-label="Slide 6"></button>
+    <button class="slider-dot" data-slide="6" role="tab" aria-selected="false" aria-label="Slide 7"></button>
+    <button class="slider-dot" data-slide="7" role="tab" aria-selected="false" aria-label="Slide 8"></button>
+  </div>
+
+  <!-- Scroll indicator -->
+  <a href="#dept-stats" class="hero-scroll-indicator" aria-label="Scroll to content">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path d="M12 5v14M5 12l7 7 7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </a>
+
+  <!-- Slider JS -->
+  <script>
+  (function () {
+    'use strict';
+    var SLIDE_DURATION = 12000;
+    var FADE_DURATION  = 900;
+    var slider  = document.getElementById('hero-slider');
+    var slides  = Array.prototype.slice.call(slider.querySelectorAll('.hero-slide'));
+    var dots    = Array.prototype.slice.call(slider.querySelectorAll('.slider-dot'));
+    var current = 0;
+    var timer   = null;
+    var paused  = false;
+
+    var videoTimer = null;
+
+    function playVideo(idx) {
+      var video = slides[idx].querySelector('.slide-video');
+      var cover = slides[idx].querySelector('.slide-cover');
+      if (!video) return;
+      var src = video.getAttribute('data-src') || '';
+      if (!src) return;                         /* no video configured — cover stays */
+      if (!video.getAttribute('src')) video.setAttribute('src', src);
+      video.play().then(function() {
+        video.classList.add('slide-video--playing');
+        if (cover) cover.classList.add('slide-cover--faded');
+      }).catch(function() { /* autoplay blocked — cover stays visible */ });
+    }
+
+    function goTo(idx) {
+      /* Reset outgoing slide */
+      var outVideo = slides[current].querySelector('.slide-video');
+      if (outVideo) { outVideo.pause(); outVideo.currentTime = 0; outVideo.classList.remove('slide-video--playing'); }
+      var outCover = slides[current].querySelector('.slide-cover');
+      if (outCover) outCover.classList.remove('slide-cover--faded');
+
+      slides[current].classList.remove('hero-slide--active');
+      dots[current].classList.remove('slider-dot--active');
+      dots[current].setAttribute('aria-selected','false');
+      current = (idx + slides.length) % slides.length;
+      slides[current].classList.add('hero-slide--active');
+      dots[current].classList.add('slider-dot--active');
+      dots[current].setAttribute('aria-selected','true');
+
+      /* After 5 s show video if one is configured */
+      clearTimeout(videoTimer);
+      videoTimer = setTimeout(function() { playVideo(current); }, 5000);
+
+      reschedule();
+    }
+
+    function reschedule() {
+      clearTimeout(timer);
+      if (!paused) timer = setTimeout(function(){goTo(current+1);}, SLIDE_DURATION);
+    }
+
+    dots.forEach(function(d,i){d.addEventListener('click',function(){goTo(i);});});
+
+    document.addEventListener('visibilitychange', function(){
+      paused = document.hidden;
+      if (!paused) reschedule();
+      else clearTimeout(timer);
+    });
+
+    slider.addEventListener('keydown', function(e){
+      if(e.key==='ArrowRight') goTo(current+1);
+      if(e.key==='ArrowLeft')  goTo(current-1);
+    });
+
+    reschedule();
+    /* Try video on first slide after 5 s delay */
+    videoTimer = setTimeout(function() { playVideo(0); }, 5000);
+  })();
+  </script>
+
+</section>
+
+    <!-- STATS RIBBON -->
+    <section class="dept-stats" aria-label="Department statistics">
+      <div class="container">
+        <div class="dept-stats__grid">
+          <div class="dept-stats__item js-reveal">
+            <span class="dept-stats__number" data-cms-key="home-stat-years" data-cms-label="Stat Years" data-cms-type="text">50</span>
+            <span class="dept-stats__label" data-cms-key="home-stat-years-lbl" data-cms-label="Stat Years Label" data-cms-type="text">Years of Heritage</span>
+          </div>
+          <div class="dept-stats__item js-reveal js-reveal--delay-1">
+            <span class="dept-stats__number" data-cms-key="home-stat-prog" data-cms-label="Stat Programmes" data-cms-type="text">7</span>
+            <span class="dept-stats__label" data-cms-key="home-stat-prog-lbl" data-cms-label="Stat Programmes Label" data-cms-type="text">Academic Programmes</span>
+          </div>
+          <div class="dept-stats__item js-reveal js-reveal--delay-2">
+            <span class="dept-stats__number" data-cms-key="home-stat-art" data-cms-label="Stat Artworks" data-cms-type="text">200+</span>
+            <span class="dept-stats__label" data-cms-key="home-stat-art-lbl" data-cms-label="Stat Artworks Label" data-cms-type="text">Artworks in Collection</span>
+          </div>
+          <div class="dept-stats__item js-reveal js-reveal--delay-3">
+            <span class="dept-stats__number" data-cms-key="home-stat-int" data-cms-label="Stat Internship" data-cms-type="text">3 months</span>
+            <span class="dept-stats__label" data-cms-key="home-stat-int-lbl" data-cms-label="Stat Internship Label" data-cms-type="text">Community Internship</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ SOCIAL MEDIA BAR ════════════════════════════════════════════ -->
+    <section class="dept-social-bar" aria-label="Follow DIAT on social media">
+      <div class="container dept-social-bar__container">
+        <p class="dept-social-bar__label">FOLLOW OUR WORK</p>
+        <div class="dept-social-bar__links">
+
+          <a href="https://www.youtube.com/@diatknust" class="dept-social-bar__link dept-social-bar__link--youtube" target="_blank" rel="noopener noreferrer" aria-label="DIAT KNUST on YouTube">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+            <span>YouTube</span>
+          </a>
+
+          <a href="https://www.tiktok.com/@indigenous.art4?_r=1&amp;_t=ZS-96aHavej4AT" class="dept-social-bar__link dept-social-bar__link--tiktok" target="_blank" rel="noopener noreferrer" aria-label="DIAT KNUST on TikTok" data-cms-key="home-social-tiktok" data-cms-label="TikTok URL" data-cms-type="text">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.78 1.52V6.73a4.85 4.85 0 0 1-1.01-.04z"/></svg>
+            <span>TikTok</span>
+          </a>
+
+          <a href="https://www.instagram.com/indigenousart1?igsh=MWIyNnkxNzZqMHR6Mw==" class="dept-social-bar__link dept-social-bar__link--instagram" target="_blank" rel="noopener noreferrer" aria-label="DIAT KNUST on Instagram" data-cms-key="home-social-instagram" data-cms-label="Instagram URL" data-cms-type="text">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>
+            <span>Instagram</span>
+          </a>
+
+          <a href="https://www.facebook.com/profile.php?id=61586595324487" class="dept-social-bar__link dept-social-bar__link--facebook" target="_blank" rel="noopener noreferrer" aria-label="DIAT KNUST on Facebook" data-cms-key="home-social-facebook" data-cms-label="Facebook URL" data-cms-type="text">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+            <span>Facebook</span>
+          </a>
+
+          <a href="https://x.com/Indigenous_art1" class="dept-social-bar__link dept-social-bar__link--x" target="_blank" rel="noopener noreferrer" aria-label="DIAT KNUST on X" data-cms-key="home-social-x" data-cms-label="X (Twitter) URL" data-cms-type="text">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z"/></svg>
+            <span>X</span>
+          </a>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ABOUT TEASER -->
+    <section class="dept-section dept-section--white" aria-labelledby="about-heading">
+      <div class="container">
+        <div class="dept-about">
+          <div class="js-reveal">
+            <header class="dept-section__header">
+              <span class="dept-section__eyebrow">Who We Are</span>
+              <h2 class="dept-section__title" id="about-heading"
+                  data-cms-key="home-about-h2" data-cms-label="About Heading" data-cms-type="text">
+                A Department Unlike<br>Any Other in Ghana
+              </h2>
+              <div class="dept-section__rule" aria-hidden="true"></div>
+            </header>
+            <p class="dept-about__body" data-cms-key="home-about-p1" data-cms-label="About Para 1">
+              Founded in 1976 as the Institute of Rural Art and Industry (IRAI),
+              DIAT is the only university department in Ghana dedicated entirely
+              to indigenous craft disciplines &mdash; taught not as cultural history
+              but as living, professionally viable creative practices.
+            </p>
+            <p class="dept-about__body" data-cms-key="home-about-p2" data-cms-label="About Para 2">
+              Every student learns Computer-Aided Design before touching clay, metal,
+              leather, or wood. That CAD-to-craft approach bridges ancient Ghanaian
+              tradition with the demands of contemporary global markets.
+            </p>
+            <a href="about.html" class="btn btn--secondary btn--md" style="margin-top:var(--sp-lg)">
+              Read Our Story <span class="btn__arrow" aria-hidden="true">&#8594;</span>
+            </a>
+          </div>
+          <div class="dept-about__visual js-reveal js-reveal--delay-1">
+            <figure>
+              <img src="https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_800/diat-courtyard_okefm3.webp"
+                   alt="The DIAT courtyard at KNUST — decorative fountain surrounded by student-made ceramic sculptures and craft installations in a landscaped outdoor space"
+                   class="dept-about__img" loading="lazy" width="600" height="450">
+              <figcaption class="dept-about__img-caption">
+                The DIAT courtyard &mdash; KNUST campus, Kumasi, Ghana
+              </figcaption>
+            </figure>
+          </div>
+        </div>
+        <div class="dept-tripartite" style="margin-top:4rem">
+          <article class="dept-tri-card js-reveal">
+            <span class="dept-tri-card__icon" aria-hidden="true">&#127891;</span>
+            <h3 class="dept-tri-card__title" data-cms-key="home-tri1-t" data-cms-label="Tripartite 1 Title" data-cms-type="text">Academic Teaching</h3>
+            <p class="dept-tri-card__body" data-cms-key="home-tri1-b" data-cms-label="Tripartite 1 Body">Six craft disciplines taught to professional standard, underpinned by Product Design and CAD methodology across all four years.</p>
+          </article>
+          <article class="dept-tri-card js-reveal js-reveal--delay-1">
+            <span class="dept-tri-card__icon" aria-hidden="true">&#127775;</span>
+            <h3 class="dept-tri-card__title" data-cms-key="home-tri2-t" data-cms-label="Tripartite 2 Title" data-cms-type="text">Commercial Art Services</h3>
+            <p class="dept-tri-card__body" data-cms-key="home-tri2-b" data-cms-label="Tripartite 2 Body">Commissioned artwork, bespoke craft production, and design services offered to individual, corporate, and institutional clients.</p>
+          </article>
+          <article class="dept-tri-card js-reveal js-reveal--delay-2">
+            <span class="dept-tri-card__icon" aria-hidden="true">&#127807;</span>
+            <h3 class="dept-tri-card__title" data-cms-key="home-tri3-t" data-cms-label="Tripartite 3 Title" data-cms-type="text">Community Engagement</h3>
+            <p class="dept-tri-card__body" data-cms-key="home-tri3-b" data-cms-label="Tripartite 3 Body">Three-month nationwide internship embeds students with artisan communities across Ghana, formally attributing indigenous craft knowledge.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- DISCIPLINES GRID -->
+    <section class="dept-programmes dept-section--surface" aria-labelledby="prog-heading">
+      <div class="container">
+        <header class="dept-section__header">
+          <span class="dept-section__eyebrow">Academic Programmes</span>
+          <h2 class="dept-section__title" id="prog-heading"
+              data-cms-key="home-prog-h2" data-cms-label="Programmes Heading" data-cms-type="text">
+            Six Craft Disciplines.<br>One Design Spine.
+          </h2>
+          <div class="dept-section__rule" aria-hidden="true"></div>
+        </header>
+        <div class="dept-programmes__grid">
+          <a href="product-design.html" class="dept-disc-card dept-disc-card--featured js-reveal" aria-label="Product Design — Foundational Programme">
+            <div class="dept-disc-card__icon-wrap dept-disc-card__icon-wrap--pd">
+              <span aria-hidden="true">&#128208;</span>
+            </div>
+            <div>
+              <span class="dept-disc-card__tag">Foundational &mdash; All Years</span>
+              <h3 class="dept-disc-card__title" data-cms-key="home-pd-t" data-cms-label="Product Design Title" data-cms-type="text">Product Design</h3>
+              <p class="dept-disc-card__body" data-cms-key="home-pd-b" data-cms-label="Product Design Body">Before any student throws clay, cuts leather, or forges metal, they design it digitally. Product Design runs across all four years &mdash; the intellectual and technical spine that connects every craft discipline at DIAT.</p>
+              <span class="dept-disc-card__read-more">Read more <span class="btn__arrow" aria-hidden="true">&#8594;</span></span>
+            </div>
+          </a>
+          <a href="clay-earthenware.html"   class="dept-disc-card dept-disc-card--wide js-reveal" aria-label="Clay and Earthenware"><div class="dept-disc-card__icon-wrap dept-disc-card__icon-wrap--clay"><span aria-hidden="true">&#127994;</span></div><h3 class="dept-disc-card__title" data-cms-key="home-clay-t" data-cms-label="Clay Title" data-cms-type="text">Clay &amp; Earthenware</h3><p class="dept-disc-card__body" data-cms-key="home-clay-b" data-cms-label="Clay Body">From raw clay preparation through wheel-throwing, kiln firing, and surface decoration informed by Ghanaian pottery traditions.</p><span class="dept-disc-card__read-more">Read more <span class="btn__arrow" aria-hidden="true">&#8594;</span></span></a>
+          <a href="fibres-fabrics.html"     class="dept-disc-card dept-disc-card--std js-reveal js-reveal--delay-1" aria-label="Fibres and Fabrics"><div class="dept-disc-card__icon-wrap dept-disc-card__icon-wrap--fibres"><span aria-hidden="true">&#129525;</span></div><h3 class="dept-disc-card__title" data-cms-key="home-fib-t" data-cms-label="Fibres Title" data-cms-type="text">Fibres &amp; Fabrics</h3><p class="dept-disc-card__body" data-cms-key="home-fib-b" data-cms-label="Fibres Body">Kente weaving, adinkra printing, batik, macram&eacute;, and contemporary fibre art rooted in Ghana&#39;s extraordinary textile heritage.</p><span class="dept-disc-card__read-more">Read more <span class="btn__arrow" aria-hidden="true">&#8594;</span></span></a>
+          <a href="leather-technology.html" class="dept-disc-card dept-disc-card--std js-reveal js-reveal--delay-2" aria-label="Leather Technology"><div class="dept-disc-card__icon-wrap dept-disc-card__icon-wrap--leather"><span aria-hidden="true">&#128092;</span></div><h3 class="dept-disc-card__title" data-cms-key="home-lth-t" data-cms-label="Leather Title" data-cms-type="text">Leather Technology</h3><p class="dept-disc-card__body" data-cms-key="home-lth-b" data-cms-label="Leather Body">Tanning, pattern-making, stitching, and finishing &mdash; from West African craft traditions to contemporary market-ready leather goods.</p><span class="dept-disc-card__read-more">Read more <span class="btn__arrow" aria-hidden="true">&#8594;</span></span></a>
+          <a href="metal-production.html"   class="dept-disc-card dept-disc-card--wide js-reveal" aria-label="Metal Production"><div class="dept-disc-card__icon-wrap dept-disc-card__icon-wrap--metal"><span aria-hidden="true">&#9881;</span></div><h3 class="dept-disc-card__title" data-cms-key="home-met-t" data-cms-label="Metal Title" data-cms-type="text">Metal Production</h3><p class="dept-disc-card__body" data-cms-key="home-met-b" data-cms-label="Metal Body">Lost-wax casting, forging, welding, and fabrication &mdash; connected to the Ashanti goldsmithing heritage and modern architectural metalwork.</p><span class="dept-disc-card__read-more">Read more <span class="btn__arrow" aria-hidden="true">&#8594;</span></span></a>
+          <a href="rattan-bamboo.html"      class="dept-disc-card dept-disc-card--std js-reveal js-reveal--delay-1" aria-label="Rattan and Bamboo"><div class="dept-disc-card__icon-wrap dept-disc-card__icon-wrap--rattan"><span aria-hidden="true">&#127819;</span></div><h3 class="dept-disc-card__title" data-cms-key="home-rat-t" data-cms-label="Rattan Title" data-cms-type="text">Rattan &amp; Bamboo</h3><p class="dept-disc-card__body" data-cms-key="home-rat-b" data-cms-label="Rattan Body">Sustainable natural materials woven, bent, and constructed into furniture, decorative objects, and architectural installations.</p><span class="dept-disc-card__read-more">Read more <span class="btn__arrow" aria-hidden="true">&#8594;</span></span></a>
+          <a href="wood-furniture.html"     class="dept-disc-card dept-disc-card--std js-reveal js-reveal--delay-2" aria-label="Wood and Furniture"><div class="dept-disc-card__icon-wrap dept-disc-card__icon-wrap--wood"><span aria-hidden="true">&#129683;</span></div><h3 class="dept-disc-card__title" data-cms-key="home-wod-t" data-cms-label="Wood Title" data-cms-type="text">Wood &amp; Furniture</h3><p class="dept-disc-card__body" data-cms-key="home-wod-b" data-cms-label="Wood Body">Joinery, carving, turning, and furniture-making rooted in Ghana&#39;s tradition of carved stools, ceremonial doors, and royal objects.</p><span class="dept-disc-card__read-more">Read more <span class="btn__arrow" aria-hidden="true">&#8594;</span></span></a>
+        </div>
+        <div style="text-align:center;margin-top:var(--sp-xl)">
+          <a href="programmes.html" class="btn btn--secondary btn--md">View All Programmes <span class="btn__arrow" aria-hidden="true">&#8594;</span></a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ANNIVERSARY -->
+    <section class="dept-anniversary dept-anniversary--photo" aria-labelledby="ann-heading">
+      <div class="container">
+        <span class="dept-anniversary__label" data-cms-key="home-ann-ey" data-cms-label="Anniversary Eyebrow" data-cms-type="text">DIAT@50 &mdash; Est. 1976</span>
+        <h2 class="dept-anniversary__title" id="ann-heading" data-cms-key="home-ann-h2" data-cms-label="Anniversary Heading" data-cms-type="html">
+          <span class="ann-fifty">50</span> Years of<br><em>Indigenous Art</em> Education
+        </h2>
+        <p class="dept-anniversary__body" data-cms-key="home-ann-body" data-cms-label="Anniversary Body">
+          In 2026, DIAT marks half a century of preserving, formalising, and promoting
+          Ghana&#39;s indigenous craft heritage within one of Africa&#39;s foremost technical universities.
+        </p>
+        <a href="about.html" class="btn btn--ghost-light btn--md">Read Our History <span class="btn__arrow" aria-hidden="true">&#8594;</span></a>
+        <div class="dept-anniversary__milestones">
+          <div class="dept-milestone"><span class="dept-milestone__year" data-cms-key="home-ms1-y" data-cms-label="Milestone 1 Year" data-cms-type="text">1976</span><span class="dept-milestone__desc" data-cms-key="home-ms1-d" data-cms-label="Milestone 1 Desc" data-cms-type="text">IRAI Founded</span></div>
+          <div class="dept-milestone"><span class="dept-milestone__year" data-cms-key="home-ms2-y" data-cms-label="Milestone 2 Year" data-cms-type="text">1990</span><span class="dept-milestone__desc" data-cms-key="home-ms2-d" data-cms-label="Milestone 2 Desc" data-cms-type="text">Established Integration Concept</span></div>
+          <div class="dept-milestone"><span class="dept-milestone__year" data-cms-key="home-ms3-y" data-cms-label="Milestone 3 Year" data-cms-type="text">1999</span><span class="dept-milestone__desc" data-cms-key="home-ms3-d" data-cms-label="Milestone 3 Desc" data-cms-type="text">Diploma to a Degree Program</span></div>
+          <div class="dept-milestone"><span class="dept-milestone__year" data-cms-key="home-ms4-y" data-cms-label="Milestone 4 Year" data-cms-type="text">2011</span><span class="dept-milestone__desc" data-cms-key="home-ms4-d" data-cms-label="Milestone 4 Desc" data-cms-type="text">Master&#39;s Programmes Established</span></div>
+          <div class="dept-milestone"><span class="dept-milestone__year" data-cms-key="home-ms5-y" data-cms-label="Milestone 5 Year" data-cms-type="text">2022</span><span class="dept-milestone__desc" data-cms-key="home-ms5-d" data-cms-label="Milestone 5 Desc" data-cms-type="text">IRAI Rebrands to DIAT</span></div>
+          <div class="dept-milestone"><span class="dept-milestone__year" data-cms-key="home-ms6-y" data-cms-label="Milestone 6 Year" data-cms-type="text">2026 &amp; Beyond</span><span class="dept-milestone__desc" data-cms-key="home-ms6-d" data-cms-label="Milestone 6 Desc" data-cms-type="text">DIAT@50 Celebrations</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- COMMUNITY HIGHLIGHT -->
+    <section class="dept-section dept-section--surface" aria-labelledby="comm-heading">
+      <div class="container">
+        <div class="dept-community">
+          <div class="dept-community__visual">
+            <img src="https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_1200/diat-garden_dbqxox.webp"
+                 alt="DIAT sculpture garden on the KNUST campus — permanent outdoor installations including a stone bust and ceramic works created by students"
+                 class="dept-community__visual-img" loading="lazy" width="600" height="480">
+          </div>
+          <div class="dept-community__content">
+            <span class="dept-section__eyebrow dept-section__eyebrow--light">Community &amp; Internship</span>
+            <h2 class="dept-section__title dept-section__title--light" id="comm-heading"
+                data-cms-key="home-comm-h2" data-cms-label="Community Heading" data-cms-type="text">
+              Learning from the<br>Artisan Community
+            </h2>
+            <p class="dept-community__body" data-cms-key="home-comm-body" data-cms-label="Community Body">
+              Partnering with the Mastercard Foundation and artisan communities across Ghana,
+              DIAT&#39;s three-month nationwide internship embeds Year 3 students with indigenous
+              craft practitioners &mdash; documenting, learning, and formally attributing living
+              cultural knowledge.
+            </p>
+            <div class="dept-community__partners">
+              <span class="dept-community__partner-badge">Mastercard Foundation</span>
+              <span class="dept-community__partner-badge">Nationwide</span>
+            </div>
+            <a href="community.html" class="btn btn--white btn--md" style="margin-top:var(--sp-lg)">
+              Learn More <span class="btn__arrow" aria-hidden="true">&#8594;</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- NEWSLETTER -->
+    <section class="dept-signup" id="signup" aria-labelledby="signup-heading">
+      <div class="container">
+        <span class="dept-section__eyebrow" data-cms-key="home-su-ey" data-cms-label="Signup Eyebrow" data-cms-type="text">Stay Connected</span>
+        <h2 class="dept-section__title" id="signup-heading"
+            data-cms-key="home-su-h2" data-cms-label="Signup Heading" data-cms-type="text">Register for DIAT Updates</h2>
+        <p class="dept-section__body" style="margin:var(--sp-md) auto;text-align:center"
+           data-cms-key="home-su-body" data-cms-label="Signup Body">
+          Receive news about exhibitions, new artworks, and department events from DIAT, KNUST Ghana.
+        </p>
+        <form class="dept-signup__form" id="signup-form" novalidate aria-label="Newsletter signup">
+          <label for="email-input" class="sr-only">Email address</label>
+          <input type="email" id="email-input" name="email" class="dept-signup__input"
+                 placeholder="your@email.com" required autocomplete="email"
+                 aria-required="true" aria-describedby="signup-feedback"/>
+          <button type="submit" class="btn btn--primary btn--md">Subscribe</button>
+        </form>
+        <p class="dept-signup__feedback" id="signup-feedback" aria-live="polite" role="status"></p>
+      </div>
+    </section>
+
+  </main>
+<script>
+    /* Newsletter */
+    var form = document.getElementById('signup-form');
+    var fb   = document.getElementById('signup-feedback');
+    if (form) {
+      form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        var email = document.getElementById('email-input').value.trim();
+        if (!email || !email.includes('@')) { fb.textContent = 'Please enter a valid email address.'; return; }
+        var url  = 'https://docs.google.com/forms/d/e/1FAIpQLSfGMkMiAumlmEwiKKcpBr1rBbKmeGCbzt5N2hdsWTjM35PH6A/formResponse';
+        var body = new URLSearchParams();
+        body.append('entry.2121794060', email);
+        fetch(url, { method:'POST', mode:'no-cors', body: body }).catch(function(){});
+        fb.textContent = 'Thank you — you’re subscribed!';
+        form.reset();
+      });
+    }
+  </script>
+  <script src="site.js?v=4"></script>
+  <script src="cms.js?v=4"></script>
+</body>
+</html>

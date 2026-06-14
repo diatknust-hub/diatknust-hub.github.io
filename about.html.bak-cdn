@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="theme-color" content="#1A1A4E"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="diat-styles.css"/>
+  <meta name="description" content="Learn about DIAT — the Department of Indigenous Art and Technology at KNUST Ghana. Est. 1976. Six craft disciplines, 50 years of heritage."/>
+  <title>About DIAT — Department of Indigenous Art & Technology | KNUST Ghana</title>
+</head>
+<body data-page="about">
+<a href="#main-content" class="skip-link">Skip to main content</a>
+<main id="main-content">
+
+    <!-- PAGE HERO -->
+    <!-- ═══ ABOUT HERO — full-bleed, Ken Burns zoom, Franklin Gothic ═══════ -->
+    <section class="about-hero" aria-labelledby="about-title">
+
+      <!-- Background image with Ken Burns zoom -->
+      <div class="about-hero__bg" aria-hidden="true">
+        <img class="about-hero__bg-img"
+             src="https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_1920/diat-welcome_yzzznu.webp"
+             alt=""
+             draggable="false" oncontextmenu="return false"
+             loading="eager">
+        <div class="about-hero__overlay"></div>
+      </div>
+
+      <!-- Content -->
+      <div class="about-hero__content">
+        <nav class="about-hero__breadcrumb" aria-label="Breadcrumb">
+          <a href="index.html">Home</a>
+          <span aria-hidden="true"> / </span>
+          <span>About</span>
+        </nav>
+        <span class="about-hero__eyebrow">Est. 1976 &middot; KNUST, Kumasi, Ghana</span>
+        <h1 class="about-hero__title" id="about-title"
+            data-cms-key="about-hero-dept-name" data-cms-label="About Hero Title" data-cms-type="text">
+          Department of<br>
+          <em class="about-hero__accent">Indigenous Art</em><br>
+          &amp; Technology
+        </h1>
+        <p class="about-hero__body"
+           data-cms-key="about-hero-intro" data-cms-label="About Hero Body">
+          DIAT is the only university department in Ghana dedicated entirely to
+          indigenous art and craft disciplines — taught not as cultural history
+          but as living, professionally viable creative practices.
+        </p>
+        <div class="about-hero__actions">
+          <a href="#who-heading" class="btn btn--primary btn--lg">Our Story &#8594;</a>
+          <a href="programmes.html" class="btn btn--secondary btn--lg">Programmes &#8599;</a>
+        </div>
+      </div>
+
+      <!-- Gold bottom rule -->
+      <div class="about-hero__rule" aria-hidden="true"></div>
+
+    </section>
+
+    <!-- WHO WE ARE -->
+    <section class="dept-section dept-section--white" aria-labelledby="who-heading">
+      <div class="container">
+        <div class="content-split">
+          <div>
+            <header class="dept-section__header">
+              <span class="dept-section__eyebrow">Who We Are</span>
+              <h2 class="dept-section__title" id="who-heading"
+                  data-cms-key="about-who-h2" data-cms-label="Who We Are Heading" data-cms-type="text">
+                A Department Unlike Any Other in Ghana
+              </h2>
+              <div class="dept-section__rule" aria-hidden="true"></div>
+            </header>
+            <p class="content-split__body"
+               data-cms-key="about-who-p1" data-cms-label="Who We Are Para 1">
+              Founded in 1976 as the Institute of Rural Art and Industry (IRAI), DIAT is the
+              only university department in Ghana dedicated entirely to indigenous craft
+              disciplines &mdash; taught not as cultural history but as living, professionally
+              viable creative practices.
+            </p>
+            <p class="content-split__body"
+               data-cms-key="about-who-p2" data-cms-label="Who We Are Para 2">
+              Every student learns Computer-Aided Design before touching clay, metal, leather,
+              or wood. That CAD-to-craft approach &mdash; designing digitally, making by hand
+              &mdash; bridges ancient Ghanaian tradition with the demands of contemporary
+              global markets.
+            </p>
+            <a href="programmes.html" class="btn btn--secondary btn--md" style="margin-top:var(--sp-lg)">
+              Explore Programmes <span class="btn__arrow" aria-hidden="true">&#8594;</span>
+            </a>
+          </div>
+          <aside class="content-split__aside">
+            <figure>
+              <img src="https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_800/diat-courtyard_okefm3.webp"
+                   alt="The DIAT courtyard at KNUST — decorative fountain surrounded by student-made sculptures"
+                   style="width:100%;border-radius:var(--radius-md);margin-bottom:var(--sp-md)"
+                   loading="lazy" draggable="false" oncontextmenu="return false">
+              <figcaption style="font-size:var(--fs-xs);color:var(--clr-text-tertiary)">
+                The DIAT courtyard &mdash; KNUST campus, Kumasi, Ghana
+              </figcaption>
+            </figure>
+          </aside>
+        </div>
+
+        <!-- TRIPARTITE MODEL -->
+        <div class="dept-tripartite" style="margin-top:var(--sp-2xl)">
+          <article class="dept-tri-card">
+            <span class="dept-tri-card__icon" aria-hidden="true">&#127891;</span>
+            <h3 class="dept-tri-card__title" data-cms-key="about-tri1-t" data-cms-label="Tripartite 1 Title" data-cms-type="text">Academic Teaching</h3>
+            <p class="dept-tri-card__body" data-cms-key="about-tri1-b" data-cms-label="Tripartite 1 Body">Six craft disciplines taught to professional standard, underpinned by Product Design and CAD methodology across all four years.</p>
+          </article>
+          <article class="dept-tri-card">
+            <span class="dept-tri-card__icon" aria-hidden="true">&#127775;</span>
+            <h3 class="dept-tri-card__title" data-cms-key="about-tri2-t" data-cms-label="Tripartite 2 Title" data-cms-type="text">Commercial Art Services</h3>
+            <p class="dept-tri-card__body" data-cms-key="about-tri2-b" data-cms-label="Tripartite 2 Body">Commissioned artwork, bespoke craft production, and design services offered to individual, corporate, and institutional clients.</p>
+          </article>
+          <article class="dept-tri-card">
+            <span class="dept-tri-card__icon" aria-hidden="true">&#127807;</span>
+            <h3 class="dept-tri-card__title" data-cms-key="about-tri3-t" data-cms-label="Tripartite 3 Title" data-cms-type="text">Community Engagement</h3>
+            <p class="dept-tri-card__body" data-cms-key="about-tri3-b" data-cms-label="Tripartite 3 Body">Three-month nationwide internship embeds students with artisan communities, formally attributing indigenous craft knowledge.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- HISTORY TIMELINE -->
+    <section class="dept-section dept-section--surface" aria-labelledby="history-heading">
+      <div class="container">
+        <header class="dept-section__header">
+          <span class="dept-section__eyebrow">Our History</span>
+          <h2 class="dept-section__title" id="history-heading"
+              data-cms-key="about-hist-h2" data-cms-label="History Heading" data-cms-type="text">
+            Fifty Years of Indigenous Art Education
+          </h2>
+          <div class="dept-section__rule" aria-hidden="true"></div>
+        </header>
+        <div class="content-split">
+          <div>
+            <p class="content-split__body" data-cms-key="about-hist-body" data-cms-label="History Body">
+              DIAT&rsquo;s story is a story of Ghana&rsquo;s belief in its own creative heritage.
+              From a rural arts institute in 1976 to a fully accredited university department
+              within KNUST&rsquo;s College of Art and Built Environment, the department has grown
+              into a national centre for indigenous craft excellence &mdash; training hundreds of
+              graduates who have gone on to found studios, teach, and represent Ghana&rsquo;s
+              craft identity globally.
+            </p>
+          </div>
+          <div>
+            <div class="timeline" role="list" aria-label="Department timeline">
+              <article class="timeline-item" role="listitem">
+                <span class="timeline-item__year" data-cms-key="about-tl1-year" data-cms-label="Timeline 1 Year" data-cms-type="text">1976</span>
+                <h3 class="timeline-item__title" data-cms-key="about-tl1-title" data-cms-label="Timeline 1 Title" data-cms-type="text">IRAI Founded</h3>
+                <p class="timeline-item__body" data-cms-key="about-tl1-body" data-cms-label="Timeline 1 Body">The Institute of Rural Art and Industry established at KNUST under the College of Art.</p>
+              </article>
+              <article class="timeline-item" role="listitem">
+                <span class="timeline-item__year" data-cms-key="about-tl2-year" data-cms-label="Timeline 2 Year" data-cms-type="text">1990</span>
+                <h3 class="timeline-item__title" data-cms-key="about-tl2-title" data-cms-label="Timeline 2 Title" data-cms-type="text">Established Integration Concept</h3>
+                <p class="timeline-item__body" data-cms-key="about-tl2-body" data-cms-label="Timeline 2 Body">IRAI established its integration concept, bridging traditional craft disciplines with contemporary academic practice.</p>
+              </article>
+              <article class="timeline-item" role="listitem">
+                <span class="timeline-item__year" data-cms-key="about-tl3-year" data-cms-label="Timeline 3 Year" data-cms-type="text">1999</span>
+                <h3 class="timeline-item__title" data-cms-key="about-tl3-title" data-cms-label="Timeline 3 Title" data-cms-type="text">Diploma to a Degree Program</h3>
+                <p class="timeline-item__body" data-cms-key="about-tl3-body" data-cms-label="Timeline 3 Body">IRAI programmes upgraded from diploma to full degree status, elevating the academic standing of indigenous art education at KNUST.</p>
+              </article>
+              <article class="timeline-item" role="listitem">
+                <span class="timeline-item__year" data-cms-key="about-tl4-year" data-cms-label="Timeline 4 Year" data-cms-type="text">2011</span>
+                <h3 class="timeline-item__title" data-cms-key="about-tl4-title" data-cms-label="Timeline 4 Title" data-cms-type="text">Master's Programmes Established</h3>
+                <p class="timeline-item__body" data-cms-key="about-tl4-body" data-cms-label="Timeline 4 Body">Postgraduate MPhil programmes launched, cementing DIAT's role as a centre of advanced research in indigenous art and technology.</p>
+              </article>
+              <article class="timeline-item" role="listitem">
+                <span class="timeline-item__year" data-cms-key="about-tl5-year" data-cms-label="Timeline 5 Year" data-cms-type="text">2022</span>
+                <h3 class="timeline-item__title" data-cms-key="about-tl5-title" data-cms-label="Timeline 5 Title" data-cms-type="text">IRAI Rebrands to DIAT</h3>
+                <p class="timeline-item__body" data-cms-key="about-tl5-body" data-cms-label="Timeline 5 Body">Department officially renamed to the Department of Indigenous Art and Technology, reflecting a broadened scope integrating digital and contemporary tools.</p>
+              </article>
+              <article class="timeline-item" role="listitem">
+                <span class="timeline-item__year" data-cms-key="about-tl6-year" data-cms-label="Timeline 6 Year" data-cms-type="text">2026 &amp; Beyond</span>
+                <h3 class="timeline-item__title" data-cms-key="about-tl6-title" data-cms-label="Timeline 6 Title" data-cms-type="text">DIAT@50 Celebrations</h3>
+                <p class="timeline-item__body" data-cms-key="about-tl6-body" data-cms-label="Timeline 6 Body">Half a century of indigenous art education, marked by this digital platform, WebAR experiences, and a year of celebratory events at KNUST.</p>
+              </article>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PHOTO GALLERY -->
+    <section class="dept-section dept-section--dark" aria-labelledby="gallery-heading">
+      <div class="container">
+        <header class="dept-section__header" style="text-align:center">
+          <span class="dept-section__eyebrow dept-section__eyebrow--light"
+                data-cms-key="about-gallery-eyebrow" data-cms-label="Gallery Eyebrow" data-cms-type="text">
+            The Department in Pictures
+          </span>
+          <h2 class="dept-section__title dept-section__title--light" id="gallery-heading"
+              data-cms-key="about-gallery-heading" data-cms-label="Gallery Heading" data-cms-type="text">
+            Where Heritage Lives
+          </h2>
+          <p style="font-size:var(--fs-xs);color:rgba(255,255,255,.35);margin-top:var(--sp-sm)">
+            Click any photo to view full size &nbsp;&middot;&nbsp;
+            <span style="color:var(--clr-gold)">&#169; DIAT, KNUST 2026</span>
+          </p>
+        </header>
+
+        <!-- 4-col shuffled grid — built by JS on every load -->
+        <div id="diat-photo-grid">
+        </div>
+      </div>
+    </section>
+
+    <!-- ANNIVERSARY CTA -->
+    <section class="dept-anniversary" aria-labelledby="ann-heading">
+      <div class="container" style="text-align:center">
+        <span class="dept-anniversary__label" data-cms-key="about-ann-ey" data-cms-label="Anniversary Eyebrow" data-cms-type="text">DIAT@50 &mdash; Est. 1976</span>
+        <h2 class="dept-anniversary__title" id="ann-heading"
+            data-cms-key="about-ann-h2" data-cms-label="Anniversary Heading" data-cms-type="html">
+          <span style="font-family:'FranklinGothicHeavy',sans-serif;color:var(--clr-gold)">50</span> Years of<br><em>Indigenous Art</em> Education
+        </h2>
+        <p class="dept-anniversary__body" data-cms-key="about-ann-body" data-cms-label="Anniversary Body">
+          In 2026, DIAT marks half a century of preserving, formalising, and promoting
+          Ghana&rsquo;s indigenous craft heritage within one of Africa&rsquo;s foremost technical universities.
+        </p>
+        <div style="display:flex;gap:var(--sp-md);justify-content:center;flex-wrap:wrap;margin-top:var(--sp-lg)">
+          <a href="programmes.html" class="btn btn--primary btn--md">Explore Programmes</a>
+          <a href="gallery.html"    class="btn btn--ghost-light btn--md">View Gallery &#8594;</a>
+        </div>
+      </div>
+    </section>
+<!-- ═══ LIGHTBOX ════════════════════════════════════════════════════ -->
+<div id="diat-lightbox" style="display:none;position:fixed;inset:0;z-index:9999;
+     background:rgba(0,0,0,.94);align-items:center;justify-content:center;flex-direction:column"
+     onclick="closeLightbox(event)">
+
+  <!-- Close button -->
+  <button onclick="closeLightbox()" style="position:absolute;top:20px;right:24px;
+    background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.2);
+    width:42px;height:42px;border-radius:50%;font-size:1.2rem;cursor:pointer;
+    font-family:inherit;line-height:1;display:flex;align-items:center;justify-content:center">
+    &#10005;
+  </button>
+
+  <!-- Counter -->
+  <div id="lb-counter" style="position:absolute;top:24px;left:50%;transform:translateX(-50%);
+    color:rgba(255,255,255,.5);font-size:.78rem;font-family:Inter,sans-serif"></div>
+
+  <!-- Prev arrow -->
+  <button onclick="lbNav(-1);event.stopPropagation()" style="position:absolute;left:20px;top:50%;
+    transform:translateY(-50%);background:rgba(255,255,255,.1);color:#fff;
+    border:1px solid rgba(255,255,255,.2);width:48px;height:48px;border-radius:50%;
+    font-size:1.4rem;cursor:pointer;font-family:inherit">&#8249;</button>
+
+  <!-- Next arrow -->
+  <button onclick="lbNav(1);event.stopPropagation()" style="position:absolute;right:20px;top:50%;
+    transform:translateY(-50%);background:rgba(255,255,255,.1);color:#fff;
+    border:1px solid rgba(255,255,255,.2);width:48px;height:48px;border-radius:50%;
+    font-size:1.4rem;cursor:pointer;font-family:inherit">&#8250;</button>
+
+  <!-- Image container -->
+  <div style="position:relative;max-width:90vw;max-height:80vh;display:flex;
+              align-items:center;justify-content:center" onclick="event.stopPropagation()">
+    <img id="lb-img" src="" alt="" draggable="false" oncontextmenu="return false"
+         style="max-width:90vw;max-height:78vh;object-fit:contain;
+                display:block;border-radius:6px">
+    <!--
+      LIGHTBOX OVERLAY BAR v3 — reduced fonts, generous padding
+      ─────────────────────────────────────────────────────────
+      Layout:
+        [Title · Truncated description…]      [DIAT · KNUST]
+                                                   [© 2026]
+
+      Font sizes (further reduced from v2):
+        Title       0.62rem bold  (was 0.72rem)
+        Separator   0.52rem       (was 0.60rem)
+        Description 0.58rem       (was 0.65rem)
+        Watermark   0.58rem bold  (was 0.62rem)
+        Copyright   0.52rem       (was 0.58rem)
+
+      Padding: 32px top → 14px sides → 12px bottom
+        The 32px top padding creates the gradient breathing zone
+        that lets the dark area fade naturally into the image above,
+        giving visual breathing room around the text row.
+    -->
+    <div style="position:absolute;bottom:0;left:0;right:0;
+                background:linear-gradient(to top,rgba(0,0,0,.82) 0%,rgba(0,0,0,.3) 65%,transparent 100%);
+                padding:32px 14px 12px;border-radius:0 0 6px 6px;
+                pointer-events:none;user-select:none">
+
+      <div style="display:flex;justify-content:space-between;
+                  align-items:flex-end;gap:6px;flex-wrap:nowrap">
+
+        <!-- LEFT: title · description — clipped to one line -->
+        <div style="display:flex;align-items:baseline;
+                    gap:4px;flex:1;min-width:0;
+                    overflow:hidden;white-space:nowrap">
+          <span id="lb-title"
+                style="color:#ffffff;
+                       font-family:Georgia,serif;
+                       font-size:.62rem;
+                       font-weight:700;
+                       letter-spacing:.01em;
+                       white-space:nowrap;
+                       flex-shrink:0"></span>
+          <span aria-hidden="true"
+                style="color:rgba(255,255,255,.28);
+                       font-size:.52rem;
+                       flex-shrink:0">&middot;</span>
+          <span id="lb-desc"
+                style="color:rgba(255,255,255,.58);
+                       font-family:Inter,system-ui,sans-serif;
+                       font-size:.58rem;
+                       white-space:nowrap;
+                       overflow:hidden;
+                       text-overflow:ellipsis;
+                       min-width:0"></span>
+        </div>
+
+        <!-- RIGHT: DIAT watermark — stacked, right-aligned, compact -->
+        <div style="text-align:right;
+                    flex-shrink:0;
+                    white-space:nowrap;
+                    padding-left:8px">
+          <p style="color:rgba(255,255,255,.78);
+                    font-family:Georgia,serif;
+                    font-size:.58rem;
+                    font-weight:700;
+                    letter-spacing:.04em;
+                    margin:0 0 2px 0">DIAT &middot; KNUST</p>
+          <p style="color:rgba(255,255,255,.38);
+                    font-family:Inter,system-ui,sans-serif;
+                    font-size:.52rem;
+                    margin:0">&#169; 2026</p>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Thumbnail strip -->
+  <div id="lb-thumbs" style="display:flex;gap:8px;margin-top:16px;
+       overflow-x:auto;max-width:90vw;padding:4px"
+       onclick="event.stopPropagation()"></div>
+</div>
+
+<!-- Gallery CSS -->
+<style>
+  /* ── "Where Heritage Lives" photo grid ─────────────────────────────
+     This block was lost at some point: cards had no layout styles, the
+     watermark and "View" overlay rendered as loose stacked text, and
+     captions inherited the dark body colour against the navy section.
+     Restored here, with mobile breakpoints. */
+
+  /* Responsive grid: 4 cols desktop → 2 cols tablet → 1 col phone */
+  #diat-photo-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+  }
+  @media (max-width: 900px) {
+    #diat-photo-grid { grid-template-columns: repeat(2, 1fr); gap: 14px; }
+  }
+  @media (max-width: 480px) {
+    #diat-photo-grid { grid-template-columns: 1fr; gap: 18px; }
+  }
+
+  /* Card + image frame */
+  .diat-photo-card { cursor: pointer; }
+  .diat-photo-wrap {
+    position: relative;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    border-radius: var(--radius-md, 10px);
+    background: rgba(255,255,255,.04);
+  }
+  .diat-photo-card:hover .diat-photo-wrap img { transform: scale(1.05); }
+
+  /* Watermark — pinned to the photo's bottom-left corner */
+  .diat-wm {
+    position: absolute;
+    left: 8px;
+    bottom: 8px;
+    z-index: 2;
+    font-size: var(--fs-xs);
+    color: rgba(255,255,255,.85);
+    background: rgba(0,0,0,.45);
+    padding: 2px 10px;
+    border-radius: var(--radius-full, 9999px);
+    pointer-events: none;
+  }
+
+  /* "🔍 View" — full-photo hover overlay (desktop only; tap opens
+     the lightbox directly on touch screens) */
+  .diat-hover-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0,0,0,.45);
+    color: #ffffff;
+    opacity: 0;
+    transition: opacity .3s ease;
+    pointer-events: none;
+  }
+  .diat-photo-card:hover .diat-hover-overlay { opacity: 1; }
+
+  /* Captions — white against the dark section; fonts unchanged */
+  .diat-caption          { margin-top: 8px; color: #ffffff; }
+  .diat-caption strong   { color: #ffffff; display: block; font-size: var(--fs-sm); }
+  .diat-caption span     { color: rgba(255,255,255,.75); font-size: var(--fs-xs); }
+</style>
+
+<!-- Lightbox JS -->
+<script>
+var LB_PHOTOS_MASTER = [
+  {src:'https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_1200/diat-murals_fxdnah.webp',     title:'Craft Heritage Murals',      desc:'Relief panels on the DIAT building facade'},
+  {src:'https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_1200/diat-antelope_ctnuqe.webp',   title:'Student Sculpture',          desc:'Beaded antelope — open-air campus, DIAT KNUST'},
+  {src:'https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_1200/diat-sculptures_mthwge.webp', title:'Open-Air Sculpture Gallery', desc:'Antelope & ostrich installations — DIAT campus'},
+  {src:'https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_1200/diat-back-entrance_prh81p.webp',   title:'Department Studios',         desc:'Teaching & production spaces — KNUST'},
+  {src:'https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_1200/diat-main-entrance_vzi1wt.webp',   title:'Department Entrance',        desc:'DIAT signboard — KNUST campus, Kumasi, Ghana'},
+  {src:'https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_800/diat-courtyard_okefm3.webp',  title:'The DIAT Courtyard',         desc:'Decorative fountain & student installations'},
+  {src:'https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_1200/diat-panorama_pzzrmo.webp',   title:'Department Compound',        desc:'Panoramic view — DIAT, KNUST, Kumasi'},
+  {src:'https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_1200/diat-garden_dbqxox.webp',     title:'Sculpture Garden',           desc:'Permanent outdoor installations — DIAT campus'}
+];
+
+var LB_PHOTOS = [];
+var lbIdx = 0;
+
+/* Card click: opens lightbox.
+ * localStorage check removed — the admin is now local-only (127.0.0.1)
+ * and never runs on the public site. The old check caused a silent
+ * SecurityError in Firefox (Enhanced Tracking Protection) that killed
+ * the function before openLightbox() was ever called. */
+function diatCardClick(e, i) {
+  openLightbox(i);
+}
+
+/* Fisher-Yates shuffle */
+function shuffle(arr) {
+  var a = arr.slice();
+  for (var i = a.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var tmp = a[i]; a[i] = a[j]; a[j] = tmp;
+  }
+  return a;
+}
+
+function buildGrid() {
+  /* Load any CMS overrides from localStorage */
+  var cms = {};
+  try { cms = JSON.parse(localStorage.getItem('diat_content') || '{}'); } catch(e) {}
+
+  LB_PHOTOS = shuffle(LB_PHOTOS_MASTER);
+  var grid = document.getElementById('diat-photo-grid');
+  if (!grid) return;
+
+  grid.innerHTML = LB_PHOTOS.map(function(p, i) {
+    var slug    = p.src.replace('.jpg','');
+    /* Use CMS-saved values if available, otherwise use defaults */
+    var imgSrc  = cms['about-photo-'+slug+'-src']   || p.src;
+    var title   = cms['about-photo-'+slug+'-title'] || p.title;
+    var desc    = cms['about-photo-'+slug+'-desc']  || p.desc;
+
+    /* Update LB_PHOTOS so lightbox reflects saved changes */
+    LB_PHOTOS[i] = { src:imgSrc, title:title, desc:desc };
+
+    return [
+      '<div class="diat-photo-card" onclick="diatCardClick(event,'+i+')" title="Click to view full size">',
+        '<div class="diat-photo-wrap">',
+          /* Editable image wrapper — admin pastes new <img> tag here */
+          '<div data-cms-key="about-photo-'+slug+'-src"',
+               ' data-cms-label="Photo — '+p.title+' (replace src)"',
+               ' data-cms-type="image"',
+               ' style="width:100%;height:100%;position:relative">',
+            '<img src="'+imgSrc+'" alt="'+title+'"',
+                 ' draggable="false" oncontextmenu="return false"',
+                 ' style="width:100%;height:100%;object-fit:cover;display:block;',
+                 'transition:transform .4s ease;user-select:none;pointer-events:none">',
+          '</div>',
+          '<div class="diat-wm">&#169; DIAT &middot; KNUST &middot; 2026</div>',
+          '<div class="diat-hover-overlay"><span>&#128269; View</span></div>',
+        '</div>',
+        '<div class="diat-caption">',
+          '<strong data-cms-key="about-photo-'+slug+'-title"',
+                  ' data-cms-label="Caption — '+p.title+' Title"',
+                  ' data-cms-type="text">'+title+'</strong>',
+          '<span data-cms-key="about-photo-'+slug+'-desc"',
+                ' data-cms-label="Caption — '+p.title+' Description"',
+                ' data-cms-type="text">'+desc+'</span>',
+        '</div>',
+      '</div>'
+    ].join('');
+  }).join('');
+}
+
+function openLightbox(i) {
+  /* Sync LB_PHOTOS with current DOM values modified by cms.js */
+  var cards = document.querySelectorAll('.diat-photo-card');
+  LB_PHOTOS.forEach(function(p, j) {
+    var card = cards[j];
+    if (card) {
+      var img = card.querySelector('img');
+      var titleEl = card.querySelector('[data-cms-key$="-title"]');
+      var descEl = card.querySelector('[data-cms-key$="-desc"]');
+      if (img) p.src = img.getAttribute('src') || p.src;
+      if (titleEl) p.title = titleEl.textContent || p.title;
+      if (descEl) p.desc = descEl.textContent || p.desc;
+    }
+  });
+
+  lbIdx = i;
+  var lb = document.getElementById('diat-lightbox');
+  lb.style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+  lbShow();
+  var tb = document.getElementById('lb-thumbs');
+  tb.innerHTML = LB_PHOTOS.map(function(p, j) {
+    return '<img class="lb-thumb" src="'+p.src+'"' +
+      ' draggable="false" oncontextmenu="return false"' +
+      ' onclick="lbGo('+j+');event.stopPropagation()">';
+  }).join('');
+  lbUpdateThumbs();
+}
+
+function lbShow() {
+  var p = LB_PHOTOS[lbIdx];
+  document.getElementById('lb-img').src   = p.src;
+  document.getElementById('lb-img').alt   = p.title;
+  document.getElementById('lb-title').textContent = p.title;
+  document.getElementById('lb-desc').textContent  = p.desc;
+  document.getElementById('lb-counter').textContent = (lbIdx+1) + ' / ' + LB_PHOTOS.length;
+  lbUpdateThumbs();
+}
+
+function lbUpdateThumbs() {
+  document.querySelectorAll('.lb-thumb').forEach(function(t, j) {
+    t.classList.toggle('active', j === lbIdx);
+  });
+}
+
+function lbNav(dir) {
+  lbIdx = (lbIdx + dir + LB_PHOTOS.length) % LB_PHOTOS.length;
+  lbShow();
+}
+
+function lbGo(i) { lbIdx = i; lbShow(); }
+
+function closeLightbox(e) {
+  if (e && e.target !== document.getElementById('diat-lightbox')) return;
+  document.getElementById('diat-lightbox').style.display = 'none';
+  document.body.style.overflow = '';
+}
+
+document.addEventListener('keydown', function(e) {
+  var lb = document.getElementById('diat-lightbox');
+  if (!lb || lb.style.display === 'none') return;
+  if (e.key === 'Escape')     { lb.style.display='none'; document.body.style.overflow=''; }
+  if (e.key === 'ArrowRight') lbNav(1);
+  if (e.key === 'ArrowLeft')  lbNav(-1);
+});
+
+/* Build shuffled grid on every page load */
+document.addEventListener('DOMContentLoaded', function() {
+  buildGrid();
+  /* Re-apply any CMS saved content to dynamically built elements */
+  if (typeof diatContentRefresh === 'function') diatContentRefresh();
+});
+</script>
+<!-- ════════════════════════════════════════════════════════════════ -->
+  </main>
+
+    <script src="site.js?v=4"></script>
+  <script src="cms.js?v=4"></script>
+</body>
+</html>
