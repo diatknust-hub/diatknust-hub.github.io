@@ -328,6 +328,58 @@
       padding: 2px 7px;
       border-radius: var(--radius-full);
     }
+    /* ── EXHIBITION SECTIONS ──────────────────────────────────── */
+    .gal-exhibition {
+      border-top: 3px solid var(--clr-gold);
+      margin-bottom: var(--sp-3xl);
+      background: #fff;
+    }
+    .gal-exhibition__header {
+      padding: var(--sp-lg) var(--sp-xl);
+      background: var(--clr-indigo, #1a1a4e);
+    }
+    .gal-exhibition__title-row {
+      display: flex; align-items: baseline;
+      gap: var(--sp-md); flex-wrap: wrap;
+    }
+    .gal-exhibition__title {
+      font-family: 'FranklinGothicRegular', var(--ff-body);
+      font-size: var(--fs-xl); font-weight: 400;
+      color: var(--clr-gold); margin: 0;
+    }
+    .gal-exhibition__total {
+      font-size: var(--fs-xs); letter-spacing: .05em;
+      text-transform: uppercase; color: rgba(255,255,255,.45);
+    }
+    .gal-exhibition__meta {
+      font-size: var(--fs-xs); color: rgba(255,255,255,.55);
+      margin: var(--sp-xs) 0 0; letter-spacing: .02em;
+    }
+
+    /* ── CATEGORY SUB-SECTIONS ────────────────────────────────── */
+    .gal-category { padding: var(--sp-lg) var(--sp-xl) 0; }
+    .gal-category__header {
+      display: flex; align-items: center; gap: var(--sp-sm);
+      padding-bottom: var(--sp-sm);
+      border-bottom: 1px solid rgba(0,0,0,.08);
+      margin-bottom: var(--sp-md);
+    }
+    .gal-category__name {
+      font-family: 'FranklinGothicRegular', var(--ff-body);
+      font-size: var(--fs-md); font-weight: 400;
+      color: var(--clr-text-primary);
+      text-transform: uppercase; letter-spacing: .04em;
+    }
+    .gal-category__count {
+      font-size: var(--fs-xs); color: var(--clr-text-tertiary);
+      background: rgba(0,0,0,.05);
+      padding: 2px 8px; border-radius: var(--radius-full);
+    }
+    @media (max-width: 768px) {
+      .gal-exhibition__header { padding: var(--sp-md); }
+      .gal-category { padding: var(--sp-md) var(--sp-md) 0; }
+    }
+
 
     /* ── LIGHTBOX ─────────────────────────────────────────────── */
     /* Unchanged from previous version */
@@ -516,7 +568,7 @@
 
         <!-- Year filter tabs — populated by JS from JSON year fields -->
         <div class="gal-tabs-wrap">
-          <nav class="gal-tabs" id="year-tabs" role="tablist" aria-label="Filter artworks by year">
+          <nav class="gal-tabs" id="exhibition-tabs" role="tablist" aria-label="Filter artworks by exhibition">
             <!-- JS renders tabs here after JSON loads -->
             <button class="gal-tab is-active" role="tab" aria-selected="true">
               <span class="gal-tab__icon">&#128444;</span>
@@ -532,7 +584,7 @@
         </div>
 
         <!-- Masonry grid — JS populates from diat-gallery.json -->
-        <div id="masonry-grid" class="gal-masonry" style="display:none" aria-live="polite"></div>
+        <div id="gallery-sections" style="display:none" aria-live="polite"></div>
 
         <!-- Empty / error state -->
         <p id="gal-empty" style="display:none; padding:var(--sp-3xl); text-align:center; color:var(--clr-text-tertiary)">
@@ -681,18 +733,26 @@
 
 
     /* ══════════════════════════════════════════════════════════════════
-     * YEAR FILTER
+     * EXHIBITION FILTER & RENDER
      * ══════════════════════════════════════════════════════════════════ */
-    function filterYear(year, btn) {
-      document.querySelectorAll('#year-tabs .gal-tab').forEach(function (t) {
+
+    var EXHIBITION_META = {
+      'January 2026 Open Sale':  { date: 'January 2026',  location: 'KNUST Commercial Area, Kumasi' },
+      '2026 MPhil Works':        { date: '2026',          location: 'KNUST, Kumasi' },
+      'November 2025 Open Sale': { date: 'November 2025', location: 'KNUST Commercial Area, Kumasi' },
+    };
+
+    function filterExhibition(exName, btn) {
+      document.querySelectorAll('#exhibition-tabs .gal-tab').forEach(function (t) {
         t.classList.remove('is-active');
         t.setAttribute('aria-selected', 'false');
       });
       btn.classList.add('is-active');
       btn.setAttribute('aria-selected', 'true');
 
-      document.querySelectorAll('#masonry-grid .gal-card').forEach(function (card) {
-        card.style.display = (year === 'all' || card.getAttribute('data-year') === year) ? '' : 'none';
+      document.querySelectorAll('.gal-exhibition').forEach(function (sec) {
+        sec.style.display = (exName === 'all' || sec.getAttribute('data-exhibition') === exName)
+          ? '' : 'none';
       });
 
       document.querySelector('.gal-tabs-wrap').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
@@ -741,35 +801,97 @@
         + '</div></article>';
     }
 
-    function buildYearTabs(artworks, total) {
-      /* Collect unique years, sort descending */
-      var yearSet = {};
+    function buildExhibitionTabs(artworks, total) {
+      var exSet = {};
       artworks.forEach(function (a) {
-        if (a.year) yearSet[a.year] = (yearSet[a.year] || 0) + 1;
+        if (a.exhibition) exSet[a.exhibition] = (exSet[a.exhibition] || 0) + 1;
       });
-      var years = Object.keys(yearSet).sort(function (a, b) { return b - a; });
+      var exhibitions = Object.keys(exSet).sort(function (a, b) {
+        var ya = parseInt((a.match(/\d{4}/) || ['0'])[0], 10);
+        var yb = parseInt((b.match(/\d{4}/) || ['0'])[0], 10);
+        return yb - ya;
+      });
 
-      var nav = document.getElementById('year-tabs');
-      var html = '<button class="gal-tab is-active" role="tab" aria-selected="true" onclick="filterYear(\'all\',this)">'
+      var nav = document.getElementById('exhibition-tabs');
+      var html = '<button class="gal-tab is-active" role="tab" aria-selected="true" onclick="filterExhibition(\'all\',this)">'
         + '<span class="gal-tab__icon">&#128444;</span>'
         + '<span class="gal-tab__label">All Works<span class="gal-tab__count">' + total + ' works</span></span>'
         + '</button>';
 
-      years.forEach(function (yr) {
-        html += '<button class="gal-tab" role="tab" aria-selected="false" onclick="filterYear(\'' + yr + '\',this)">'
-          + '<span class="gal-tab__icon">&#128197;</span>'
-          + '<span class="gal-tab__label">' + yr + '<span class="gal-tab__count">' + yearSet[yr] + ' work' + (yearSet[yr] > 1 ? 's' : '') + '</span></span>'
+      exhibitions.forEach(function (ex) {
+        var label = ex.replace('January','Jan').replace('November','Nov').replace('Open Sale','Sale');
+        var safe  = ex.replace(/'/g, "\\'");
+        html += '<button class="gal-tab" role="tab" aria-selected="false" onclick="filterExhibition(\'' + safe + '\',this)">'
+          + '<span class="gal-tab__icon">&#127912;</span>'
+          + '<span class="gal-tab__label">' + label + '<span class="gal-tab__count">' + exSet[ex] + ' works</span></span>'
           + '</button>';
       });
 
       nav.innerHTML = html;
     }
 
+    function buildExhibitionSections(artworks) {
+      var groups = {};
+      artworks.forEach(function (art) {
+        var ex  = art.exhibition || 'Other';
+        var cat = art.category   || 'General';
+        if (!groups[ex])      groups[ex] = {};
+        if (!groups[ex][cat]) groups[ex][cat] = [];
+        groups[ex][cat].push(art);
+      });
+
+      var exhibitions = Object.keys(groups).sort(function (a, b) {
+        var ya = parseInt((a.match(/\d{4}/) || ['0'])[0], 10);
+        var yb = parseInt((b.match(/\d{4}/) || ['0'])[0], 10);
+        return yb - ya;
+      });
+
+      var EXHIBITION_META = {
+        'January 2026 Open Sale':  { date: 'January 2026',  location: 'KNUST Commercial Area, Kumasi' },
+        '2026 MPhil Works':        { date: '2026',          location: 'KNUST, Kumasi' },
+        'November 2025 Open Sale': { date: 'November 2025', location: 'KNUST Commercial Area, Kumasi' },
+      };
+
+      var html = '';
+      exhibitions.forEach(function (ex) {
+        var cats  = groups[ex];
+        var total = Object.keys(cats).reduce(function (s, k) { return s + cats[k].length; }, 0);
+        var meta  = EXHIBITION_META[ex] || { date: ex, location: 'KNUST, Kumasi' };
+        var catNames = Object.keys(cats).sort(function (a, b) { return cats[b].length - cats[a].length; });
+
+        html += '<section class="gal-exhibition" data-exhibition="' + esc(ex) + '">';
+        html += '<div class="gal-exhibition__header">'
+          + '<div class="gal-exhibition__title-row">'
+          + '<h2 class="gal-exhibition__title">' + esc(ex) + '</h2>'
+          + '<span class="gal-exhibition__total">' + total + ' works</span>'
+          + '</div>'
+          + '<p class="gal-exhibition__meta">&#127963;&nbsp;' + esc(meta.location)
+          + ' &middot; &#128197;&nbsp;' + esc(meta.date) + '</p>'
+          + '</div>';
+
+        catNames.forEach(function (cat) {
+          var items = cats[cat];
+          html += '<div class="gal-category">'
+            + '<div class="gal-category__header">'
+            + '<span class="gal-category__name">' + esc(cat) + '</span>'
+            + '<span class="gal-category__count">' + items.length + ' work' + (items.length > 1 ? 's' : '') + '</span>'
+            + '</div>'
+            + '<div class="gal-masonry">'
+            + items.map(buildCard).join('')
+            + '</div>'
+            + '</div>';
+        });
+
+        html += '</section>';
+      });
+      return html;
+    }
+
     fetch('diat-gallery.json?v=' + Date.now(), { cache: 'no-store' })
       .then(function (r) { return r.ok ? r.json() : null; })
       .then(function (artworks) {
         var loading = document.getElementById('gal-loading');
-        var grid    = document.getElementById('masonry-grid');
+        var grid    = document.getElementById('gallery-sections');
         var empty   = document.getElementById('gal-empty');
 
         if (loading) loading.style.display = 'none';
@@ -779,14 +901,11 @@
           return;
         }
 
-        /* Sort newest year first, then by original order */
-        artworks.sort(function (a, b) { return (b.year || 0) - (a.year || 0); });
+        /* Build exhibition tabs */
+        buildExhibitionTabs(artworks, artworks.length);
 
-        /* Build year tabs */
-        buildYearTabs(artworks, artworks.length);
-
-        /* Render all cards into masonry grid */
-        grid.innerHTML = artworks.map(buildCard).join('');
+        /* Render grouped exhibition → category → cards */
+        grid.innerHTML = buildExhibitionSections(artworks);
         grid.style.display = '';
       })
       .catch(function () {
