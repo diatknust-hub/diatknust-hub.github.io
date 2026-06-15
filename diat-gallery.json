@@ -1463,25 +1463,6 @@
     "url_full": "https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_1600/PXL_20260126_150729253.PORTRAIT.ORIGINAL_uazkcm.jpg"
   },
   {
-    "id": "artwork-058",
-    "title": "",
-    "artist": "DIAT Student",
-    "year": "2026",
-    "exhibition": "January 2026 Open Sale",
-    "category": "Wall Frames",
-    "description": "",
-    "featured": false,
-    "has_ar": false,
-    "glb_file": "",
-    "usdz_file": "",
-    "cloudinary_public_id": "PXL_20260126_150724133.PORTRAIT.ORIGINAL_wqjs9o",
-    "format": "jpg",
-    "width": 3072,
-    "height": 4080,
-    "url_thumb": "https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_600/PXL_20260126_150724133.PORTRAIT.ORIGINAL_wqjs9o.jpg",
-    "url_full": "https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_1600/PXL_20260126_150724133.PORTRAIT.ORIGINAL_wqjs9o.jpg"
-  },
-  {
     "id": "artwork-059",
     "title": "",
     "artist": "DIAT Student",
@@ -1613,25 +1594,6 @@
     "height": 4080,
     "url_thumb": "https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_600/PXL_20260126_150311348.PORTRAIT.ORIGINAL_hw7s73.jpg",
     "url_full": "https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_1600/PXL_20260126_150311348.PORTRAIT.ORIGINAL_hw7s73.jpg"
-  },
-  {
-    "id": "artwork-067",
-    "title": "",
-    "artist": "DIAT Student",
-    "year": "2026",
-    "exhibition": "January 2026 Open Sale",
-    "category": "Wall Frames",
-    "description": "",
-    "featured": false,
-    "has_ar": false,
-    "glb_file": "",
-    "usdz_file": "",
-    "cloudinary_public_id": "PXL_20251219_141132902_rbx3xi",
-    "format": "jpg",
-    "width": 4080,
-    "height": 3072,
-    "url_thumb": "https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_600/PXL_20251219_141132902_rbx3xi.jpg",
-    "url_full": "https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_1600/PXL_20251219_141132902_rbx3xi.jpg"
   },
   {
     "id": "artwork-068",
