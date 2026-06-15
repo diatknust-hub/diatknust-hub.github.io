@@ -1,12 +1,16 @@
 /**
  * tools/cloudinary-sync.mjs
  * ─────────────────────────────────────────────────────────────
- * 1. Regenerates diat-gallery.json from gallery/ folder (104 artworks)
- * 2. Writes cloudinary-ref.json — full URL map for site/, staff/,
- *    event posters/ so HTML files can be updated to Cloudinary CDN.
- *
- * Run after any new Cloudinary upload:
+ * Run after ANY Cloudinary upload:
  *   node tools/cloudinary-sync.mjs
+ *
+ * Automatically updates:
+ *   1. diat-gallery.json     — 104+ artwork entries with CDN URLs
+ *   2. cloudinary-ref.json   — site/staff/event-posters URL map
+ *   3. site.js               — Gallery nav dropdown (new exhibitions auto-appear)
+ *
+ * gallery.html reads diat-gallery.json and generates its own section
+ * ids + hash resolution — no manual edits ever needed there.
  *
  * Credentials in .env — never committed to GitHub.
  * ─────────────────────────────────────────────────────────────
@@ -23,11 +27,14 @@ cloudinary.config({
   secure:     true,
 });
 
-/* ── Labels ─────────────────────────────────────────────────── */
+/* ════════════════════════════════════════════════════════════
+   SHARED UTILITIES
+   ════════════════════════════════════════════════════════════ */
+
 const EXHIBITION_MAP = {
   'diat 2025 november open sales': { label: 'November 2025 Open Sale', year: '2025' },
   'diat 2026 january open sales':  { label: 'January 2026 Open Sale',  year: '2026' },
-  'diat 2026 mphil works':         { label: '2026 MPhil Works',        year: '2026' },
+  'diat 2026 mphil works':         { label: '2026 MPhil Artwork Exhibition', year: '2026' },
 };
 const CATEGORY_MAP = {
   'diat fabric':           'Fabric & Textiles',
@@ -49,12 +56,62 @@ function matchCategory(raw) {
   return raw.replace(/^diat\s+/i, '').replace(/\b\w/g, c => c.toUpperCase());
 }
 
-/* ── Cloudinary helpers ─────────────────────────────────────── */
+/**
+ * makeHashId — converts an exhibition name to a URL-safe hash.
+ * MUST stay identical to the JS version inside gallery.html's
+ * buildExhibitionSections() so nav links always resolve correctly.
+ *
+ * Examples:
+ *   "January 2026 Open Sale"         → "jan-2026"
+ *   "November 2025 Open Sale"        → "nov-2025"
+ *   "2026 MPhil Artwork Exhibition"  → "mphil-2026"
+ *   "August 2027 Craft Fair"         → "aug-2027"
+ */
+function makeHashId(name) {
+  const n = name.toLowerCase();
+  const year = (n.match(/\d{4}/) || [''])[0];
+  const MONTHS = {
+    january:'jan', february:'feb', march:'mar',    april:'apr',
+    may:'may',     june:'jun',     july:'jul',      august:'aug',
+    september:'sep', october:'oct', november:'nov', december:'dec',
+  };
+  let month = '';
+  for (const [full, abbr] of Object.entries(MONTHS)) {
+    if (n.includes(full)) { month = abbr; break; }
+  }
+  if (month && year)         return `${month}-${year}`;
+  if (n.includes('mphil') && year) return `mphil-${year}`;
+  if (n.includes('phd')   && year) return `phd-${year}`;
+  // Fallback: url-safe slug of name minus "diat " prefix
+  return n.replace(/^diat\s+/, '')
+          .replace(/\s+/g, '-')
+          .replace(/[^a-z0-9-]/g, '')
+          .slice(0, 24)
+          .replace(/-+$/, '');
+}
+
+/** Nav emoji based on exhibition type */
+function navEmoji(name) {
+  const n = name.toLowerCase();
+  if (n.includes('mphil') || n.includes('phd') || n.includes('research')) return '&#127891;';  // 🎓
+  if (n.includes('sale')  || n.includes('open') || n.includes('fair'))    return '&#127912;';  // 🎨
+  if (n.includes('exhib'))                                                  return '&#127912;';  // 🎨
+  return '&#128444;';  // 🖼
+}
+
+/** Clean nav label: remove "diat " prefix, title-case */
+function navLabel(name) {
+  return name.replace(/^diat\s+/i, '').replace(/\b\w/g, c => c.toUpperCase());
+}
+
+/* ════════════════════════════════════════════════════════════
+   CLOUDINARY FETCH HELPERS
+   ════════════════════════════════════════════════════════════ */
+
 async function getSubfolders(path) {
   try { return (await cloudinary.api.sub_folders(path)).folders || []; }
   catch { return []; }
 }
-
 async function fetchFromFolder(folderPath) {
   const resources = [];
   let cursor;
@@ -72,13 +129,16 @@ async function fetchFromFolder(folderPath) {
   } while (cursor);
   return resources;
 }
-
-function cdnUrl(publicId, format, transforms = 'q_auto,f_auto') {
-  const safe = publicId.split('/').map(encodeURIComponent).join('/');
-  return `https://res.cloudinary.com/diatknust/image/upload/${transforms}/${safe}.${format}`;
+async function fetchFlat(folderPath) {
+  const imgs = await fetchFromFolder(folderPath);
+  console.log(`   📁 ${folderPath}: ${imgs.length} images`);
+  return imgs;
 }
 
-/* ── Walk gallery recursively ───────────────────────────────── */
+/* ════════════════════════════════════════════════════════════
+   STEP 1 — GALLERY JSON
+   ════════════════════════════════════════════════════════════ */
+
 async function walkGallery() {
   const all = [];
   const exFolders = await getSubfolders('gallery');
@@ -106,18 +166,12 @@ async function walkGallery() {
   return all;
 }
 
-/* ── Flat fetch for site/, staff/, event posters/ ───────────── */
-async function fetchFlat(folderPath) {
-  const imgs = await fetchFromFolder(folderPath);
-  console.log(`   📁 ${folderPath}: ${imgs.length} images`);
-  return imgs;
+function cdnUrl(publicId, format, t = 'q_auto,f_auto') {
+  const safe = publicId.split('/').map(encodeURIComponent).join('/');
+  return `https://res.cloudinary.com/diatknust/image/upload/${t}/${safe}.${format}`;
 }
 
-/* ── Main ───────────────────────────────────────────────────── */
-async function main() {
-  console.log('🔄  Syncing from Cloudinary (Dynamic folders mode)…\n');
-
-  /* ── 1. Gallery JSON ── */
+async function syncGalleryJson() {
   const existingMap = {};
   if (existsSync('diat-gallery.json')) {
     JSON.parse(readFileSync('diat-gallery.json', 'utf8'))
@@ -125,14 +179,17 @@ async function main() {
   }
 
   console.log('📂  Walking gallery/…');
-  const galleryRaw = await walkGallery();
-  console.log(`\n   Total gallery images: ${galleryRaw.length}`);
+  const raw = await walkGallery();
+  console.log(`\n   Total gallery images: ${raw.length}`);
 
-  const gallery = galleryRaw.map((r, i) => {
-    const parts = (r.asset_folder || '').split('/');
+  const gallery = raw.map((r, i) => {
+    const parts  = (r.asset_folder || '').split('/');
     const exKey  = (parts[1] || '').toLowerCase();
     const catRaw = parts[2] || '';
-    const ex = EXHIBITION_MAP[exKey] || { label: parts[1] || 'General', year: parts[1]?.match(/\d{4}/)?.[0] || '2026' };
+    const ex     = EXHIBITION_MAP[exKey] || {
+      label: parts[1] || 'General',
+      year:  (parts[1] || '').match(/\d{4}/)?.[0] || '2026',
+    };
     const prev = existingMap[r.public_id] || {};
     return {
       id:          prev.id      || `artwork-${String(i+1).padStart(3,'0')}`,
@@ -161,8 +218,14 @@ async function main() {
     a.category.localeCompare(b.category));
 
   writeFileSync('diat-gallery.json', JSON.stringify(gallery, null, 2));
+  return gallery;
+}
 
-  /* ── 2. Reference map for site/, staff/, event posters/ ── */
+/* ════════════════════════════════════════════════════════════
+   STEP 2 — CLOUDINARY-REF.JSON
+   ════════════════════════════════════════════════════════════ */
+
+async function syncRefJson() {
   console.log('\n📂  Fetching reference folders…');
   const [siteImgs, staffImgs, posterImgs] = await Promise.all([
     fetchFlat('site'),
@@ -171,47 +234,115 @@ async function main() {
   ]);
 
   const ref = { site: {}, staff: {}, 'event posters': {} };
-
-  for (const r of siteImgs) {
-    ref.site[r.public_id] = {
-      public_id: r.public_id,
-      format: r.format,
-      url_full:   cdnUrl(r.public_id, r.format, 'q_auto,f_auto'),
-      url_hero:   cdnUrl(r.public_id, r.format, 'q_auto,f_auto,w_1920'),
-      url_thumb:  cdnUrl(r.public_id, r.format, 'q_auto,f_auto,w_800'),
-    };
-  }
-  for (const r of staffImgs) {
-    ref.staff[r.public_id] = {
-      public_id: r.public_id,
-      format: r.format,
-      url_full:  cdnUrl(r.public_id, r.format, 'q_auto,f_auto'),
-      url_thumb: cdnUrl(r.public_id, r.format, 'q_auto,f_auto,w_400'),
-    };
-  }
-  for (const r of posterImgs) {
-    ref['event posters'][r.public_id] = {
-      public_id: r.public_id,
-      format: r.format,
-      url_hero:  cdnUrl(r.public_id, r.format, 'q_auto,f_auto,w_1920'),
-      url_thumb: cdnUrl(r.public_id, r.format, 'q_auto,f_auto,w_800'),
-    };
-  }
+  for (const r of siteImgs) ref.site[r.public_id] = {
+    public_id: r.public_id, format: r.format,
+    url_full:  cdnUrl(r.public_id, r.format),
+    url_hero:  cdnUrl(r.public_id, r.format, 'q_auto,f_auto,w_1920'),
+    url_thumb: cdnUrl(r.public_id, r.format, 'q_auto,f_auto,w_800'),
+  };
+  for (const r of staffImgs) ref.staff[r.public_id] = {
+    public_id: r.public_id, format: r.format,
+    url_full:  cdnUrl(r.public_id, r.format),
+    url_thumb: cdnUrl(r.public_id, r.format, 'q_auto,f_auto,w_400'),
+  };
+  for (const r of posterImgs) ref['event posters'][r.public_id] = {
+    public_id: r.public_id, format: r.format,
+    url_hero:  cdnUrl(r.public_id, r.format, 'q_auto,f_auto,w_1920'),
+    url_thumb: cdnUrl(r.public_id, r.format, 'q_auto,f_auto,w_800'),
+  };
 
   writeFileSync('cloudinary-ref.json', JSON.stringify(ref, null, 2));
+  return { siteImgs, staffImgs, posterImgs };
+}
 
-  /* ── Summary ── */
+/* ════════════════════════════════════════════════════════════
+   STEP 3 — SITE.JS GALLERY NAV (auto-generated)
+   ════════════════════════════════════════════════════════════ */
+
+function updateGalleryNav(gallery) {
+  /* Collect unique exhibitions sorted newest year first */
+  const exSet = {};
+  gallery.forEach(a => { if (a.exhibition) exSet[a.exhibition] = true; });
+  const exhibitions = Object.keys(exSet).sort((a, b) => {
+    const ya = parseInt((a.match(/\d{4}/) || ['0'])[0]);
+    const yb = parseInt((b.match(/\d{4}/) || ['0'])[0]);
+    return yb - ya;
+  });
+
+  /* Build dropdown links */
+  const links = exhibitions.map(ex => {
+    const hash  = makeHashId(ex);
+    const emoji = navEmoji(ex);
+    const label = navLabel(ex);
+    return `              <a href="gallery.html#${hash}" class="dept-nav__drop-link" role="menuitem">${emoji} ${label}</a>`;
+  }).join('\n');
+
+  const newBlock =
+`          <!-- Gallery dropdown -->
+          <li class="dept-nav__item" role="none">
+            <a href="gallery.html" class="dept-nav__link dept-nav__link--drop" aria-haspopup="true" aria-expanded="false">
+              Gallery
+            </a>
+            <div class="dept-nav__dropdown" role="menu" aria-label="Gallery sub-menu">
+              <a href="gallery.html" class="dept-nav__drop-link" role="menuitem">&#128444; All Works</a>
+              <div class="dept-nav__drop-divider" aria-hidden="true"></div>
+${links}
+            </div>
+          </li>`;
+
+  if (!existsSync('site.js')) {
+    console.warn('   ⚠  site.js not found — nav not updated');
+    return;
+  }
+
+  let siteJs = readFileSync('site.js', 'utf8');
+  /* Replace everything from <!-- Gallery dropdown --> up to (not including)
+     the next HTML comment, so new exhibitions auto-appear on next sync. */
+  const updated = siteJs.replace(
+    /[ \t]*<!-- Gallery dropdown -->[\s\S]*?(?=[ \t]*<!-- WebAR dropdown -->)/,
+    newBlock + '\n\n          '
+  );
+
+  if (updated === siteJs) {
+    console.warn('   ⚠  Gallery nav block not found in site.js — skipped');
+  } else {
+    writeFileSync('site.js', updated);
+    console.log(`   ✅ site.js updated — ${exhibitions.length} exhibition(s) in nav:`);
+    exhibitions.forEach(ex => console.log(`      • ${navLabel(ex)}  →  #${makeHashId(ex)}`));
+  }
+}
+
+/* ════════════════════════════════════════════════════════════
+   MAIN
+   ════════════════════════════════════════════════════════════ */
+
+async function main() {
+  console.log('🔄  Syncing from Cloudinary (Dynamic folders mode)…\n');
+
+  /* Step 1 */
+  const gallery = await syncGalleryJson();
+
+  /* Step 2 */
+  const { siteImgs, staffImgs, posterImgs } = await syncRefJson();
+
+  /* Step 3 */
+  console.log('\n🧭  Updating Gallery nav in site.js…');
+  updateGalleryNav(gallery);
+
+  /* Summary */
   const byEx = {};
   gallery.forEach(({ exhibition }) => byEx[exhibition] = (byEx[exhibition]||0)+1);
 
-  console.log('\n✅  diat-gallery.json updated');
-  console.log(`   Total artworks: ${gallery.length}`);
-  console.log('\n   By exhibition:');
+  console.log('\n══════════════════════════════════════════');
+  console.log('✅  diat-gallery.json  —', gallery.length, 'artworks');
+  console.log('   By exhibition:');
   Object.entries(byEx).forEach(([k,v]) => console.log(`   • ${k}: ${v}`));
-  console.log('\n✅  cloudinary-ref.json written');
+  console.log('\n✅  cloudinary-ref.json');
   console.log(`   site: ${siteImgs.length} | staff: ${staffImgs.length} | event posters: ${posterImgs.length}`);
-  console.log('\n⚠️  Commit diat-gallery.json and cloudinary-ref.json.');
-  console.log('   Do NOT commit cloudinary-ref.json to production — it is for local use only.');
+  console.log('\n✅  site.js Gallery nav — auto-updated');
+  console.log('══════════════════════════════════════════');
+  console.log('\n⚠️  Add titles/descriptions in diat-gallery.json then:');
+  console.log('   git add diat-gallery.json site.js && git commit -m "sync: update gallery" && git push\n');
 }
 
 main().catch(err => {
