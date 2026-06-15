@@ -93,18 +93,16 @@
               Gallery
             </a>
             <div class="dept-nav__dropdown" role="menu" aria-label="Gallery sub-menu">
-              <a href="gallery.html"           class="dept-nav__drop-link" role="menuitem">&#128444; All Works</a>
+              <a href="gallery.html" class="dept-nav__drop-link" role="menuitem">&#128444; All Works</a>
               <div class="dept-nav__drop-divider" aria-hidden="true"></div>
-              <a href="gallery.html?disc=clay"    class="dept-nav__drop-link" role="menuitem">&#127994; Clay &amp; Earthenware</a>
-              <a href="gallery.html?disc=fibres"  class="dept-nav__drop-link" role="menuitem">&#129525; Fibres &amp; Fabrics</a>
-              <a href="gallery.html?disc=leather" class="dept-nav__drop-link" role="menuitem">&#128092; Leather Technology</a>
-              <a href="gallery.html?disc=metal"   class="dept-nav__drop-link" role="menuitem">&#9881; Metal Production</a>
-              <a href="gallery.html?disc=rattan"  class="dept-nav__drop-link" role="menuitem">&#127819; Rattan &amp; Bamboo</a>
-              <a href="gallery.html?disc=wood"    class="dept-nav__drop-link" role="menuitem">&#129683; Wood &amp; Furniture</a>
+              <a href="gallery.html#jul-2026" class="dept-nav__drop-link" role="menuitem">&#127912; 2026 July Open Sale</a>
+              <a href="gallery.html#mphil-2026" class="dept-nav__drop-link" role="menuitem">&#127891; 2026 MPhil Artwork Exhibition</a>
+              <a href="gallery.html#jan-2026" class="dept-nav__drop-link" role="menuitem">&#127912; January 2026 Open Sale</a>
+              <a href="gallery.html#nov-2025" class="dept-nav__drop-link" role="menuitem">&#127912; November 2025 Open Sale</a>
             </div>
           </li>
 
-          <!-- WebAR dropdown -->
+                    <!-- WebAR dropdown -->
           <li class="dept-nav__item" role="none">
             <a href="webar.html" class="dept-nav__link dept-nav__link--drop" aria-haspopup="true" aria-expanded="false">
               WebAR
