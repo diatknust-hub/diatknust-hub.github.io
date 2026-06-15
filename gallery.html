@@ -253,6 +253,25 @@
         max-width: 340px;
       }
     }
+    /* ── Small-category fix ─────────────────────────────────────
+       Categories with 1–3 artworks would over-stretch because
+       flex-grow distributes the full container width across very
+       few cards. CSS :nth-last-child() counts siblings precisely
+       without touching categories that have 4+ items.          */
+    .gal-masonry > .gal-card:only-child {
+      flex-grow: 0;
+      max-width: 560px;
+    }
+    .gal-masonry > .gal-card:first-child:nth-last-child(2),
+    .gal-masonry > .gal-card:first-child:nth-last-child(2) ~ .gal-card {
+      flex-grow: 0;
+      max-width: 500px;
+    }
+    .gal-masonry > .gal-card:first-child:nth-last-child(3),
+    .gal-masonry > .gal-card:first-child:nth-last-child(3) ~ .gal-card {
+      flex-grow: 0.2;
+      max-width: 420px;
+    }
     .gal-card:hover {
       box-shadow: 0 8px 28px rgba(0,0,0,.13);
       transform: translateY(-3px);
