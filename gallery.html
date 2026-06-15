@@ -203,13 +203,14 @@
       background: #fff;
       padding-top: 0;
     }
+    /* Justified flex grid — fixed row height, width ∝ aspect ratio */
     .gal-masonry {
-      column-count: 4;
-      column-gap: 14px;
-      padding: var(--sp-xl) 0 var(--sp-3xl);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: flex-start;
+      padding: var(--sp-lg) 0 var(--sp-xl);
     }
-    @media (max-width: 1100px) { .gal-masonry { column-count: 3; } }
-    @media (max-width: 768px)  { .gal-masonry { column-count: 2; column-gap: 10px; } }
 
     /* Loading state */
     .gal-loading {
@@ -230,10 +231,12 @@
 
     /* ── ARTWORK CARD — natural height for masonry ────────────── */
     .gal-card {
-      break-inside: avoid;
-      display: inline-block; /* required for CSS column masonry */
-      width: 100%;
-      margin-bottom: 14px;
+      flex-grow: var(--aspect, 1);
+      flex-shrink: 1;
+      flex-basis: calc(var(--aspect, 1) * 200px);
+      min-width: 120px;
+      max-width: 520px;
+      margin-bottom: 0;
       border-radius: var(--radius-lg);
       overflow: hidden;
       background: #fff;
@@ -243,26 +246,38 @@
                   border-color var(--dur-base);
       position: relative;
     }
-    @media (max-width: 768px) { .gal-card { margin-bottom: 10px; } }
+    @media (max-width: 768px) {
+      .gal-card {
+        flex-basis: calc(var(--aspect, 1) * 140px);
+        min-width: 100px;
+        max-width: 340px;
+      }
+    }
     .gal-card:hover {
       box-shadow: 0 8px 28px rgba(0,0,0,.13);
       transform: translateY(-3px);
       border-color: var(--clr-gold);
     }
-    /* Image wrapper — no fixed aspect-ratio so images keep natural height */
+    /* Justified grid — fixed height, cover fill, width from aspect ratio */
     .gal-card__img-wrap {
       width: 100%;
+      height: 220px;       /* uniform row height */
       overflow: hidden;
       position: relative;
       background: var(--clr-surface, #f5f5f0);
     }
     .gal-card__img {
       width: 100%;
-      height: auto;   /* natural height — this is what makes masonry work */
+      height: 100%;
+      object-fit: cover;   /* fill the fixed height, crop excess */
+      object-position: center;
       display: block;
       transition: transform var(--dur-slow) var(--ease-out);
       user-select: none;
       -webkit-user-drag: none;
+    }
+    @media (max-width: 768px) {
+      .gal-card__img-wrap { height: 160px; }
     }
     .gal-card:hover .gal-card__img { transform: scale(1.04); }
     /* Badges */
@@ -337,6 +352,12 @@
     .gal-exhibition__header {
       padding: var(--sp-lg) var(--sp-xl);
       background: var(--clr-indigo, #1a1a4e);
+      position: sticky;
+      top: 115px;   /* below site nav (~60px) + tab bar (~55px) */
+      z-index: 50;
+    }
+    @media (max-width: 768px) {
+      .gal-exhibition__header { top: 105px; padding: var(--sp-md); }
     }
     .gal-exhibition__title-row {
       display: flex; align-items: baseline;
@@ -650,26 +671,42 @@
     /* ══════════════════════════════════════════════════════════════════
      * LIGHTBOX — unchanged logic from previous version
      * ══════════════════════════════════════════════════════════════════ */
-    var LB = { title: '', sub: '', images: [], idx: 0 };
+    /* Flat list of all artworks — enables prev/next between artworks */
+    var GALLERY_ARTWORKS = [];
+    var LB = { title: '', sub: '', images: [], idx: 0, artworkIdx: 0 };
+
+    /* Touch swipe state for lightbox mobile navigation */
+    var touchStartX = 0;
 
     function openLightbox(e) {
       var card = e ? e.currentTarget : null;
       if (!card) return;
-      var rawImages = (card.getAttribute('data-images') || '').trim();
-      var angles    = parseInt(card.getAttribute('data-angles') || '1', 10);
-      var title     = card.getAttribute('data-title') || '';
-      var titleEl   = card.querySelector('.gal-card__title');
-      if (!title && titleEl) title = titleEl.textContent;
-      var subEl = card.querySelector('.gal-card__sub');
-      var sub   = subEl ? subEl.textContent : 'DIAT, KNUST';
 
-      var imgs = rawImages ? rawImages.split('|').map(function (s) { return s.trim(); }) : [];
-      while (imgs.length < angles) imgs.push('');
+      /* Find this artwork's position in the global list */
+      var artId  = card.getAttribute('data-artwork-id') || '';
+      var artIdx = GALLERY_ARTWORKS.findIndex(function (a) { return a.id === artId; });
+      if (artIdx < 0) artIdx = 0;
 
-      LB.title = title; LB.sub = sub; LB.images = imgs; LB.idx = 0;
-      buildLightbox();
+      loadArtworkIntoLightbox(artIdx);
       document.getElementById('gal-lb').classList.add('is-open');
       document.body.style.overflow = 'hidden';
+    }
+
+    function loadArtworkIntoLightbox(artIdx) {
+      LB.artworkIdx = artIdx;
+      var art = GALLERY_ARTWORKS[artIdx];
+      if (!art) return;
+
+      var thumbSrc = art.url_thumb || art.image_path || '';
+      var fullSrc  = art.url_full  || art.image_path || '';
+      var extras   = art.extra_images || [];
+      var imgs     = [fullSrc].concat(extras).filter(Boolean);
+
+      LB.title  = art.title || 'Untitled';
+      LB.sub    = art.artist || 'DIAT Student';
+      LB.images = imgs;
+      LB.idx    = 0;
+      buildLightbox();
     }
 
     function buildLightbox() {
@@ -679,13 +716,13 @@
 
       document.getElementById('lb-title').textContent = LB.title;
       document.getElementById('lb-sub').textContent   = LB.sub;
-      document.getElementById('lb-counter').textContent = (LB.idx + 1) + ' / ' + LB.images.length;
+      document.getElementById('lb-counter').textContent = (LB.artworkIdx + 1) + ' / ' + GALLERY_ARTWORKS.length;
 
       if (src) { img.src = src; img.alt = LB.title; img.style.display = 'block'; ph.style.display = 'none'; }
       else      { img.style.display = 'none'; ph.style.display = 'flex'; }
 
-      document.getElementById('lb-prev').disabled = (LB.idx === 0);
-      document.getElementById('lb-next').disabled = (LB.idx === LB.images.length - 1);
+      document.getElementById('lb-prev').disabled = (LB.artworkIdx === 0);
+      document.getElementById('lb-next').disabled = (LB.artworkIdx === GALLERY_ARTWORKS.length - 1);
 
       var thumbs = document.getElementById('lb-thumbs');
       thumbs.innerHTML = '';
@@ -710,9 +747,10 @@
     }
 
     function lbStep(dir) {
-      var next = LB.idx + dir;
-      if (next < 0 || next >= LB.images.length) return;
-      LB.idx = next; buildLightbox();
+      /* Navigate between artworks (not multi-angle images) */
+      var next = LB.artworkIdx + dir;
+      if (next < 0 || next >= GALLERY_ARTWORKS.length) return;
+      loadArtworkIntoLightbox(next);
     }
 
     function closeLightbox() {
@@ -730,6 +768,18 @@
       if (e.key === 'ArrowRight') lbStep(1);
       if (e.key === 'Escape')     closeLightbox();
     });
+
+    /* Touch swipe for mobile lightbox navigation */
+    (function () {
+      var lb = document.getElementById('gal-lb');
+      lb.addEventListener('touchstart', function (e) {
+        touchStartX = e.touches[0].clientX;
+      }, { passive: true });
+      lb.addEventListener('touchend', function (e) {
+        var diff = touchStartX - e.changedTouches[0].clientX;
+        if (Math.abs(diff) > 50) lbStep(diff > 0 ? 1 : -1);
+      }, { passive: true });
+    })();
 
 
     /* ══════════════════════════════════════════════════════════════════
@@ -768,11 +818,14 @@
 
     function buildCard(art) {
       /* New JSON uses url_thumb / url_full; fallback to legacy image_path */
-      var thumbSrc = art.url_thumb || art.image_path || '';
-      var fullSrc  = art.url_full  || art.image_path || '';
-      var extras   = art.extra_images || [];
-      var imgs     = [fullSrc].concat(extras).filter(Boolean);
-      var angles   = imgs.length;
+      var thumbSrc    = art.url_thumb || art.image_path || '';
+      var fullSrc     = art.url_full  || art.image_path || '';
+      var extras      = art.extra_images || [];
+      var imgs        = [fullSrc].concat(extras).filter(Boolean);
+      var angles      = imgs.length;
+      /* Aspect ratio from Cloudinary dimensions — drives flex-basis in justified grid */
+      var aspect      = (art.width && art.height)
+                        ? (art.width / art.height).toFixed(3) : '1.000';
 
       var imgHtml = thumbSrc
         ? '<img class="gal-card__img" src="' + thumbSrc + '" alt="' + esc(art.title) +
@@ -784,9 +837,11 @@
         ? '<span class="gal-card__ar-badge" aria-label="AR available">&#127918; AR</span>' : '';
 
       return '<article class="gal-card"'
+        + ' style="--aspect:' + aspect + '"'
         + ' onclick="openLightbox(event)"'
         + ' tabindex="0" role="button"'
-        + ' aria-label="' + esc(art.title) + '"'
+        + ' aria-label="' + esc(art.title || 'Artwork') + '"'
+        + ' data-artwork-id="' + esc(art.id || '') + '"'
         + ' data-disc="'   + esc(art.category || art.discipline || '') + '"'
         + ' data-year="'   + esc(art.year || '') + '"'
         + ' data-title="'  + esc(art.title) + '"'
@@ -900,6 +955,9 @@
           if (empty) empty.style.display = 'block';
           return;
         }
+
+        /* Store flat list for lightbox prev/next navigation */
+        GALLERY_ARTWORKS = artworks;
 
         /* Build exhibition tabs */
         buildExhibitionTabs(artworks, artworks.length);
