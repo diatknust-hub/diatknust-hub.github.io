@@ -1,6 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-P2KRZKF5SS"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-P2KRZKF5SS');
+  </script>
+
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <meta name="description" content="The Department of Indigenous Art and Technology (DIAT) at KNUST Ghana — preserving, teaching, and globally promoting Ghana's indigenous craft heritage since 1976."/>
@@ -431,97 +441,60 @@
       </div>
     </section>
 
-    <!-- ABOUT TEASER -->
-    <section class="dept-section dept-section--white" aria-labelledby="about-heading">
+    <!-- ═══ UPDATES FEED — dynamic, reads diat-updates.json ════════════ -->
+    <section class="updates-feed" aria-labelledby="updates-heading">
       <div class="container">
-        <div class="dept-about">
-          <div class="js-reveal">
-            <header class="dept-section__header">
-              <span class="dept-section__eyebrow">Who We Are</span>
-              <h2 class="dept-section__title" id="about-heading"
-                  data-cms-key="home-about-h2" data-cms-label="About Heading" data-cms-type="text">
-                A Department Unlike<br>Any Other in Ghana
-              </h2>
-              <div class="dept-section__rule" aria-hidden="true"></div>
-            </header>
-            <p class="dept-about__body" data-cms-key="home-about-p1" data-cms-label="About Para 1">
-              Founded in 1976 as the Institute of Rural Art and Industry (IRAI),
-              DIAT is the only university department in Ghana dedicated entirely
-              to indigenous craft disciplines &mdash; taught not as cultural history
-              but as living, professionally viable creative practices.
-            </p>
-            <p class="dept-about__body" data-cms-key="home-about-p2" data-cms-label="About Para 2">
-              Every student learns Computer-Aided Design before touching clay, metal,
-              leather, or wood. That CAD-to-craft approach bridges ancient Ghanaian
-              tradition with the demands of contemporary global markets.
-            </p>
-            <a href="about.html" class="btn btn--secondary btn--md" style="margin-top:var(--sp-lg)">
-              Read Our Story <span class="btn__arrow" aria-hidden="true">&#8594;</span>
-            </a>
-          </div>
-          <div class="dept-about__visual js-reveal js-reveal--delay-1">
-            <figure>
-              <img src="https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_800/diat-courtyard_okefm3.webp"
-                   alt="The DIAT courtyard at KNUST — decorative fountain surrounded by student-made ceramic sculptures and craft installations in a landscaped outdoor space"
-                   class="dept-about__img" loading="lazy" width="600" height="450">
-              <figcaption class="dept-about__img-caption">
-                The DIAT courtyard &mdash; KNUST campus, Kumasi, Ghana
-              </figcaption>
-            </figure>
-          </div>
+        <header class="dept-section__header" style="text-align:center;max-width:600px;margin-inline:auto">
+          <span class="dept-section__eyebrow">Latest From DIAT</span>
+          <h2 class="dept-section__title" id="updates-heading"
+              data-cms-key="home-updates-h2" data-cms-label="Updates Heading" data-cms-type="text">
+            What&rsquo;s Happening Now
+          </h2>
+          <div class="dept-section__rule" aria-hidden="true" style="margin-inline:auto"></div>
+        </header>
+        <div class="updates-feed__layout" id="updates-feed-layout">
+          <p class="updates-feed__loading">Loading latest updates&hellip;</p>
         </div>
-        <div class="dept-tripartite" style="margin-top:4rem">
-          <article class="dept-tri-card js-reveal">
-            <span class="dept-tri-card__icon" aria-hidden="true">&#127891;</span>
-            <h3 class="dept-tri-card__title" data-cms-key="home-tri1-t" data-cms-label="Tripartite 1 Title" data-cms-type="text">Academic Teaching</h3>
-            <p class="dept-tri-card__body" data-cms-key="home-tri1-b" data-cms-label="Tripartite 1 Body">Six craft disciplines taught to professional standard, underpinned by Product Design and CAD methodology across all four years.</p>
-          </article>
-          <article class="dept-tri-card js-reveal js-reveal--delay-1">
-            <span class="dept-tri-card__icon" aria-hidden="true">&#127775;</span>
-            <h3 class="dept-tri-card__title" data-cms-key="home-tri2-t" data-cms-label="Tripartite 2 Title" data-cms-type="text">Commercial Art Services</h3>
-            <p class="dept-tri-card__body" data-cms-key="home-tri2-b" data-cms-label="Tripartite 2 Body">Commissioned artwork, bespoke craft production, and design services offered to individual, corporate, and institutional clients.</p>
-          </article>
-          <article class="dept-tri-card js-reveal js-reveal--delay-2">
-            <span class="dept-tri-card__icon" aria-hidden="true">&#127807;</span>
-            <h3 class="dept-tri-card__title" data-cms-key="home-tri3-t" data-cms-label="Tripartite 3 Title" data-cms-type="text">Community Engagement</h3>
-            <p class="dept-tri-card__body" data-cms-key="home-tri3-b" data-cms-label="Tripartite 3 Body">Three-month nationwide internship embeds students with artisan communities across Ghana, formally attributing indigenous craft knowledge.</p>
-          </article>
+      </div>
+    </section>
+
+    <!-- ABOUT TEASER -->
+    <section class="dept-section dept-section--white dept-section--compact" aria-labelledby="about-heading">
+      <div class="container">
+        <div class="dept-compact-cta">
+          <span class="dept-section__eyebrow">Who We Are</span>
+          <h2 class="dept-section__title" id="about-heading"
+              data-cms-key="home-about-h2" data-cms-label="About Heading" data-cms-type="text">
+            A Department Unlike Any Other in Ghana
+          </h2>
+          <p class="dept-compact-cta__text" data-cms-key="home-about-p1" data-cms-label="About Para 1">
+            Founded in 1976, DIAT is the only university department in Ghana dedicated entirely
+            to indigenous craft disciplines &mdash; taught as living, professionally viable
+            creative practice, not cultural history.
+          </p>
+          <a href="about.html" class="btn btn--secondary btn--md">
+            Read Our Story <span class="btn__arrow" aria-hidden="true">&#8594;</span>
+          </a>
         </div>
       </div>
     </section>
 
     <!-- DISCIPLINES GRID -->
-    <section class="dept-programmes dept-section--surface" aria-labelledby="prog-heading">
+    <section class="dept-section dept-section--surface dept-section--compact" aria-labelledby="prog-heading">
       <div class="container">
-        <header class="dept-section__header">
+        <div class="dept-compact-cta">
           <span class="dept-section__eyebrow">Academic Programmes</span>
           <h2 class="dept-section__title" id="prog-heading"
               data-cms-key="home-prog-h2" data-cms-label="Programmes Heading" data-cms-type="text">
-            Six Craft Disciplines.<br>One Design Spine.
+            Six Craft Disciplines. One Design Spine.
           </h2>
-          <div class="dept-section__rule" aria-hidden="true"></div>
-        </header>
-        <div class="dept-programmes__grid">
-          <a href="product-design.html" class="dept-disc-card dept-disc-card--featured js-reveal" aria-label="Product Design — Foundational Programme">
-            <div class="dept-disc-card__icon-wrap dept-disc-card__icon-wrap--pd">
-              <span aria-hidden="true">&#128208;</span>
-            </div>
-            <div>
-              <span class="dept-disc-card__tag">Foundational &mdash; All Years</span>
-              <h3 class="dept-disc-card__title" data-cms-key="home-pd-t" data-cms-label="Product Design Title" data-cms-type="text">Product Design</h3>
-              <p class="dept-disc-card__body" data-cms-key="home-pd-b" data-cms-label="Product Design Body">Before any student throws clay, cuts leather, or forges metal, they design it digitally. Product Design runs across all four years &mdash; the intellectual and technical spine that connects every craft discipline at DIAT.</p>
-              <span class="dept-disc-card__read-more">Read more <span class="btn__arrow" aria-hidden="true">&#8594;</span></span>
-            </div>
+          <p class="dept-compact-cta__text" data-cms-key="home-prog-body" data-cms-label="Programmes Body">
+            Clay, Fibres, Leather, Metal, Rattan, and Wood &mdash; six disciplines, all underpinned
+            by Product Design and a shared CAD-to-craft methodology.
+          </p>
+          <a href="programmes.html" class="btn btn--secondary btn--md">
+            View All Programmes <span class="btn__arrow" aria-hidden="true">&#8594;</span>
           </a>
-          <a href="clay-earthenware.html"   class="dept-disc-card dept-disc-card--wide js-reveal" aria-label="Clay and Earthenware"><div class="dept-disc-card__icon-wrap dept-disc-card__icon-wrap--clay"><span aria-hidden="true">&#127994;</span></div><h3 class="dept-disc-card__title" data-cms-key="home-clay-t" data-cms-label="Clay Title" data-cms-type="text">Clay &amp; Earthenware</h3><p class="dept-disc-card__body" data-cms-key="home-clay-b" data-cms-label="Clay Body">From raw clay preparation through wheel-throwing, kiln firing, and surface decoration informed by Ghanaian pottery traditions.</p><span class="dept-disc-card__read-more">Read more <span class="btn__arrow" aria-hidden="true">&#8594;</span></span></a>
-          <a href="fibres-fabrics.html"     class="dept-disc-card dept-disc-card--std js-reveal js-reveal--delay-1" aria-label="Fibres and Fabrics"><div class="dept-disc-card__icon-wrap dept-disc-card__icon-wrap--fibres"><span aria-hidden="true">&#129525;</span></div><h3 class="dept-disc-card__title" data-cms-key="home-fib-t" data-cms-label="Fibres Title" data-cms-type="text">Fibres &amp; Fabrics</h3><p class="dept-disc-card__body" data-cms-key="home-fib-b" data-cms-label="Fibres Body">Kente weaving, adinkra printing, batik, macram&eacute;, and contemporary fibre art rooted in Ghana&#39;s extraordinary textile heritage.</p><span class="dept-disc-card__read-more">Read more <span class="btn__arrow" aria-hidden="true">&#8594;</span></span></a>
-          <a href="leather-technology.html" class="dept-disc-card dept-disc-card--std js-reveal js-reveal--delay-2" aria-label="Leather Technology"><div class="dept-disc-card__icon-wrap dept-disc-card__icon-wrap--leather"><span aria-hidden="true">&#128092;</span></div><h3 class="dept-disc-card__title" data-cms-key="home-lth-t" data-cms-label="Leather Title" data-cms-type="text">Leather Technology</h3><p class="dept-disc-card__body" data-cms-key="home-lth-b" data-cms-label="Leather Body">Tanning, pattern-making, stitching, and finishing &mdash; from West African craft traditions to contemporary market-ready leather goods.</p><span class="dept-disc-card__read-more">Read more <span class="btn__arrow" aria-hidden="true">&#8594;</span></span></a>
-          <a href="metal-production.html"   class="dept-disc-card dept-disc-card--wide js-reveal" aria-label="Metal Production"><div class="dept-disc-card__icon-wrap dept-disc-card__icon-wrap--metal"><span aria-hidden="true">&#9881;</span></div><h3 class="dept-disc-card__title" data-cms-key="home-met-t" data-cms-label="Metal Title" data-cms-type="text">Metal Production</h3><p class="dept-disc-card__body" data-cms-key="home-met-b" data-cms-label="Metal Body">Lost-wax casting, forging, welding, and fabrication &mdash; connected to the Ashanti goldsmithing heritage and modern architectural metalwork.</p><span class="dept-disc-card__read-more">Read more <span class="btn__arrow" aria-hidden="true">&#8594;</span></span></a>
-          <a href="rattan-bamboo.html"      class="dept-disc-card dept-disc-card--std js-reveal js-reveal--delay-1" aria-label="Rattan and Bamboo"><div class="dept-disc-card__icon-wrap dept-disc-card__icon-wrap--rattan"><span aria-hidden="true">&#127819;</span></div><h3 class="dept-disc-card__title" data-cms-key="home-rat-t" data-cms-label="Rattan Title" data-cms-type="text">Rattan &amp; Bamboo</h3><p class="dept-disc-card__body" data-cms-key="home-rat-b" data-cms-label="Rattan Body">Sustainable natural materials woven, bent, and constructed into furniture, decorative objects, and architectural installations.</p><span class="dept-disc-card__read-more">Read more <span class="btn__arrow" aria-hidden="true">&#8594;</span></span></a>
-          <a href="wood-furniture.html"     class="dept-disc-card dept-disc-card--std js-reveal js-reveal--delay-2" aria-label="Wood and Furniture"><div class="dept-disc-card__icon-wrap dept-disc-card__icon-wrap--wood"><span aria-hidden="true">&#129683;</span></div><h3 class="dept-disc-card__title" data-cms-key="home-wod-t" data-cms-label="Wood Title" data-cms-type="text">Wood &amp; Furniture</h3><p class="dept-disc-card__body" data-cms-key="home-wod-b" data-cms-label="Wood Body">Joinery, carving, turning, and furniture-making rooted in Ghana&#39;s tradition of carved stools, ceremonial doors, and royal objects.</p><span class="dept-disc-card__read-more">Read more <span class="btn__arrow" aria-hidden="true">&#8594;</span></span></a>
-        </div>
-        <div style="text-align:center;margin-top:var(--sp-xl)">
-          <a href="programmes.html" class="btn btn--secondary btn--md">View All Programmes <span class="btn__arrow" aria-hidden="true">&#8594;</span></a>
         </div>
       </div>
     </section>
@@ -550,34 +523,21 @@
     </section>
 
     <!-- COMMUNITY HIGHLIGHT -->
-    <section class="dept-section dept-section--surface" aria-labelledby="comm-heading">
+    <section class="dept-section dept-section--surface dept-section--compact" aria-labelledby="comm-heading">
       <div class="container">
-        <div class="dept-community">
-          <div class="dept-community__visual">
-            <img src="https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_1200/diat-garden_dbqxox.webp"
-                 alt="DIAT sculpture garden on the KNUST campus — permanent outdoor installations including a stone bust and ceramic works created by students"
-                 class="dept-community__visual-img" loading="lazy" width="600" height="480">
-          </div>
-          <div class="dept-community__content">
-            <span class="dept-section__eyebrow dept-section__eyebrow--light">Community &amp; Internship</span>
-            <h2 class="dept-section__title dept-section__title--light" id="comm-heading"
-                data-cms-key="home-comm-h2" data-cms-label="Community Heading" data-cms-type="text">
-              Learning from the<br>Artisan Community
-            </h2>
-            <p class="dept-community__body" data-cms-key="home-comm-body" data-cms-label="Community Body">
-              Partnering with the Mastercard Foundation and artisan communities across Ghana,
-              DIAT&#39;s three-month nationwide internship embeds Year 3 students with indigenous
-              craft practitioners &mdash; documenting, learning, and formally attributing living
-              cultural knowledge.
-            </p>
-            <div class="dept-community__partners">
-              <span class="dept-community__partner-badge">Mastercard Foundation</span>
-              <span class="dept-community__partner-badge">Nationwide</span>
-            </div>
-            <a href="community.html" class="btn btn--white btn--md" style="margin-top:var(--sp-lg)">
-              Learn More <span class="btn__arrow" aria-hidden="true">&#8594;</span>
-            </a>
-          </div>
+        <div class="dept-compact-cta">
+          <span class="dept-section__eyebrow">Community &amp; Internship</span>
+          <h2 class="dept-section__title" id="comm-heading"
+              data-cms-key="home-comm-h2" data-cms-label="Community Heading" data-cms-type="text">
+            Learning from the Artisan Community
+          </h2>
+          <p class="dept-compact-cta__text" data-cms-key="home-comm-body" data-cms-label="Community Body">
+            Partnering with the Mastercard Foundation, DIAT&rsquo;s three-month nationwide
+            internship embeds Year 3 students with artisan communities across Ghana.
+          </p>
+          <a href="community.html" class="btn btn--secondary btn--md">
+            Learn More <span class="btn__arrow" aria-hidden="true">&#8594;</span>
+          </a>
         </div>
       </div>
     </section>
@@ -652,6 +612,71 @@
         form.reset();
       });
     }
+  </script>
+
+  <!-- ═══ UPDATES FEED — fetches diat-updates.json, renders Option B layout ═══ -->
+  <script>
+  (function () {
+    var layout = document.getElementById('updates-feed-layout');
+    if (!layout) return;
+
+    function esc(s) {
+      return (s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+    function fmtDate(d) {
+      var dt = new Date(d);
+      if (isNaN(dt)) return '';
+      return dt.toLocaleDateString('en-GB', { day:'numeric', month:'short', year:'numeric' });
+    }
+    function playBadge(item) {
+      return item.youtube_id ? '<span class="updates-feed__play" aria-hidden="true">&#9658;</span>' : '';
+    }
+
+    fetch('diat-updates.json')
+      .then(function (r) { return r.json(); })
+      .then(function (items) {
+        items = (items || []).filter(function (i) { return i.active !== false; });
+        if (!items.length) { layout.innerHTML = ''; return; }
+
+        items.sort(function (a, b) {
+          if (!!a.pinned !== !!b.pinned) return a.pinned ? -1 : 1;
+          return new Date(b.date) - new Date(a.date);
+        });
+
+        var featured = items[0];
+        var rest     = items.slice(1, 5);
+
+        var html = '<a class="updates-feed__featured" href="' + esc(featured.story_url) + '">'
+          + '<div class="updates-feed__featured-media">'
+          +   '<img src="' + esc(featured.hero_image) + '" alt="' + esc(featured.title) + '" loading="lazy" draggable="false" oncontextmenu="return false">'
+          +   playBadge(featured)
+          + '</div>'
+          + '<div class="updates-feed__featured-body">'
+          +   '<span class="updates-feed__category">' + esc(featured.category) + '</span>'
+          +   '<h3 class="updates-feed__featured-title">' + esc(featured.headline || featured.title) + '</h3>'
+          +   '<p class="updates-feed__featured-text">' + esc(featured.body) + '</p>'
+          +   '<span class="updates-feed__date">' + fmtDate(featured.date) + '</span>'
+          + '</div></a>';
+
+        if (rest.length) {
+          html += '<div class="updates-feed__list">' + rest.map(function (item) {
+            return '<a class="updates-feed__list-item" href="' + esc(item.story_url) + '">'
+              + '<div class="updates-feed__list-thumb">'
+              +   '<img src="' + esc(item.hero_image) + '" alt="' + esc(item.title) + '" loading="lazy" draggable="false" oncontextmenu="return false">'
+              +   playBadge(item)
+              + '</div>'
+              + '<div class="updates-feed__list-body">'
+              +   '<span class="updates-feed__category updates-feed__category--sm">' + esc(item.category) + '</span>'
+              +   '<h4 class="updates-feed__list-title">' + esc(item.title) + '</h4>'
+              +   '<span class="updates-feed__date updates-feed__date--sm">' + fmtDate(item.date) + '</span>'
+              + '</div></a>';
+          }).join('') + '</div>';
+        }
+
+        layout.innerHTML = html;
+      })
+      .catch(function () { layout.innerHTML = ''; });
+  })();
   </script>
   <script src="site.js?v=4"></script>
   <script src="cms.js?v=4"></script>

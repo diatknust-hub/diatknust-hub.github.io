@@ -1,6 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-P2KRZKF5SS"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-P2KRZKF5SS');
+  </script>
+
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <meta name="theme-color" content="#1A1A4E"/>
@@ -1086,26 +1096,11 @@
           );
         }
 
-        /* Load selected or first model */
+        /* Load the first model */
         setTimeout(function() {
-          var params = new URLSearchParams(window.location.search);
-          var artParam = params.get('art');
-          var targetBtn = null;
-          if (artParam) {
-            var btns = list.querySelectorAll('.webar-artwork-btn');
-            for (var idx = 0; idx < btns.length; idx++) {
-              var title = btns[idx].getAttribute('data-title');
-              if (title && title.toLowerCase() === artParam.toLowerCase()) {
-                targetBtn = btns[idx];
-                break;
-              }
-            }
-          }
-          if (!targetBtn) {
-            targetBtn = list.querySelector('.webar-artwork-btn');
-          }
-          if (targetBtn && typeof loadArtwork === 'function') {
-            loadArtwork(targetBtn);
+          var firstBtn = list.querySelector('.webar-artwork-btn');
+          if (firstBtn && typeof loadArtwork === 'function') {
+            loadArtwork(firstBtn);
           }
         }, 100);
       })
