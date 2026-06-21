@@ -85,27 +85,45 @@
       min-height: 0;
     }
 
-    /* ── VIEWER STAGE — sticky on scroll, full width ────────────── */
+    /* ── VIEWER MODAL — hidden by default, opens on thumbnail tap ──
+       The grid is the primary view now. Tapping a card calls the
+       existing loadArtwork() unchanged, then reveals this overlay. ── */
     .webar-stage {
-      display: flex;
+      display: none;
       flex-direction: column;
       background: var(--clr-earth);
-      position: sticky;
-      top: 100px; /* fallback — setStageTop() sets the precise value at runtime */
-      z-index: 40;
+      position: fixed;
+      inset: 0;
+      z-index: 300;
       overflow: hidden;
-      height: 62vh;
-      max-height: 600px;
-      min-height: 360px;
-      box-shadow: 0 8px 24px rgba(0,0,0,.15);
     }
+    .webar-stage.is-open { display: flex; }
     .webar-stage:fullscreen,
     .webar-stage:-webkit-full-screen {
       width: 100vw;
       height: 100vh;
-      max-height: none;
-      top: 0;
     }
+
+    /* Close button — top-left, mirrors fullscreen button on the right */
+    .webar-viewer-close {
+      position: absolute;
+      top: var(--sp-sm);
+      left: var(--sp-sm);
+      width: 38px;
+      height: 38px;
+      border-radius: var(--radius-full);
+      background: rgba(26,26,78,.55);
+      color: var(--clr-text-inverse);
+      border: none;
+      font-size: 1.2rem;
+      cursor: pointer;
+      z-index: 45;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background var(--dur-fast) var(--ease-out);
+    }
+    .webar-viewer-close:hover { background: rgba(201,149,42,.85); }
 
     /* ── PREV/NEXT NAV ARROWS — overlaid on stage edges ─────────── */
     .webar-nav-arrow {
@@ -160,13 +178,6 @@
     .webar-card .gal-card__disc-tag--pilot {
       background: var(--clr-gold);
       color: var(--clr-white);
-    }
-
-    /* Exhibition headers don't need their own sticky behaviour here —
-       the viewer stage above already stays pinned while scrolling. */
-    body[data-page="webar"] .gal-exhibition__header {
-      position: static;
-      top: auto;
     }
 
     /* ── VIEWER STAGE (model-viewer fill) ─────────────────────────── */
@@ -326,11 +337,6 @@
      *   horizontal scroll) and minmax for the stage.
      * ──────────────────────────────────────────────────────────── */
     @media (max-width: 768px) {
-      .webar-stage {
-        height: 45vh;
-        min-height: 300px;
-        max-height: 420px;
-      }
       .webar-nav-arrow {
         width: 38px;
         height: 38px;
@@ -686,18 +692,6 @@
       .gal-exhibition__header { padding: var(--sp-md); }
       .gal-category { padding: var(--sp-md) var(--sp-md) 0; }
     }
-
-
-
-    /* On this page the viewer stage (above) is already sticky and far
-       taller than a tab bar — making the tabs ALSO sticky would stack
-       two pinned elements awkwardly. Tabs scroll away normally here. */
-    body[data-page="webar"] .gal-tabs-wrap {
-      position: static;
-      top: auto;
-      z-index: auto;
-      box-shadow: none;
-    }
   </style>
 </head>
 <body data-page="webar">
@@ -748,8 +742,10 @@
 
         <div class="webar-page" aria-label="WebAR Artwork Viewer">
 
-      <!-- ═══ STICKY VIEWER STAGE ═══════════════════════════════════════ -->
+      <!-- ═══ VIEWER MODAL — hidden by default, opens on thumbnail tap ═══ -->
       <div class="webar-stage" id="webar-stage">
+
+        <button class="webar-viewer-close" id="webar-viewer-close" aria-label="Close 3D viewer">&#10005;</button>
 
         <!--
           model-viewer CONFIGURATION — Pixel 8 Pro optimised
@@ -1107,10 +1103,10 @@
         ? '<span class="gal-card__disc-tag gal-card__disc-tag--pilot">&#9733; Pilot Model</span> '
         : '';
 
-      return '<article class="webar-card gal-card' + (idx === 0 ? ' is-active' : '') + '"'
+      return '<article class="webar-card gal-card"'
         + ' tabindex="0" role="button"'
         + ' aria-label="View ' + esc(model.title) + ' in 3D and AR"'
-        + ' aria-pressed="' + (idx === 0 ? 'true' : 'false') + '"'
+        + ' aria-pressed="false"'
         + ' data-glb="'        + esc(glb)  + '"'
         + ' data-usdz="'       + esc(usdz) + '"'
         + ' data-title="'      + esc(model.title)      + '"'
@@ -1191,11 +1187,13 @@
       cards.forEach(function (card) {
         card.addEventListener('click', function () {
           if (typeof loadArtwork === 'function') loadArtwork(card);
+          if (typeof openWebarViewer === 'function') openWebarViewer();
         });
         card.addEventListener('keydown', function (e) {
           if (e.key === 'Enter' || e.key === ' ') {
             e.preventDefault();
             if (typeof loadArtwork === 'function') loadArtwork(card);
+            if (typeof openWebarViewer === 'function') openWebarViewer();
           }
         });
       });
@@ -1235,12 +1233,8 @@
         if (loading) loading.style.display = 'none';
 
         wireCards();
-
-        /* Load the first model */
-        setTimeout(function () {
-          var firstCard = sections.querySelector('.webar-card');
-          if (firstCard && typeof loadArtwork === 'function') loadArtwork(firstCard);
-        }, 100);
+        /* Grid is the primary view now — the viewer modal stays closed
+           until a thumbnail is actually tapped. No auto-load here. */
       })
       .catch(function () {
         var loading = document.getElementById('webar-grid-loading');
@@ -1283,15 +1277,16 @@
   });
   </script>
 
-  <!-- ── setStageTop — measures visible sticky/fixed bars (site announce,
-       header, dept nav) and positions the sticky viewer stage exactly
-       below them. Same technique already used by gallery.html's
-       setTabsTop(), kept as an independent copy per the isolation rule. ── -->
+  <!-- ── setTabsTop — measures visible sticky/fixed bars (site announce,
+       header, dept nav) and positions the sticky tab bar exactly below
+       them. Same technique already used by gallery.html's setTabsTop(),
+       kept as an independent copy per the isolation rule. The viewer
+       is now a full-screen modal, so it no longer needs this. ───────── -->
   <script>
   (function () {
-    function setStageTop() {
-      var stage = document.querySelector('.webar-stage');
-      if (!stage) return;
+    function setTabsTop() {
+      var wrap = document.querySelector('.gal-tabs-wrap');
+      if (!wrap) return;
       var offset = 0;
       ['.site-announce', '.site-header', '.dept-nav'].forEach(function (sel) {
         var el = document.querySelector(sel);
@@ -1299,14 +1294,41 @@
           offset += el.offsetHeight;
         }
       });
-      stage.style.top = offset + 'px';
+      wrap.style.top = offset + 'px';
     }
     if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', setStageTop);
+      document.addEventListener('DOMContentLoaded', setTabsTop);
     } else {
-      setStageTop();
+      setTabsTop();
     }
-    window.addEventListener('resize', setStageTop, { passive: true });
+    window.addEventListener('resize', setTabsTop, { passive: true });
+  })();
+  </script>
+
+  <!-- ── Viewer modal open/close — grid is the primary view; the 3D
+       viewer only appears once a thumbnail is tapped. ────────────────── -->
+  <script>
+  (function () {
+    var stage = document.getElementById('webar-stage');
+    var closeBtn = document.getElementById('webar-viewer-close');
+    if (!stage) return;
+
+    window.openWebarViewer = function () { stage.classList.add('is-open'); };
+    window.closeWebarViewer = function () {
+      stage.classList.remove('is-open');
+      if (document.fullscreenElement || document.webkitFullscreenElement) {
+        if (document.exitFullscreen) document.exitFullscreen();
+        else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
+      }
+    };
+
+    if (closeBtn) closeBtn.addEventListener('click', window.closeWebarViewer);
+
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && stage.classList.contains('is-open')) {
+        window.closeWebarViewer();
+      }
+    });
   })();
   </script>
 </body>
