@@ -616,6 +616,27 @@
       font-size: var(--fs-xs);
       color: var(--clr-text-tertiary);
     }
+    /* Like button — overlaid top-right on the thumbnail image */
+    .gal-card__like {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      background: rgba(0,0,0,.55);
+      border: none;
+      border-radius: var(--radius-full);
+      padding: 5px 10px;
+      cursor: pointer;
+      z-index: 5;
+      transition: background var(--dur-fast) var(--ease-out), transform var(--dur-fast) var(--ease-out);
+    }
+    .gal-card__like:hover { background: rgba(0,0,0,.75); transform: scale(1.06); }
+    .gal-card__like-icon { font-size: 14px; color: #fff; line-height: 1; }
+    .gal-card__like-count { font-size: 11px; color: #fff; font-weight: 700; min-width: 8px; }
+    .gal-card__like.is-liked { background: rgba(0,0,0,.7); }
+    .gal-card__like.is-liked .gal-card__like-icon { color: var(--clr-gold); }
     /* Card body */
     .gal-card__body { padding: var(--sp-sm) var(--sp-md) var(--sp-md); }
     .gal-card__title {
@@ -703,6 +724,9 @@
       .gal-category { padding: var(--sp-md) var(--sp-md) 0; }
     }
   </style>
+  <!-- Firebase (compat build — matches this site's plain-script style, no bundler needed) -->
+  <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore-compat.js"></script>
 </head>
 <body data-page="webar">
   <a href="#main-content" class="skip-link">Skip to main content</a>
@@ -1116,6 +1140,16 @@
         ? '<span class="gal-card__disc-tag gal-card__disc-tag--pilot">&#9733; Pilot Model</span> '
         : '';
 
+      var baseName = String(model.glb_file || model.title || idx).replace(/\.glb$/i, '');
+      var itemId   = 'webar-' + esc(baseName);
+      var likeBtn  = '<button class="gal-card__like" type="button"'
+        + ' data-item-id="' + itemId + '"'
+        + ' aria-label="Like this model"'
+        + ' onclick="event.stopPropagation(); diatHandleLike(this);">'
+        + '<span class="gal-card__like-icon">&#9825;</span>'
+        + '<span class="gal-card__like-count js-like-count">0</span>'
+        + '</button>';
+
       return '<article class="webar-card gal-card"'
         + ' tabindex="0" role="button"'
         + ' aria-label="View ' + esc(model.title) + ' in 3D and AR"'
@@ -1125,7 +1159,7 @@
         + ' data-title="'      + esc(model.title)      + '"'
         + ' data-discipline="' + esc(model.discipline) + '"'
         + ' data-artist="DIAT, KNUST">'
-        + '<div class="gal-card__img-wrap">' + imgHtml + '</div>'
+        + '<div class="gal-card__img-wrap">' + imgHtml + likeBtn + '</div>'
         + '<div class="gal-card__body">'
         +   pilotTag
         +   '<h3 class="gal-card__title">' + esc(model.title) + '</h3>'
@@ -1203,6 +1237,7 @@
           if (typeof openWebarViewer === 'function') openWebarViewer();
         });
         card.addEventListener('keydown', function (e) {
+          if (e.target !== card) return; /* let descendant buttons (e.g. the like button) handle their own Enter/Space */
           if (e.key === 'Enter' || e.key === ' ') {
             e.preventDefault();
             if (typeof loadArtwork === 'function') loadArtwork(card);
@@ -1246,6 +1281,10 @@
         if (loading) loading.style.display = 'none';
 
         wireCards();
+        /* Load like counts + this browser's already-liked state */
+        if (typeof diatLoadReactionCounts === 'function') {
+          diatLoadReactionCounts('.gal-card__like');
+        }
         /* Grid is the primary view now — the viewer modal stays closed
            until a thumbnail is actually tapped. No auto-load here. */
       })
@@ -1358,6 +1397,65 @@
         window.closeWebarViewer();
       }
     });
+  })();
+  </script>
+
+  <!-- ── Reactions (Firebase) — isolated copy, same logic as gallery.html
+       per the established rule that this page never shares functions
+       with Gallery, so a change to one can never break the other. ──── -->
+  <script>
+  (function () {
+    if (typeof firebase === 'undefined') return;
+
+    var firebaseConfig = {
+      apiKey: "AIzaSyBFp_TPhnyzgahV3M3O7NG_NDxLorWq-f4",
+      authDomain: "diat-knust-hub.firebaseapp.com",
+      projectId: "diat-knust-hub",
+      storageBucket: "diat-knust-hub.firebasestorage.app",
+      messagingSenderId: "1089013646613",
+      appId: "1:1089013646613:web:4387cc2544837b7955151c"
+    };
+    if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+    var db = firebase.firestore();
+
+    window.diatLoadReactionCounts = function (selector) {
+      db.collection('reactions').get().then(function (snap) {
+        var counts = {};
+        snap.forEach(function (doc) { counts[doc.id] = doc.data().count || 0; });
+        document.querySelectorAll(selector).forEach(function (btn) {
+          var id = btn.getAttribute('data-item-id');
+          var countEl = btn.querySelector('.js-like-count');
+          if (countEl) countEl.textContent = counts[id] || 0;
+          if (id && localStorage.getItem('liked:' + id)) {
+            btn.classList.add('is-liked');
+          }
+        });
+      }).catch(function (err) {
+        console.warn('Could not load reaction counts:', err);
+      });
+    };
+
+    window.diatHandleLike = function (btn) {
+      var id = btn.getAttribute('data-item-id');
+      if (!id || localStorage.getItem('liked:' + id)) return;
+
+      var countEl = btn.querySelector('.js-like-count');
+      var current = countEl ? (parseInt(countEl.textContent, 10) || 0) : 0;
+
+      btn.classList.add('is-liked');
+      if (countEl) countEl.textContent = current + 1;
+      localStorage.setItem('liked:' + id, '1');
+
+      db.collection('reactions').doc(id).set(
+        { count: firebase.firestore.FieldValue.increment(1) },
+        { merge: true }
+      ).catch(function (err) {
+        btn.classList.remove('is-liked');
+        if (countEl) countEl.textContent = current;
+        localStorage.removeItem('liked:' + id);
+        console.warn('Like failed:', err);
+      });
+    };
   })();
   </script>
 </body>
