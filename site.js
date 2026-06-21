@@ -62,7 +62,6 @@
       </svg>
     </div>
   </header>
-<header>
     <nav class="dept-nav" id="dept-nav" aria-label="Primary navigation">
       <div class="container dept-nav__inner">
         <a href="index.html" class="dept-nav__brand" aria-label="DIAT KNUST home">
@@ -227,8 +226,7 @@
       <a href="archive.html" class="dept-nav__drawer-link">Digital Archive</a>
       <a href="contact.html"    class="dept-nav__drawer-link">Contact</a>
       <a href="gallery.html"    class="dept-nav__drawer-cta">View Gallery &#8594;</a>
-    </nav>
-  </header>`;
+    </nav>`;
 
   var FOOTER = `<footer class="site-footer" role="contentinfo" aria-label="Site footer">
     <div class="container">

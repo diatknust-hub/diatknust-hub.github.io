@@ -1,0 +1,27 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Rules for reactions / likes collection
+    match /reactions/{itemId} {
+      // Anyone can read reaction counts
+      allow read: if true;
+
+      // Allow creating a reaction count, starting at exactly 1
+      allow create: if request.resource.data.keys().hasOnly(['count'])
+                    && request.resource.data.count == 1;
+
+      // Allow incrementing a reaction count by exactly 1
+      allow update: if request.resource.data.keys().hasOnly(['count'])
+                    && request.resource.data.count == resource.data.count + 1;
+
+      // Deletion is strictly prohibited for clients
+      allow delete: if false;
+    }
+
+    // Default rule: block all other access
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

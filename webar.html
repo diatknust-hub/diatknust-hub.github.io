@@ -13,6 +13,7 @@
 
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.gstatic.com https://ajax.googleapis.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https://res.cloudinary.com; media-src 'self' https://res.cloudinary.com; connect-src 'self' blob: https://*.googleapis.com https://res.cloudinary.com https://cdn.jsdelivr.net https://www.google-analytics.com https://www.google.com; object-src 'none';"/>
   <meta name="theme-color" content="#1A1A4E"/>
   <meta name="description" content="DIAT WebAR — View indigenous craft artworks in Augmented Reality. Place student-made 3D objects in your real environment."/>
   <title>WebAR Viewer — DIAT | KNUST Ghana</title>
@@ -28,7 +29,9 @@
               Desktop (3D viewer with camera controls).
   -->
   <script type="module"
-    src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.5.0/model-viewer.min.js">
+    src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.5.0/model-viewer.min.js"
+    integrity="sha384-Ftcjj/GNLxPvzNDftO/oryXB9aGxsGZY9JGqsXG0uUKgQDl9RfDgsx9NJ/4IVNPe"
+    crossorigin="anonymous">
   </script>
 
   <style>
@@ -180,15 +183,8 @@
       color: var(--clr-white);
     }
 
-    /* Exhibition headers don't go sticky on this page — this page can
-       show TWO extra conditional banners (Chrome recommendation,
-       browser notice) that Gallery never has, which would make a
-       second stacked sticky offset unreliable to compute correctly.
-       The single sticky tabs bar below already keeps orientation. */
-    body[data-page="webar"] .gal-exhibition__header {
-      position: static;
-      top: auto;
-    }
+    /* Exhibition headers are sticky on this page and their offset is
+       dynamically calculated by syncStickyOffsets() */
 
     /* ── VIEWER STAGE (model-viewer fill) ─────────────────────────── */
 
@@ -725,8 +721,8 @@
     }
   </style>
   <!-- Firebase (compat build — matches this site's plain-script style, no bundler needed) -->
-  <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-app-compat.js" integrity="sha384-1hBNr0agKHNFwbheHcAJzeLri4PPLTLbaXUH5d9CauwS3A/PrkIt2tzxBJK3bHjY" crossorigin="anonymous"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore-compat.js" integrity="sha384-qhzYx5B1KizZLjRTmJkBWYES6I+tL9Qz1J8BmFNo/18Ix+AtopUC1cuY3VW43Pe0" crossorigin="anonymous"></script>
 </head>
 <body data-page="webar">
   <a href="#main-content" class="skip-link">Skip to main content</a>
@@ -1281,6 +1277,13 @@
         if (loading) loading.style.display = 'none';
 
         wireCards();
+
+        /* Recalculate sticky offsets now that exhibition headers exist in DOM */
+        if (typeof syncStickyOffsets === 'function') {
+          setTimeout(syncStickyOffsets, 0);
+          setTimeout(syncStickyOffsets, 150);
+        }
+
         /* Load like counts + this browser's already-liked state */
         if (typeof diatLoadReactionCounts === 'function') {
           diatLoadReactionCounts('.gal-card__like');
@@ -1329,47 +1332,58 @@
   });
   </script>
 
-  <!-- ── setTabsTop — measures visible sticky/fixed bars (site announce,
-       header, dept nav) and positions the sticky tab bar exactly below
-       them. Same technique already used by gallery.html's setTabsTop(),
-       kept as an independent copy per the isolation rule. The viewer
-       is now a full-screen modal, so it no longer needs this. ───────── -->
+  <!-- ── syncStickyOffsets — dynamically measures every sticky bar and updates
+       the top offsets sequentially to guarantee zero gaps and zero overlaps. ── -->
   <script>
   (function () {
-    function setTabsTop() {
-      var wrap = document.querySelector('.gal-tabs-wrap');
-      if (!wrap) return;
-      var offset = 0;
-      /* Standard site nav bars — always present, position:sticky/fixed */
-      ['.site-announce', '.site-header', '.dept-nav'].forEach(function (sel) {
-        var el = document.querySelector(sel);
-        if (el && el.offsetHeight && getComputedStyle(el).position !== 'static') {
-          offset += el.offsetHeight;
-        }
-      });
-      /* This page's two CONDITIONAL banners — only present for non-Chrome
-         visitors, and dismissible, so check actual visibility each time
-         rather than assuming position alone. */
+    function syncStickyOffsets() {
+      // 1. Chrome Hint Banner (if visible/sticky)
       var chromeHint = document.getElementById('chrome-hint');
+      var chromeHintHeight = 0;
       if (chromeHint && chromeHint.offsetHeight && getComputedStyle(chromeHint).display !== 'none') {
-        offset += chromeHint.offsetHeight;
+        chromeHintHeight = chromeHint.offsetHeight;
+        chromeHint.style.top = '0px';
+        chromeHint.style.position = 'sticky';
       }
-      var browserNotice = document.getElementById('browser-notice');
-      if (browserNotice && browserNotice.classList.contains('is-visible') && browserNotice.offsetHeight) {
-        offset += browserNotice.offsetHeight;
+
+      // 2. Main Navigation Bar (.dept-nav)
+      var deptNav = document.querySelector('.dept-nav');
+      var deptNavHeight = 0;
+      if (deptNav) {
+        deptNav.style.position = 'sticky';
+        deptNav.style.top = chromeHintHeight + 'px';
+        deptNavHeight = deptNav.offsetHeight;
       }
-      wrap.style.top = offset + 'px';
+
+      // 3. Year/Collection Tabs (.gal-tabs-wrap)
+      var tabsWrap = document.querySelector('.gal-tabs-wrap');
+      var tabsWrapHeight = 0;
+      if (tabsWrap) {
+        tabsWrap.style.position = 'sticky';
+        tabsWrap.style.top = (chromeHintHeight + deptNavHeight) + 'px';
+        tabsWrapHeight = tabsWrap.offsetHeight;
+      }
+
+      // 4. Blue Exhibition Headers (.gal-exhibition__header)
+      var exhibitionHeaders = document.querySelectorAll('.gal-exhibition__header');
+      exhibitionHeaders.forEach(function (header) {
+        header.style.position = 'sticky';
+        header.style.top = (chromeHintHeight + deptNavHeight + tabsWrapHeight) + 'px';
+      });
     }
-    window.webarSetTabsTop = setTabsTop;
+
+    window.syncStickyOffsets = syncStickyOffsets;
+    window.webarSetTabsTop = syncStickyOffsets; // keep alias to avoid breaking standard calls
     if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', setTabsTop);
+      document.addEventListener('DOMContentLoaded', syncStickyOffsets);
     } else {
-      setTabsTop();
+      syncStickyOffsets();
     }
-    window.addEventListener('resize', setTabsTop, { passive: true });
+    window.addEventListener('resize', syncStickyOffsets, { passive: true });
     /* Banners load/measure asynchronously relative to this script —
        a short delayed re-check catches their real height reliably. */
-    setTimeout(setTabsTop, 300);
+    setTimeout(syncStickyOffsets, 300);
+    setTimeout(syncStickyOffsets, 1000);
   })();
   </script>
 

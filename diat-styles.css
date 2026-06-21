@@ -88,7 +88,7 @@ body {
   background-color: var(--clr-surface);
   line-height: var(--lh-base);
   -webkit-font-smoothing: antialiased;
-  overflow-x: hidden;
+  overflow-x: clip;
 }
 img, svg, video { display: block; max-width: 100%; }
 a { color: inherit; text-decoration: none; }
@@ -3416,11 +3416,11 @@ h1, h2, h3, h4, h5, h6 { font-family: var(--ff-display); line-height: var(--lh-h
  * ──────────────────────────────────────────────────────────── */
 @media (max-width: 768px) {
   html {
-    overflow-x: hidden;
+    overflow-x: clip;
     max-width: 100vw;
   }
   body {
-    overflow-x: hidden;
+    overflow-x: clip;
     max-width: 100%;
   }
   .dept-nav,
@@ -3428,7 +3428,7 @@ h1, h2, h3, h4, h5, h6 { font-family: var(--ff-display); line-height: var(--lh-h
   .dept-stats,
   .dept-section {
     max-width: 100vw;
-    overflow-x: hidden;
+    overflow-x: clip;
   }
 }
 

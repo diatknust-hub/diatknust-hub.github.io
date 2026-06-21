@@ -13,6 +13,7 @@
 
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.gstatic.com https://ajax.googleapis.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https://res.cloudinary.com; media-src 'self' https://res.cloudinary.com; connect-src 'self' blob: https://*.googleapis.com https://res.cloudinary.com https://cdn.jsdelivr.net https://www.google-analytics.com https://www.google.com; object-src 'none';"/>
   <meta name="theme-color" content="#1A1A4E"/>
   <meta name="description" content="DIAT Artwork Gallery — indigenous craft works by students and staff at KNUST Ghana, spanning Clay, Fibres, Leather, Metal, Rattan and Wood disciplines."/>
   <title>Artwork Gallery — DIAT | KNUST Ghana</title>
@@ -543,35 +544,55 @@
   </style>
 
   <script>
-  /* setTabsTop — measures every sticky/fixed bar visible at the top of
-     the viewport and sets .gal-tabs-wrap sticky top exactly below them. */
-  function setTabsTop() {
-    var wrap = document.querySelector('.gal-tabs-wrap');
-    if (!wrap) return;
-    var offset = 0;
-    ['.site-announce', '.site-header', '.dept-nav'].forEach(function(sel) {
-      var el = document.querySelector(sel);
-      if (!el) return;
-      var pos = getComputedStyle(el).position;
-      if (pos === 'sticky' || pos === 'fixed') offset += el.getBoundingClientRect().height;
+  /* syncStickyOffsets — dynamically measures every sticky bar and updates
+     the top offsets sequentially to guarantee zero gaps and zero overlaps. */
+  function syncStickyOffsets() {
+    // 1. Chrome Hint Banner (if visible/sticky)
+    var chromeHint = document.getElementById('chrome-hint');
+    var chromeHintHeight = 0;
+    if (chromeHint && chromeHint.offsetHeight && getComputedStyle(chromeHint).display !== 'none') {
+      chromeHintHeight = chromeHint.offsetHeight;
+      chromeHint.style.top = '0px';
+      chromeHint.style.position = 'sticky';
+    }
+
+    // 2. Main Navigation Bar (.dept-nav)
+    var deptNav = document.querySelector('.dept-nav');
+    var deptNavHeight = 0;
+    if (deptNav) {
+      deptNav.style.position = 'sticky';
+      deptNav.style.top = chromeHintHeight + 'px';
+      deptNavHeight = deptNav.offsetHeight;
+    }
+
+    // 3. Year/Collection Tabs (.gal-tabs-wrap)
+    var tabsWrap = document.querySelector('.gal-tabs-wrap');
+    var tabsWrapHeight = 0;
+    if (tabsWrap) {
+      tabsWrap.style.position = 'sticky';
+      tabsWrap.style.top = (chromeHintHeight + deptNavHeight) + 'px';
+      tabsWrapHeight = tabsWrap.offsetHeight;
+    }
+
+    // 4. Blue Exhibition Headers (.gal-exhibition__header)
+    var exhibitionHeaders = document.querySelectorAll('.gal-exhibition__header');
+    exhibitionHeaders.forEach(function (header) {
+      header.style.position = 'sticky';
+      header.style.top = (chromeHintHeight + deptNavHeight + tabsWrapHeight) + 'px';
     });
-    wrap.style.top = offset + 'px';
   }
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', setTabsTop);
-  } else { setTabsTop(); }
-  window.addEventListener('resize', setTabsTop, { passive: true });
-  /* FIX: site.js injects the announce bar + nav on the SAME
-     DOMContentLoaded event, but its listener is registered after this
-     one — so the first run above measures a nav that doesn't exist yet.
-     A deferred re-check after the synchronous listener stack finishes
-     (plus a short safety-margin re-check) catches the real height. */
-  setTimeout(setTabsTop, 0);
-  setTimeout(setTabsTop, 300);
+    document.addEventListener('DOMContentLoaded', syncStickyOffsets);
+  } else { syncStickyOffsets(); }
+  window.addEventListener('resize', syncStickyOffsets, { passive: true });
+  /* Deferred checks to catch asynchronously injected navigation and font loads */
+  setTimeout(syncStickyOffsets, 0);
+  setTimeout(syncStickyOffsets, 300);
+  setTimeout(syncStickyOffsets, 1000);
   </script>
   <!-- Firebase (compat build — matches this site's plain-script style, no bundler needed) -->
-  <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-app-compat.js" integrity="sha384-1hBNr0agKHNFwbheHcAJzeLri4PPLTLbaXUH5d9CauwS3A/PrkIt2tzxBJK3bHjY" crossorigin="anonymous"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore-compat.js" integrity="sha384-qhzYx5B1KizZLjRTmJkBWYES6I+tL9Qz1J8BmFNo/18Ix+AtopUC1cuY3VW43Pe0" crossorigin="anonymous"></script>
 </head>
 <body data-page="gallery">
   <a href="#main-content" class="skip-link">Skip to main content</a>
@@ -1050,6 +1071,12 @@
         /* Render grouped exhibition → category → cards */
         grid.innerHTML = buildExhibitionSections(artworks);
         grid.style.display = '';
+
+        /* Recalculate sticky offsets now that exhibition headers exist in DOM */
+        if (typeof syncStickyOffsets === 'function') {
+          setTimeout(syncStickyOffsets, 0);
+          setTimeout(syncStickyOffsets, 150);
+        }
 
         /* Load like counts + this browser's already-liked state */
         if (typeof diatLoadReactionCounts === 'function') {
