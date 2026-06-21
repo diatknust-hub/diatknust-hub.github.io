@@ -79,120 +79,97 @@
 
     /* ── ARTWORK SELECTOR SIDEBAR ─────────────────────────────── */
     .webar-page {
-      display: grid;
-      grid-template-columns: 300px 1fr;
+      display: flex;
+      flex-direction: column;
       flex: 1;
       min-height: 0;
     }
 
-    .webar-sidebar {
-      background: var(--clr-indigo);
-      overflow-y: auto;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .webar-sidebar__header {
-      padding: var(--sp-lg);
-      border-bottom: 1px solid rgba(255,255,255,.08);
-      flex-shrink: 0;
-    }
-    .webar-sidebar__heading {
-      font-family: var(--ff-display);
-      font-size: var(--fs-md);
-      font-weight: 700;
-      color: var(--clr-text-inverse);
-      margin-bottom: var(--sp-2xs);
-    }
-    .webar-sidebar__sub {
-      font-size: var(--fs-xs);
-      color: rgba(255,255,255,.4);
-      line-height: 1.4;
-    }
-
-    .webar-sidebar__list {
-      padding: var(--sp-sm);
-      display: flex;
-      flex-direction: column;
-      gap: var(--sp-xs);
-      flex: 1;
-    }
-
-    .webar-artwork-btn {
-      display: block;
-      width: 100%;
-      text-align: left;
-      padding: var(--sp-md);
-      background: rgba(255,255,255,.06);
-      border: 1px solid rgba(255,255,255,.1);
-      border-radius: var(--radius-md);
-      cursor: pointer;
-      font-family: var(--ff-body);
-      /* Increased from .6 → .85 — readable on dark indigo */
-      color: rgba(255,255,255,.85);
-      transition: all var(--dur-fast) var(--ease-out);
-      position: relative;
-    }
-    .webar-artwork-btn:hover {
-      background: rgba(201,149,42,.12);
-      border-color: rgba(201,149,42,.3);
-      color: rgba(255,255,255,.85);
-    }
-    .webar-artwork-btn.is-active {
-      background: rgba(201,149,42,.18);
-      border-color: var(--clr-gold);
-      color: var(--clr-text-inverse);
-    }
-    .webar-artwork-btn.is-active::before {
-      content: '';
-      position: absolute;
-      left: 0;
-      top: 0;
-      bottom: 0;
-      width: 3px;
-      background: var(--clr-gold);
-      border-radius: var(--radius-sm) 0 0 var(--radius-sm);
-    }
-    .webar-artwork-btn__pilot {
-      display: inline-block;
-      font-size: 0.55rem;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      background: var(--clr-gold);
-      color: var(--clr-text-inverse);
-      padding: 2px 6px;
-      border-radius: var(--radius-full);
-      margin-bottom: var(--sp-2xs);
-    }
-    .webar-artwork-btn__name {
-      display: block;
-      font-size: var(--fs-sm);
-      font-weight: 600;
-      line-height: 1.3;
-      margin-bottom: 2px;
-    }
-    .webar-artwork-btn__meta {
-      font-size: var(--fs-xs);
-      color: var(--clr-gold);
-      letter-spacing: var(--ls-wide);
-      text-transform: uppercase;
-    }
-
-    .webar-sidebar__footer {
-      padding: var(--sp-md);
-      border-top: 1px solid rgba(255,255,255,.06);
-      flex-shrink: 0;
-    }
-
-    /* ── VIEWER STAGE ─────────────────────────────────────────── */
+    /* ── VIEWER STAGE — sticky on scroll, full width ────────────── */
     .webar-stage {
       display: flex;
       flex-direction: column;
       background: var(--clr-earth);
-      position: relative;
+      position: sticky;
+      top: 100px; /* fallback — setStageTop() sets the precise value at runtime */
+      z-index: 40;
       overflow: hidden;
+      height: 62vh;
+      max-height: 600px;
+      min-height: 360px;
+      box-shadow: 0 8px 24px rgba(0,0,0,.15);
     }
+    .webar-stage:fullscreen,
+    .webar-stage:-webkit-full-screen {
+      width: 100vw;
+      height: 100vh;
+      max-height: none;
+      top: 0;
+    }
+
+    /* ── PREV/NEXT NAV ARROWS — overlaid on stage edges ─────────── */
+    .webar-nav-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: rgba(26,26,78,.55);
+      color: var(--clr-text-inverse);
+      border: none;
+      font-size: 1.4rem;
+      line-height: 1;
+      cursor: pointer;
+      z-index: 45;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background var(--dur-fast) var(--ease-out);
+    }
+    .webar-nav-arrow:hover { background: rgba(201,149,42,.85); }
+    .webar-nav-arrow--prev { left: var(--sp-sm); }
+    .webar-nav-arrow--next { right: var(--sp-sm); }
+
+    /* ── FULLSCREEN BUTTON — top-right corner of stage ──────────── */
+    .webar-fullscreen-btn {
+      position: absolute;
+      top: var(--sp-sm);
+      right: var(--sp-sm);
+      width: 38px;
+      height: 38px;
+      border-radius: var(--radius-full);
+      background: rgba(26,26,78,.55);
+      color: var(--clr-text-inverse);
+      border: none;
+      font-size: 1rem;
+      cursor: pointer;
+      z-index: 45;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background var(--dur-fast) var(--ease-out);
+    }
+    .webar-fullscreen-btn:hover { background: rgba(201,149,42,.85); }
+
+    /* ── WEBAR CARD — reuses .gal-card structure, adds active state ── */
+    .webar-card.gal-card.is-active {
+      border: 2px solid var(--clr-gold);
+      box-shadow: 0 0 0 3px rgba(201,149,42,.25);
+    }
+    .webar-card .gal-card__disc-tag--pilot {
+      background: var(--clr-gold);
+      color: var(--clr-white);
+    }
+
+    /* Exhibition headers don't need their own sticky behaviour here —
+       the viewer stage above already stays pinned while scrolling. */
+    body[data-page="webar"] .gal-exhibition__header {
+      position: static;
+      top: auto;
+    }
+
+    /* ── VIEWER STAGE (model-viewer fill) ─────────────────────────── */
 
     /* model-viewer fills the stage */
     model-viewer {
@@ -332,66 +309,6 @@
       flex-shrink: 0;
     }
 
-    /* ── MOBILE ARTWORK NAVIGATOR ────────────────────────────────
-     * Floating bottom bar — mobile only (≤768px).
-     * Gives users a clear Prev/Next control after viewing an artwork.
-     * Hidden on desktop where the sidebar is always visible.
-     * ──────────────────────────────────────────────────────────── */
-    .webar-mobile-nav {
-      display: none; /* shown only at ≤768px */
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      background: var(--clr-indigo);
-      border-top: 2px solid var(--clr-gold);
-      padding: var(--sp-sm) var(--sp-md);
-      z-index: 50;
-      align-items: center;
-      gap: var(--sp-sm);
-      box-shadow: 0 -4px 20px rgba(0,0,0,.35);
-    }
-    .webar-mobile-nav__btn {
-      background: rgba(201,149,42,.15);
-      border: 1px solid rgba(201,149,42,.4);
-      border-radius: var(--radius-full);
-      color: var(--clr-gold);
-      font-family: var(--ff-body);
-      font-size: var(--fs-sm);
-      font-weight: 700;
-      padding: var(--sp-xs) var(--sp-md);
-      cursor: pointer;
-      white-space: nowrap;
-      flex-shrink: 0;
-      transition: all var(--dur-fast);
-    }
-    .webar-mobile-nav__btn:hover,
-    .webar-mobile-nav__btn:active {
-      background: var(--clr-gold);
-      color: var(--clr-text-inverse);
-    }
-    .webar-mobile-nav__label {
-      flex: 1;
-      text-align: center;
-      min-width: 0;
-      overflow: hidden;
-    }
-    .webar-mobile-nav__name {
-      display: block;
-      font-size: var(--fs-sm);
-      font-weight: 600;
-      color: var(--clr-text-inverse);
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    .webar-mobile-nav__count {
-      display: block;
-      font-size: var(--fs-xs);
-      color: rgba(255,255,255,.4);
-      letter-spacing: var(--ls-wide);
-    }
-
     /* ── RESPONSIVE ───────────────────────────────────────────── */
     /* ── FIX 2: Mobile viewer height ────────────────────────────
      *
@@ -409,104 +326,24 @@
      *   horizontal scroll) and minmax for the stage.
      * ──────────────────────────────────────────────────────────── */
     @media (max-width: 768px) {
-      .webar-mobile-nav { display: flex; }
-
-      /* Push instructions up so they don't hide behind fixed bottom nav */
-      .webar-instructions { padding-bottom: calc(var(--sp-md) + 60px); }
-      .webar-page {
-        grid-template-columns: 1fr;
-        /* FIX 3: sidebar 220px — artwork button text shows fully */
-        grid-template-rows: 220px minmax(42vh, 1fr);
-      }
-      .webar-sidebar {
-        max-height: 220px;
-        overflow-x: auto;
-        overflow-y: hidden;
-      }
-      /*
-       * FIX 2 — Reduce viewer height on mobile so info card is visible
-       * without scrolling. 42vh leaves ~270px below the viewer for the
-       * info card, instructions strip, and fixed Prev/Next nav bar.
-       * 300px min-height ensures the model stays usable on tiny phones.
-       */
       .webar-stage {
-        min-height: 42vh;
-      }
-      model-viewer {
-        height: 42vh !important;
+        height: 45vh;
         min-height: 300px;
+        max-height: 420px;
       }
-      .webar-sidebar__list {
-        flex-direction: row;
-        /* More padding now header is hidden — list fills full 220px */
-        padding: var(--sp-md) var(--sp-sm);
-        gap: var(--sp-sm);
-        overflow-x: auto;
-        overflow-y: hidden;
-        -webkit-overflow-scrolling: touch;
-        scrollbar-width: none;
-        align-items: stretch;
+      .webar-nav-arrow {
+        width: 38px;
+        height: 38px;
+        font-size: 1.2rem;
       }
-      .webar-sidebar__list::-webkit-scrollbar { display: none; }
-      /* Hide sidebar header on mobile — saves ~80px for artwork cards */
-      .webar-sidebar__header { display: none; }
-
-      /* Artwork buttons: larger, high-contrast text */
-      .webar-artwork-btn {
-        flex-shrink: 0;
-        width: 180px;
-        min-height: 90px;
-        padding: var(--sp-sm) var(--sp-md);
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        gap: 4px;
+      .webar-fullscreen-btn {
+        width: 34px;
+        height: 34px;
       }
-
-      /* Pilot badge: fully visible */
-      .webar-artwork-btn__pilot {
-        font-size: 0.58rem;
-        font-weight: 700;
-        letter-spacing: 0.06em;
-        opacity: 1;
+      .webar-instructions {
+        gap: var(--sp-md);
+        padding: var(--sp-xs) var(--sp-md);
       }
-
-      /* Artwork name: fully white, readable size */
-      .webar-artwork-btn__name {
-        font-size: var(--fs-base);
-        font-weight: 700;
-        color: #ffffff;
-        line-height: 1.3;
-        white-space: normal;
-      }
-
-      /* Discipline label: gold, clearly visible */
-      .webar-artwork-btn__meta {
-        font-size: 0.7rem;
-        font-weight: 600;
-        color: var(--clr-gold);
-        white-space: normal;
-        opacity: 1;
-        letter-spacing: 0.04em;
-      }
-
-      /* Active button: clear gold border highlight */
-      .webar-artwork-btn.is-active {
-        background: rgba(201,149,42,.25);
-        border-color: var(--clr-gold);
-      }
-      .webar-artwork-btn.is-active .webar-artwork-btn__name {
-        color: #ffffff;
-      }
-      .webar-artwork-btn.is-active::before {
-        width: 100%;
-        height: 3px;
-        top: 0;
-        bottom: auto;
-        left: 0;
-        border-radius: var(--radius-sm) var(--radius-sm) 0 0;
-      }
-      .webar-instructions { gap: var(--sp-md); padding: var(--sp-xs) var(--sp-md); }
     }
 
     /* ── CHROME RECOMMENDATION BANNER ───────────────────────────
@@ -558,6 +395,309 @@
     }
     .browser-notice__dismiss:hover { color: rgba(255,255,255,.8); }
 
+
+    /* ══════════════════════════════════════════════════════════════
+       Reused Gallery grid/tabs/card CSS — independent copy, kept in
+       sync conceptually with gallery.html but never imported from it,
+       so a change to one page can never break the other.
+       ══════════════════════════════════════════════════════════════ */
+    .gal-tabs-wrap {
+      position: sticky;
+      top: 0;
+      z-index: 200;
+      box-shadow: 0 2px 10px rgba(0,0,0,.08);
+      overflow: hidden;
+    }
+    .gal-tabs {
+      display: flex;
+      gap: 0;
+      border-bottom: 2px solid var(--clr-border);
+      background: #fff;
+    }
+    .gal-tab {
+      font-family: var(--ff-body);
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--clr-text-tertiary);
+      background: transparent;
+      border: none;
+      border-bottom: 3px solid transparent;
+      padding: 8px 6px;
+      cursor: pointer;
+      white-space: normal;
+      line-height: 1.25;
+      text-align: center;
+      margin-bottom: -2px;
+      transition: all var(--dur-fast) var(--ease-out);
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+    }
+    .gal-tab:hover { color: var(--clr-text-primary); }
+    .gal-tab.is-active {
+      color: var(--clr-gold-dark);
+      border-bottom-color: var(--clr-gold);
+    }
+    .gal-tab__icon { font-size: 1rem; line-height: 1; display: block; }
+    .gal-tab__label { display: block; }
+    .gal-tab__count {
+      font-size: 0.6rem;
+      font-weight: 400;
+      color: var(--clr-text-tertiary);
+      display: block;
+    }
+    .gal-tab.is-active .gal-tab__count { color: var(--clr-gold-dark); }
+    @media (max-width: 768px) {
+      .gal-tabs {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+      }
+      .gal-tabs::-webkit-scrollbar { display: none; }
+      .gal-tab {
+        flex: 0 0 auto;
+        min-width: 68px;
+        font-size: 0.65rem;
+        padding: 6px 8px;
+      }
+    }
+
+    /* ── MASONRY GRID — white background ──────────────────────── */
+    .gal-masonry-section {
+      background: #fff;
+      padding-top: 0;
+    }
+    /* Justified flex grid — fixed row height, width ∝ aspect ratio */
+    .gal-masonry {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: flex-start;
+      padding: var(--sp-lg) 0 var(--sp-xl);
+    }
+
+    /* Loading state */
+    .gal-loading {
+      padding: var(--sp-3xl);
+      text-align: center;
+      color: var(--clr-text-tertiary);
+      font-size: var(--fs-sm);
+    }
+    .gal-loading__spinner {
+      width: 36px; height: 36px;
+      border: 3px solid rgba(0,0,0,.08);
+      border-top-color: var(--clr-gold);
+      border-radius: 50%;
+      animation: spin .8s linear infinite;
+      margin: 0 auto var(--sp-md);
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── ARTWORK CARD — natural height for masonry ────────────── */
+    .gal-card {
+      flex-grow: var(--aspect, 1);
+      flex-shrink: 1;
+      flex-basis: calc(var(--aspect, 1) * 200px);
+      min-width: 120px;
+      max-width: 520px;
+      margin-bottom: 0;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      background: #fff;
+      border: 1px solid rgba(0,0,0,.07);
+      cursor: pointer;
+      transition: box-shadow var(--dur-base), transform var(--dur-base),
+                  border-color var(--dur-base);
+      position: relative;
+    }
+    @media (max-width: 768px) {
+      .gal-card {
+        flex-basis: calc(var(--aspect, 1) * 140px);
+        min-width: 100px;
+        max-width: 340px;
+      }
+    }
+    /* ── Small-category fix ─────────────────────────────────────
+       Categories with 1–3 artworks would over-stretch because
+       flex-grow distributes the full container width across very
+       few cards. CSS :nth-last-child() counts siblings precisely
+       without touching categories that have 4+ items.          */
+    .gal-masonry > .gal-card:only-child {
+      flex-grow: 0;
+      max-width: 560px;
+    }
+    .gal-masonry > .gal-card:first-child:nth-last-child(2),
+    .gal-masonry > .gal-card:first-child:nth-last-child(2) ~ .gal-card {
+      flex-grow: 0;
+      max-width: 500px;
+    }
+    .gal-masonry > .gal-card:first-child:nth-last-child(3),
+    .gal-masonry > .gal-card:first-child:nth-last-child(3) ~ .gal-card {
+      flex-grow: 0.2;
+      max-width: 420px;
+    }
+    .gal-card:hover {
+      box-shadow: 0 8px 28px rgba(0,0,0,.13);
+      transform: translateY(-3px);
+      border-color: var(--clr-gold);
+    }
+    /* Justified grid — fixed height, cover fill, width from aspect ratio */
+    .gal-card__img-wrap {
+      width: 100%;
+      height: 220px;       /* uniform row height */
+      overflow: hidden;
+      position: relative;
+      background: var(--clr-surface, #f5f5f0);
+    }
+    .gal-card__img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;   /* fill the fixed height, crop excess */
+      object-position: center;
+      display: block;
+      transition: transform var(--dur-slow) var(--ease-out);
+      user-select: none;
+      -webkit-user-drag: none;
+    }
+    @media (max-width: 768px) {
+      .gal-card__img-wrap { height: 160px; }
+    }
+    .gal-card:hover .gal-card__img { transform: scale(1.04); }
+    /* Badges */
+    .gal-card__angles {
+      position: absolute;
+      top: var(--sp-sm); right: var(--sp-sm);
+      background: rgba(26,26,78,.85);
+      color: #fff;
+      font-size: 0.6rem; font-weight: 700;
+      padding: 3px 8px;
+      border-radius: var(--radius-full);
+      backdrop-filter: blur(4px);
+    }
+    .gal-card__ar-badge {
+      position: absolute;
+      top: var(--sp-sm); left: var(--sp-sm);
+      background: var(--clr-gold);
+      color: #fff;
+      font-size: 0.6rem; font-weight: 700;
+      padding: 3px 8px;
+      border-radius: var(--radius-full);
+    }
+    /* Placeholder when no image */
+    .gal-card__placeholder {
+      width: 100%; height: 160px;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: var(--sp-xs);
+      font-size: 2rem;
+      color: var(--clr-text-tertiary);
+      background: var(--clr-surface, #f5f5f0);
+    }
+    .gal-card__placeholder-label {
+      font-size: var(--fs-xs);
+      color: var(--clr-text-tertiary);
+    }
+    /* Card body */
+    .gal-card__body { padding: var(--sp-sm) var(--sp-md) var(--sp-md); }
+    .gal-card__title {
+      font-family: 'FranklinGothicRegular', var(--ff-body);
+      font-size: var(--fs-sm);
+      font-weight: 400;
+      color: var(--clr-text-primary);
+      margin-bottom: 2px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .gal-card__sub {
+      font-size: var(--fs-xs);
+      color: var(--clr-text-tertiary);
+      margin-bottom: var(--sp-xs);
+    }
+    /* Discipline tag — informational, not a gatekeeper */
+    .gal-card__disc-tag {
+      display: inline-block;
+      font-size: 0.58rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+      color: var(--clr-gold-dark, #a07000);
+      background: rgba(201,148,10,.1);
+      padding: 2px 7px;
+      border-radius: var(--radius-full);
+    }
+    /* ── EXHIBITION SECTIONS ──────────────────────────────────── */
+    .gal-exhibition {
+      border-top: 3px solid var(--clr-gold);
+      margin-bottom: var(--sp-3xl);
+      background: #fff;
+    }
+    .gal-exhibition__header {
+      padding: var(--sp-lg) var(--sp-xl);
+      background: var(--clr-indigo, #1a1a4e);
+      position: sticky;
+      top: 115px;   /* below site nav (~60px) + tab bar (~55px) */
+      z-index: 50;
+    }
+    @media (max-width: 768px) {
+      .gal-exhibition__header { top: 105px; padding: var(--sp-md); }
+    }
+    .gal-exhibition__title-row {
+      display: flex; align-items: baseline;
+      gap: var(--sp-md); flex-wrap: wrap;
+    }
+    .gal-exhibition__title {
+      font-family: 'FranklinGothicRegular', var(--ff-body);
+      font-size: var(--fs-xl); font-weight: 400;
+      color: var(--clr-gold); margin: 0;
+    }
+    .gal-exhibition__total {
+      font-size: var(--fs-xs); letter-spacing: .05em;
+      text-transform: uppercase; color: rgba(255,255,255,.45);
+    }
+    .gal-exhibition__meta {
+      font-size: var(--fs-xs); color: rgba(255,255,255,.55);
+      margin: var(--sp-xs) 0 0; letter-spacing: .02em;
+    }
+
+    /* ── CATEGORY SUB-SECTIONS ────────────────────────────────── */
+    .gal-category { padding: var(--sp-lg) var(--sp-xl) 0; }
+    .gal-category__header {
+      display: flex; align-items: center; gap: var(--sp-sm);
+      padding-bottom: var(--sp-sm);
+      border-bottom: 1px solid rgba(0,0,0,.08);
+      margin-bottom: var(--sp-md);
+    }
+    .gal-category__name {
+      font-family: 'FranklinGothicRegular', var(--ff-body);
+      font-size: var(--fs-md); font-weight: 400;
+      color: var(--clr-text-primary);
+      text-transform: uppercase; letter-spacing: .04em;
+    }
+    .gal-category__count {
+      font-size: var(--fs-xs); color: var(--clr-text-tertiary);
+      background: rgba(0,0,0,.05);
+      padding: 2px 8px; border-radius: var(--radius-full);
+    }
+    @media (max-width: 768px) {
+      .gal-exhibition__header { padding: var(--sp-md); }
+      .gal-category { padding: var(--sp-md) var(--sp-md) 0; }
+    }
+
+
+
+    /* On this page the viewer stage (above) is already sticky and far
+       taller than a tab bar — making the tabs ALSO sticky would stack
+       two pinned elements awkwardly. Tabs scroll away normally here. */
+    body[data-page="webar"] .gal-tabs-wrap {
+      position: static;
+      top: auto;
+      z-index: auto;
+      box-shadow: none;
+    }
   </style>
 </head>
 <body data-page="webar">
@@ -608,120 +748,7 @@
 
         <div class="webar-page" aria-label="WebAR Artwork Viewer">
 
-      <!-- ═══ SIDEBAR: Artwork selector ═════════════════════════════════ -->
-      <aside class="webar-sidebar" aria-label="Select artwork to view">
-        <div class="webar-sidebar__header">
-          <p class="webar-sidebar__heading">&#127918; WebAR Gallery</p>
-          <p class="webar-sidebar__sub">
-            Select a work below. Tap <strong style="color:var(--clr-gold)">View in AR</strong>
-            to place it in your space.
-          </p>
-        </div>
-
-        <div class="webar-sidebar__list" role="list" id="artwork-list">
-
-          <!--
-            PILOT MODEL — Traditional Drum Stool
-            ─────────────────────────────────────────────────────────────
-            Selected for the pilot because:
-            • Traditional Drum Stool is an iconic DIAT/Ashanti cultural object
-            • Both .glb (Android/web) and .usdz (iOS) formats available
-            • Compact standalone geometry — ideal AR object
-            • Discipline: Wood & Furniture / Metal Production crossover
-
-            Files served via jsDelivr CDN — mirrors the diatknust-hub/diatknust
-            GitHub repo with proper CORS headers and fast global edge delivery.
-            URL pattern: cdn.jsdelivr.net/gh/[user]/[repo]@[branch]/[file]
-          -->
-          <button class="webar-artwork-btn is-active"
-                  data-glb="https://cdn.jsdelivr.net/gh/diatknust-hub/diatknust@main/Traditional-Drum-Stool.glb"
-                  data-usdz="https://cdn.jsdelivr.net/gh/diatknust-hub/diatknust@main/Traditional-Drum-Stool.usdz"
-                  data-title="Traditional Drum Stool"
-                  data-discipline="Wood &amp; Furniture"
-                  data-artist="DIAT, KNUST"
-                  aria-pressed="true"
-                  role="listitem">
-            <span class="webar-artwork-btn__pilot">&#9733; Pilot Model</span>
-            <span class="webar-artwork-btn__name">Traditional Drum Stool</span>
-            <span class="webar-artwork-btn__meta">Wood &amp; Furniture</span>
-          </button>
-
-          <!--
-            COMING SOON cards — full catalogue loads after pilot confirmation.
-            These are listed to show stakeholders the scope of the collection.
-          -->
-          <button class="webar-artwork-btn"
-                  data-glb="https://cdn.jsdelivr.net/gh/diatknust-hub/diatknust@main/3-faced-pots.glb"
-                  data-usdz="https://cdn.jsdelivr.net/gh/diatknust-hub/diatknust@main/3-faced-pots.usdz"
-                  data-title="3-Faced Pots"
-                  data-discipline="Clay &amp; Earthenware"
-                  data-artist="DIAT, KNUST"
-                  aria-pressed="false"
-                  role="listitem">
-            <span class="webar-artwork-btn__name">3-Faced Pots</span>
-            <span class="webar-artwork-btn__meta">Clay &amp; Earthenware</span>
-          </button>
-
-          <button class="webar-artwork-btn"
-                  data-glb="https://cdn.jsdelivr.net/gh/diatknust-hub/diatknust@main/Metal-sculpture-parrot.glb"
-                  data-usdz="https://cdn.jsdelivr.net/gh/diatknust-hub/diatknust@main/Metal-sculpture-parrot.usdz"
-                  data-title="Metal Sculpture — Parrot"
-                  data-discipline="Metal Production"
-                  data-artist="DIAT, KNUST"
-                  aria-pressed="false"
-                  role="listitem">
-            <span class="webar-artwork-btn__name">Metal Sculpture — Parrot</span>
-            <span class="webar-artwork-btn__meta">Metal Production</span>
-          </button>
-
-          <button class="webar-artwork-btn"
-                  data-glb="https://cdn.jsdelivr.net/gh/diatknust-hub/diatknust@main/Planter.glb"
-                  data-usdz="https://cdn.jsdelivr.net/gh/diatknust-hub/diatknust@main/Planter.usdz"
-                  data-title="Ceramic Planter"
-                  data-discipline="Clay &amp; Earthenware"
-                  data-artist="DIAT, KNUST"
-                  aria-pressed="false"
-                  role="listitem">
-            <span class="webar-artwork-btn__name">Ceramic Planter</span>
-            <span class="webar-artwork-btn__meta">Clay &amp; Earthenware</span>
-          </button>
-
-          <button class="webar-artwork-btn"
-                  data-glb="https://cdn.jsdelivr.net/gh/diatknust-hub/diatknust@main/Star-clock.glb"
-                  data-usdz="https://cdn.jsdelivr.net/gh/diatknust-hub/diatknust@main/Star-clock.usdz"
-                  data-title="Star Clock"
-                  data-discipline="Metal Production"
-                  data-artist="DIAT, KNUST"
-                  aria-pressed="false"
-                  role="listitem">
-            <span class="webar-artwork-btn__name">Star Clock</span>
-            <span class="webar-artwork-btn__meta">Metal Production</span>
-          </button>
-
-          <button class="webar-artwork-btn"
-                  data-glb="https://cdn.jsdelivr.net/gh/diatknust-hub/diatknust@main/Mini-3-face-pot.glb"
-                  data-usdz="https://cdn.jsdelivr.net/gh/diatknust-hub/diatknust@main/Mini-3-face-pot.usdz"
-                  data-title="Mini 3-Face Pot"
-                  data-discipline="Clay &amp; Earthenware"
-                  data-artist="DIAT, KNUST"
-                  aria-pressed="false"
-                  role="listitem">
-            <span class="webar-artwork-btn__name">Mini 3-Face Pot</span>
-            <span class="webar-artwork-btn__meta">Clay &amp; Earthenware</span>
-          </button>
-
-        </div>
-
-        <div class="webar-sidebar__footer">
-          <p style="font-size:var(--fs-xs);color:rgba(255,255,255,.3);
-                    text-align:center;line-height:1.5">
-            3D models scanned via Polycam 2025<br>
-            <strong style="color:rgba(255,255,255,.5)">diatknust-hub/diatknust</strong>
-          </p>
-        </div>
-      </aside>
-
-      <!-- ═══ VIEWER STAGE ═══════════════════════════════════════════════ -->
+      <!-- ═══ STICKY VIEWER STAGE ═══════════════════════════════════════ -->
       <div class="webar-stage" id="webar-stage">
 
         <!--
@@ -783,6 +810,13 @@
 
         </model-viewer>
 
+        <!-- Prev/Next — desktop + mobile, wired via existing data-webar-nav listener -->
+        <button class="webar-nav-arrow webar-nav-arrow--prev" data-webar-nav="-1" aria-label="Previous artwork">&#8249;</button>
+        <button class="webar-nav-arrow webar-nav-arrow--next" data-webar-nav="1" aria-label="Next artwork">&#8250;</button>
+
+        <!-- Fullscreen — desktop's equivalent of mobile AR placement -->
+        <button class="webar-fullscreen-btn" id="webar-fullscreen-btn" aria-label="View fullscreen">&#9974;</button>
+
         <!-- Empty state overlay — hidden once a model loads -->
         <div class="webar-empty" id="webar-empty" aria-hidden="true" style="display:none">
           <span class="webar-empty__icon">&#127918;</span>
@@ -820,28 +854,24 @@
         </div>
 
       </div><!-- /.webar-stage -->
-    </div><!-- /.webar-page -->
-    <!--
-      MOBILE ARTWORK NAVIGATOR — fixed bottom bar (mobile only)
-      Hidden on desktop via CSS. Shows Prev/Next buttons with
-      the current artwork name and position (e.g. "2 / 6").
-      JS below manages the active index and calls loadArtwork().
-    -->
-    <div class="webar-mobile-nav" id="mobile-nav" aria-label="Browse artworks">
-      <button class="webar-mobile-nav__btn"
-              id="nav-prev"
-              data-webar-nav="-1"
-              aria-label="Previous artwork">&#8592; Prev</button>
-      <div class="webar-mobile-nav__label">
-        <span class="webar-mobile-nav__name" id="nav-name">Traditional Drum Stool</span>
-        <span class="webar-mobile-nav__count" id="nav-count">1 / 6</span>
-      </div>
-      <button class="webar-mobile-nav__btn"
-              id="nav-next"
-              data-webar-nav="1"
-              aria-label="Next artwork">Next &#8594;</button>
-    </div>
 
+      <!-- ═══ EXHIBITION TABS — built dynamically, same pattern as Gallery ═══ -->
+      <div class="gal-tabs-wrap">
+        <nav class="gal-tabs" id="webar-tabs" role="tablist" aria-label="Filter 3D models by collection"></nav>
+      </div>
+
+      <!-- ═══ THUMBNAIL GRID — built dynamically from diat-webar.json ═══════ -->
+      <div class="container">
+        <div id="webar-sections" style="display:none" aria-live="polite"></div>
+        <p class="webar-grid-loading" id="webar-grid-loading"
+           style="text-align:center;color:var(--clr-text-tertiary);padding:var(--sp-xl) 0">
+          Loading 3D collection&hellip;
+        </p>
+      </div>
+
+    </div><!-- /.webar-page -->
+
+  </main>
   </main>
 
   <script>
@@ -863,7 +893,7 @@
 
     function loadArtwork(btn) {
       /* Update active state on buttons */
-      document.querySelectorAll('.webar-artwork-btn').forEach(function(b) {
+      document.querySelectorAll('.webar-card').forEach(function(b) {
         b.classList.remove('is-active');
         b.setAttribute('aria-pressed', 'false');
       });
@@ -909,7 +939,7 @@
      * Calls loadArtwork() exactly as tapping a sidebar button does.
      * ──────────────────────────────────────────────────────────── */
     var allBtns = Array.prototype.slice.call(
-      document.querySelectorAll('.webar-artwork-btn')
+      document.querySelectorAll('.webar-card')
     );
 
     function syncMobileNav() {
@@ -1043,68 +1073,240 @@
   <script src="site.js?v=4"></script>
   <script src="cms.js?v=4"></script>
 
-  <!-- ── Dynamic model list from diat-webar.json (admin-managed) ─────── -->
+  <!-- ── Dynamic exhibition tabs + thumbnail grid from diat-webar.json ──
+       Isolated implementation — does NOT share functions with gallery.html,
+       so a change to one page can never break the other. Reuses the
+       .gal-* CSS classes already defined in diat-styles.css purely for
+       visual consistency. ──────────────────────────────────────────── -->
   <script>
   (function () {
     var CDN = 'https://cdn.jsdelivr.net/gh/diatknust-hub/diatknust@main/';
 
-    function makeBtn(model, isFirst) {
-      var btn = document.createElement('button');
-      btn.className = 'webar-artwork-btn' + (isFirst ? ' is-active' : '');
-      btn.setAttribute('role', 'listitem');
-      btn.setAttribute('aria-pressed', isFirst ? 'true' : 'false');
-      btn.setAttribute('data-glb',        model.glbUrl  || (CDN + (model.glb_file  || '')));
-      btn.setAttribute('data-usdz',       model.usdzUrl || (CDN + (model.usdz_file || '')));
-      btn.setAttribute('data-title',      model.title       || '');
-      btn.setAttribute('data-discipline', model.discipline  || '');
-      btn.setAttribute('data-artist',     'DIAT, KNUST');
-      if (isFirst) {
-        btn.innerHTML = '<span class="webar-artwork-btn__pilot">&#9733; Pilot Model</span>';
-      }
-      btn.innerHTML += '<span class="webar-artwork-btn__name">' +
-        String(model.title||'').replace(/</g,'&lt;') + '</span>' +
-        '<span class="webar-artwork-btn__meta">' +
-        String(model.discipline||'').replace(/</g,'&lt;') + '</span>';
-      /* FIX: attach click event so switching models works */
-      btn.addEventListener('click', function() {
-        if (typeof loadArtwork === 'function') loadArtwork(btn);
-      });
-      return btn;
+    function esc(s) {
+      return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
     }
 
+    /* makeHashId — same algorithm used in tools/cloudinary-sync.mjs and
+       gallery.html, kept as an independent copy per the isolation rule. */
+    function makeHashId(name) {
+      var n = String(name || '').toLowerCase();
+      var year = (n.match(/\d{4}/) || [''])[0];
+      if (n.indexOf('pilot') !== -1) return 'webar-pilot' + (year ? '-' + year : '');
+      return n.replace(/^diat\s+/, '').replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '').slice(0, 24).replace(/-+$/, '');
+    }
+
+    function makeCard(model, idx) {
+      var glb   = model.glbUrl  || (CDN + (model.glb_file  || ''));
+      var usdz  = model.usdzUrl || (CDN + (model.usdz_file || ''));
+      var thumb = model.thumbnail || '';
+      var imgHtml = thumb
+        ? '<img class="gal-card__img" src="' + esc(thumb) + '" alt="' + esc(model.title) + '" loading="lazy" draggable="false" oncontextmenu="return false">'
+        : '<div class="gal-card__placeholder"><span class="gal-card__placeholder-label">&#127918;</span></div>';
+
+      var pilotTag = idx === 0
+        ? '<span class="gal-card__disc-tag gal-card__disc-tag--pilot">&#9733; Pilot Model</span> '
+        : '';
+
+      return '<article class="webar-card gal-card' + (idx === 0 ? ' is-active' : '') + '"'
+        + ' tabindex="0" role="button"'
+        + ' aria-label="View ' + esc(model.title) + ' in 3D and AR"'
+        + ' aria-pressed="' + (idx === 0 ? 'true' : 'false') + '"'
+        + ' data-glb="'        + esc(glb)  + '"'
+        + ' data-usdz="'       + esc(usdz) + '"'
+        + ' data-title="'      + esc(model.title)      + '"'
+        + ' data-discipline="' + esc(model.discipline) + '"'
+        + ' data-artist="DIAT, KNUST">'
+        + '<div class="gal-card__img-wrap">' + imgHtml + '</div>'
+        + '<div class="gal-card__body">'
+        +   pilotTag
+        +   '<h3 class="gal-card__title">' + esc(model.title) + '</h3>'
+        +   '<span class="gal-card__disc-tag">' + esc(model.discipline) + '</span>'
+        + '</div></article>';
+    }
+
+    function buildTabs(models) {
+      var exSet = {};
+      models.forEach(function (m) { if (m.exhibition) exSet[m.exhibition] = (exSet[m.exhibition]||0)+1; });
+      var exhibitions = Object.keys(exSet);
+      var nav = document.getElementById('webar-tabs');
+      if (!nav) return;
+
+      var html = '<button class="gal-tab is-active" role="tab" aria-selected="true" onclick="filterWebarExhibition(\'all\',this)">'
+        + '<span class="gal-tab__icon">&#127918;</span>'
+        + '<span class="gal-tab__label">All Works<span class="gal-tab__count">' + models.length + ' works</span></span>'
+        + '</button>';
+
+      exhibitions.forEach(function (ex) {
+        var safe = ex.replace(/'/g, "\\'");
+        html += '<button class="gal-tab" role="tab" aria-selected="false" onclick="filterWebarExhibition(\'' + safe + '\',this)">'
+          + '<span class="gal-tab__icon">&#127912;</span>'
+          + '<span class="gal-tab__label">' + esc(ex) + '<span class="gal-tab__count">' + exSet[ex] + ' works</span></span>'
+          + '</button>';
+      });
+      nav.innerHTML = html;
+    }
+
+    function buildSections(models) {
+      var groups = {};
+      models.forEach(function (m) {
+        var ex  = m.exhibition || 'Other';
+        var cat = m.discipline || 'General';
+        if (!groups[ex])      groups[ex] = {};
+        if (!groups[ex][cat]) groups[ex][cat] = [];
+        groups[ex][cat].push(m);
+      });
+
+      var html = '';
+      var globalIdx = 0;
+      Object.keys(groups).forEach(function (ex) {
+        var cats = groups[ex];
+        var total = Object.keys(cats).reduce(function (s,k){ return s + cats[k].length; }, 0);
+        var hashId = makeHashId(ex);
+
+        html += '<section class="gal-exhibition" id="' + hashId + '" data-exhibition="' + esc(ex) + '">';
+        html += '<div class="gal-exhibition__header">'
+          + '<div class="gal-exhibition__title-row">'
+          + '<h2 class="gal-exhibition__title">' + esc(ex) + '</h2>'
+          + '<span class="gal-exhibition__total">' + total + ' works</span>'
+          + '</div></div>';
+
+        Object.keys(cats).forEach(function (cat) {
+          var items = cats[cat];
+          html += '<div class="gal-category">'
+            + '<div class="gal-category__header">'
+            + '<span class="gal-category__name">' + esc(cat) + '</span>'
+            + '<span class="gal-category__count">' + items.length + ' work' + (items.length > 1 ? 's' : '') + '</span>'
+            + '</div>'
+            + '<div class="gal-masonry">'
+            + items.map(function (m) { var html2 = makeCard(m, globalIdx); globalIdx++; return html2; }).join('')
+            + '</div></div>';
+        });
+        html += '</section>';
+      });
+      return html;
+    }
+
+    function wireCards() {
+      var cards = document.querySelectorAll('.webar-card');
+      cards.forEach(function (card) {
+        card.addEventListener('click', function () {
+          if (typeof loadArtwork === 'function') loadArtwork(card);
+        });
+        card.addEventListener('keydown', function (e) {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            if (typeof loadArtwork === 'function') loadArtwork(card);
+          }
+        });
+      });
+      /* Keep allBtns in sync so existing mobileNav()/syncMobileNav() keep working unchanged */
+      if (typeof allBtns !== 'undefined') {
+        allBtns.length = 0;
+        Array.prototype.push.apply(allBtns, Array.prototype.slice.call(cards));
+      }
+    }
+
+    window.filterWebarExhibition = function (exName, btn) {
+      document.querySelectorAll('#webar-tabs .gal-tab').forEach(function (t) {
+        t.classList.remove('is-active');
+        t.setAttribute('aria-selected', 'false');
+      });
+      btn.classList.add('is-active');
+      btn.setAttribute('aria-selected', 'true');
+      document.querySelectorAll('#webar-sections .gal-exhibition').forEach(function (sec) {
+        sec.style.display = (exName === 'all' || sec.getAttribute('data-exhibition') === exName) ? '' : 'none';
+      });
+    };
+
     fetch('diat-webar.json?v=' + Date.now(), { cache: 'no-store' })
-      .then(function(r) { return r.ok ? r.json() : null; })
-      .then(function(models) {
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (models) {
         if (!models || !models.length) return;
-        var active = models.filter(function(m){ return m.is_active !== false; });
+        var active = models.filter(function (m) { return m.is_active !== false; });
         if (!active.length) return;
 
-        var list = document.getElementById('artwork-list');
-        if (!list) return;
+        var sections = document.getElementById('webar-sections');
+        var loading  = document.getElementById('webar-grid-loading');
+        if (!sections) return;
 
-        /* Replace ONLY the content of #artwork-list */
-        list.innerHTML = '';
-        active.forEach(function(model, i) {
-          list.appendChild(makeBtn(model, i === 0));
-        });
+        buildTabs(active);
+        sections.innerHTML = buildSections(active);
+        sections.style.display = '';
+        if (loading) loading.style.display = 'none';
 
-        /* FIX: update allBtns so mobile nav arrows work with new buttons */
-        if (typeof allBtns !== 'undefined') {
-          allBtns.length = 0;
-          Array.prototype.push.apply(allBtns,
-            Array.prototype.slice.call(list.querySelectorAll('.webar-artwork-btn'))
-          );
-        }
+        wireCards();
 
         /* Load the first model */
-        setTimeout(function() {
-          var firstBtn = list.querySelector('.webar-artwork-btn');
-          if (firstBtn && typeof loadArtwork === 'function') {
-            loadArtwork(firstBtn);
-          }
+        setTimeout(function () {
+          var firstCard = sections.querySelector('.webar-card');
+          if (firstCard && typeof loadArtwork === 'function') loadArtwork(firstCard);
         }, 100);
       })
-      .catch(function() { /* keep hardcoded fallback on error */ });
+      .catch(function () {
+        var loading = document.getElementById('webar-grid-loading');
+        if (loading) loading.textContent = 'Could not load the 3D collection — please refresh.';
+      });
+  })();
+  </script>
+
+  <!-- ── Fullscreen toggle — desktop's equivalent of mobile AR placement ── -->
+  <script>
+  (function () {
+    var stage = document.getElementById('webar-stage');
+    var btn   = document.getElementById('webar-fullscreen-btn');
+    if (!stage || !btn) return;
+
+    function isFull() {
+      return document.fullscreenElement || document.webkitFullscreenElement;
+    }
+    btn.addEventListener('click', function () {
+      if (!isFull()) {
+        if (stage.requestFullscreen) stage.requestFullscreen();
+        else if (stage.webkitRequestFullscreen) stage.webkitRequestFullscreen();
+      } else {
+        if (document.exitFullscreen) document.exitFullscreen();
+        else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
+      }
+    });
+  })();
+  </script>
+
+  <!-- ── Keyboard arrows — desktop navigation between models ───────────
+       Touch-swipe was deliberately NOT added on the stage itself: it
+       would conflict with model-viewer's own touch-based camera-orbit
+       gestures (rotate/zoom), which are tested and working. The visible
+       tap-target arrows above cover mobile navigation instead. ──────── -->
+  <script>
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowLeft'  && typeof mobileNav === 'function') mobileNav(-1);
+    if (e.key === 'ArrowRight' && typeof mobileNav === 'function') mobileNav(1);
+  });
+  </script>
+
+  <!-- ── setStageTop — measures visible sticky/fixed bars (site announce,
+       header, dept nav) and positions the sticky viewer stage exactly
+       below them. Same technique already used by gallery.html's
+       setTabsTop(), kept as an independent copy per the isolation rule. ── -->
+  <script>
+  (function () {
+    function setStageTop() {
+      var stage = document.querySelector('.webar-stage');
+      if (!stage) return;
+      var offset = 0;
+      ['.site-announce', '.site-header', '.dept-nav'].forEach(function (sel) {
+        var el = document.querySelector(sel);
+        if (el && el.offsetHeight && getComputedStyle(el).position !== 'static') {
+          offset += el.offsetHeight;
+        }
+      });
+      stage.style.top = offset + 'px';
+    }
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', setStageTop);
+    } else {
+      setStageTop();
+    }
+    window.addEventListener('resize', setStageTop, { passive: true });
   })();
   </script>
 </body>
