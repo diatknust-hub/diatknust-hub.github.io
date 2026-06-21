@@ -316,6 +316,48 @@ ${links}
    MAIN
    ════════════════════════════════════════════════════════════ */
 
+/* ════════════════════════════════════════════════════════════
+   STEP 4 — WEBAR THUMBNAILS (isolated — never affects Gallery sync)
+   ════════════════════════════════════════════════════════════ */
+
+async function syncWebarThumbnails() {
+  const WEBAR_JSON = 'diat-webar.json';
+  if (!existsSync(WEBAR_JSON)) {
+    console.warn(`   ⚠  ${WEBAR_JSON} not found — skipped`);
+    return { matched: 0, total: 0 };
+  }
+
+  console.log('\n📂  Fetching webar thumbnails/…');
+  const thumbs = await fetchFlat('webar thumbnails');
+
+  const models = JSON.parse(readFileSync(WEBAR_JSON, 'utf8'));
+  let matched = 0;
+
+  for (const model of models) {
+    /* Add the pilot collection tag — additive, doesn't touch
+       discipline or any other existing field. */
+    model.exhibition = model.exhibition || 'WebAR Pilot Collection';
+
+    if (!model.glb_file) continue;
+    const baseName = model.glb_file.replace(/\.glb$/i, '');
+
+    /* Cloudinary appends a random suffix on upload, e.g.
+       "Traditional-Drum-Stool_ghpqln" — match by prefix, not
+       exact equality. */
+    const match = thumbs.find(t => t.public_id.startsWith(baseName));
+
+    if (match) {
+      model.thumbnail = cdnUrl(match.public_id, match.format, 'q_auto,f_auto,w_600');
+      matched++;
+    } else {
+      model.thumbnail = model.thumbnail || '';
+    }
+  }
+
+  writeFileSync(WEBAR_JSON, JSON.stringify(models, null, 2));
+  return { matched, total: models.length };
+}
+
 async function main() {
   console.log('🔄  Syncing from Cloudinary (Dynamic folders mode)…\n');
 
@@ -329,6 +371,15 @@ async function main() {
   console.log('\n🧭  Updating Gallery nav in site.js…');
   updateGalleryNav(gallery);
 
+  /* Step 4 — isolated, wrapped so a failure here NEVER breaks
+     the Gallery sync above. */
+  let webarResult = { matched: 0, total: 0 };
+  try {
+    webarResult = await syncWebarThumbnails();
+  } catch (err) {
+    console.warn('\n⚠️  WebAR thumbnail sync failed (Gallery sync unaffected):', err.message);
+  }
+
   /* Summary */
   const byEx = {};
   gallery.forEach(({ exhibition }) => byEx[exhibition] = (byEx[exhibition]||0)+1);
@@ -340,6 +391,9 @@ async function main() {
   console.log('\n✅  cloudinary-ref.json');
   console.log(`   site: ${siteImgs.length} | staff: ${staffImgs.length} | event posters: ${posterImgs.length}`);
   console.log('\n✅  site.js Gallery nav — auto-updated');
+  if (webarResult.total > 0) {
+    console.log(`\n✅  diat-webar.json — ${webarResult.matched}/${webarResult.total} thumbnails matched`);
+  }
   console.log('══════════════════════════════════════════');
   console.log('\n⚠️  Add titles/descriptions in diat-gallery.json then:');
   console.log('   git add diat-gallery.json site.js && git commit -m "sync: update gallery" && git push\n');
