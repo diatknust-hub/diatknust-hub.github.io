@@ -336,7 +336,7 @@ async function syncWebarThumbnails() {
   for (const model of models) {
     /* Add the pilot collection tag — additive, doesn't touch
        discipline or any other existing field. */
-    model.exhibition = model.exhibition || 'WebAR Pilot Collection';
+    model.exhibition = model.exhibition || 'WebAR Collection';
 
     if (!model.glb_file) continue;
     const baseName = model.glb_file.replace(/\.glb$/i, '');

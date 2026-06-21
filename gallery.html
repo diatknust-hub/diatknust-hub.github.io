@@ -539,6 +539,13 @@
     document.addEventListener('DOMContentLoaded', setTabsTop);
   } else { setTabsTop(); }
   window.addEventListener('resize', setTabsTop, { passive: true });
+  /* FIX: site.js injects the announce bar + nav on the SAME
+     DOMContentLoaded event, but its listener is registered after this
+     one — so the first run above measures a nav that doesn't exist yet.
+     A deferred re-check after the synchronous listener stack finishes
+     (plus a short safety-margin re-check) catches the real height. */
+  setTimeout(setTabsTop, 0);
+  setTimeout(setTabsTop, 300);
   </script>
 </head>
 <body data-page="gallery">
