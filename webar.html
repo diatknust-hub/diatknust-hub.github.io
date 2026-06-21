@@ -180,6 +180,16 @@
       color: var(--clr-white);
     }
 
+    /* Exhibition headers don't go sticky on this page — this page can
+       show TWO extra conditional banners (Chrome recommendation,
+       browser notice) that Gallery never has, which would make a
+       second stacked sticky offset unreliable to compute correctly.
+       The single sticky tabs bar below already keeps orientation. */
+    body[data-page="webar"] .gal-exhibition__header {
+      position: static;
+      top: auto;
+    }
+
     /* ── VIEWER STAGE (model-viewer fill) ─────────────────────────── */
 
     /* model-viewer fills the stage */
@@ -983,6 +993,9 @@
           var notice = document.getElementById('browser-notice');
           if (notice) notice.classList.remove('is-visible');
         }
+        if (typeof window.webarSetTabsTop === 'function') {
+          setTimeout(window.webarSetTabsTop, 0);
+        }
       });
     });
 
@@ -1288,20 +1301,36 @@
       var wrap = document.querySelector('.gal-tabs-wrap');
       if (!wrap) return;
       var offset = 0;
+      /* Standard site nav bars — always present, position:sticky/fixed */
       ['.site-announce', '.site-header', '.dept-nav'].forEach(function (sel) {
         var el = document.querySelector(sel);
         if (el && el.offsetHeight && getComputedStyle(el).position !== 'static') {
           offset += el.offsetHeight;
         }
       });
+      /* This page's two CONDITIONAL banners — only present for non-Chrome
+         visitors, and dismissible, so check actual visibility each time
+         rather than assuming position alone. */
+      var chromeHint = document.getElementById('chrome-hint');
+      if (chromeHint && chromeHint.offsetHeight && getComputedStyle(chromeHint).display !== 'none') {
+        offset += chromeHint.offsetHeight;
+      }
+      var browserNotice = document.getElementById('browser-notice');
+      if (browserNotice && browserNotice.classList.contains('is-visible') && browserNotice.offsetHeight) {
+        offset += browserNotice.offsetHeight;
+      }
       wrap.style.top = offset + 'px';
     }
+    window.webarSetTabsTop = setTabsTop;
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', setTabsTop);
     } else {
       setTabsTop();
     }
     window.addEventListener('resize', setTabsTop, { passive: true });
+    /* Banners load/measure asynchronously relative to this script —
+       a short delayed re-check catches their real height reliably. */
+    setTimeout(setTabsTop, 300);
   })();
   </script>
 
