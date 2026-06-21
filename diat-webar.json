@@ -8,7 +8,9 @@
     "glbUrl": "https://cdn.jsdelivr.net/gh/diatknust-hub/diatknust@main/Traditional-Drum-Stool.glb",
     "usdzUrl": "https://cdn.jsdelivr.net/gh/diatknust-hub/diatknust@main/Traditional-Drum-Stool.usdz",
     "scale": "1 1 1",
-    "is_active": true
+    "is_active": true,
+    "exhibition": "WebAR Pilot Collection",
+    "thumbnail": "https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_600/Traditional-Drum-Stool_ghpqln.png"
   },
   {
     "title": "3-Faced Pots",
@@ -19,7 +21,9 @@
     "glbUrl": "https://cdn.jsdelivr.net/gh/diatknust-hub/diatknust@main/3-faced-pots.glb",
     "usdzUrl": "https://cdn.jsdelivr.net/gh/diatknust-hub/diatknust@main/3-faced-pots.usdz",
     "scale": "1 1 1",
-    "is_active": true
+    "is_active": true,
+    "exhibition": "WebAR Pilot Collection",
+    "thumbnail": "https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_600/3-faced-pots_er5kpu.png"
   },
   {
     "title": "Metal Sculpture — Parrot",
@@ -30,7 +34,9 @@
     "glbUrl": "https://cdn.jsdelivr.net/gh/diatknust-hub/diatknust@main/Metal-sculpture-parrot.glb",
     "usdzUrl": "https://cdn.jsdelivr.net/gh/diatknust-hub/diatknust@main/Metal-sculpture-parrot.usdz",
     "scale": "1 1 1",
-    "is_active": true
+    "is_active": true,
+    "exhibition": "WebAR Pilot Collection",
+    "thumbnail": "https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_600/Metal-sculpture-parrot_grzsw5.png"
   },
   {
     "title": "Star Clock",
@@ -41,7 +47,9 @@
     "glbUrl": "https://cdn.jsdelivr.net/gh/diatknust-hub/diatknust@main/Star-clock.glb",
     "usdzUrl": "https://cdn.jsdelivr.net/gh/diatknust-hub/diatknust@main/Star-clock.usdz",
     "scale": "1 1 1",
-    "is_active": true
+    "is_active": true,
+    "exhibition": "WebAR Pilot Collection",
+    "thumbnail": "https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_600/Star-clock_waroi0.png"
   },
   {
     "title": "Mini 3-Face Pot",
@@ -52,7 +60,9 @@
     "glbUrl": "https://cdn.jsdelivr.net/gh/diatknust-hub/diatknust@main/Mini-3-face-pot.glb",
     "usdzUrl": "https://cdn.jsdelivr.net/gh/diatknust-hub/diatknust@main/Mini-3-face-pot.usdz",
     "scale": "1 1 1",
-    "is_active": true
+    "is_active": true,
+    "exhibition": "WebAR Pilot Collection",
+    "thumbnail": "https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_600/Mini-3-face-pot_kpym5p.png"
   },
   {
     "title": "A-SET-OF-cHAIRS",
@@ -63,7 +73,9 @@
     "glbUrl": "https://cdn.jsdelivr.net/gh/diatknust-hub/diatknust@main/A-SET-OF-cHAIRS.glb",
     "usdzUrl": "https://cdn.jsdelivr.net/gh/diatknust-hub/diatknust@main/A-SET-OF-CHAIRS.usdz",
     "scale": "1 1 1",
-    "is_active": true
+    "is_active": true,
+    "exhibition": "WebAR Pilot Collection",
+    "thumbnail": "https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_600/A-SET-OF-cHAIRS_mrbzmx.png"
   },
   {
     "title": "2in1-Table",
@@ -74,7 +86,9 @@
     "glbUrl": "https://cdn.jsdelivr.net/gh/diatknust-hub/diatknust@main/2in1-Table.glb",
     "usdzUrl": "https://cdn.jsdelivr.net/gh/diatknust-hub/diatknust@main/2in1-Table.usdz",
     "scale": "1 1 1",
-    "is_active": true
+    "is_active": true,
+    "exhibition": "WebAR Pilot Collection",
+    "thumbnail": "https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_600/2in1-Table_ek9usf.png"
   },
   {
     "title": "Gettoblaster",
@@ -85,7 +99,9 @@
     "glbUrl": "https://cdn.jsdelivr.net/gh/diatknust-hub/diatknust@main/Gettoblaster.glb",
     "usdzUrl": "https://cdn.jsdelivr.net/gh/diatknust-hub/diatknust@main/Gettoblaster.usdz",
     "scale": "1 1 1",
-    "is_active": true
+    "is_active": true,
+    "exhibition": "WebAR Pilot Collection",
+    "thumbnail": "https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_600/Gettoblaster_mss2fg.png"
   },
   {
     "title": "Metal-sculpture-ship",
@@ -96,7 +112,9 @@
     "glbUrl": "https://cdn.jsdelivr.net/gh/diatknust-hub/diatknust@main/Metal-sculpture-ship.glb",
     "usdzUrl": "https://cdn.jsdelivr.net/gh/diatknust-hub/diatknust@main/Metal-sculpture-ship.usdz",
     "scale": "1 1 1",
-    "is_active": true
+    "is_active": true,
+    "exhibition": "WebAR Pilot Collection",
+    "thumbnail": "https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_600/Metal-sculpture-ship_mgi6i9.png"
   },
   {
     "title": "Metal-Wood-shelf",
@@ -107,7 +125,9 @@
     "glbUrl": "https://cdn.jsdelivr.net/gh/diatknust-hub/diatknust@main/Metal-Wood-shelf.glb",
     "usdzUrl": "https://cdn.jsdelivr.net/gh/diatknust-hub/diatknust@main/Metal-Wood-shelf.usdz",
     "scale": "1 1 1",
-    "is_active": true
+    "is_active": true,
+    "exhibition": "WebAR Pilot Collection",
+    "thumbnail": "https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_600/Metal-Wood-shelf_ixcotz.png"
   },
   {
     "title": "Tree-shelf",
@@ -118,7 +138,9 @@
     "glbUrl": "https://cdn.jsdelivr.net/gh/diatknust-hub/diatknust@main/Tree-shelf.glb",
     "usdzUrl": "https://cdn.jsdelivr.net/gh/diatknust-hub/diatknust@main/Tree-shelf.usdz",
     "scale": "1 1 1",
-    "is_active": true
+    "is_active": true,
+    "exhibition": "WebAR Pilot Collection",
+    "thumbnail": "https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_600/Tree-shelf_cuh48s.png"
   },
   {
     "title": "Wooden-shelf",
@@ -129,7 +151,9 @@
     "glbUrl": "https://cdn.jsdelivr.net/gh/diatknust-hub/diatknust@main/Wooden-shelf.glb",
     "usdzUrl": "https://cdn.jsdelivr.net/gh/diatknust-hub/diatknust@main/Wooden-shelf.usdz",
     "scale": "1 1 1",
-    "is_active": true
+    "is_active": true,
+    "exhibition": "WebAR Pilot Collection",
+    "thumbnail": "https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_600/Wooden-shelf-flat-top_qknurr.png"
   },
   {
     "title": "Wooden-shelf-flat-top",
@@ -140,6 +164,8 @@
     "glbUrl": "https://cdn.jsdelivr.net/gh/diatknust-hub/diatknust@main/Wooden-shelf-flat-top.glb",
     "usdzUrl": "https://cdn.jsdelivr.net/gh/diatknust-hub/diatknust@main/Wooden-shelf-flat-top.usdz",
     "scale": "1 1 1",
-    "is_active": true
+    "is_active": true,
+    "exhibition": "WebAR Pilot Collection",
+    "thumbnail": "https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_600/Wooden-shelf-flat-top_qknurr.png"
   }
 ]
