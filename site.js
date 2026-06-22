@@ -94,14 +94,11 @@
             <div class="dept-nav__dropdown" role="menu" aria-label="Gallery sub-menu">
               <a href="gallery.html" class="dept-nav__drop-link" role="menuitem">&#128444; All Works</a>
               <div class="dept-nav__drop-divider" aria-hidden="true"></div>
-              <a href="gallery.html#jul-2026" class="dept-nav__drop-link" role="menuitem">&#127912; 2026 July Open Sale</a>
-              <a href="gallery.html#mphil-2026" class="dept-nav__drop-link" role="menuitem">&#127891; 2026 MPhil Artwork Exhibition</a>
-              <a href="gallery.html#jan-2026" class="dept-nav__drop-link" role="menuitem">&#127912; January 2026 Open Sale</a>
-              <a href="gallery.html#nov-2025" class="dept-nav__drop-link" role="menuitem">&#127912; November 2025 Open Sale</a>
+
             </div>
           </li>
 
-                                                                                                                        <!-- WebAR dropdown -->
+                                                                                                                                            <!-- WebAR dropdown -->
           <li class="dept-nav__item" role="none">
             <a href="webar.html" class="dept-nav__link dept-nav__link--drop" aria-haspopup="true" aria-expanded="false">
               WebAR
