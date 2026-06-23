@@ -458,6 +458,13 @@
         -webkit-overflow-scrolling: touch;
         scroll-snap-type: x proximity;
       }
+      /* Applied via JS only when the cards don't fill the row width —
+         keeps a single story looking intentional, not stranded on the
+         left. Removed automatically once enough stories overflow and
+         need real scrolling, so it never fights normal scroll behaviour. */
+      .updates-feed__row.is-centered {
+        justify-content: center;
+      }
       .updates-feed__card {
         flex: 0 0 auto;
         width: 280px;
@@ -719,6 +726,16 @@
         });
 
         row.innerHTML = items.map(buildCard).join('');
+
+        /* Center the row only while it doesn't actually need scrolling.
+           Re-checked on resize so it stays correct if the window changes
+           size (e.g. rotating a tablet, or resizing a browser window). */
+        function updateCentering() {
+          var overflowing = row.scrollWidth > row.clientWidth + 4; // small tolerance
+          row.classList.toggle('is-centered', !overflowing);
+        }
+        updateCentering();
+        window.addEventListener('resize', updateCentering, { passive: true });
       })
       .catch(function () { row.innerHTML = ''; });
   })();
