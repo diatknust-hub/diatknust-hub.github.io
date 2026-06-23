@@ -13,7 +13,6 @@
 
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.gstatic.com https://ajax.googleapis.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https://res.cloudinary.com; media-src 'self' https://res.cloudinary.com; connect-src 'self' blob: https://*.googleapis.com https://res.cloudinary.com https://cdn.jsdelivr.net https://www.google-analytics.com https://www.google.com; object-src 'none';"/>
   <meta name="description" content="The Department of Indigenous Art and Technology (DIAT) at KNUST Ghana — preserving, teaching, and globally promoting Ghana's indigenous craft heritage since 1976."/>
   <meta name="theme-color" content="#1A1A4E"/>
   <title>DIAT — Department of Indigenous Art &amp; Technology | KNUST Ghana</title>
@@ -443,6 +442,69 @@
     </section>
 
     <!-- ═══ UPDATES FEED — dynamic, reads diat-updates.json ════════════ -->
+    <!-- Self-contained styles — deliberately not relying on diat-styles.css
+         staying in sync, since that shared file gets edited often and
+         this section should never break just because it's a version behind. -->
+    <style>
+      .updates-feed { padding: var(--sp-2xl, 48px) 0; background: var(--clr-earth, #f5f0e8); }
+      .updates-feed__loading { text-align: center; color: var(--clr-text-tertiary, #888); padding: var(--sp-xl, 32px) 0; }
+      .updates-feed__row {
+        display: flex;
+        gap: var(--sp-md, 16px);
+        overflow-x: auto;
+        overflow-y: hidden;
+        padding: var(--sp-md, 16px) var(--sp-xs, 4px) var(--sp-lg, 24px);
+        margin-top: var(--sp-lg, 24px);
+        -webkit-overflow-scrolling: touch;
+        scroll-snap-type: x proximity;
+      }
+      .updates-feed__card {
+        flex: 0 0 auto;
+        width: 280px;
+        scroll-snap-align: start;
+        text-decoration: none;
+        color: inherit;
+        background: var(--clr-white, #fff);
+        border-radius: var(--radius-lg, 14px);
+        overflow: hidden;
+        box-shadow: 0 8px 22px rgba(0,0,0,.12);
+        transition: transform .2s ease, box-shadow .2s ease;
+      }
+      .updates-feed__card:hover { transform: translateY(-3px); box-shadow: 0 14px 30px rgba(0,0,0,.16); }
+      .updates-feed__card-media {
+        position: relative;
+        width: 100%;
+        aspect-ratio: 4/3;
+        overflow: hidden;
+        background: var(--clr-indigo, #1a1a4e);
+      }
+      .updates-feed__card-media img {
+        width: 100%; height: 100%; object-fit: cover; display: block;
+      }
+      .updates-feed__play {
+        position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+        width: 40px; height: 40px; border-radius: 50%;
+        background: rgba(26,26,78,.8); color: #fff;
+        display: flex; align-items: center; justify-content: center; font-size: .85rem;
+      }
+      .updates-feed__category {
+        display: inline-block; font-size: .65rem; font-weight: 700;
+        letter-spacing: .06em; text-transform: uppercase;
+        color: var(--clr-gold-dark, #a07000); background: var(--clr-gold-muted, #f5e6c8);
+        padding: 3px 10px; border-radius: 999px; margin: 12px 14px 0;
+      }
+      .updates-feed__card-title {
+        font-size: .95rem; line-height: 1.3; color: var(--clr-text-primary, #1a1a1a);
+        margin: 8px 14px 4px;
+      }
+      .updates-feed__date {
+        display: block; font-size: .7rem; color: var(--clr-text-tertiary, #888);
+        margin: 0 14px 14px;
+      }
+      @media (max-width: 600px) {
+        .updates-feed__card { width: 230px; }
+      }
+    </style>
     <section class="updates-feed" aria-labelledby="updates-heading">
       <div class="container">
         <header class="dept-section__header" style="text-align:center;max-width:600px;margin-inline:auto">
@@ -453,7 +515,7 @@
           </h2>
           <div class="dept-section__rule" aria-hidden="true" style="margin-inline:auto"></div>
         </header>
-        <div class="updates-feed__layout" id="updates-feed-layout">
+        <div class="updates-feed__row" id="updates-feed-layout">
           <p class="updates-feed__loading">Loading latest updates&hellip;</p>
         </div>
       </div>
@@ -615,11 +677,11 @@
     }
   </script>
 
-  <!-- ═══ UPDATES FEED — fetches diat-updates.json, renders Option B layout ═══ -->
+  <!-- ═══ UPDATES FEED — fetches diat-updates.json, renders Netflix-style row ═══ -->
   <script>
   (function () {
-    var layout = document.getElementById('updates-feed-layout');
-    if (!layout) return;
+    var row = document.getElementById('updates-feed-layout');
+    if (!row) return;
 
     function esc(s) {
       return (s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
@@ -633,50 +695,32 @@
       return item.youtube_id ? '<span class="updates-feed__play" aria-hidden="true">&#9658;</span>' : '';
     }
 
+    function buildCard(item) {
+      return '<a class="updates-feed__card" href="' + esc(item.story_url) + '">'
+        + '<div class="updates-feed__card-media">'
+        +   '<img src="' + esc(item.hero_image) + '" alt="' + esc(item.title) + '" loading="lazy" draggable="false" oncontextmenu="return false" style="width:100%;height:100%;object-fit:cover;display:block;">'
+        +   playBadge(item)
+        + '</div>'
+        + '<span class="updates-feed__category">' + esc(item.category) + '</span>'
+        + '<h3 class="updates-feed__card-title">' + esc(item.headline || item.title) + '</h3>'
+        + '<span class="updates-feed__date">' + fmtDate(item.date) + '</span>'
+        + '</a>';
+    }
+
     fetch('diat-updates.json')
       .then(function (r) { return r.json(); })
       .then(function (items) {
         items = (items || []).filter(function (i) { return i.active !== false; });
-        if (!items.length) { layout.innerHTML = ''; return; }
+        if (!items.length) { row.innerHTML = ''; return; }
 
         items.sort(function (a, b) {
           if (!!a.pinned !== !!b.pinned) return a.pinned ? -1 : 1;
           return new Date(b.date) - new Date(a.date);
         });
 
-        var featured = items[0];
-        var rest     = items.slice(1, 5);
-
-        var html = '<a class="updates-feed__featured" href="' + esc(featured.story_url) + '">'
-          + '<div class="updates-feed__featured-media">'
-          +   '<img src="' + esc(featured.hero_image) + '" alt="' + esc(featured.title) + '" loading="lazy" draggable="false" oncontextmenu="return false">'
-          +   playBadge(featured)
-          + '</div>'
-          + '<div class="updates-feed__featured-body">'
-          +   '<span class="updates-feed__category">' + esc(featured.category) + '</span>'
-          +   '<h3 class="updates-feed__featured-title">' + esc(featured.headline || featured.title) + '</h3>'
-          +   '<p class="updates-feed__featured-text">' + esc(featured.body) + '</p>'
-          +   '<span class="updates-feed__date">' + fmtDate(featured.date) + '</span>'
-          + '</div></a>';
-
-        if (rest.length) {
-          html += '<div class="updates-feed__list">' + rest.map(function (item) {
-            return '<a class="updates-feed__list-item" href="' + esc(item.story_url) + '">'
-              + '<div class="updates-feed__list-thumb">'
-              +   '<img src="' + esc(item.hero_image) + '" alt="' + esc(item.title) + '" loading="lazy" draggable="false" oncontextmenu="return false">'
-              +   playBadge(item)
-              + '</div>'
-              + '<div class="updates-feed__list-body">'
-              +   '<span class="updates-feed__category updates-feed__category--sm">' + esc(item.category) + '</span>'
-              +   '<h4 class="updates-feed__list-title">' + esc(item.title) + '</h4>'
-              +   '<span class="updates-feed__date updates-feed__date--sm">' + fmtDate(item.date) + '</span>'
-              + '</div></a>';
-          }).join('') + '</div>';
-        }
-
-        layout.innerHTML = html;
+        row.innerHTML = items.map(buildCard).join('');
       })
-      .catch(function () { layout.innerHTML = ''; });
+      .catch(function () { row.innerHTML = ''; });
   })();
   </script>
   <script src="site.js?v=4"></script>

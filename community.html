@@ -20,6 +20,68 @@
   <link rel="stylesheet" href="diat-styles.css"/>
   <meta name="description" content="DIAT's three-month nationwide internship embeds students with artisan communities across Ghana, in partnership with the Mastercard Foundation."/>
   <title>Community & Internship | DIAT KNUST</title>
+  <!-- Self-contained styles for the Sankofa/Sacramento story section —
+       deliberately duplicated from diat-styles.css rather than relying
+       on it, since that shared file gets edited often and this page
+       should never break just because it's a version behind. -->
+  <style>
+    .visit-story__video {
+      position: relative;
+      width: 100%;
+      max-width: 960px;
+      margin-inline: auto;
+      aspect-ratio: 16/9;
+      border-radius: var(--radius-lg, 16px);
+      overflow: hidden;
+      box-shadow: 0 16px 40px rgba(0,0,0,.22);
+      background: var(--clr-indigo, #1a1a4e);
+    }
+    .visit-story__video iframe {
+      width: 100%;
+      height: 100%;
+      border: 0;
+      display: block;
+    }
+    .visit-story__meta {
+      display: flex;
+      gap: var(--sp-sm, 12px);
+      flex-wrap: wrap;
+      justify-content: center;
+      margin: var(--sp-md, 16px) 0 var(--sp-lg, 24px);
+    }
+    .visit-feature__meta-item {
+      font-family: var(--ff-body, sans-serif);
+      font-size: var(--fs-xs, 0.75rem);
+      color: var(--clr-text-tertiary, #777);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .visit-story__body {
+      max-width: 65ch;
+      margin-inline: auto;
+    }
+    .visit-story__gallery {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--sp-sm, 12px);
+      margin-top: var(--sp-xl, 32px);
+      max-width: 960px;
+      margin-inline: auto;
+    }
+    .visit-story__gallery img {
+      width: 100%;
+      max-width: 100%;
+      height: auto;
+      aspect-ratio: 1/1;
+      object-fit: cover;
+      border-radius: var(--radius-md, 10px);
+      display: block;
+    }
+    @media (max-width: 700px) {
+      .visit-story__gallery { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
 </head>
 <body data-page="community">
 <a href="#main-content" class="skip-link">Skip to main content</a>
@@ -165,13 +227,13 @@
 
         <!-- Photo gallery, closes out the story -->
         <div class="visit-story__gallery">
-          <img src="https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_800/Leather_mask_pressed_wooden_mould_oqenpb.webp" alt="Leather mask pressed from a carved wooden mould" loading="lazy" draggable="false" oncontextmenu="return false">
-          <img src="https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_800/Teal_purple_black_marbled_leather_a8cq8u.webp" alt="Teal, purple and black marbled dye pattern on vegetable-tanned leather" loading="lazy" draggable="false" oncontextmenu="return false">
-          <img src="https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_800/Spray-through-lace-stencil_in_action_m5in0u.webp" alt="Spraying technique applied through a lace stencil onto leather" loading="lazy" draggable="false" oncontextmenu="return false">
-          <img src="https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_800/Group_DIAT_sign_holding_dyed_leather_d0zke8.webp" alt="Sacramento State students and DIAT staff at the department sign, holding dyed leather pieces" loading="lazy" draggable="false" oncontextmenu="return false">
-          <img src="https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_800/Tye_and_dye_ob5arn.webp" alt="Tie-and-dye technique applied to leather" loading="lazy" draggable="false" oncontextmenu="return false">
-          <img src="https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_800/Fold_flap_and_dye_xgj2u4.webp" alt="Fold-and-dye technique applied to leather" loading="lazy" draggable="false" oncontextmenu="return false">
-          <img src="https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_800/Turning_Spiral_technique_heptqo.webp" alt="Spiral marbling technique on dyed leather" loading="lazy" draggable="false" oncontextmenu="return false">
+          <img src="https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_800/Leather_mask_pressed_wooden_mould_oqenpb.webp" alt="Leather mask pressed from a carved wooden mould" loading="lazy" draggable="false" oncontextmenu="return false" style="width:100%;max-width:100%;height:auto;aspect-ratio:1/1;object-fit:cover;border-radius:10px;display:block;">
+          <img src="https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_800/Teal_purple_black_marbled_leather_a8cq8u.webp" alt="Teal, purple and black marbled dye pattern on vegetable-tanned leather" loading="lazy" draggable="false" oncontextmenu="return false" style="width:100%;max-width:100%;height:auto;aspect-ratio:1/1;object-fit:cover;border-radius:10px;display:block;">
+          <img src="https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_800/Spray-through-lace-stencil_in_action_m5in0u.webp" alt="Spraying technique applied through a lace stencil onto leather" loading="lazy" draggable="false" oncontextmenu="return false" style="width:100%;max-width:100%;height:auto;aspect-ratio:1/1;object-fit:cover;border-radius:10px;display:block;">
+          <img src="https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_800/Group_DIAT_sign_holding_dyed_leather_d0zke8.webp" alt="Sacramento State students and DIAT staff at the department sign, holding dyed leather pieces" loading="lazy" draggable="false" oncontextmenu="return false" style="width:100%;max-width:100%;height:auto;aspect-ratio:1/1;object-fit:cover;border-radius:10px;display:block;">
+          <img src="https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_800/Tye_and_dye_ob5arn.webp" alt="Tie-and-dye technique applied to leather" loading="lazy" draggable="false" oncontextmenu="return false" style="width:100%;max-width:100%;height:auto;aspect-ratio:1/1;object-fit:cover;border-radius:10px;display:block;">
+          <img src="https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_800/Fold_flap_and_dye_xgj2u4.webp" alt="Fold-and-dye technique applied to leather" loading="lazy" draggable="false" oncontextmenu="return false" style="width:100%;max-width:100%;height:auto;aspect-ratio:1/1;object-fit:cover;border-radius:10px;display:block;">
+          <img src="https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_800/Turning_Spiral_technique_heptqo.webp" alt="Spiral marbling technique on dyed leather" loading="lazy" draggable="false" oncontextmenu="return false" style="width:100%;max-width:100%;height:auto;aspect-ratio:1/1;object-fit:cover;border-radius:10px;display:block;">
         </div>
       </div>
     </section>
