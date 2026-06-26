@@ -740,6 +740,258 @@
       .catch(function () { row.innerHTML = ''; });
   })();
   </script>
+
+  <!-- ═══ FIRST-TIME VISITOR EMAIL POPUP ═══════════════════════════════
+       Shows once per browser, triggered after the visitor scrolls past
+       50% of the page. Dismissing (X, backdrop click, or Esc) OR
+       submitting both permanently suppress it via localStorage — it
+       never reappears in either case. Self-contained styles/script,
+       same pattern as the Updates Feed above: deliberately not relying
+       on diat-styles.css staying in sync, so this never breaks just
+       because that shared file is a version behind.
+
+       Submitted emails are written to Firestore (project diat-knust-hub,
+       same project as the Gallery/WebAR reactions). The 'subscribers'
+       collection is write-only by rule — nothing on the client, including
+       this script, can ever read the list back out. ════════════════ -->
+  <style>
+    .visitor-popup-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(20,20,20,.55);
+      z-index: 500;
+      align-items: center;
+      justify-content: center;
+      padding: var(--sp-md, 16px);
+    }
+    .visitor-popup-backdrop.is-open { display: flex; }
+    .visitor-popup {
+      position: relative;
+      width: 100%;
+      max-width: 420px;
+      background: var(--clr-white, #fff);
+      border-radius: var(--radius-lg, 18px);
+      box-shadow: 0 20px 60px rgba(0,0,0,.3);
+      padding: var(--sp-xl, 32px) var(--sp-lg, 24px) var(--sp-lg, 24px);
+      text-align: center;
+      animation: visitorPopupIn 280ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    @keyframes visitorPopupIn {
+      from { opacity: 0; transform: translateY(12px) scale(.97); }
+      to   { opacity: 1; transform: translateY(0)    scale(1);   }
+    }
+    .visitor-popup__close {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      width: 32px;
+      height: 32px;
+      border-radius: 9999px;
+      background: var(--clr-earth, #f4f0e8);
+      color: var(--clr-text-secondary, #52514e);
+      border: none;
+      font-size: 1rem;
+      line-height: 1;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 160ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .visitor-popup__close:hover { background: var(--clr-gold, #c9952a); color: #fff; }
+    .visitor-popup__eyebrow {
+      display: inline-block;
+      font-family: var(--ff-body, sans-serif);
+      font-size: .7rem;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--clr-gold-dark, #9a6f10);
+      background: var(--clr-gold-muted, rgba(201,149,42,.12));
+      padding: 4px 12px;
+      border-radius: 9999px;
+      margin-bottom: 14px;
+    }
+    .visitor-popup__title {
+      font-family: var(--ff-display, serif);
+      font-size: var(--fs-xl, 1.4rem);
+      color: var(--clr-text-primary, #141414);
+      margin: 0 0 10px;
+      line-height: 1.25;
+    }
+    .visitor-popup__body {
+      font-family: var(--ff-body, sans-serif);
+      font-size: var(--fs-base, .95rem);
+      color: var(--clr-text-secondary, #52514e);
+      line-height: 1.5;
+      margin: 0 0 20px;
+    }
+    .visitor-popup__form {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .visitor-popup__input {
+      width: 100%;
+      font-family: var(--ff-body, sans-serif);
+      font-size: var(--fs-base, .95rem);
+      padding: 12px 16px;
+      border-radius: 9999px;
+      border: 1.5px solid var(--clr-border, #e4ddd0);
+      outline: none;
+      transition: border-color 160ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .visitor-popup__input:focus { border-color: var(--clr-gold, #c9952a); }
+    .visitor-popup__submit {
+      width: 100%;
+      justify-content: center;
+    }
+    .visitor-popup__error {
+      font-family: var(--ff-body, sans-serif);
+      font-size: var(--fs-sm, .8rem);
+      color: var(--clr-terra, #c1440e);
+      min-height: 1.2em;
+      margin: 0;
+    }
+    .visitor-popup__success {
+      font-family: var(--ff-body, sans-serif);
+      font-size: var(--fs-base, .95rem);
+      color: var(--clr-text-primary, #141414);
+      padding: var(--sp-sm, 12px) 0;
+    }
+    .visitor-popup__success-icon {
+      font-size: 1.8rem;
+      display: block;
+      margin-bottom: 8px;
+    }
+  </style>
+
+  <div class="visitor-popup-backdrop" id="visitor-popup-backdrop">
+    <div class="visitor-popup" role="dialog" aria-modal="true" aria-labelledby="visitor-popup-title">
+      <button type="button" class="visitor-popup__close" id="visitor-popup-close" aria-label="Close">&times;</button>
+
+      <div id="visitor-popup-content">
+        <span class="visitor-popup__eyebrow">Stay in the Loop</span>
+        <h2 class="visitor-popup__title" id="visitor-popup-title">Get DIAT&rsquo;s Latest, First</h2>
+        <p class="visitor-popup__body">
+          Department updates, new archive additions, and WebAR releases &mdash;
+          straight to your inbox, no spam.
+        </p>
+        <form class="visitor-popup__form" id="visitor-popup-form" novalidate>
+          <input type="email" class="visitor-popup__input" id="visitor-popup-email"
+                 placeholder="you@example.com" autocomplete="email" required>
+          <p class="visitor-popup__error" id="visitor-popup-error"></p>
+          <button type="submit" class="btn btn--primary btn--md visitor-popup__submit" id="visitor-popup-submit-btn">
+            Keep Me Updated
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Firebase (compat build — matches this site's plain-script style, no bundler needed) -->
+  <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-app-compat.js" integrity="sha384-1hBNr0agKHNFwbheHcAJzeLri4PPLTLbaXUH5d9CauwS3A/PrkIt2tzxBJK3bHjY" crossorigin="anonymous"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore-compat.js" integrity="sha384-qhzYx5B1KizZLjRTmJkBWYES6I+tL9Qz1J8BmFNo/18Ix+AtopUC1cuY3VW43Pe0" crossorigin="anonymous"></script>
+  <script>
+  (function () {
+    var STORAGE_KEY = 'diatVisitorPopupShown';
+    if (localStorage.getItem(STORAGE_KEY)) return; // already shown once — never again
+
+    var backdrop = document.getElementById('visitor-popup-backdrop');
+    var closeBtn = document.getElementById('visitor-popup-close');
+    var form = document.getElementById('visitor-popup-form');
+    var emailInput = document.getElementById('visitor-popup-email');
+    var errorEl = document.getElementById('visitor-popup-error');
+    var submitBtn = document.getElementById('visitor-popup-submit-btn');
+    var contentEl = document.getElementById('visitor-popup-content');
+    if (!backdrop || !form) return;
+
+    var hasTriggered = false;
+
+    function markShown() {
+      try { localStorage.setItem(STORAGE_KEY, '1'); } catch (e) { /* ignore */ }
+    }
+
+    function openPopup() {
+      if (hasTriggered) return;
+      hasTriggered = true;
+      backdrop.classList.add('is-open');
+      markShown();
+      window.removeEventListener('scroll', onScroll);
+    }
+
+    function closePopup() {
+      backdrop.classList.remove('is-open');
+    }
+
+    function onScroll() {
+      var scrolled = window.scrollY || document.documentElement.scrollTop || 0;
+      var max = (document.documentElement.scrollHeight || 0) - window.innerHeight;
+      if (max <= 0) return;
+      if (scrolled / max >= 0.5) openPopup();
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+
+    closeBtn.addEventListener('click', closePopup);
+    backdrop.addEventListener('click', function (e) {
+      if (e.target === backdrop) closePopup();
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && backdrop.classList.contains('is-open')) closePopup();
+    });
+
+    var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var email = (emailInput.value || '').trim();
+      errorEl.textContent = '';
+
+      if (!EMAIL_RE.test(email)) {
+        errorEl.textContent = 'Please enter a valid email address.';
+        return;
+      }
+
+      if (typeof firebase === 'undefined') {
+        errorEl.textContent = 'Something went wrong. Please try again later.';
+        return;
+      }
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Submitting…';
+
+      var firebaseConfig = {
+        apiKey: "AIzaSyBFp_TPhnyzgahV3M3O7NG_NDxLorWq-f4",
+        authDomain: "diat-knust-hub.firebaseapp.com",
+        projectId: "diat-knust-hub",
+        storageBucket: "diat-knust-hub.firebasestorage.app",
+        messagingSenderId: "1089013646613",
+        appId: "1:1089013646613:web:4387cc2544837b7955151c"
+      };
+      if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+      var db = firebase.firestore();
+
+      db.collection('subscribers').add({
+        email: email,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+      }).then(function () {
+        contentEl.innerHTML =
+          '<div class="visitor-popup__success">' +
+            '<span class="visitor-popup__success-icon" aria-hidden="true">&#10003;</span>' +
+            'Thanks for subscribing &mdash; we&rsquo;ll keep you posted!' +
+          '</div>';
+      }).catch(function (err) {
+        console.warn('Subscription failed:', err);
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Keep Me Updated';
+        errorEl.textContent = 'Could not submit right now. Please try again.';
+      });
+    });
+  })();
+  </script>
+
   <script src="site.js?v=4"></script>
   <script src="cms.js?v=4"></script>
 </body>
