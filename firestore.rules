@@ -19,6 +19,25 @@ service cloud.firestore {
       allow delete: if false;
     }
 
+    // Rules for the first-time-visitor email popup (homepage)
+    // Write-only: visitors can submit an email, but nobody on the client
+    // side — including the submitter — can ever read, list, update, or
+    // delete entries back out. Keeps a list of real subscriber emails
+    // from being scraped by anyone with the page open.
+    match /subscribers/{docId} {
+      allow read: if false;
+
+      allow create: if request.resource.data.keys().hasOnly(['email', 'createdAt'])
+                    && request.resource.data.email is string
+                    && request.resource.data.email.size() > 0
+                    && request.resource.data.email.size() < 200
+                    && request.resource.data.email.matches('^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$')
+                    && request.resource.data.createdAt == request.time;
+
+      allow update: if false;
+      allow delete: if false;
+    }
+
     // Default rule: block all other access
     match /{document=**} {
       allow read, write: if false;
