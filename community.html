@@ -398,6 +398,12 @@
     window.addEventListener('load', function () {
       jump();
       setTimeout(jump, 800);
+      /* cms.js (loaded on every page) does its own async fetch + text
+         replacement that can shift layout well after this point — these
+         extra checkpoints make sure we win regardless of how long that
+         network request takes. */
+      setTimeout(jump, 1800);
+      setTimeout(jump, 3000);
     });
 
     /* Find whatever media element lives inside THIS story's section —
@@ -408,6 +414,17 @@
       var reJump = function () { setTimeout(jump, 50); };
       media.addEventListener('load', reJump);          // iframes
       media.addEventListener('loadedmetadata', reJump); // videos
+    }
+
+    /* Precise alternative to guessing fixed delays above — reacts the
+       INSTANT cms.js's async content swap actually changes anything
+       on the page (whenever its network fetch happens to finish),
+       rather than hoping a fixed timeout was long enough. Stops
+       watching after 6s so it doesn't linger forever. */
+    if ('MutationObserver' in window) {
+      var mo = new MutationObserver(function () { setTimeout(jump, 30); });
+      mo.observe(document.body, { childList: true, subtree: true, characterData: true });
+      setTimeout(function () { mo.disconnect(); }, 6000);
     }
   })();
   </script>
