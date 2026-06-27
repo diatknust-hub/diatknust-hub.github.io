@@ -81,11 +81,87 @@
     @media (max-width: 700px) {
       .visit-story__gallery { grid-template-columns: repeat(2, 1fr); }
     }
+
+    /* ── STORY LIGHTBOX — generic, applies to every .visit-story__gallery
+         automatically (current AND future stories), no per-story setup
+         ever needed. ──────────────────────────────────────────────── */
+    .story-lb {
+      position: fixed;
+      inset: 0;
+      z-index: 500;
+      background: rgba(0,0,0,.92);
+      display: none;
+      align-items: center;
+      justify-content: center;
+    }
+    .story-lb.is-open { display: flex; }
+    .story-lb__img {
+      max-width: 92vw;
+      max-height: 86vh;
+      object-fit: contain;
+      border-radius: 6px;
+      box-shadow: 0 20px 60px rgba(0,0,0,.5);
+      user-select: none;
+      -webkit-user-drag: none;
+    }
+    .story-lb__close,
+    .story-lb__arrow {
+      position: absolute;
+      border: none;
+      background: rgba(255,255,255,.12);
+      color: #fff;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background .15s ease;
+    }
+    .story-lb__close:hover,
+    .story-lb__arrow:hover { background: rgba(255,255,255,.25); }
+    .story-lb__close {
+      top: 16px; right: 16px;
+      width: 42px; height: 42px;
+      border-radius: 50%;
+      font-size: 1.1rem;
+    }
+    .story-lb__arrow {
+      top: 50%;
+      transform: translateY(-50%);
+      width: 50px; height: 50px;
+      border-radius: 50%;
+      font-size: 1.6rem;
+    }
+    .story-lb__arrow--prev { left: 16px; }
+    .story-lb__arrow--next { right: 16px; }
+    .story-lb__counter {
+      position: absolute;
+      bottom: 18px; left: 50%;
+      transform: translateX(-50%);
+      color: rgba(255,255,255,.8);
+      font-size: .85rem;
+      font-family: var(--ff-body, sans-serif);
+    }
+    @media (max-width: 600px) {
+      .story-lb__arrow { width: 40px; height: 40px; font-size: 1.3rem; }
+      .story-lb__close { width: 36px; height: 36px; }
+    }
   </style>
 </head>
 <body data-page="community">
 <a href="#main-content" class="skip-link">Skip to main content</a>
 <main id="main-content">
+
+  <!-- ── Story lightbox — one shared instance, reused by every story
+       gallery's images. Generic by design so any future story works
+       automatically. ──────────────────────────────────────────────── -->
+  <div class="story-lb" id="story-lb" role="dialog" aria-modal="true" aria-label="Image viewer">
+    <button class="story-lb__close" id="story-lb-close" aria-label="Close image viewer">&#10005;</button>
+    <button class="story-lb__arrow story-lb__arrow--prev" id="story-lb-prev" aria-label="Previous image">&#8249;</button>
+    <button class="story-lb__arrow story-lb__arrow--next" id="story-lb-next" aria-label="Next image">&#8250;</button>
+    <img class="story-lb__img" id="story-lb-img" src="" alt="">
+    <div class="story-lb__counter" id="story-lb-counter"></div>
+  </div>
+
 
     <section class="page-hero" aria-labelledby="comm-title">
       <div class="container">
@@ -426,6 +502,85 @@
       mo.observe(document.body, { childList: true, subtree: true, characterData: true });
       setTimeout(function () { mo.disconnect(); }, 6000);
     }
+  })();
+  </script>
+
+  <!-- ── Story gallery lightbox — generic, self-wiring ──────────────────
+       Finds every .visit-story__gallery on the page and gives each
+       image a click-to-fullscreen view with prev/next scoped to ONLY
+       that gallery's own images (TGIF's photos never mix with CABE's
+       or Sankofa's). Runs once on load against whatever sections exist
+       at that moment — since every story on this page uses the same
+       .visit-story__gallery markup, a brand new story added later gets
+       this automatically, with zero extra wiring ever needed again. -->
+  <script>
+  (function () {
+    var galleries = document.querySelectorAll('.visit-story__gallery');
+    if (!galleries.length) return;
+
+    var lb        = document.getElementById('story-lb');
+    var lbImg      = document.getElementById('story-lb-img');
+    var lbCounter  = document.getElementById('story-lb-counter');
+    var lbClose    = document.getElementById('story-lb-close');
+    var lbPrev     = document.getElementById('story-lb-prev');
+    var lbNext     = document.getElementById('story-lb-next');
+    if (!lb) return;
+
+    var currentImgs = [];
+    var currentIdx  = 0;
+
+    function show(idx) {
+      if (!currentImgs.length) return;
+      currentIdx = (idx + currentImgs.length) % currentImgs.length;
+      var img = currentImgs[currentIdx];
+      lbImg.src = img.src;
+      lbImg.alt = img.alt || '';
+      lbCounter.textContent = (currentIdx + 1) + ' / ' + currentImgs.length;
+    }
+
+    function open(imgs, idx) {
+      currentImgs = imgs;
+      show(idx);
+      lb.classList.add('is-open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function close() {
+      lb.classList.remove('is-open');
+      document.body.style.overflow = '';
+    }
+
+    galleries.forEach(function (gallery) {
+      var imgs = Array.prototype.slice.call(gallery.querySelectorAll('img'));
+      imgs.forEach(function (img, idx) {
+        img.style.cursor = 'pointer';
+        img.addEventListener('click', function () { open(imgs, idx); });
+      });
+    });
+
+    lbClose.addEventListener('click', close);
+    lbPrev.addEventListener('click', function () { show(currentIdx - 1); });
+    lbNext.addEventListener('click', function () { show(currentIdx + 1); });
+
+    /* Click the dark backdrop (not the image itself) to close */
+    lb.addEventListener('click', function (e) {
+      if (e.target === lb) close();
+    });
+
+    document.addEventListener('keydown', function (e) {
+      if (!lb.classList.contains('is-open')) return;
+      if (e.key === 'Escape')     close();
+      if (e.key === 'ArrowLeft')  show(currentIdx - 1);
+      if (e.key === 'ArrowRight') show(currentIdx + 1);
+    });
+
+    /* Touch swipe for mobile */
+    var touchStartX = 0;
+    lb.addEventListener('touchstart', function (e) { touchStartX = e.touches[0].clientX; }, { passive: true });
+    lb.addEventListener('touchend', function (e) {
+      var diff = touchStartX - e.changedTouches[0].clientX;
+      if (Math.abs(diff) > 50) show(currentIdx + (diff > 0 ? 1 : -1));
+    }, { passive: true });
   })();
   </script>
 </body>
