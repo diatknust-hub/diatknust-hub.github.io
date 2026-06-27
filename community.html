@@ -269,11 +269,14 @@
        particular finishes loading well after the rest of the page and
        visibly shifts everything below it. Rather than touch site.js's
        shared scroll-reset (which every OTHER page still legitimately
-       needs), this re-asserts the correct position at several points,
-       including the exact moment the iframe itself finishes loading —
-       so it always wins regardless of what else fires after it. When
-       there's NO hash (a normal "Community" nav click), none of this
-       runs at all — the page loads at the top exactly as it always has. -->
+       needs), this re-asserts the correct position at a couple of
+       points, including the exact moment the iframe itself finishes
+       loading. Jumps are INSTANT, not animated — stacking multiple
+       smooth-scroll animations back to back was exactly what caused
+       the browser to cancel one mid-flight and land somewhere wrong,
+       which is the regression this fixes. When there's NO hash (a
+       normal "Community" nav click), none of this runs at all — the
+       page loads at the top exactly as it always has. -->
   <script>
   (function () {
     if (!location.hash) return; // normal top-of-page load — completely untouched
@@ -281,13 +284,12 @@
     if (!target) return;
 
     function jump() {
-      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      target.scrollIntoView({ behavior: 'auto', block: 'start' });
     }
 
     window.addEventListener('load', function () {
       jump();
-      setTimeout(jump, 400);
-      setTimeout(jump, 1000);
+      setTimeout(jump, 800);
     });
 
     var iframe = document.getElementById('pace-visit-iframe');
