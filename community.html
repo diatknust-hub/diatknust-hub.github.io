@@ -36,11 +36,14 @@
       box-shadow: 0 16px 40px rgba(0,0,0,.22);
       background: var(--clr-indigo, #1a1a4e);
     }
-    .visit-story__video iframe {
+    .visit-story__video iframe,
+    .visit-story__video video {
       width: 100%;
       height: 100%;
       border: 0;
       display: block;
+      object-fit: cover;
+      background: var(--clr-indigo, #1a1a4e);
     }
     .visit-story__meta {
       display: flex;
@@ -81,87 +84,11 @@
     @media (max-width: 700px) {
       .visit-story__gallery { grid-template-columns: repeat(2, 1fr); }
     }
-
-    /* ── STORY LIGHTBOX — generic, applies to every .visit-story__gallery
-         automatically (current AND future stories), no per-story setup
-         ever needed. ──────────────────────────────────────────────── */
-    .story-lb {
-      position: fixed;
-      inset: 0;
-      z-index: 500;
-      background: rgba(0,0,0,.92);
-      display: none;
-      align-items: center;
-      justify-content: center;
-    }
-    .story-lb.is-open { display: flex; }
-    .story-lb__img {
-      max-width: 92vw;
-      max-height: 86vh;
-      object-fit: contain;
-      border-radius: 6px;
-      box-shadow: 0 20px 60px rgba(0,0,0,.5);
-      user-select: none;
-      -webkit-user-drag: none;
-    }
-    .story-lb__close,
-    .story-lb__arrow {
-      position: absolute;
-      border: none;
-      background: rgba(255,255,255,.12);
-      color: #fff;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: background .15s ease;
-    }
-    .story-lb__close:hover,
-    .story-lb__arrow:hover { background: rgba(255,255,255,.25); }
-    .story-lb__close {
-      top: 16px; right: 16px;
-      width: 42px; height: 42px;
-      border-radius: 50%;
-      font-size: 1.1rem;
-    }
-    .story-lb__arrow {
-      top: 50%;
-      transform: translateY(-50%);
-      width: 50px; height: 50px;
-      border-radius: 50%;
-      font-size: 1.6rem;
-    }
-    .story-lb__arrow--prev { left: 16px; }
-    .story-lb__arrow--next { right: 16px; }
-    .story-lb__counter {
-      position: absolute;
-      bottom: 18px; left: 50%;
-      transform: translateX(-50%);
-      color: rgba(255,255,255,.8);
-      font-size: .85rem;
-      font-family: var(--ff-body, sans-serif);
-    }
-    @media (max-width: 600px) {
-      .story-lb__arrow { width: 40px; height: 40px; font-size: 1.3rem; }
-      .story-lb__close { width: 36px; height: 36px; }
-    }
   </style>
 </head>
 <body data-page="community">
 <a href="#main-content" class="skip-link">Skip to main content</a>
 <main id="main-content">
-
-  <!-- ── Story lightbox — one shared instance, reused by every story
-       gallery's images. Generic by design so any future story works
-       automatically. ──────────────────────────────────────────────── -->
-  <div class="story-lb" id="story-lb" role="dialog" aria-modal="true" aria-label="Image viewer">
-    <button class="story-lb__close" id="story-lb-close" aria-label="Close image viewer">&#10005;</button>
-    <button class="story-lb__arrow story-lb__arrow--prev" id="story-lb-prev" aria-label="Previous image">&#8249;</button>
-    <button class="story-lb__arrow story-lb__arrow--next" id="story-lb-next" aria-label="Next image">&#8250;</button>
-    <img class="story-lb__img" id="story-lb-img" src="" alt="">
-    <div class="story-lb__counter" id="story-lb-counter"></div>
-  </div>
-
 
     <section class="page-hero" aria-labelledby="comm-title">
       <div class="container">
@@ -184,21 +111,22 @@
       </div>
     </section>
 
-    <!-- TGIF LEATHER PRINTING SHOWCASE — 26 June 2026 -->
+    <!-- DEPARTMENT NEWS — TGIF Leather Printing Showcase -->
     <section class="dept-section dept-section--white" id="tgif-leather-showcase" aria-labelledby="tgif-heading">
       <div class="container">
         <header class="dept-section__header" style="text-align:center;max-width:680px;margin-inline:auto">
           <span class="dept-section__eyebrow">Department News</span>
           <h2 class="dept-section__title" id="tgif-heading"
-              data-cms-key="comm-tgif-h2" data-cms-label="TGIF Heading" data-cms-type="text">
+              data-cms-key="comm-tgif-h2" data-cms-label="TGIF Showcase Heading" data-cms-type="text">
             TGIF in Colour: A Leather Printing Showcase
           </h2>
           <div class="dept-section__rule" aria-hidden="true" style="margin-inline:auto"></div>
         </header>
 
+        <!-- Cinematic full-width video, sits above the story -->
         <div class="visit-story__video" style="margin-top:var(--sp-xl)">
-          <iframe id="tgif-leather-showcase-iframe" src="https://www.youtube.com/embed/lX7c0-xREi4"
-                  title="TGIF in Colour: A Leather Printing Showcase at DIAT KNUST"
+          <iframe src="https://www.youtube.com/embed/lX7c0-xREi4"
+                  title="TGIF in Colour: DIAT's Leather Printing Showcase"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                   allowfullscreen loading="lazy"></iframe>
         </div>
@@ -206,84 +134,98 @@
         <div class="visit-story__meta">
           <span class="visit-feature__meta-item">&#128197; 26 June 2026</span>
           <span class="visit-feature__meta-item">&#127963; Leather Technology Section</span>
-          <span class="visit-feature__meta-item">&#127912; End-of-Semester Showcase</span>
+          <span class="visit-feature__meta-item">&#127912; Second-Year Cohort</span>
         </div>
 
+        <!-- Story text, comfortable reading width -->
         <div class="visit-story__body">
-          <p class="content-split__body" data-cms-key="comm-tgif-p1" data-cms-label="TGIF Visit Para 1">
-            On 26 June 2026, DIAT&rsquo;s compound turned into a gallery of colour as second-year
-            Leather Technology students hung out their finished end-of-semester work &mdash; screen
-            printing, embossing, heat transfer, and more &mdash; each piece demonstrating a different
-            way of bringing pattern and colour to leather.
+          <p class="content-split__body" data-cms-key="comm-tgif-p1" data-cms-label="TGIF Showcase Para 1">
+            Thank God it&rsquo;s Friday and what a Friday it was. On 26th June 2026, DIAT&rsquo;s
+            second-year Leather Technology students turned the department compound into a gallery
+            of colour, hanging their finished leatherwork out for an end-of-semester showcase
+            that pulled people in from across campus.
           </p>
-          <p class="content-split__body" data-cms-key="comm-tgif-p2" data-cms-label="TGIF Visit Para 2">
-            The showcase drew visitors from across campus, turning an ordinary Friday compound into
-            an open display of a semester&rsquo;s technical range &mdash; proof that leather printing,
-            much like the dyeing techniques explored elsewhere on this page, keeps finding new ways
-            to surprise.
+          <p class="content-split__body" data-cms-key="comm-tgif-p2" data-cms-label="TGIF Showcase Para 2">
+            Screen printing, embossing, heat transfer, and more &mdash; a tapestry of printing
+            methods, each one telling a different story on leather. With finishing now complete,
+            the next stage begins: turning these printed leathers into full artworks.
           </p>
         </div>
 
+        <!-- Photo gallery, closes out the story -->
         <div class="visit-story__gallery">
-          <img src="https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_800/PXL_20260626_152736813_xsfhdj.jpg" alt="Leather printing showcase pieces on display at DIAT compound" loading="lazy" draggable="false" oncontextmenu="return false" style="width:100%;max-width:100%;height:auto;aspect-ratio:1/1;object-fit:cover;border-radius:10px;display:block;">
-          <img src="https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_800/PXL_20260626_152712729_xvu67g.jpg" alt="Screen printing technique on leather" loading="lazy" draggable="false" oncontextmenu="return false" style="width:100%;max-width:100%;height:auto;aspect-ratio:1/1;object-fit:cover;border-radius:10px;display:block;">
-          <img src="https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_800/PXL_20260626_152717457_o6drcd.jpg" alt="Embossing technique on leather" loading="lazy" draggable="false" oncontextmenu="return false" style="width:100%;max-width:100%;height:auto;aspect-ratio:1/1;object-fit:cover;border-radius:10px;display:block;">
-          <img src="https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_800/PXL_20260626_152754988_ntejle.jpg" alt="Heat transfer technique on leather" loading="lazy" draggable="false" oncontextmenu="return false" style="width:100%;max-width:100%;height:auto;aspect-ratio:1/1;object-fit:cover;border-radius:10px;display:block;">
-          <img src="https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_800/PXL_20260626_152758313_vsixvf.jpg" alt="Finished leather printing piece on display" loading="lazy" draggable="false" oncontextmenu="return false" style="width:100%;max-width:100%;height:auto;aspect-ratio:1/1;object-fit:cover;border-radius:10px;display:block;">
-          <img src="https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_800/PXL_20260626_152812052_gvhhoa.jpg" alt="Visitors viewing the leather printing showcase" loading="lazy" draggable="false" oncontextmenu="return false" style="width:100%;max-width:100%;height:auto;aspect-ratio:1/1;object-fit:cover;border-radius:10px;display:block;">
-          <img src="https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_800/PXL_20260626_152837326_kqlmhl.jpg" alt="Leather printing detail at the showcase" loading="lazy" draggable="false" oncontextmenu="return false" style="width:100%;max-width:100%;height:auto;aspect-ratio:1/1;object-fit:cover;border-radius:10px;display:block;">
-          <img src="https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_800/PXL_20260626_152851599_e8rped.jpg" alt="Student work hung out for the TGIF showcase" loading="lazy" draggable="false" oncontextmenu="return false" style="width:100%;max-width:100%;height:auto;aspect-ratio:1/1;object-fit:cover;border-radius:10px;display:block;">
-          <img src="https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_800/PXL_20260626_152903438_fy5ncf.jpg" alt="Wide view of the leather printing showcase at DIAT compound" loading="lazy" draggable="false" oncontextmenu="return false" style="width:100%;max-width:100%;height:auto;aspect-ratio:1/1;object-fit:cover;border-radius:10px;display:block;">
-          <img src="https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_800/PXL_20260626_153609913.PORTRAIT.ORIGINAL_2_y43msd.jpg" alt="Leather printing showcase piece, portrait view" loading="lazy" draggable="false" oncontextmenu="return false" style="width:100%;max-width:100%;height:auto;aspect-ratio:1/1;object-fit:cover;border-radius:10px;display:block;">
+          <img src="https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_1600/PXL_20260626_152736813_xsfhdj.jpg" alt="Wall of printed and dyed leather hides drying outside DIAT, showing animal print, ankara, and geometric patterns" loading="lazy" draggable="false" oncontextmenu="return false" style="width:100%;max-width:100%;height:auto;aspect-ratio:1/1;object-fit:cover;border-radius:10px;display:block;">
+          <img src="https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_1600/PXL_20260626_153609913.PORTRAIT.ORIGINAL_2_y43msd.jpg" alt="Close-up of a printed leather piece from the TGIF showcase" loading="lazy" draggable="false" oncontextmenu="return false" style="width:100%;max-width:100%;height:auto;aspect-ratio:1/1;object-fit:cover;border-radius:10px;display:block;">
+          <img src="https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_1600/PXL_20260626_152903438_fy5ncf.jpg" alt="Printed leather hide on display at the TGIF Leather Printing Showcase" loading="lazy" draggable="false" oncontextmenu="return false" style="width:100%;max-width:100%;height:auto;aspect-ratio:1/1;object-fit:cover;border-radius:10px;display:block;">
+          <img src="https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_1600/PXL_20260626_152754988_ntejle.jpg" alt="Leather hides with patterned prints hung along the DIAT compound wall" loading="lazy" draggable="false" oncontextmenu="return false" style="width:100%;max-width:100%;height:auto;aspect-ratio:1/1;object-fit:cover;border-radius:10px;display:block;">
+          <img src="https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_1600/PXL_20260626_152837326_kqlmhl.jpg" alt="Colourful printed leather pieces from the second-year showcase" loading="lazy" draggable="false" oncontextmenu="return false" style="width:100%;max-width:100%;height:auto;aspect-ratio:1/1;object-fit:cover;border-radius:10px;display:block;">
+          <img src="https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_1600/PXL_20260626_152712729_xvu67g.jpg" alt="Vivid printed leather hide showing one of the showcase's printing techniques" loading="lazy" draggable="false" oncontextmenu="return false" style="width:100%;max-width:100%;height:auto;aspect-ratio:1/1;object-fit:cover;border-radius:10px;display:block;">
+          <img src="https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_1600/PXL_20260626_152717457_o6drcd.jpg" alt="Leather hide with patterned print drying outdoors at DIAT" loading="lazy" draggable="false" oncontextmenu="return false" style="width:100%;max-width:100%;height:auto;aspect-ratio:1/1;object-fit:cover;border-radius:10px;display:block;">
+          <img src="https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_1600/PXL_20260626_152812052_gvhhoa.jpg" alt="Visitors viewing the printed leather display at the TGIF showcase" loading="lazy" draggable="false" oncontextmenu="return false" style="width:100%;max-width:100%;height:auto;aspect-ratio:1/1;object-fit:cover;border-radius:10px;display:block;">
+          <img src="https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_1600/PXL_20260626_152851599_e8rped.jpg" alt="Printed leather hides showing varied patterns from the showcase" loading="lazy" draggable="false" oncontextmenu="return false" style="width:100%;max-width:100%;height:auto;aspect-ratio:1/1;object-fit:cover;border-radius:10px;display:block;">
+          <img src="https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_1600/PXL_20260626_152758313_vsixvf.jpg" alt="Close-up row of leather hides with paisley, floral, and geometric print patterns hung along the compound wall" loading="lazy" draggable="false" oncontextmenu="return false" style="width:100%;max-width:100%;height:auto;aspect-ratio:1/1;object-fit:cover;border-radius:10px;display:block;">
         </div>
       </div>
     </section>
 
-    <!-- CABE 75TH ANNIVERSARY QUIZ WIN — 23 June 2026 -->
-    <section class="dept-section dept-section--white" id="cabe-quiz-win" aria-labelledby="cabe-heading">
+    <!-- DEPARTMENT NEWS — CABE 75th Anniversary Inter-Departmental Quiz -->
+    <section class="dept-section dept-section--white" id="cabe-quiz-win" aria-labelledby="cabe-quiz-heading">
       <div class="container">
         <header class="dept-section__header" style="text-align:center;max-width:680px;margin-inline:auto">
           <span class="dept-section__eyebrow">Department News</span>
-          <h2 class="dept-section__title" id="cabe-heading"
-              data-cms-key="comm-cabe-h2" data-cms-label="CABE Heading" data-cms-type="text">
+          <h2 class="dept-section__title" id="cabe-quiz-heading"
+              data-cms-key="comm-cabe-h2" data-cms-label="CABE Quiz Heading" data-cms-type="text">
             DIAT Tops Group A at CABE&rsquo;s 75th Anniversary Quiz
           </h2>
           <div class="dept-section__rule" aria-hidden="true" style="margin-inline:auto"></div>
         </header>
 
+        <!-- Cinematic full-width video, sits above the story. Hosted on
+             Cloudinary (not YouTube) since the clip is short; poster image
+             gives it the same "tap-to-play" look as a YouTube embed. -->
         <div class="visit-story__video" style="margin-top:var(--sp-xl)">
-          <video id="cabe-quiz-win-video" controls preload="metadata"
-                 poster="https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_1200/Image_2_a0tkqq.jpg"
-                 style="width:100%;height:100%;display:block;background:#000;">
-            <source src="https://res.cloudinary.com/diatknust/video/upload/q_auto/Diat_wins_yzpji3.mp4" type="video/mp4">
+          <video controls preload="metadata"
+                 poster="https://res.cloudinary.com/diatknust/image/upload/v1782450725/Image_2_a0tkqq.jpg"
+                 title="DIAT wins Group A — CABE 75th Anniversary Inter-Departmental Quiz">
+            <source src="https://res.cloudinary.com/diatknust/video/upload/v1782450726/Diat_wins_yzpji3.mp4" type="video/mp4">
           </video>
         </div>
 
         <div class="visit-story__meta">
           <span class="visit-feature__meta-item">&#128197; 23 June 2026</span>
-          <span class="visit-feature__meta-item">&#127963; New CABE Building</span>
-          <span class="visit-feature__meta-item">&#127942; Group A Winners</span>
+          <span class="visit-feature__meta-item">&#127942; CABE 75th Anniversary Quiz</span>
+          <span class="visit-feature__meta-item">&#129351; Group A Winner</span>
         </div>
 
+        <!-- Story text, comfortable reading width -->
         <div class="visit-story__body">
-          <p class="content-split__body" data-cms-key="comm-cabe-p1" data-cms-label="CABE Visit Para 1">
-            DIAT&rsquo;s quiz team took the top spot in Group A of the CABE 75th Anniversary
-            Inter-Departmental Quiz Competition, held 23 June 2026 at the New CABE Building &mdash;
-            finishing with a winning score of 41, ahead of Land Economy (38.5) and Publishing
-            Studies (20.5).
+          <p class="content-split__body" data-cms-key="comm-cabe-p1" data-cms-label="CABE Quiz Para 1">
+            As part of the College of Art and Built Environment (CABE) 75th Anniversary
+            celebrations, departments across the college faced off in an
+            Inter-Departmental Quiz Competition. DIAT was drawn into
+            <strong>Group A</strong> alongside the Department of Publishing Studies and
+            the Department of Land Economy, with the elimination round held on
+            23rd June 2026 at the New CABE Building.
           </p>
-          <p class="content-split__body" data-cms-key="comm-cabe-p2" data-cms-label="CABE Visit Para 2">
-            The win adds a competitive, campus-wide chapter to DIAT&rsquo;s anniversary year &mdash;
-            proof the department&rsquo;s strengths extend well beyond the studio and workshop floor.
+          <p class="content-split__body" data-cms-key="comm-cabe-p2" data-cms-label="CABE Quiz Para 2">
+            Across four closely fought rounds, DIAT&rsquo;s team built a lead that held to
+            the final bell &mdash; closing with a total score of <strong>41 points</strong>,
+            ahead of Land Economy on 38.5 and Publishing Studies on 20.5, to top
+            Group A and advance from the elimination stage.
+          </p>
+          <p class="content-split__body" data-cms-key="comm-cabe-p3" data-cms-label="CABE Quiz Para 3">
+            A solid showing from a small department &mdash; and a proud moment heading
+            into the next stage of CABE&rsquo;s 75th Anniversary quiz competitions.
           </p>
         </div>
 
+        <!-- Photo gallery, closes out the story -->
         <div class="visit-story__gallery">
-          <img src="https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_800/Image_1_kwzd0g.jpg" alt="DIAT quiz team at the CABE 75th Anniversary Quiz Competition" loading="lazy" draggable="false" oncontextmenu="return false" style="width:100%;max-width:100%;height:auto;aspect-ratio:1/1;object-fit:cover;border-radius:10px;display:block;">
-          <img src="https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_800/Image_2_a0tkqq.jpg" alt="DIAT quiz team in action at the CABE quiz" loading="lazy" draggable="false" oncontextmenu="return false" style="width:100%;max-width:100%;height:auto;aspect-ratio:1/1;object-fit:cover;border-radius:10px;display:block;">
-          <img src="https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_800/Image_3_g47x2a.jpg" alt="CABE quiz competition at the New CABE Building" loading="lazy" draggable="false" oncontextmenu="return false" style="width:100%;max-width:100%;height:auto;aspect-ratio:1/1;object-fit:cover;border-radius:10px;display:block;">
-          <img src="https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_800/I_age_4_f7q8jf.jpg" alt="DIAT team celebrating at the CABE quiz" loading="lazy" draggable="false" oncontextmenu="return false" style="width:100%;max-width:100%;height:auto;aspect-ratio:1/1;object-fit:cover;border-radius:10px;display:block;">
-          <img src="https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_800/Reults_uqgchf.jpg" alt="CABE 75th Anniversary Quiz results board showing DIAT's winning score" loading="lazy" draggable="false" oncontextmenu="return false" style="width:100%;max-width:100%;height:auto;aspect-ratio:1/1;object-fit:cover;border-radius:10px;display:block;">
+          <img src="https://res.cloudinary.com/diatknust/image/upload/v1782450725/Image_2_a0tkqq.jpg" alt="DIAT's quiz team and representatives at the CABE 75th Anniversary Inter-Departmental Quiz" loading="lazy" draggable="false" oncontextmenu="return false" style="width:100%;max-width:100%;height:auto;aspect-ratio:1/1;object-fit:cover;border-radius:10px;display:block;">
+          <img src="https://res.cloudinary.com/diatknust/image/upload/v1782451088/Image_1_kwzd0g.jpg" alt="CABE 75th Anniversary Inter-Department Quiz Competition event poster, Group A schedule" loading="lazy" draggable="false" oncontextmenu="return false" style="width:100%;max-width:100%;height:auto;aspect-ratio:1/1;object-fit:cover;border-radius:10px;display:block;">
+          <img src="https://res.cloudinary.com/diatknust/image/upload/v1782450725/Image_3_g47x2a.jpg" alt="Final scoreboard for Group A: DIAT 41, Land Economy 38.5, Publishing Studies 20.5" loading="lazy" draggable="false" oncontextmenu="return false" style="width:100%;max-width:100%;height:auto;aspect-ratio:1/1;object-fit:cover;border-radius:10px;display:block;">
+          <img src="https://res.cloudinary.com/diatknust/image/upload/v1782450725/I_age_4_f7q8jf.jpg" alt="DIAT quiz team members seated at the podium during the competition" loading="lazy" draggable="false" oncontextmenu="return false" style="width:100%;max-width:100%;height:auto;aspect-ratio:1/1;object-fit:cover;border-radius:10px;display:block;">
+          <img src="https://res.cloudinary.com/diatknust/image/upload/v1782450725/Reults_uqgchf.jpg" alt="Final results board for the CABE Group A quiz round" loading="lazy" draggable="false" oncontextmenu="return false" style="width:100%;max-width:100%;height:auto;aspect-ratio:1/1;object-fit:cover;border-radius:10px;display:block;">
         </div>
       </div>
     </section>
@@ -303,7 +245,7 @@
         <!-- Cinematic full-width video, sits above the story -->
         <div class="visit-story__video" style="margin-top:var(--sp-xl)">
           <!-- Replace VIDEO_ID once uploaded to YouTube -->
-          <iframe id="pace-visit-iframe" src="https://www.youtube.com/embed/VIDEO_ID"
+          <iframe src="https://www.youtube.com/embed/VIDEO_ID"
                   title="Sankofa: Sacramento State Leather Technology Workshop at DIAT KNUST"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                   allowfullscreen loading="lazy"></iframe>
@@ -440,148 +382,5 @@
   </main>
     <script src="site.js?v=4"></script>
   <script src="cms.js?v=4"></script>
-
-  <!-- ── Hash deep-link fix — only acts when a #anchor is present ───────
-       The browser's native anchor-jump happens early, before the hero
-       image and any embedded video finish loading. Once those load and
-       the page reflows, that early jump (or even our first corrected
-       jump) can end up in the wrong spot again — an iframe or video in
-       particular finishes loading well after the rest of the page and
-       visibly shifts everything below it. Rather than touch site.js's
-       shared scroll-reset (which every OTHER page still legitimately
-       needs), this re-asserts the correct position at a couple of
-       points, including the exact moment the SPECIFIC story's own
-       media element finishes loading — found generically inside
-       whichever section the hash points to, so this works for every
-       story automatically (TGIF's iframe, CABE's <video>, Sankofa's
-       iframe, and any future story) without needing a new hardcoded
-       id each time. Jumps are INSTANT, not animated — stacking
-       multiple smooth-scroll animations back to back was exactly what
-       caused the browser to cancel one mid-flight and land somewhere
-       wrong, which is the regression this fixes. When there's NO hash
-       (a normal "Community" nav click), none of this runs at all —
-       the page loads at the top exactly as it always has. -->
-  <script>
-  (function () {
-    if (!location.hash) return; // normal top-of-page load — completely untouched
-    var target = document.querySelector(location.hash);
-    if (!target) return;
-
-    function jump() {
-      target.scrollIntoView({ behavior: 'auto', block: 'start' });
-    }
-
-    window.addEventListener('load', function () {
-      jump();
-      setTimeout(jump, 800);
-      /* cms.js (loaded on every page) does its own async fetch + text
-         replacement that can shift layout well after this point — these
-         extra checkpoints make sure we win regardless of how long that
-         network request takes. */
-      setTimeout(jump, 1800);
-      setTimeout(jump, 3000);
-    });
-
-    /* Find whatever media element lives inside THIS story's section —
-       works for an <iframe> (YouTube embeds) or a <video> (Cloudinary-
-       hosted clips like CABE's) without caring which one it is. */
-    var media = target.querySelector('iframe, video');
-    if (media) {
-      var reJump = function () { setTimeout(jump, 50); };
-      media.addEventListener('load', reJump);          // iframes
-      media.addEventListener('loadedmetadata', reJump); // videos
-    }
-
-    /* Precise alternative to guessing fixed delays above — reacts the
-       INSTANT cms.js's async content swap actually changes anything
-       on the page (whenever its network fetch happens to finish),
-       rather than hoping a fixed timeout was long enough. Stops
-       watching after 6s so it doesn't linger forever. */
-    if ('MutationObserver' in window) {
-      var mo = new MutationObserver(function () { setTimeout(jump, 30); });
-      mo.observe(document.body, { childList: true, subtree: true, characterData: true });
-      setTimeout(function () { mo.disconnect(); }, 6000);
-    }
-  })();
-  </script>
-
-  <!-- ── Story gallery lightbox — generic, self-wiring ──────────────────
-       Finds every .visit-story__gallery on the page and gives each
-       image a click-to-fullscreen view with prev/next scoped to ONLY
-       that gallery's own images (TGIF's photos never mix with CABE's
-       or Sankofa's). Runs once on load against whatever sections exist
-       at that moment — since every story on this page uses the same
-       .visit-story__gallery markup, a brand new story added later gets
-       this automatically, with zero extra wiring ever needed again. -->
-  <script>
-  (function () {
-    var galleries = document.querySelectorAll('.visit-story__gallery');
-    if (!galleries.length) return;
-
-    var lb        = document.getElementById('story-lb');
-    var lbImg      = document.getElementById('story-lb-img');
-    var lbCounter  = document.getElementById('story-lb-counter');
-    var lbClose    = document.getElementById('story-lb-close');
-    var lbPrev     = document.getElementById('story-lb-prev');
-    var lbNext     = document.getElementById('story-lb-next');
-    if (!lb) return;
-
-    var currentImgs = [];
-    var currentIdx  = 0;
-
-    function show(idx) {
-      if (!currentImgs.length) return;
-      currentIdx = (idx + currentImgs.length) % currentImgs.length;
-      var img = currentImgs[currentIdx];
-      lbImg.src = img.src;
-      lbImg.alt = img.alt || '';
-      lbCounter.textContent = (currentIdx + 1) + ' / ' + currentImgs.length;
-    }
-
-    function open(imgs, idx) {
-      currentImgs = imgs;
-      show(idx);
-      lb.classList.add('is-open');
-      document.body.style.overflow = 'hidden';
-    }
-
-    function close() {
-      lb.classList.remove('is-open');
-      document.body.style.overflow = '';
-    }
-
-    galleries.forEach(function (gallery) {
-      var imgs = Array.prototype.slice.call(gallery.querySelectorAll('img'));
-      imgs.forEach(function (img, idx) {
-        img.style.cursor = 'pointer';
-        img.addEventListener('click', function () { open(imgs, idx); });
-      });
-    });
-
-    lbClose.addEventListener('click', close);
-    lbPrev.addEventListener('click', function () { show(currentIdx - 1); });
-    lbNext.addEventListener('click', function () { show(currentIdx + 1); });
-
-    /* Click the dark backdrop (not the image itself) to close */
-    lb.addEventListener('click', function (e) {
-      if (e.target === lb) close();
-    });
-
-    document.addEventListener('keydown', function (e) {
-      if (!lb.classList.contains('is-open')) return;
-      if (e.key === 'Escape')     close();
-      if (e.key === 'ArrowLeft')  show(currentIdx - 1);
-      if (e.key === 'ArrowRight') show(currentIdx + 1);
-    });
-
-    /* Touch swipe for mobile */
-    var touchStartX = 0;
-    lb.addEventListener('touchstart', function (e) { touchStartX = e.touches[0].clientX; }, { passive: true });
-    lb.addEventListener('touchend', function (e) {
-      var diff = touchStartX - e.changedTouches[0].clientX;
-      if (Math.abs(diff) > 50) show(currentIdx + (diff > 0 ? 1 : -1));
-    }, { passive: true });
-  })();
-  </script>
 </body>
 </html>
