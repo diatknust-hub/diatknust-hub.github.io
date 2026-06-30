@@ -80,6 +80,64 @@
       object-fit: cover;
       border-radius: var(--radius-md, 10px);
       display: block;
+      cursor: pointer;
+      transition: opacity 160ms ease;
+    }
+    .visit-story__gallery img:hover { opacity: .85; }
+
+    /* ── COMMUNITY STORY LIGHTBOX ──────────────────────────────────
+       Self-contained; visually matches the Gallery lightbox.
+       One instance serves all story galleries on this page. */
+    .comm-lb {
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,.92);
+      z-index: 9000;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .comm-lb.is-open { display: flex; }
+    .comm-lb__close {
+      position: absolute; top: var(--sp-lg, 24px); right: var(--sp-lg, 24px);
+      background: rgba(255,255,255,.12); border: none; color: #fff;
+      width: 44px; height: 44px; border-radius: 50%; font-size: 1.2rem;
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+      transition: background 160ms ease; z-index: 10;
+    }
+    .comm-lb__close:hover { background: rgba(255,255,255,.25); }
+    .comm-lb__counter {
+      position: absolute; top: var(--sp-lg, 24px); left: 50%; transform: translateX(-50%);
+      font-size: var(--fs-xs, .75rem); color: rgba(255,255,255,.5);
+      letter-spacing: .08em; font-family: var(--ff-body, sans-serif);
+    }
+    .comm-lb__stage {
+      width: 100%; max-width: 900px; flex: 1;
+      display: flex; align-items: center; justify-content: center;
+      padding: 60px var(--sp-xl, 32px) var(--sp-lg, 24px); position: relative;
+    }
+    .comm-lb__img {
+      max-width: 100%; max-height: calc(100vh - 160px);
+      object-fit: contain; border-radius: var(--radius-md, 10px); display: block;
+      user-select: none; -webkit-user-drag: none;
+    }
+    .comm-lb__nav {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.2);
+      color: #fff; width: 48px; height: 48px; border-radius: 50%;
+      font-size: 1.2rem; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 160ms ease; z-index: 5;
+    }
+    .comm-lb__nav:hover { background: rgba(255,255,255,.25); }
+    .comm-lb__nav--prev { left: var(--sp-sm, 8px); }
+    .comm-lb__nav--next { right: var(--sp-sm, 8px); }
+    .comm-lb__nav:disabled { opacity: .2; cursor: default; }
+    .comm-lb__caption {
+      font-family: var(--ff-body, sans-serif);
+      font-size: var(--fs-xs, .75rem); color: rgba(255,255,255,.5);
+      padding: var(--sp-sm, 12px) var(--sp-xl, 32px) var(--sp-lg, 24px);
+      text-align: center; flex-shrink: 0;
     }
     @media (max-width: 700px) {
       .visit-story__gallery { grid-template-columns: repeat(2, 1fr); }
@@ -380,7 +438,104 @@
     </section>
 
   </main>
-    <script src="site.js?v=4"></script>
+
+  <!-- ═══ COMMUNITY STORY LIGHTBOX ════════════════════════════════════
+       One shared lightbox for all .visit-story__gallery images.
+       JS below auto-discovers images on page load — no manual wiring
+       needed when new story sections are added. ═════════════════════ -->
+  <div class="comm-lb" id="comm-lb" role="dialog" aria-modal="true" aria-label="Story image viewer">
+    <button class="comm-lb__close" id="comm-lb-close" aria-label="Close viewer">&#10005;</button>
+    <span class="comm-lb__counter" id="comm-lb-counter"></span>
+    <div class="comm-lb__stage">
+      <button class="comm-lb__nav comm-lb__nav--prev" id="comm-lb-prev" aria-label="Previous image">&#8592;</button>
+      <img class="comm-lb__img" id="comm-lb-img" src="" alt="" draggable="false" oncontextmenu="return false">
+      <button class="comm-lb__nav comm-lb__nav--next" id="comm-lb-next" aria-label="Next image">&#8594;</button>
+    </div>
+    <p class="comm-lb__caption" id="comm-lb-caption"></p>
+  </div>
+
+  <script>
+  (function () {
+    /* Collect every story gallery image on the page into a flat array */
+    var IMGS = [];
+    document.querySelectorAll('.visit-story__gallery img').forEach(function (img) {
+      IMGS.push({ src: img.src, alt: img.alt || '' });
+    });
+    if (!IMGS.length) return;
+
+    var lb      = document.getElementById('comm-lb');
+    var lbImg   = document.getElementById('comm-lb-img');
+    var lbPrev  = document.getElementById('comm-lb-prev');
+    var lbNext  = document.getElementById('comm-lb-next');
+    var lbCount = document.getElementById('comm-lb-counter');
+    var lbCap   = document.getElementById('comm-lb-caption');
+    var current = 0;
+    var touchStartX = 0;
+
+    /* Make every gallery image open the lightbox on click */
+    document.querySelectorAll('.visit-story__gallery img').forEach(function (img, i) {
+      img.addEventListener('click', function () { open(i); });
+    });
+
+    function open(idx) {
+      current = idx;
+      render();
+      lb.classList.add('is-open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function close() {
+      lb.classList.remove('is-open');
+      document.body.style.overflow = '';
+    }
+
+    function step(dir) {
+      var next = current + dir;
+      if (next < 0 || next >= IMGS.length) return;
+      current = next;
+      render();
+    }
+
+    function render() {
+      var item = IMGS[current];
+      lbImg.src = item.src;
+      lbImg.alt = item.alt;
+      lbCount.textContent = (current + 1) + ' / ' + IMGS.length;
+      lbCap.textContent   = item.alt;
+      lbPrev.disabled = (current === 0);
+      lbNext.disabled = (current === IMGS.length - 1);
+    }
+
+    /* Controls */
+    document.getElementById('comm-lb-close').addEventListener('click', close);
+    lbPrev.addEventListener('click', function () { step(-1); });
+    lbNext.addEventListener('click', function () { step(1); });
+
+    /* Close on backdrop click */
+    lb.addEventListener('click', function (e) {
+      if (e.target === lb) close();
+    });
+
+    /* Keyboard: arrows + Escape */
+    document.addEventListener('keydown', function (e) {
+      if (!lb.classList.contains('is-open')) return;
+      if (e.key === 'ArrowLeft')  { e.preventDefault(); step(-1); }
+      if (e.key === 'ArrowRight') { e.preventDefault(); step(1);  }
+      if (e.key === 'Escape')     close();
+    });
+
+    /* Touch swipe for mobile */
+    lb.addEventListener('touchstart', function (e) {
+      touchStartX = e.touches[0].clientX;
+    }, { passive: true });
+    lb.addEventListener('touchend', function (e) {
+      var diff = touchStartX - e.changedTouches[0].clientX;
+      if (Math.abs(diff) > 50) step(diff > 0 ? 1 : -1);
+    }, { passive: true });
+  })();
+  </script>
+
+  <script src="site.js?v=4"></script>
   <script src="cms.js?v=4"></script>
 </body>
 </html>
