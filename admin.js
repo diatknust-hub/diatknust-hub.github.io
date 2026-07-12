@@ -427,13 +427,14 @@
       var info=mk('div','crud-card__info');
       info.innerHTML='<p class="crud-card__title">'+esc(art.title||'Untitled')+'</p><div class="crud-card__meta"><span class="crud-card__badge '+bc+'">'+esc(art.discipline||'')+'</span>'+arB+ftB+(art.artist?esc(art.artist)+' · ':''  )+(art.year?esc(String(art.year)):'')+'</div>';
       var acts=mk('div','crud-card__actions');
+      var prevBtn=mk('button','admin-btn','Preview'); prevBtn.style.cssText='font-size:.76rem;padding:5px 11px';
       var upBtn=mk('button','admin-btn','Up'); upBtn.style.cssText='font-size:.76rem;padding:5px 11px';
       var downBtn=mk('button','admin-btn','Down'); downBtn.style.cssText='font-size:.76rem;padding:5px 11px';
       var copyBtn=mk('button','admin-btn','Duplicate'); copyBtn.style.cssText='font-size:.76rem;padding:5px 11px';
       var editBtn=mk('button','admin-btn','Edit'); editBtn.style.cssText='font-size:.76rem;padding:5px 11px';
       var delBtn=mk('button','admin-btn admin-btn--danger','Delete'); delBtn.style.cssText='font-size:.76rem;padding:5px 11px';
       upBtn.disabled=i===0; downBtn.disabled=i===S.gallery.length-1;
-      acts.appendChild(upBtn); acts.appendChild(downBtn); acts.appendChild(copyBtn); acts.appendChild(editBtn); acts.appendChild(delBtn);
+      acts.appendChild(prevBtn); acts.appendChild(upBtn); acts.appendChild(downBtn); acts.appendChild(copyBtn); acts.appendChild(editBtn); acts.appendChild(delBtn);
       top.appendChild(info); top.appendChild(acts);
 
       var ef=buildArtForm(art,i); ef.id='af-'+i;
@@ -445,8 +446,24 @@
         if(!confirm('Delete "'+( art.title||'this artwork')+'"?')) return;
         S.gallery.splice(i,1); setDirty(); renderGallery();
       });
+
+      // Inline image preview panel — mirrors WebAR "Preview 3D" pattern
+      var previewPanel=mk('div'); previewPanel.id='gp-'+i; previewPanel.style.display='none';
+      if(art.image_path){
+        previewPanel.innerHTML='<div style="padding:14px;border-top:1px solid var(--admin-line);text-align:center">'+
+          '<img src="'+esc(art.image_path)+'" alt="'+esc(art.title||'Artwork')+'" style="max-width:100%;max-height:340px;border-radius:8px;object-fit:contain;background:#f8f5f0">'+
+          '<p style="font-size:.74rem;color:var(--admin-muted);margin-top:8px">'+esc(art.title||'Untitled')+(art.artist?' \u2014 '+esc(art.artist):'')+'</p>'+
+          '</div>';
+      } else {
+        previewPanel.innerHTML='<div style="padding:14px;border-top:1px solid var(--admin-line);text-align:center;color:var(--admin-muted);font-size:.85rem">No image set for this artwork yet.</div>';
+      }
+      prevBtn.addEventListener('click',function(){
+        previewPanel.style.display=previewPanel.style.display==='none'?'block':'none';
+        prevBtn.textContent=previewPanel.style.display==='none'?'Preview':'Close Preview';
+      });
+
       wireDragSort(card,S.gallery,i,renderGallery);
-      card.appendChild(top); card.appendChild(ef); grid.appendChild(card);
+      card.appendChild(top); card.appendChild(previewPanel); card.appendChild(ef); grid.appendChild(card);
     });
   }
 
