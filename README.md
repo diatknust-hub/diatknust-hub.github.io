@@ -5,7 +5,7 @@ programme pages, and a WebAR viewer powered by `model-viewer`.
 
 ## Current Publishing Model
 
-This site is intentionally static. GitHub Pages serves the HTML, CSS,
+This site is intentionally semi-static. GitHub Pages serves the HTML, CSS,
 JavaScript, JSON, and media files directly.
 
 Public browser-based admin editing is disabled. Do not store admin passwords,
