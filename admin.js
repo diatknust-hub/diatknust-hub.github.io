@@ -28,6 +28,9 @@
     .crud-empty{padding:28px;text-align:center;color:var(--admin-muted);font-size:.86rem}
     .crud-grid{display:grid;gap:10px}
     .crud-card{border:1px solid var(--admin-line);border-radius:10px;background:#fff;overflow:hidden}
+    .crud-card[draggable=true]{cursor:grab}
+    .crud-card.dragging{opacity:.55}
+    .crud-card.drag-over{box-shadow:0 0 0 3px rgba(201,149,42,.18);border-color:var(--admin-gold)}
 
     /* Image thumbnail in card header */
     .crud-card__thumb{width:64px;height:64px;object-fit:cover;border-radius:6px;flex-shrink:0;background:#f1ede5;display:flex;align-items:center;justify-content:center;font-size:1.4rem}
@@ -115,7 +118,7 @@
   document.body.appendChild(saveBar);
 
   /* ── State ─────────────────────────────────────────────────────────────── */
-  var S = { content:{}, gallery:[], webar:[], keys:[], pages:[], assets:[], dirty:false };
+  var S = { content:{}, gallery:[], webar:[], keys:[], pages:[], assets:[], assetDetails:[], dirty:false };
   var DISCS = ['Product Design','Clay & Earthenware','Fibres & Fabrics','Leather Technology','Metal Production','Rattan & Bamboo','Wood & Furniture'];
   var LVLS  = ['Year 1','Year 2','Year 3','Year 4','MPhil','Staff/Faculty'];
   var PAGE_NAMES = {
@@ -152,12 +155,59 @@
     clearTimeout(el._t); el._t=setTimeout(function(){ el.className='admin-status'; },5000);
   }
 
+  function moveItem(list, from, to) {
+    if (!Array.isArray(list) || from === to || from < 0 || to < 0 || from >= list.length || to >= list.length) return false;
+    var item = list.splice(from, 1)[0];
+    list.splice(to, 0, item);
+    setDirty();
+    return true;
+  }
+
+  function duplicateItem(list, index) {
+    if (!Array.isArray(list) || index < 0 || index >= list.length) return false;
+    var copy = JSON.parse(JSON.stringify(list[index] || {}));
+    copy.title = (copy.title || 'Untitled') + ' Copy';
+    list.splice(index + 1, 0, copy);
+    setDirty();
+    return true;
+  }
+
+  function wireDragSort(card, list, index, renderFn) {
+    card.draggable = true;
+    card.addEventListener('dragstart', function(e) {
+      card.classList.add('dragging');
+      e.dataTransfer.effectAllowed = 'move';
+      e.dataTransfer.setData('text/plain', String(index));
+    });
+    card.addEventListener('dragend', function() {
+      card.classList.remove('dragging');
+      document.querySelectorAll('.crud-card.drag-over').forEach(function(el){ el.classList.remove('drag-over'); });
+    });
+    card.addEventListener('dragover', function(e) {
+      e.preventDefault();
+      card.classList.add('drag-over');
+    });
+    card.addEventListener('dragleave', function() {
+      card.classList.remove('drag-over');
+    });
+    card.addEventListener('drop', function(e) {
+      e.preventDefault();
+      card.classList.remove('drag-over');
+      var from = Number(e.dataTransfer.getData('text/plain'));
+      if (moveItem(list, from, index)) {
+        renderFn();
+        status('Order updated. Save All to write it to disk.', 'good');
+      }
+    });
+  }
+
   /* ── Nav ───────────────────────────────────────────────────────────────── */
   var NAV = {
     content: 'Content',
     gallery: 'Gallery',
     webar: 'WebAR Models',
     assets: 'Assets',
+    performance: 'Performance',
     preview: 'Preview',
     backup: 'Backup'
   };
@@ -169,6 +219,7 @@
     document.querySelectorAll('.admin-panel').forEach(function(p){ p.classList.toggle('is-active',p.id==='panel-'+name); });
     document.querySelectorAll('[data-panel]').forEach(function(b){ b.classList.toggle('is-active',b.dataset.panel===name); });
     if(name==='assets') renderAssets();
+    if(name==='performance') renderPerformance();
     if(name==='preview') refreshPreview();
   }
 
@@ -178,8 +229,8 @@
     fetch('/api/site-data',{cache:'no-store'}).then(function(r){ return r.json(); })
     .then(function(d){
       S.content=d.content||{}; S.gallery=d.gallery||[]; S.webar=d.webar||[];
-      S.keys=d.keys||[]; S.pages=d.pages||[]; S.assets=d.assets||[];
-      clearDirty(); renderContent(); renderGallery(); renderWebar(); buildPreviewSelect();
+      S.keys=d.keys||[]; S.pages=d.pages||[]; S.assets=d.assets||[]; S.assetDetails=d.assetDetails||[];
+      clearDirty(); renderContent(); renderGallery(); renderWebar(); renderPerformance(); buildPreviewSelect();
       status('Loaded — '+S.gallery.length+' artworks · '+S.webar.length+' AR models · '+S.assets.length+' files.','good');
     }).catch(function(e){ status('Load failed: '+e.message,'bad'); });
   }
@@ -376,17 +427,25 @@
       var info=mk('div','crud-card__info');
       info.innerHTML='<p class="crud-card__title">'+esc(art.title||'Untitled')+'</p><div class="crud-card__meta"><span class="crud-card__badge '+bc+'">'+esc(art.discipline||'')+'</span>'+arB+ftB+(art.artist?esc(art.artist)+' · ':''  )+(art.year?esc(String(art.year)):'')+'</div>';
       var acts=mk('div','crud-card__actions');
+      var upBtn=mk('button','admin-btn','Up'); upBtn.style.cssText='font-size:.76rem;padding:5px 11px';
+      var downBtn=mk('button','admin-btn','Down'); downBtn.style.cssText='font-size:.76rem;padding:5px 11px';
+      var copyBtn=mk('button','admin-btn','Duplicate'); copyBtn.style.cssText='font-size:.76rem;padding:5px 11px';
       var editBtn=mk('button','admin-btn','Edit'); editBtn.style.cssText='font-size:.76rem;padding:5px 11px';
       var delBtn=mk('button','admin-btn admin-btn--danger','Delete'); delBtn.style.cssText='font-size:.76rem;padding:5px 11px';
-      acts.appendChild(editBtn); acts.appendChild(delBtn);
+      upBtn.disabled=i===0; downBtn.disabled=i===S.gallery.length-1;
+      acts.appendChild(upBtn); acts.appendChild(downBtn); acts.appendChild(copyBtn); acts.appendChild(editBtn); acts.appendChild(delBtn);
       top.appendChild(info); top.appendChild(acts);
 
       var ef=buildArtForm(art,i); ef.id='af-'+i;
+      upBtn.addEventListener('click',function(){ if(moveItem(S.gallery,i,i-1)){ renderGallery(); status('Artwork moved up. Save All to keep the order.','good'); } });
+      downBtn.addEventListener('click',function(){ if(moveItem(S.gallery,i,i+1)){ renderGallery(); status('Artwork moved down. Save All to keep the order.','good'); } });
+      copyBtn.addEventListener('click',function(){ if(duplicateItem(S.gallery,i)){ renderGallery(); status('Artwork duplicated. Edit the copy, then Save All.','good'); } });
       editBtn.addEventListener('click',function(){ ef.classList.toggle('open'); editBtn.textContent=ef.classList.contains('open')?'✕ Close':'Edit'; });
       delBtn.addEventListener('click',function(){
         if(!confirm('Delete "'+( art.title||'this artwork')+'"?')) return;
         S.gallery.splice(i,1); setDirty(); renderGallery();
       });
+      wireDragSort(card,S.gallery,i,renderGallery);
       card.appendChild(top); card.appendChild(ef); grid.appendChild(card);
     });
   }
@@ -525,10 +584,14 @@
       var info=mk('div','crud-card__info');
       info.innerHTML='<p class="crud-card__title">'+esc(m.title||'Untitled')+'</p><div class="crud-card__meta"><span class="crud-card__badge '+bc+'">'+esc(m.discipline||'')+'</span>'+ac+(m.glb_file?'<code style="font-size:.7rem;color:var(--admin-muted);margin-left:4px">'+esc(m.glb_file)+'</code>':'')+'</div>';
       var acts=mk('div','crud-card__actions');
+      var upBtn=mk('button','admin-btn','Up'); upBtn.style.cssText='font-size:.76rem;padding:5px 11px';
+      var downBtn=mk('button','admin-btn','Down'); downBtn.style.cssText='font-size:.76rem;padding:5px 11px';
+      var copyBtn=mk('button','admin-btn','Duplicate'); copyBtn.style.cssText='font-size:.76rem;padding:5px 11px';
       var editBtn=mk('button','admin-btn','Edit'); editBtn.style.cssText='font-size:.76rem;padding:5px 11px';
       var prevBtn=mk('button','admin-btn','Preview 3D'); prevBtn.style.cssText='font-size:.76rem;padding:5px 11px';
       var delBtn=mk('button','admin-btn admin-btn--danger','Delete'); delBtn.style.cssText='font-size:.76rem;padding:5px 11px';
-      acts.appendChild(editBtn); acts.appendChild(prevBtn); acts.appendChild(delBtn);
+      upBtn.disabled=i===0; downBtn.disabled=i===S.webar.length-1;
+      acts.appendChild(upBtn); acts.appendChild(downBtn); acts.appendChild(copyBtn); acts.appendChild(editBtn); acts.appendChild(prevBtn); acts.appendChild(delBtn);
       top.appendChild(info); top.appendChild(acts);
 
       var ef=buildWearForm(m,i); ef.id='wf-'+i;
@@ -543,6 +606,9 @@
         '<p style="font-size:.74rem;color:var(--admin-muted);margin-top:6px;text-align:center">Rotate · Pinch to zoom · AR button to view in your space</p>'+
         '</div>';
 
+      upBtn.addEventListener('click',function(){ if(moveItem(S.webar,i,i-1)){ renderWebar(); status('WebAR model moved up. Save All to keep the order.','good'); } });
+      downBtn.addEventListener('click',function(){ if(moveItem(S.webar,i,i+1)){ renderWebar(); status('WebAR model moved down. Save All to keep the order.','good'); } });
+      copyBtn.addEventListener('click',function(){ if(duplicateItem(S.webar,i)){ renderWebar(); status('WebAR model duplicated. Edit the copy, then Save All.','good'); } });
       editBtn.addEventListener('click',function(){ ef.classList.toggle('open'); editBtn.textContent=ef.classList.contains('open')?'✕ Close':'Edit'; });
       prevBtn.addEventListener('click',function(){
         var pv=$('wp-'+i); pv.style.display=pv.style.display==='none'?'block':'none';
@@ -553,6 +619,7 @@
         S.webar.splice(i,1); setDirty(); renderWebar();
       });
 
+      wireDragSort(card,S.webar,i,renderWebar);
       card.appendChild(top); card.appendChild(ef); card.appendChild(preview); grid.appendChild(card);
     });
   }
@@ -567,10 +634,23 @@
       '<div class="ff full"><label>Description</label><textarea name="description" rows="2">'+esc(m.description||'')+'</textarea></div>'+
       '<div class="ff"><label>.glb Filename (3D model)</label><input type="text" name="glb_file" value="'+esc(m.glb_file||m.glb||'')+'" placeholder="model-name.glb"><div class="hint">CDN: cdn.jsdelivr.net/gh/diatknust-hub/diatknust@main/<em>file.glb</em></div></div>'+
       '<div class="ff"><label>.usdz Filename (iPhone AR)</label><input type="text" name="usdz_file" value="'+esc(m.usdz_file||m.usdz||'')+'" placeholder="model-name.usdz"></div>'+
+      '<div class="ff"><label>Upload .glb file</label><input type="file" name="glb_upload" accept=".glb,.gltf"><div class="hint">Keep GLB under 5 MB where possible for faster AR loading.</div></div>'+
+      '<div class="ff"><label>Upload .usdz file</label><input type="file" name="usdz_upload" accept=".usdz"><div class="hint">Required for iPhone Quick Look AR.</div></div>'+
       '<div class="ff"><label>Scale (x y z) — 1 1 1 is normal size</label><input type="text" name="scale" value="'+esc(m.scale||'1 1 1')+'" placeholder="1 1 1"></div>'+
       '<div class="ff" style="align-items:flex-start;padding-top:6px"><label class="toggle-row"><input type="checkbox" name="is_active" '+(m.is_active!==false?'checked':'')+'>  Show in WebAR viewer</label></div>'+
     '</div>'+
     '<div class="form-footer"><button type="button" class="admin-btn admin-btn--primary sv">'+(isNew?'Add Model':'Update Model')+'</button>'+(isNew?'':'<button type="button" class="admin-btn cx">Cancel</button>')+'</div>';
+
+    f.querySelector('[name=glb_upload]').addEventListener('change',function(e){
+      var file=e.target.files[0]; if(!file) return;
+      if(file.size > 5 * 1024 * 1024 && !confirm('This GLB is over 5 MB and may load slowly in WebAR. Upload anyway?')) return;
+      uploadImage(file,function(fn){ f.querySelector('[name=glb_file]').value=fn; status('GLB uploaded. Save the model, then Save All.','good'); },function(err){ status('GLB upload failed: '+err,'bad'); });
+    });
+    f.querySelector('[name=usdz_upload]').addEventListener('change',function(e){
+      var file=e.target.files[0]; if(!file) return;
+      if(file.size > 8 * 1024 * 1024 && !confirm('This USDZ is over 8 MB and may load slowly on iPhone. Upload anyway?')) return;
+      uploadImage(file,function(fn){ f.querySelector('[name=usdz_file]').value=fn; status('USDZ uploaded. Save the model, then Save All.','good'); },function(err){ status('USDZ upload failed: '+err,'bad'); });
+    });
 
     f.querySelector('.sv').addEventListener('click',function(){
       var t=f.querySelector('[name=title]').value.trim(); if(!t){alert('Please enter a title.');return;}
@@ -596,9 +676,9 @@
     pb.innerHTML='';
 
     var upRow=mk('div','asset-upload-row');
-    upRow.innerHTML='<h4>📤 Upload New Image to Site</h4>';
+    upRow.innerHTML='<h4>📤 Upload New Media to Site</h4>';
     var dropZone=mk('div','upload-drop');
-    dropZone.innerHTML='<input type="file" accept="image/*" multiple><p><strong>Click to upload</strong> or drag images here · WebP recommended</p>';
+    dropZone.innerHTML='<input type="file" accept="image/*,.glb,.gltf,.usdz" multiple><p><strong>Click to upload</strong> or drag images, GLB, or USDZ files here · WebP and compressed models recommended</p>';
     var ui=dropZone.querySelector('input');
     ui.addEventListener('change',function(){
       Array.from(ui.files).forEach(function(file){
@@ -644,6 +724,67 @@
   }
 
   /* ════ PREVIEW ════════════════════════════════════════════════════════════ */
+  function fmtBytes(n) {
+    if (!n && n !== 0) return 'unknown size';
+    if (n < 1024) return n + ' B';
+    if (n < 1024 * 1024) return (n / 1024).toFixed(1) + ' KB';
+    return (n / (1024 * 1024)).toFixed(1) + ' MB';
+  }
+
+  function addPerf(items, level, title, body) {
+    items.push({ level: level || 'good', title: title, body: body });
+  }
+
+  function renderPerformance() {
+    var summary = $('performance-summary');
+    var list = $('performance-list');
+    if (!summary || !list) return;
+
+    var items = [];
+    var details = S.assetDetails || [];
+    var localImages = details.filter(function(a){ return /\.(jpg|jpeg|png|webp|gif)$/i.test(a.name); });
+    var localModels = details.filter(function(a){ return /\.(glb|usdz)$/i.test(a.name); });
+    var largeImages = localImages.filter(function(a){ return a.size > 500 * 1024; });
+    var largeModels = localModels.filter(function(a){ return a.size > 5 * 1024 * 1024; });
+    var nonWebp = localImages.filter(function(a){ return !/\.webp$/i.test(a.name); });
+    var missingGalleryImages = S.gallery.filter(function(a){ return !a.image_path; });
+    var galleryNoCloudinary = S.gallery.filter(function(a){
+      return a.image_path && !/^https:\/\/res\.cloudinary\.com\//i.test(a.image_path) && !/\.webp($|\?)/i.test(a.image_path);
+    });
+    var missingWebarFiles = S.webar.filter(function(m){ return !m.glb_file || !m.usdz_file; });
+    var missingThumbs = S.webar.filter(function(m){ return !m.thumbnail; });
+
+    if (largeModels.length) addPerf(items, 'bad', 'Large WebAR model files', largeModels.map(function(a){ return a.name + ' (' + fmtBytes(a.size) + ')'; }).join(', ') + '. Compress these first because AR load time depends heavily on model size.');
+    else addPerf(items, 'good', 'Local WebAR model sizes look safe', 'No local GLB/USDZ file is over the 5 MB warning threshold.');
+
+    if (largeImages.length) addPerf(items, 'warn', 'Large local images', largeImages.map(function(a){ return a.name + ' (' + fmtBytes(a.size) + ')'; }).join(', ') + '. Convert or resize before publishing.');
+    else addPerf(items, 'good', 'Local image sizes look fine', 'No local image is over 500 KB.');
+
+    if (nonWebp.length) addPerf(items, 'warn', 'Images not in WebP format', nonWebp.map(function(a){ return a.name; }).join(', ') + '. WebP is usually better for the public site.');
+    if (missingGalleryImages.length) addPerf(items, 'warn', 'Gallery items without a main image', missingGalleryImages.length + ' artwork item(s) need a main image before publishing.');
+    if (galleryNoCloudinary.length) addPerf(items, 'warn', 'Gallery images not using Cloudinary or WebP', galleryNoCloudinary.length + ' gallery image(s) may miss automatic CDN image optimization.');
+    if (missingWebarFiles.length) addPerf(items, 'bad', 'WebAR models missing GLB or USDZ', missingWebarFiles.length + ' model(s) are missing a GLB or USDZ filename.');
+    if (missingThumbs.length) addPerf(items, 'warn', 'WebAR models without thumbnails', missingThumbs.length + ' model(s) should have thumbnails so users see a fast image before loading 3D.');
+
+    if (!items.some(function(i){ return i.level !== 'good'; })) {
+      addPerf(items, 'good', 'Publishing checklist looks healthy', 'No obvious local asset, gallery, or WebAR performance issue was found.');
+    }
+
+    summary.innerHTML =
+      '<div class="perf-summary">'+
+        '<div class="perf-stat"><strong>'+S.gallery.length+'</strong><span>Gallery items</span></div>'+
+        '<div class="perf-stat"><strong>'+S.webar.length+'</strong><span>WebAR models</span></div>'+
+        '<div class="perf-stat"><strong>'+localImages.length+'</strong><span>Local images</span></div>'+
+        '<div class="perf-stat"><strong>'+localModels.length+'</strong><span>Local 3D files</span></div>'+
+      '</div>';
+    list.innerHTML = items.map(function(item){
+      return '<div class="perf-item is-'+esc(item.level)+'"><h4>'+esc(item.title)+'</h4><p>'+esc(item.body)+'</p></div>';
+    }).join('');
+  }
+
+  var prb=$('refresh-performance-btn');
+  if(prb) prb.addEventListener('click',function(){ renderPerformance(); status('Performance checks refreshed.','good'); });
+
   function buildPreviewSelect(){
     var sel=$('preview-page'); if(!sel) return; sel.innerHTML='';
     S.pages.forEach(function(p){ var o=mk('option'); o.value=p; o.textContent=PAGE_NAMES[p]||p; sel.appendChild(o); });

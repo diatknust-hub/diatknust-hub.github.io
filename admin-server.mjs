@@ -24,7 +24,9 @@ const mime = {
   '.jpeg': 'image/jpeg',
   '.png': 'image/png',
   '.webp': 'image/webp',
+  '.gif': 'image/gif',
   '.glb': 'model/gltf-binary',
+  '.gltf': 'model/gltf+json',
   '.usdz': 'model/vnd.usdz+zip',
   '.svg': 'image/svg+xml'
 };
@@ -73,8 +75,26 @@ async function listHtmlFiles() {
 async function listAssets() {
   const names = await readdir(root);
   return names
-    .filter((name) => /\.(?:jpg|jpeg|png|webp|gif|glb|usdz)$/i.test(name))
+    .filter((name) => /\.(?:jpg|jpeg|png|webp|gif|glb|gltf|usdz)$/i.test(name))
     .sort();
+}
+
+async function listAssetDetails() {
+  const names = await listAssets();
+  const details = [];
+
+  for (const name of names) {
+    try {
+      const info = await stat(join(root, name));
+      details.push({
+        name,
+        size: info.size,
+        ext: extname(name).toLowerCase()
+      });
+    } catch {}
+  }
+
+  return details;
 }
 
 function sanitizeAssetName(name) {
@@ -200,7 +220,8 @@ async function handleApi(req, res, url) {
       webar: await readJson(jsonFiles.webar, []),
       keys: await extractContentKeys(),
       pages: await listHtmlFiles(),
-      assets: await listAssets()
+      assets: await listAssets(),
+      assetDetails: await listAssetDetails()
     });
   }
 
@@ -235,6 +256,9 @@ async function handleApi(req, res, url) {
 
       // Sanitise filename and avoid overwriting an existing media file.
       const originalName = await makeUniqueAssetName(filePart.filename || 'upload.webp');
+      if (!/\.(jpg|jpeg|png|webp|gif|glb|gltf|usdz)$/i.test(originalName)) {
+        return sendJson(res, 400, { ok: false, error: 'Only image and 3D media files can be uploaded.' });
+      }
       const target = join(root, originalName);
       if (!isInsideRoot(target)) return sendJson(res, 403, { ok: false, error: 'Forbidden path.' });
 
@@ -253,7 +277,7 @@ async function handleApi(req, res, url) {
       const target = join(root, filename);
       if (!isInsideRoot(target)) return sendJson(res, 403, { ok: false, error: 'Forbidden.' });
       // Only allow deleting media assets, never HTML/JS/CSS/content files.
-      if (!/\.(jpg|jpeg|png|webp|gif|glb|usdz)$/i.test(filename)) {
+      if (!/\.(jpg|jpeg|png|webp|gif|glb|gltf|usdz)$/i.test(filename)) {
         return sendJson(res, 400, { ok: false, error: 'Only media files can be deleted here.' });
       }
       const { unlink } = await import('node:fs/promises');
@@ -268,12 +292,12 @@ async function handleApi(req, res, url) {
     try {
       const { from, to } = JSON.parse(await readBody(req));
       if (!from || !to) return sendJson(res, 400, { ok: false, error: 'Missing filename.' });
-      if (!/\.(jpg|jpeg|png|webp|gif|glb|usdz)$/i.test(from)) {
+      if (!/\.(jpg|jpeg|png|webp|gif|glb|gltf|usdz)$/i.test(from)) {
         return sendJson(res, 400, { ok: false, error: 'Only media files can be renamed here.' });
       }
 
       const safeTo = sanitizeAssetName(to);
-      if (!/\.(jpg|jpeg|png|webp|gif|glb|usdz)$/i.test(safeTo)) {
+      if (!/\.(jpg|jpeg|png|webp|gif|glb|gltf|usdz)$/i.test(safeTo)) {
         return sendJson(res, 400, { ok: false, error: 'New filename must keep a media extension.' });
       }
 

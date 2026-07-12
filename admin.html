@@ -43,6 +43,7 @@
         <button class="admin-nav__btn" type="button" data-panel="gallery">Gallery</button>
         <button class="admin-nav__btn" type="button" data-panel="webar">WebAR Models</button>
         <button class="admin-nav__btn" type="button" data-panel="assets">Assets</button>
+        <button class="admin-nav__btn" type="button" data-panel="performance">Performance</button>
         <button class="admin-nav__btn" type="button" data-panel="preview">Preview</button>
         <button class="admin-nav__btn" type="button" data-panel="backup">Backup</button>
       </nav>
@@ -122,6 +123,19 @@
           </div>
           <div class="admin-card__body">
             <div class="asset-list" id="asset-list"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="admin-panel" id="panel-performance" aria-labelledby="performance-heading">
+        <div class="admin-card">
+          <div class="admin-card__head">
+            <h3 class="admin-card__title" id="performance-heading">Performance Assistant</h3>
+            <button class="admin-btn" type="button" id="refresh-performance-btn">Refresh Checks</button>
+          </div>
+          <div class="admin-card__body">
+            <div id="performance-summary"></div>
+            <div class="perf-list" id="performance-list"></div>
           </div>
         </div>
       </section>
