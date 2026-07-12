@@ -14,6 +14,10 @@ diat-news-assets.json
 # Backup files created during CDN migration scripts
 *.bak-cdn
 
+# Local admin backups and export bundles
+.admin-backups/
+*.zip
+
 # Node modules
 node_modules/
 

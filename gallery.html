@@ -1048,7 +1048,7 @@
       return html;
     }
 
-    fetch('diat-gallery.json?v=' + Date.now(), { cache: 'no-store' })
+    fetch('diat-gallery.json?v=5')
       .then(function (r) { return r.ok ? r.json() : null; })
       .then(function (artworks) {
         var loading = document.getElementById('gal-loading');
