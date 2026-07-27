@@ -125,6 +125,9 @@ function makeHashId(name) {
     may:'may',     june:'jun',     july:'jul',      august:'aug',
     september:'sep', october:'oct', november:'nov', december:'dec',
   };
+  // Special cases: named exhibitions that share a month+year with another
+  if ((n.includes('e-learn') || n.includes('elearn') || n.includes('conference')) && year)
+    return `elearning-${year}`;
   let month = '';
   for (const [full, abbr] of Object.entries(MONTHS)) {
     if (n.includes(full)) { month = abbr; break; }
