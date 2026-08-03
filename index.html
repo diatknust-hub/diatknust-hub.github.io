@@ -352,6 +352,15 @@
       }).catch(function() { /* autoplay blocked — cover stays visible */ });
     }
 
+    /* Only the active slide's heading/links should reach screen readers
+       and the tab order — the rest are only hidden visually via opacity. */
+    function setSlideA11y(idx, active) {
+      var s = slides[idx];
+      s.setAttribute('aria-hidden', active ? 'false' : 'true');
+      if (active) { s.removeAttribute('inert'); }
+      else { s.setAttribute('inert', ''); }
+    }
+
     function goTo(idx) {
       /* Reset outgoing slide */
       var outVideo = slides[current].querySelector('.slide-video');
@@ -360,10 +369,12 @@
       if (outCover) outCover.classList.remove('slide-cover--faded');
 
       slides[current].classList.remove('hero-slide--active');
+      setSlideA11y(current, false);
       dots[current].classList.remove('slider-dot--active');
       dots[current].setAttribute('aria-selected','false');
       current = (idx + slides.length) % slides.length;
       slides[current].classList.add('hero-slide--active');
+      setSlideA11y(current, true);
       dots[current].classList.add('slider-dot--active');
       dots[current].setAttribute('aria-selected','true');
 
@@ -373,6 +384,8 @@
 
       reschedule();
     }
+
+    slides.forEach(function(s, i) { setSlideA11y(i, i === current); });
 
     function reschedule() {
       clearTimeout(timer);
@@ -653,25 +666,6 @@
 
   </main>
 <script>
-    /* Navigation */
-    var nav    = document.getElementById('dept-nav');
-    var toggle = document.getElementById('nav-toggle');
-    var drawer = document.getElementById('nav-drawer');
-    window.addEventListener('scroll', function() {
-      nav.classList.toggle('is-scrolled', window.scrollY > 8);
-    }, { passive: true });
-    toggle.addEventListener('click', function() {
-      var open = drawer.classList.toggle('is-open');
-      toggle.setAttribute('aria-expanded', String(open));
-      drawer.setAttribute('aria-hidden', String(!open));
-      document.body.style.overflow = open ? 'hidden' : '';
-    });
-    function closeDrawer() {
-      drawer.classList.remove('is-open');
-      toggle.setAttribute('aria-expanded', 'false');
-      drawer.setAttribute('aria-hidden', 'true');
-      document.body.style.overflow = '';
-    }
     /* Scroll reveal */
     var revEls = document.querySelectorAll('.js-reveal');
     if ('IntersectionObserver' in window) {
@@ -897,8 +891,10 @@
           straight to your inbox, no spam.
         </p>
         <form class="visitor-popup__form" id="visitor-popup-form" novalidate>
+          <label for="visitor-popup-email" class="sr-only">Email address</label>
           <input type="email" class="visitor-popup__input" id="visitor-popup-email"
-                 placeholder="you@example.com" autocomplete="email" required>
+                 placeholder="you@example.com" autocomplete="email" required
+                 aria-required="true" aria-describedby="visitor-popup-error">
           <p class="visitor-popup__error" id="visitor-popup-error"></p>
           <button type="submit" class="btn btn--primary btn--md visitor-popup__submit" id="visitor-popup-submit-btn">
             Keep Me Updated

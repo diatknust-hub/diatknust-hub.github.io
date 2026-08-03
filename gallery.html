@@ -16,6 +16,25 @@
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.gstatic.com https://ajax.googleapis.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https://res.cloudinary.com; media-src 'self' https://res.cloudinary.com; connect-src 'self' blob: https://*.googleapis.com https://res.cloudinary.com https://cdn.jsdelivr.net https://www.google-analytics.com https://www.google.com; object-src 'none';"/>
   <meta name="theme-color" content="#1A1A4E"/>
   <meta name="description" content="DIAT Artwork Gallery — indigenous craft works by students and staff at KNUST Ghana, spanning Clay, Fibres, Leather, Metal, Rattan and Wood disciplines."/>
+  <link rel="canonical" href="https://diatknust-hub.github.io/gallery.html"/>
+
+  <!-- Open Graph -->
+  <meta property="og:type"        content="website">
+  <meta property="og:url"         content="https://diatknust-hub.github.io/gallery.html">
+  <meta property="og:title"       content="Artwork Gallery &mdash; DIAT | KNUST Ghana">
+  <meta property="og:description" content="DIAT Artwork Gallery — indigenous craft works by students and staff at KNUST Ghana, spanning Clay, Fibres, Leather, Metal, Rattan and Wood.">
+  <meta property="og:image"       content="https://res.cloudinary.com/diatknust/image/upload/q_auto,f_jpg,w_1200/diat-opensale-exhibition_chkcpt.jpg">
+  <meta property="og:image:width"  content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:site_name"   content="DIAT KNUST Hub">
+  <meta property="og:locale"      content="en_GH">
+
+  <!-- Twitter / X Card -->
+  <meta name="twitter:card"        content="summary_large_image">
+  <meta name="twitter:title"       content="Artwork Gallery &mdash; DIAT | KNUST Ghana">
+  <meta name="twitter:description" content="DIAT Artwork Gallery — indigenous craft works by students and staff at KNUST Ghana, spanning Clay, Fibres, Leather, Metal, Rattan and Wood.">
+  <meta name="twitter:image"       content="https://res.cloudinary.com/diatknust/image/upload/q_auto,f_jpg,w_1200/diat-opensale-exhibition_chkcpt.jpg">
+
   <title>Artwork Gallery — DIAT | KNUST Ghana</title>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
@@ -730,13 +749,26 @@
       var current = 0;
       var timer;
 
+      /* Only the active slide's heading/content should reach screen
+         readers and the tab order — the rest are only hidden visually. */
+      function setSlideA11y(idx, active) {
+        var s = slides[idx];
+        s.setAttribute('aria-hidden', active ? 'false' : 'true');
+        if (active) { s.removeAttribute('inert'); }
+        else { s.setAttribute('inert', ''); }
+      }
+
       function goTo(n) {
         slides[current].classList.remove('is-active');
+        setSlideA11y(current, false);
         if (dots[current]) { dots[current].classList.remove('is-active'); dots[current].setAttribute('aria-selected','false'); }
         current = ((n % slides.length) + slides.length) % slides.length;
         slides[current].classList.add('is-active');
+        setSlideA11y(current, true);
         if (dots[current]) { dots[current].classList.add('is-active'); dots[current].setAttribute('aria-selected','true'); }
       }
+
+      slides.forEach(function (s, i) { setSlideA11y(i, i === current); });
 
       dots.forEach(function (dot, i) {
         dot.onclick = function () {
