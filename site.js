@@ -116,90 +116,47 @@
             </div>
           </li>
 
-          <!-- About dropdown -->
+          <!-- Programmes dropdown -->
           <li class="dept-nav__item" role="none">
-            <a href="about.html" class="dept-nav__link dept-nav__link--drop" aria-haspopup="true" aria-expanded="false">
-              About
-            </a>
-            <div class="dept-nav__dropdown" role="menu" aria-label="About sub-menu">
-              <a href="about.html"                  class="dept-nav__drop-link" role="menuitem">&#127963; Our Story</a>
-              <a href="about.html#history-heading"  class="dept-nav__drop-link" role="menuitem">&#128205; History &amp; Timeline</a>
-              <a href="about.html#gallery-heading"  class="dept-nav__drop-link" role="menuitem">&#128247; Department Photos</a>
-              <a href="contact.html"                     class="dept-nav__drop-link" role="menuitem">&#128222; Contact</a>
-            </div>
-          </li>
-
-          <!-- Programmes — MEGA MENU -->
-          <li class="dept-nav__item dept-nav__item--mega" role="none">
             <a href="programmes.html" class="dept-nav__link dept-nav__link--drop" aria-haspopup="true" aria-expanded="false">
               Programmes
             </a>
-            <div class="dept-nav__mega" role="menu" aria-label="Programmes sub-menu">
-              <div class="dept-nav__mega-col">
-                <span class="dept-nav__mega-heading">&#127891; Academic Programmes</span>
-                <a href="programmes.html"          class="dept-nav__drop-link dept-nav__drop-link--sub" role="menuitem">View All Programmes</a>
-                <div class="dept-nav__drop-divider" aria-hidden="true"></div>
-                <a href="product-design.html"      class="dept-nav__drop-link dept-nav__drop-link--sub" role="menuitem">&#128208; Product Design</a>
-                <a href="clay-earthenware.html"    class="dept-nav__drop-link dept-nav__drop-link--sub" role="menuitem">&#127994; Clay &amp; Earthenware</a>
-                <a href="fibres-fabrics.html"      class="dept-nav__drop-link dept-nav__drop-link--sub" role="menuitem">&#129525; Fibres &amp; Fabrics</a>
-                <a href="leather-technology.html"  class="dept-nav__drop-link dept-nav__drop-link--sub" role="menuitem">&#128092; Leather Technology</a>
-                <a href="metal-production.html"    class="dept-nav__drop-link dept-nav__drop-link--sub" role="menuitem">&#9881; Metal Production</a>
-                <a href="rattan-bamboo.html"       class="dept-nav__drop-link dept-nav__drop-link--sub" role="menuitem">&#127819; Rattan &amp; Bamboo</a>
-                <a href="wood-furniture.html"      class="dept-nav__drop-link dept-nav__drop-link--sub" role="menuitem">&#129683; Wood &amp; Furniture</a>
-              </div>
-              <div class="dept-nav__mega-col">
-                <span class="dept-nav__mega-heading">&#127807; Community &amp; Outreach</span>
-                <a href="community.html"  class="dept-nav__drop-link dept-nav__drop-link--sub" role="menuitem">Community Overview</a>
-                <a href="community.html#how-heading" class="dept-nav__drop-link dept-nav__drop-link--sub" role="menuitem">Internship Programme</a>
-                <a href="community.html#comm-cta-heading" class="dept-nav__drop-link dept-nav__drop-link--sub" role="menuitem">Mastercard Partnership</a>
-                <div class="dept-nav__drop-divider" aria-hidden="true"></div>
-                <span class="dept-nav__mega-heading" style="margin-top:var(--sp-sm)">&#128203; Resources</span>
-                <a href="archive.html"    class="dept-nav__drop-link dept-nav__drop-link--sub" role="menuitem">Digital Archive</a>
-                <a href="staff.html"      class="dept-nav__drop-link dept-nav__drop-link--sub" role="menuitem">Staff Directory</a>
-              </div>
+            <div class="dept-nav__dropdown" role="menu" aria-label="Programmes sub-menu">
+              <a href="programmes.html"          class="dept-nav__drop-link" role="menuitem">View All Programmes</a>
+              <div class="dept-nav__drop-divider" aria-hidden="true"></div>
+              <a href="product-design.html"      class="dept-nav__drop-link" role="menuitem">&#128208; Product Design</a>
+              <a href="clay-earthenware.html"    class="dept-nav__drop-link" role="menuitem">&#127994; Clay &amp; Earthenware</a>
+              <a href="fibres-fabrics.html"      class="dept-nav__drop-link" role="menuitem">&#129525; Fibres &amp; Fabrics</a>
+              <a href="leather-technology.html"  class="dept-nav__drop-link" role="menuitem">&#128092; Leather Technology</a>
+              <a href="metal-production.html"    class="dept-nav__drop-link" role="menuitem">&#9881; Metal Production</a>
+              <a href="rattan-bamboo.html"       class="dept-nav__drop-link" role="menuitem">&#127819; Rattan &amp; Bamboo</a>
+              <a href="wood-furniture.html"      class="dept-nav__drop-link" role="menuitem">&#129683; Wood &amp; Furniture</a>
+              <div class="dept-nav__drop-divider" aria-hidden="true"></div>
+              <a href="archive.html"             class="dept-nav__drop-link" role="menuitem">&#128203; Digital Archive</a>
             </div>
           </li>
 
-          <!-- Community dropdown -->
-          <li class="dept-nav__item" role="none">
+          <!-- Community — MEGA MENU -->
+          <li class="dept-nav__item dept-nav__item--mega" role="none">
             <a href="community.html" class="dept-nav__link dept-nav__link--drop" aria-haspopup="true" aria-expanded="false">
               Community
             </a>
-            <div class="dept-nav__dropdown" role="menu" aria-label="Community sub-menu">
-              <a href="community.html"                        class="dept-nav__drop-link" role="menuitem">&#127807; Community Overview</a>
-              <a href="community.html#how-heading"            class="dept-nav__drop-link" role="menuitem">&#128205; Internship Programme</a>
-              <a href="community.html#partner-heading"        class="dept-nav__drop-link" role="menuitem">&#127775; Mastercard Partnership</a>
-            </div>
-          </li>
-
-          <!-- Staff dropdown -->
-          <li class="dept-nav__item" role="none">
-            <a href="staff.html" class="dept-nav__link dept-nav__link--drop" aria-haspopup="true" aria-expanded="false">
-              Staff
-            </a>
-            <div class="dept-nav__dropdown" role="menu" aria-label="Staff sub-menu">
-              <a href="staff.html"                      class="dept-nav__drop-link" role="menuitem">&#128100; All Staff</a>
-              <div class="dept-nav__drop-divider" aria-hidden="true"></div>
-              <a href="staff.html#academic-heading"     class="dept-nav__drop-link" role="menuitem">&#127891; Academic Staff</a>
-              <a href="staff.html#technical-heading"    class="dept-nav__drop-link" role="menuitem">&#9881; Technical Staff</a>
-              <div class="dept-nav__drop-divider" aria-hidden="true"></div>
-              <a href="staff.html#siat-reps-heading"   class="dept-nav__drop-link" role="menuitem">&#127775; SIAT Representatives</a>
-              <a href="staff.html#siat-hub-heading"     class="dept-nav__drop-link" role="menuitem">&#128250; SIAT Student Hub</a>
-            </div>
-          </li>
-
-          <!-- Archive dropdown -->
-          <li class="dept-nav__item" role="none">
-            <a href="archive.html" class="dept-nav__link dept-nav__link--drop" aria-haspopup="true" aria-expanded="false">
-              Archive
-            </a>
-            <div class="dept-nav__dropdown" role="menu" aria-label="Archive sub-menu">
-              <a href="archive.html"                    class="dept-nav__drop-link" role="menuitem">&#128203; Digital Archive</a>
-              <div class="dept-nav__drop-divider" aria-hidden="true"></div>
-              <a href="archive.html?filter=research"    class="dept-nav__drop-link" role="menuitem">&#128240; Research Papers</a>
-              <a href="archive.html?filter=history"     class="dept-nav__drop-link" role="menuitem">&#127963; Historical Records</a>
-              <a href="archive.html?filter=student"     class="dept-nav__drop-link" role="menuitem">&#127891; Student Works</a>
-              <a href="archive.html?filter=community"   class="dept-nav__drop-link" role="menuitem">&#127807; Community Reports</a>
+            <div class="dept-nav__mega" role="menu" aria-label="Community sub-menu">
+              <div class="dept-nav__mega-col">
+                <span class="dept-nav__mega-heading">&#127807; Community &amp; Internship</span>
+                <a href="community.html"                  class="dept-nav__drop-link dept-nav__drop-link--sub" role="menuitem">&#127807; Community Overview</a>
+                <a href="community.html#how-heading"      class="dept-nav__drop-link dept-nav__drop-link--sub" role="menuitem">&#128205; Internship Programme</a>
+                <a href="community.html#partner-heading"  class="dept-nav__drop-link dept-nav__drop-link--sub" role="menuitem">&#127775; Mastercard Partnership</a>
+              </div>
+              <div class="dept-nav__mega-col">
+                <span class="dept-nav__mega-heading">&#127963; About DIAT</span>
+                <a href="about.html"                  class="dept-nav__drop-link dept-nav__drop-link--sub" role="menuitem">&#127963; Our Story</a>
+                <a href="about.html#history-heading"  class="dept-nav__drop-link dept-nav__drop-link--sub" role="menuitem">&#128205; History &amp; Timeline</a>
+                <a href="about.html#gallery-heading"  class="dept-nav__drop-link dept-nav__drop-link--sub" role="menuitem">&#128247; Department Photos</a>
+                <a href="contact.html"                class="dept-nav__drop-link dept-nav__drop-link--sub" role="menuitem">&#128222; Contact</a>
+                <div class="dept-nav__drop-divider" aria-hidden="true"></div>
+                <a href="staff.html"                  class="dept-nav__drop-link dept-nav__drop-link--sub" role="menuitem">&#128100; Staff Directory</a>
+              </div>
             </div>
           </li>
 
@@ -219,9 +176,9 @@
       <a href="index.html"      class="dept-nav__drawer-link">Home</a>
       <a href="gallery.html"    class="dept-nav__drawer-link">Artwork Gallery</a>
       <a href="webar.html"      class="dept-nav__drawer-link">WebAR Viewer</a>
-      <a href="about.html"      class="dept-nav__drawer-link">About DIAT</a>
       <a href="programmes.html" class="dept-nav__drawer-link">Programmes</a>
       <a href="community.html"  class="dept-nav__drawer-link">Community &amp; Internship</a>
+      <a href="about.html"      class="dept-nav__drawer-link">About DIAT</a>
       <a href="staff.html"      class="dept-nav__drawer-link">Staff &amp; Students</a>
       <!-- Archive -->
       <a href="archive.html" class="dept-nav__drawer-link">Digital Archive</a>
