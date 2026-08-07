@@ -1,6 +1,6 @@
 # diatknust-hub.github.io
 
-Static GitHub Pages site for the DIAT KNUST Hub, including gallery, archive,
+GitHub Pages site for the DIAT KNUST Hub, including gallery, archive,
 programme pages, and a WebAR viewer powered by `model-viewer`.
 
 ## Current Publishing Model
