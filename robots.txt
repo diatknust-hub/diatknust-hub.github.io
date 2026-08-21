@@ -1,7 +1,4 @@
 User-agent: *
 Allow: /
-Disallow: /admin.html
-Disallow: /admin-server.mjs
-Disallow: /tools/
 
 Sitemap: https://diatknust-hub.github.io/sitemap.xml
