@@ -4401,9 +4401,6 @@ h1, h2, h3, h4, h5, h6 { font-family: var(--ff-display); line-height: var(--lh-h
 .slide-cover {
   position: absolute;
   inset: 0;
-  background-size: cover;
-  background-position: center center;
-  background-repeat: no-repeat;
   z-index: 1;
   /* Ken Burns zoom — scale starts at 1, slowly pushes to 1.08 over 14 s.
      Duration exceeds slide time (12 s) so the push is always mid-motion
@@ -4411,6 +4408,13 @@ h1, h2, h3, h4, h5, h6 { font-family: var(--ff-display); line-height: var(--lh-h
   transform: scale(1);
   transform-origin: center center;
   transition: opacity 0.9s ease;
+}
+
+.slide-cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
 }
 
 /* Zoom kicks in the moment the slide becomes active */
