@@ -17,8 +17,14 @@
   <meta name="theme-color" content="#1A1A4E"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" href="diat-styles.css"/>
+  <!-- Google Fonts: async-loaded to eliminate render-blocking on mobile -->
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'"/>
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/></noscript>
+  <!-- Full stylesheet: async-loaded to prevent 156KB render-block -->
+  <link rel="preload" as="style" href="diat-styles.css"/>
+  <link rel="stylesheet" href="diat-styles.css" media="print" onload="this.media='all'"/>
+  <noscript><link rel="stylesheet" href="diat-styles.css"/></noscript>
   <meta name="description" content="Study Leather Technology at DIAT KNUST Ghana. Tanning, pattern-making, stitching, and finishing — from West African leather traditions to contempo..."/>
   <link rel="canonical" href="https://diatknust-hub.github.io/leather-technology.html"/>
 
@@ -211,7 +217,7 @@
     </section>
 
   </main>
-    <script src="site.js?v=4"></script>
-  <script src="cms.js?v=4"></script>
+    <script src="site.js?v=5" defer></script>
+  <script src="cms.js?v=5" defer></script>
 </body>
 </html>

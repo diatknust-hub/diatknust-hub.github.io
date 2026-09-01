@@ -72,8 +72,9 @@
             <img class="dept-nav__logo nav-badge-logo"
                  src="50TH%20DIAT%20-%20KNUST_logo_final-03.webp"
                  alt=""
+                 width="36" height="36"
                  draggable="false"
-                 loading="eager">
+                 loading="lazy">
             <div class="nav-badge-shadow"></div>
           </div>
           <div class="dept-nav__brand-text">

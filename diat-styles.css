@@ -21,14 +21,9 @@
   font-style: normal;
   font-display: swap;
 }
-/* Franklin Gothic Heavy — loaded from repo font file */
-@font-face {
-  font-family: 'FranklinGothicRegular';
-  src: url('FranklinGothic.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
-  font-display: swap;
-}
+/* FranklinGothicRegular @font-face REMOVED — not referenced anywhere.
+   FranklinGothicCondensed and FranklinGothicITALIC TTFs also unused.
+   Only FranklinGothicHeavy is needed (h1, about-hero eyebrow). */
 @font-face {
   font-family: 'FranklinGothicHeavy';
   src: url('FranklinGothicHeavy.ttf') format('truetype');
