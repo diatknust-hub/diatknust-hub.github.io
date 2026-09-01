@@ -21,5 +21,8 @@ foreach ($cover in $covers[1..7]) {
 
 if ($html -notmatch 'function loadCover\(idx, done\)') { throw 'The carousel does not load a deferred cover before activation.' }
 if ($css -notmatch '\.slide-cover img') { throw 'The responsive hero image is not styled to cover the slide.' }
+if ($html -match '<script src="https://www\.gstatic\.com/firebasejs/') { throw 'Firebase must not be loaded during the initial page request.' }
+if ($html -notmatch 'function loadFirebase\(\)') { throw 'The newsletter form is missing deferred Firebase loading.' }
+if ($html -notmatch 'script\.integrity = integrity') { throw 'Deferred Firebase loading must retain subresource integrity.' }
 
-Write-Output 'Hero loading checks passed.'
+Write-Output 'Homepage performance checks passed.'
