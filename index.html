@@ -378,15 +378,38 @@
       var cover = slides[idx].querySelector('.slide-cover');
       var image = cover && cover.querySelector('img');
       var source = cover && cover.querySelector('source[data-srcset]');
-      if (!image || image.complete || image.getAttribute('src')) {
+      
+      if (!image) {
         done();
         return;
       }
+      
+      var isDone = false;
+      function finish() {
+        if (!isDone) {
+          isDone = true;
+          done();
+        }
+      }
 
-      image.addEventListener('load', done, { once: true });
-      image.addEventListener('error', done, { once: true });
+      if (image.getAttribute('src')) {
+        if (image.complete) {
+          finish();
+        } else {
+          image.addEventListener('load', finish, { once: true });
+          image.addEventListener('error', finish, { once: true });
+        }
+        return;
+      }
+
+      image.addEventListener('load', finish, { once: true });
+      image.addEventListener('error', finish, { once: true });
       if (source) source.setAttribute('srcset', source.getAttribute('data-srcset'));
       image.setAttribute('src', image.getAttribute('data-src'));
+      
+      if (image.complete) {
+        finish();
+      }
     }
 
     function playVideo(idx) {
