@@ -99,11 +99,12 @@
               <a href="gallery.html#elearning-2026" class="dept-nav__drop-link" role="menuitem">&#127912; 2026 July E-Learning Int. Conference Exhibition</a>
               <a href="gallery.html#jul-2026" class="dept-nav__drop-link" role="menuitem">&#127912; 2026 July Open Sale</a>
               <a href="gallery.html#mphil-2026" class="dept-nav__drop-link" role="menuitem">&#127891; 2026 MPhil Artwork Exhibition</a>
+              <a href="gallery.html#oct-2026" class="dept-nav__drop-link" role="menuitem">&#128444; 2026 October WiSTEM Gh Visit Works</a>
               <a href="gallery.html#nov-2025" class="dept-nav__drop-link" role="menuitem">&#127912; 2025 November Open Sales</a>
             </div>
           </li>
 
-                                                                                                                                                                                                                                                                                                                                                              <!-- WebAR dropdown -->
+                                                                                                                                                                                                                                                                                                                                                                        <!-- WebAR dropdown -->
           <li class="dept-nav__item" role="none">
             <a href="webar.html" class="dept-nav__link dept-nav__link--drop" aria-haspopup="true" aria-expanded="false">
               WebAR
