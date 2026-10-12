@@ -1152,9 +1152,12 @@
       var glb   = model.glbUrl  || (CDN + (model.glb_file  || ''));
       var usdz  = model.usdzUrl || (CDN + (model.usdz_file || ''));
       var thumb = model.thumbnail || '';
-      var imgHtml = thumb
-        ? '<img class="gal-card__img" src="' + esc(thumb) + '" alt="' + esc(model.title) + '" loading="lazy" draggable="false" oncontextmenu="return false">'
-        : '<div class="gal-card__placeholder"><span class="gal-card__placeholder-label">&#127918;</span></div>';
+      var thumbVid = model.thumbnail_video || '';
+      var imgHtml = thumbVid
+        ? '<video class="gal-card__img" src="' + esc(thumbVid) + '" autoplay muted loop playsinline draggable="false" oncontextmenu="return false"></video>'
+        : thumb
+          ? '<img class="gal-card__img" src="' + esc(thumb) + '" alt="' + esc(model.title) + '" loading="lazy" draggable="false" oncontextmenu="return false">'
+          : '<div class="gal-card__placeholder"><span class="gal-card__placeholder-label">&#127918;</span></div>';
 
       var pilotTag = idx === 0
         ? '<span class="gal-card__disc-tag gal-card__disc-tag--pilot">&#9733; Pilot Model</span> '

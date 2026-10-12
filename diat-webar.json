@@ -65,6 +65,20 @@
     "thumbnail": "https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_600/Mini-3-face-pot_kpym5p.png"
   },
   {
+    "title": "DIAT Water Fountain",
+    "discipline": "Clay & Earthenware",
+    "description": "",
+    "glb_file": "DIAT-WaterFountain.glb",
+    "usdz_file": "",
+    "glbUrl": "https://cdn.jsdelivr.net/gh/diatknust-hub/diatknust@main/DIAT-WaterFountain.glb",
+    "usdzUrl": "",
+    "scale": "1 1 1",
+    "is_active": true,
+    "exhibition": "WebAR Collection",
+    "thumbnail": "",
+    "thumbnail_video": "https://res.cloudinary.com/diatknust/video/upload/q_auto/DIAT-WaterFountain_mavo2h.mp4"
+  },
+  {
     "title": "A-SET-OF-cHAIRS",
     "discipline": "Wood & Furniture",
     "description": "",
