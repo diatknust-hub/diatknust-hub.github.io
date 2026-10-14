@@ -4532,19 +4532,22 @@ h1, h2, h3, h4, h5, h6 { font-family: var(--ff-display); line-height: var(--lh-h
 /* ── Dot controls ────────────────────────────────────────────── */
 .slider-controls {
   position: absolute;
-  bottom: 20px;
+  bottom: 24px;
   right: clamp(24px, 5vw, 80px);
   z-index: 6;
   display: flex;
-  gap: 7px;
+  gap: 10px;
   align-items: center;
+  flex-wrap: wrap;
+  max-width: 60vw;
+  justify-content: flex-end;
 }
 
 .slider-dot {
-  width: 7px;
-  height: 7px;
+  width: 12px;
+  height: 12px;
   border-radius: 50%;
-  border: 1.5px solid rgba(255,255,255,.5);
+  border: 2px solid rgba(255,255,255,.7);
   background: transparent;
   cursor: pointer;
   padding: 0;
@@ -4555,10 +4558,10 @@ h1, h2, h3, h4, h5, h6 { font-family: var(--ff-display); line-height: var(--lh-h
 .slider-dot.slider-dot--active {
   background: var(--clr-gold);
   border-color: var(--clr-gold);
-  transform: scale(1.4);
+  transform: scale(1.35);
 }
 
-.slider-dot:hover { border-color: #fff; }
+.slider-dot:hover { border-color: #fff; background: rgba(255,255,255,.35); }
 
 /* ── Scroll indicator ───────────────────────────────────────── */
 .hero-scroll-indicator {
