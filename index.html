@@ -525,7 +525,7 @@
   <script>
   (function () {
     'use strict';
-    var sliderEl = document.getElementById('hero-slider');
+    var sliderEl   = document.getElementById('hero-slider');
     var controlsEl = sliderEl.querySelector('.slider-controls');
 
     function shuffle(arr) {
@@ -536,16 +536,16 @@
       return arr;
     }
 
-    var allSlides = Array.prototype.slice.call(sliderEl.querySelectorAll('.hero-slide'));
-    var storySlides = allSlides.slice(0, 7);   /* community news — always first group */
-    var heroSlides  = allSlides.slice(7);       /* original hero slides — follow */
+    var allSlides   = Array.prototype.slice.call(sliderEl.querySelectorAll('.hero-slide'));
+    var storySlides = allSlides.slice(0, 7);
+    var heroSlides  = allSlides.slice(7);
 
     shuffle(storySlides);
     shuffle(heroSlides);
 
     var ordered = storySlides.concat(heroSlides);
 
-    /* Re-insert slides in new order before the badge */
+    /* Re-insert slides in shuffled order before the badge */
     var badge = sliderEl.querySelector('.hero-persistent');
     ordered.forEach(function (slide) {
       slide.classList.remove('hero-slide--active');
@@ -553,15 +553,35 @@
     });
     ordered[0].classList.add('hero-slide--active');
 
-    /* Rebuild dot buttons to match new order */
+    /* Force-load the first slide's image immediately (lazy slides need this) */
+    (function loadFirst() {
+      var cover  = ordered[0].querySelector('.slide-cover');
+      var image  = cover && cover.querySelector('img');
+      var source = cover && cover.querySelector('source[data-srcset]');
+      if (!image || image.getAttribute('src')) return;
+      if (source) source.setAttribute('srcset', source.getAttribute('data-srcset'));
+      image.setAttribute('src', image.getAttribute('data-src'));
+    })();
+
+    /* Rebuild dot buttons and attach click handlers via delegation */
     var total = ordered.length;
     var newDots = '';
     for (var i = 0; i < total; i++) {
       var active = i === 0 ? ' slider-dot--active' : '';
       var sel    = i === 0 ? 'true' : 'false';
-      newDots += '<button class="slider-dot' + active + '" data-slide="' + i + '" role="tab" aria-selected="' + sel + '" aria-label="Slide ' + (i + 1) + '"></button>';
+      newDots += '<button class="slider-dot' + active + '" data-slide="' + i
+               + '" role="tab" aria-selected="' + sel
+               + '" aria-label="Slide ' + (i + 1) + '"></button>';
     }
     controlsEl.innerHTML = newDots;
+
+    /* Delegated click — survives innerHTML replacement, drives the slider */
+    controlsEl.addEventListener('click', function (e) {
+      var btn = e.target.closest('.slider-dot');
+      if (!btn) return;
+      var idx = parseInt(btn.getAttribute('data-slide'), 10);
+      if (typeof window.__diatGoTo === 'function') window.__diatGoTo(idx);
+    });
   })();
   </script>
 
@@ -569,7 +589,7 @@
   <script>
   (function () {
     'use strict';
-    var SLIDE_DURATION = 12000;
+    var SLIDE_DURATION = 4000;
     var FADE_DURATION  = 900;
     var slider  = document.getElementById('hero-slider');
     var slides  = Array.prototype.slice.call(slider.querySelectorAll('.hero-slide'));
@@ -648,6 +668,7 @@
       if (idx === current) { reschedule(); return; }
       loadCover(idx, function () { activate(idx); });
     }
+    window.__diatGoTo = goTo;
 
     function activate(idx) {
       /* Reset outgoing slide */
@@ -680,7 +701,7 @@
       if (!paused) timer = setTimeout(function(){goTo(current+1);}, SLIDE_DURATION);
     }
 
-    dots.forEach(function(d,i){d.addEventListener('click',function(){goTo(i);});});
+    /* dot clicks handled by delegated listener in the shuffle script above */
 
     document.addEventListener('visibilitychange', function(){
       paused = document.hidden;
