@@ -4612,13 +4612,7 @@ h1, h2, h3, h4, h5, h6 { font-family: var(--ff-display); line-height: var(--lh-h
     flex-direction: column;
     align-items: flex-start;
   }
-  .slider-controls {
-    bottom: 52px;
-    right: clamp(16px, 4vw, 24px);
-    left: auto;
-    transform: none;
-    gap: 8px;
-  }
+  .slider-controls { display: none; }
   .slider-dot { width: 11px; height: 11px; }
 }
 
