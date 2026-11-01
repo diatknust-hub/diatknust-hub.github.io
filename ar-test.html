@@ -7,9 +7,12 @@
 <script type="module"
   src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.5.0/model-viewer.min.js"></script>
 <style>
-  body { margin: 0; font-family: sans-serif; background: #fff; }
-  model-viewer { width: 100%; height: 70vh; background: #eee; }
-  #status { padding: 12px 16px; font-size: 15px; line-height: 1.5; }
+  body { margin: 0; font-family: sans-serif; background: #fff; color: #111; }
+  model-viewer { width: 100%; height: 55vh; background: #eee; }
+  .row { display: flex; flex-wrap: wrap; gap: 8px; padding: 12px 16px; }
+  .row button { padding: 10px 14px; font-size: 14px; border: 1px solid #999; border-radius: 8px; background: #fff; }
+  .row button.on { background: #1a1a4e; color: #fff; border-color: #1a1a4e; }
+  #status { padding: 0 16px 16px; font-size: 14px; line-height: 1.5; }
   button.ar { padding: 14px 24px; font-size: 16px; border: 0; border-radius: 24px;
               background: #c9952a; color: #fff; position: absolute; bottom: 16px; left: 50%;
               transform: translateX(-50%); }
@@ -18,9 +21,8 @@
 <body>
 
 <model-viewer id="mv"
-  src="https://cdn.jsdelivr.net/gh/diatknust-hub/diatknust@main/Traditional-Drum-Stool.glb"
-  ios-src="https://cdn.jsdelivr.net/gh/diatknust-hub/diatknust@main/Traditional-Drum-Stool.usdz"
-  alt="Traditional Drum Stool"
+  src="https://cdn.jsdelivr.net/gh/diatknust-hub/diatknust@main/ar-test-models/stool-test-original.glb"
+  alt="Traditional Drum Stool test"
   ar
   ar-modes="scene-viewer webxr quick-look"
   camera-controls
@@ -28,24 +30,35 @@
   <button slot="ar-button" class="ar">View in AR</button>
 </model-viewer>
 
+<div class="row" id="picker">
+  <button data-src="https://cdn.jsdelivr.net/gh/diatknust-hub/diatknust@main/ar-test-models/stool-test-original.glb" class="on">1. Original</button>
+  <button data-src="https://cdn.jsdelivr.net/gh/diatknust-hub/diatknust@main/ar-test-models/stool-test-normals.glb">2. Normals added</button>
+  <button data-src="https://cdn.jsdelivr.net/gh/diatknust-hub/diatknust@main/ar-test-models/stool-test-lite.glb">3. Normals + lighter</button>
+</div>
+
 <div id="status">Loading…</div>
 
 <script>
   var mv = document.getElementById('mv');
   var out = document.getElementById('status');
+  var label = '1. Original';
   function say(t) { out.innerHTML += '<br>' + t; }
-  out.textContent = 'Page loaded. Waiting for model…';
+  out.textContent = 'Page loaded.';
   mv.addEventListener('load', function () {
-    say('Model loaded. AR available: ' + mv.canActivateAR);
+    say('[' + label + '] model loaded. AR available: ' + mv.canActivateAR);
   });
   mv.addEventListener('error', function (e) {
-    say('Model error: ' + (e.detail && e.detail.type ? e.detail.type : 'unknown'));
+    say('[' + label + '] model error: ' + (e.detail && e.detail.type ? e.detail.type : 'unknown'));
   });
   mv.addEventListener('ar-status', function (e) {
-    say('AR status: ' + e.detail.status);
+    say('[' + label + '] AR status: ' + e.detail.status);
   });
-  mv.addEventListener('ar-tracking', function (e) {
-    say('AR tracking: ' + e.detail.status);
+  document.getElementById('picker').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    document.querySelectorAll('#picker button').forEach(function (x) { x.classList.remove('on'); });
+    b.classList.add('on');
+    label = b.textContent;
+    mv.setAttribute('src', b.getAttribute('data-src'));
   });
 </script>
 </body>
