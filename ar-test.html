@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>AR test</title>
+<script type="module"
+  src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.5.0/model-viewer.min.js"></script>
+<style>
+  body { margin: 0; font-family: sans-serif; background: #fff; }
+  model-viewer { width: 100%; height: 70vh; background: #eee; }
+  #status { padding: 12px 16px; font-size: 15px; line-height: 1.5; }
+  button.ar { padding: 14px 24px; font-size: 16px; border: 0; border-radius: 24px;
+              background: #c9952a; color: #fff; position: absolute; bottom: 16px; left: 50%;
+              transform: translateX(-50%); }
+</style>
+</head>
+<body>
+
+<model-viewer id="mv"
+  src="https://cdn.jsdelivr.net/gh/diatknust-hub/diatknust@main/Traditional-Drum-Stool.glb"
+  ios-src="https://cdn.jsdelivr.net/gh/diatknust-hub/diatknust@main/Traditional-Drum-Stool.usdz"
+  alt="Traditional Drum Stool"
+  ar
+  ar-modes="scene-viewer webxr quick-look"
+  camera-controls
+  shadow-intensity="1">
+  <button slot="ar-button" class="ar">View in AR</button>
+</model-viewer>
+
+<div id="status">Loading…</div>
+
+<script>
+  var mv = document.getElementById('mv');
+  var out = document.getElementById('status');
+  function say(t) { out.innerHTML += '<br>' + t; }
+  out.textContent = 'Page loaded. Waiting for model…';
+  mv.addEventListener('load', function () {
+    say('Model loaded. AR available: ' + mv.canActivateAR);
+  });
+  mv.addEventListener('error', function (e) {
+    say('Model error: ' + (e.detail && e.detail.type ? e.detail.type : 'unknown'));
+  });
+  mv.addEventListener('ar-status', function (e) {
+    say('AR status: ' + e.detail.status);
+  });
+  mv.addEventListener('ar-tracking', function (e) {
+    say('AR tracking: ' + e.detail.status);
+  });
+</script>
+</body>
+</html>
