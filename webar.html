@@ -805,9 +805,10 @@
           model-viewer CONFIGURATION — Pixel 8 Pro optimised
           ────────────────────────────────────────────────────────────────
           ar-modes priority order:
-            1. scene-viewer  — Android: opens Google Scene Viewer (most reliable,
-                               works on all ARCore devices including Pixel 8 Pro)
-            2. webxr         — Android Chrome 81+: in-browser AR via WebXR API
+            1. webxr         — Android Chrome 81+: in-browser AR via WebXR API.
+                               First because Google Scene Viewer crashes on the
+                               Pixel 8 Pro (Nov 2026); WebXR tested and works.
+            2. scene-viewer  — Android fallback: opens Google Scene Viewer
             3. quick-look    — iOS: opens AR Quick Look (for iPhone users visiting)
 
           shadow-intensity: realistic ground shadow so the object "sits" in space.
@@ -823,7 +824,7 @@
           ios-src="https://cdn.jsdelivr.net/gh/diatknust-hub/diatknust@main/Traditional-Drum-Stool.usdz"
 
           ar
-          ar-modes="scene-viewer webxr quick-look"
+          ar-modes="webxr scene-viewer quick-look"
           ar-scale="auto"
 
           camera-controls
