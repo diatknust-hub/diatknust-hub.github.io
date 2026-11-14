@@ -165,6 +165,42 @@
       .story-lb__arrow { width: 40px; height: 40px; font-size: 1.3rem; }
       .story-lb__close { width: 36px; height: 36px; }
     }
+
+    /* -- VIDEO TILE inside a story gallery ---------------------------------
+         A video is added to a gallery as a still image that carries a
+         data-video="...mp4" attribute, wrapped in .story-video-thumb. It
+         stays a still until someone taps it; the shared lightbox then
+         plays the video. Galleries with no data-video are not affected. -- */
+    .story-video-thumb {
+      position: relative;
+      display: block;
+    }
+    .story-video-thumb__play {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 52px; height: 52px;
+      border-radius: 50%;
+      background: rgba(0,0,0,.55);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding-left: 3px;
+      font-size: 1.15rem;
+      box-shadow: 0 2px 10px rgba(0,0,0,.35);
+      pointer-events: none;
+    }
+    .story-lb__video {
+      display: none;
+      max-width: 92vw;
+      max-height: 86vh;
+      border-radius: 6px;
+      background: #000;
+      box-shadow: 0 20px 60px rgba(0,0,0,.5);
+    }
+    .story-lb.is-video .story-lb__img   { display: none; }
+    .story-lb.is-video .story-lb__video { display: block; }
   </style>
 </head>
 <body data-page="community">
@@ -179,6 +215,7 @@
     <button class="story-lb__arrow story-lb__arrow--prev" id="story-lb-prev" aria-label="Previous image">&#8249;</button>
     <button class="story-lb__arrow story-lb__arrow--next" id="story-lb-next" aria-label="Next image">&#8250;</button>
     <img class="story-lb__img" id="story-lb-img" src="" alt="">
+    <video class="story-lb__video" id="story-lb-video" controls playsinline preload="none" controlslist="nodownload" oncontextmenu="return false"></video>
     <div class="story-lb__counter" id="story-lb-counter"></div>
   </div>
 
@@ -271,6 +308,78 @@
           <img src="https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_1600/PXL_20261006_170403937_uvrrry.jpg" alt="WiSTEM Ghana students displaying completed leather work at DIAT studios, KNUST campus" loading="lazy" draggable="false" oncontextmenu="return false" style="width:100%;max-width:100%;height:auto;aspect-ratio:1/1;object-fit:cover;border-radius:10px;display:block;cursor:pointer;">
           <img src="https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_1600/PXL_20261006_170304618_q9eubf.jpg" alt="Group of WiSTEM Gh participants with DIAT faculty at the 3rd annual impact visit, 2026" loading="lazy" draggable="false" oncontextmenu="return false" style="width:100%;max-width:100%;height:auto;aspect-ratio:1/1;object-fit:cover;border-radius:10px;display:block;cursor:pointer;">
           <img src="https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_1600/PXL_20261006_170420759_j28esf.jpg" alt="WiSTEM Gh and DIAT collaboration — future scientists inspired through real-world STEM craft" loading="lazy" draggable="false" oncontextmenu="return false" style="width:100%;max-width:100%;height:auto;aspect-ratio:1/1;object-fit:cover;border-radius:10px;display:block;cursor:pointer;">
+        </div>
+      </div>
+    </section>
+
+    <!-- 3RD YEARS INTERNSHIP EXHIBITION - 4 September 2026 -->
+    <section class="dept-section dept-section--white" id="third-years-exhibition-2026" aria-labelledby="yr3exh-heading">
+      <div class="container">
+        <header class="dept-section__header" style="text-align:center;max-width:680px;margin-inline:auto">
+          <span class="dept-section__eyebrow">Department News</span>
+          <h2 class="dept-section__title" id="yr3exh-heading"
+              data-cms-key="comm-yr3exh-h2" data-cms-label="3rd Years Exhibition Heading" data-cms-type="text">
+            DIAT Holds an Exhibition for 3rd Years This September
+          </h2>
+          <div class="dept-section__rule" aria-hidden="true" style="margin-inline:auto"></div>
+        </header>
+
+        <!-- Hero image: tan backpack and handbags (the one landscape photo in the set) -->
+        <div class="visit-story__video" style="margin-top:var(--sp-xl)">
+          <img src="https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_1600/PXL_20260904_095428284_mvptl3.jpg"
+               alt="Tan backpack and handbags on display at the DIAT 3rd years exhibition, September 2026"
+               style="width:100%;height:100%;display:block;object-fit:cover;position:absolute;top:0;left:0;"
+               loading="lazy" draggable="false" oncontextmenu="return false">
+        </div>
+
+        <div class="visit-story__meta">
+          <span class="visit-feature__meta-item">&#128197; 4 September 2026</span>
+          <span class="visit-feature__meta-item">&#127891; 3rd Year Students</span>
+          <span class="visit-feature__meta-item">&#127912; Internship Exhibition</span>
+        </div>
+
+        <div class="visit-story__body">
+          <p class="content-split__body" data-cms-key="comm-yr3exh-p1" data-cms-label="3rd Years Exhibition Para 1">
+            The long-awaited exhibition is here. After three months of intense training and exposure to the
+            industry, the 3rd years of the Department of Indigenous Art and Technology (DIAT) have finally
+            returned from their internship. On Friday, 4th September 2026, they mounted an exhibition and
+            defended their works, both in groups and individually.
+          </p>
+          <p class="content-split__body" data-cms-key="comm-yr3exh-p2" data-cms-label="3rd Years Exhibition Para 2">
+            The display covered a lot of ground: signages, fashionable clothes, shoes, African dresses, bags,
+            lamps, and decorations for rooms and walls, among many other pieces.
+          </p>
+          <p class="content-split__body" data-cms-key="comm-yr3exh-p3" data-cms-label="3rd Years Exhibition Para 3">
+            Some of the pieces are in the photos below. A mannequin head wore a red patterned headpiece beside
+            bold African print fabric, a tan backpack sat with handbags, and brown boots and moccasins were set
+            out for viewing. The wall pieces included a gold Sankofa bird on a red background and a dark panel
+            of small coloured symbols. A blue DIAT signboard listing the department&rsquo;s six disciplines was
+            part of the setup.
+          </p>
+          <p class="content-split__body" data-cms-key="comm-yr3exh-p4" data-cms-label="3rd Years Exhibition Para 4">
+            As part of the 50th anniversary celebrations, DIAT is committed to promoting indigenous Ghanaian
+            art to the world. Click on the link below to view more in the gallery.
+          </p>
+        </div>
+
+        <!-- Photo gallery: 8 items from the 3rd years exhibition. The 2nd tile is a VIDEO. It shows as a
+             still and only plays when tapped, in the viewer (see data-video and the lightbox script). -->
+        <div class="visit-story__gallery" id="comm-lb-yr3exh">
+          <img src="https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_1600/PXL_20260904_095333893_ukcnfw.jpg" alt="DIAT signboard listing the department's six disciplines at the 3rd years exhibition, September 2026" loading="lazy" draggable="false" oncontextmenu="return false" style="width:100%;max-width:100%;height:auto;aspect-ratio:1/1;object-fit:cover;border-radius:10px;display:block;cursor:pointer;">
+          <div class="story-video-thumb">
+            <img src="https://res.cloudinary.com/diatknust/video/upload/so_0,q_auto,w_1600/diat_2026_September_3rd_year_exhibition_swdqje.jpg" data-video="https://res.cloudinary.com/diatknust/video/upload/q_auto/diat_2026_September_3rd_year_exhibition_swdqje.mp4" alt="Video from the DIAT 3rd years exhibition, September 2026" loading="lazy" draggable="false" oncontextmenu="return false" style="width:100%;max-width:100%;height:auto;aspect-ratio:1/1;object-fit:cover;border-radius:10px;display:block;cursor:pointer;">
+            <span class="story-video-thumb__play" aria-hidden="true">&#9658;</span>
+          </div>
+          <img src="https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_1600/PXL_20260904_095531782_nctibk.jpg" alt="Mannequin head wearing a red patterned headpiece beside African print fabric at the DIAT 3rd years exhibition" loading="lazy" draggable="false" oncontextmenu="return false" style="width:100%;max-width:100%;height:auto;aspect-ratio:1/1;object-fit:cover;border-radius:10px;display:block;cursor:pointer;">
+          <img src="https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_1600/PXL_20260904_095428284_mvptl3.jpg" alt="Tan backpack and handbags on display at the DIAT 3rd years exhibition, September 2026" loading="lazy" draggable="false" oncontextmenu="return false" style="width:100%;max-width:100%;height:auto;aspect-ratio:1/1;object-fit:cover;border-radius:10px;display:block;cursor:pointer;">
+          <img src="https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_1600/PXL_20260904_094908823.PORTRAIT.ORIGINAL_bnnfya.jpg" alt="Brown boots on display at the DIAT 3rd years exhibition, September 2026" loading="lazy" draggable="false" oncontextmenu="return false" style="width:100%;max-width:100%;height:auto;aspect-ratio:1/1;object-fit:cover;border-radius:10px;display:block;cursor:pointer;">
+          <img src="https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_1600/PXL_20260904_094918408.PORTRAIT_ibzdjw.jpg" alt="Brown moccasins on display at the DIAT 3rd years exhibition, September 2026" loading="lazy" draggable="false" oncontextmenu="return false" style="width:100%;max-width:100%;height:auto;aspect-ratio:1/1;object-fit:cover;border-radius:10px;display:block;cursor:pointer;">
+          <img src="https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_1600/PXL_20260904_095117214_tdyriy.jpg" alt="Gold Sankofa bird on a red background, a wall piece at the DIAT 3rd years exhibition" loading="lazy" draggable="false" oncontextmenu="return false" style="width:100%;max-width:100%;height:auto;aspect-ratio:1/1;object-fit:cover;border-radius:10px;display:block;cursor:pointer;">
+          <img src="https://res.cloudinary.com/diatknust/image/upload/q_auto,f_auto,w_1600/PXL_20260904_095016429_qqakxb.jpg" alt="Dark wall panel with small coloured symbols at the DIAT 3rd years exhibition" loading="lazy" draggable="false" oncontextmenu="return false" style="width:100%;max-width:100%;height:auto;aspect-ratio:1/1;object-fit:cover;border-radius:10px;display:block;cursor:pointer;">
+        </div>
+
+        <div style="text-align:center;margin-top:var(--sp-xl)">
+          <a href="gallery.html#sep-2026" class="btn btn--primary btn--md">View More in the Gallery</a>
         </div>
       </div>
     </section>
@@ -794,6 +903,7 @@
 
     var lb        = document.getElementById('story-lb');
     var lbImg      = document.getElementById('story-lb-img');
+    var lbVideo    = document.getElementById('story-lb-video');
     var lbCounter  = document.getElementById('story-lb-counter');
     var lbClose    = document.getElementById('story-lb-close');
     var lbPrev     = document.getElementById('story-lb-prev');
@@ -803,23 +913,49 @@
     var currentImgs = [];
     var currentIdx  = 0;
 
+    /* Video support: a gallery item that carries data-video="...mp4" is a
+       video. It shows as a still in the grid and only plays once tapped,
+       here in the viewer. Items without data-video behave exactly as before. */
+    function stopVideo() {
+      if (!lbVideo) return;
+      lb.classList.remove('is-video');
+      if (!lbVideo.getAttribute('src')) return;
+      lbVideo.pause();
+      lbVideo.removeAttribute('src');
+      lbVideo.removeAttribute('poster');
+      lbVideo.load();
+    }
+
     function show(idx) {
       if (!currentImgs.length) return;
       currentIdx = (idx + currentImgs.length) % currentImgs.length;
       var img = currentImgs[currentIdx];
-      lbImg.src = img.src;
-      lbImg.alt = img.alt || '';
+      var videoSrc = img.getAttribute('data-video');
+      if (videoSrc && lbVideo) {
+        lb.classList.add('is-video');
+        lbVideo.setAttribute('aria-label', img.alt || 'Video');
+        lbVideo.poster = img.src;
+        lbVideo.src = videoSrc;
+        var started = lbVideo.play();
+        /* if the browser holds playback back, the play button is right there */
+        if (started && started.catch) started.catch(function () {});
+      } else {
+        stopVideo();
+        lbImg.src = img.src;
+        lbImg.alt = img.alt || '';
+      }
       lbCounter.textContent = (currentIdx + 1) + ' / ' + currentImgs.length;
     }
 
     function open(imgs, idx) {
       currentImgs = imgs;
+      lb.classList.add('is-open');   /* open first, so a video can start playing straight away */
       show(idx);
-      lb.classList.add('is-open');
       document.body.style.overflow = 'hidden';
     }
 
     function close() {
+      stopVideo();
       lb.classList.remove('is-open');
       document.body.style.overflow = '';
     }
@@ -843,6 +979,8 @@
 
     document.addEventListener('keydown', function (e) {
       if (!lb.classList.contains('is-open')) return;
+      /* while the video itself has focus, left/right seek inside it instead of changing item */
+      if (e.target === lbVideo && (e.key === 'ArrowLeft' || e.key === 'ArrowRight')) return;
       if (e.key === 'Escape')     close();
       if (e.key === 'ArrowLeft')  show(currentIdx - 1);
       if (e.key === 'ArrowRight') show(currentIdx + 1);
@@ -850,8 +988,13 @@
 
     /* Touch swipe for mobile */
     var touchStartX = 0;
-    lb.addEventListener('touchstart', function (e) { touchStartX = e.touches[0].clientX; }, { passive: true });
+    var touchOnVideo = false;
+    lb.addEventListener('touchstart', function (e) {
+      touchStartX = e.touches[0].clientX;
+      touchOnVideo = (e.target === lbVideo);   /* dragging the video's own controls is not a swipe */
+    }, { passive: true });
     lb.addEventListener('touchend', function (e) {
+      if (touchOnVideo) return;
       var diff = touchStartX - e.changedTouches[0].clientX;
       if (Math.abs(diff) > 50) show(currentIdx + (diff > 0 ? 1 : -1));
     }, { passive: true });
